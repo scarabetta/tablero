@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>proyectosBA-DS</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Proyectos BA - Data services</name>
+
+	<parent>
+		<groupId>ar.gob.buenosaires.backend</groupId>
+		<artifactId>proyectosBA</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>1.8</java.version>
+		<utility.version>0.0.1-SNAPSHOT</utility.version>
+		<jaxrs.version>2.6.3</jaxrs.version>
+		<nimbusjwt.version>4.16.2</nimbusjwt.version>
+		<!-- Test -->
+		<testng.version>6.9.10</testng.version>
+		<mockito.version>1.10.19</mockito.version>
+		<fest-assert.version>2.0M10</fest-assert.version>
+	</properties>
+
+	<dependencies>
+	 <dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.14</version>
+		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.poi</groupId> -->
+<!-- 			<artifactId>poi</artifactId> -->
+<!-- 			<version>3.14</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>ar.gob.buenosaires.backend</groupId>
+			<artifactId>proyectosBA-Utility</artifactId>
+			<version>${utility.version}</version>
+		</dependency>
+
+		<!-- SPRING -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+           <dependency>
+               <groupId>org.springframework.ws</groupId>
+               <artifactId>spring-ws-core</artifactId>
+        </dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.boot</groupId> -->
+		<!-- <artifactId>spring-boot-starter-tomcat</artifactId> -->
+		<!-- <scope>provided</scope> -->
+		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- JAXRS -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.jaxrs</groupId>
+			<artifactId>jackson-jaxrs-json-provider</artifactId>
+			<version>${jaxrs.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!--JWT -->
+		<dependency>
+		    <groupId>com.nimbusds</groupId>
+		    <artifactId>nimbus-jose-jwt</artifactId>
+		    <version>${nimbusjwt.version}</version>
+		</dependency>
+		
+		<!-- Test -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easytesting</groupId>
+            <artifactId>fest-assert-core</artifactId>
+            <version>${fest-assert.version}</version>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

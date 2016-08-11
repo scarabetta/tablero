@@ -1,0 +1,15 @@
+# Eclipse
+.classpath
+.project
+.settings/
+
+#Spring
+.springBeans
+
+# Maven
+/log/
+/target/
+
+#Test
+test-output/
+

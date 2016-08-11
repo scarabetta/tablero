@@ -1,0 +1,33 @@
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+#Spring
+.springbeans
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Netbeans
+nb-configuration.xml
+nbactions.xml
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+.mvn/
+
+#Application
+/logs
+dtree_*.log
+
+#Test
+test-output/
+
