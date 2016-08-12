@@ -1,0 +1,11 @@
+[Unit]
+Description=proyectosba-be
+After=syslog.target
+
+[Service]
+User=root
+ExecStart=/etc/pba/be/proyectosBA-BE.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target
