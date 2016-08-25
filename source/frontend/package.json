@@ -1,0 +1,70 @@
+{
+  "name": "proyectosBA",
+  "version": "0.0.10",
+  "repository": "ssh://git@gitlab.hexacta.com:proyectosBA/front-end.git",
+  "main": "src/app.js",
+  "scripts": {
+    "build": "webpack  --env=devasi --config webpack.prod.js/",
+    "build-rel": "webpack  --env=devrel --config webpack.prod.js/",
+    "citest": "karma start jenkins.karma.conf.js",
+    "dev": "webpack-dev-server --hot --progress --colors --content-base build --env=development --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
+    "devasi": "webpack-dev-server --hot --progress --colors --content-base build --env=devasi --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
+    "devrel": "webpack-dev-server --hot --progress --colors --content-base build --env=devrel --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
+    "dev-json": "json-server db.json | webpack-dev-server --hot --progress --colors --content-base build --env=jsonserver --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
+    "test": "karma start",
+    "tslint": "tslint src/**/*.ts test/**/*.ts",
+    "typings": "typings install",
+    "postinstall": "npm run typings",
+    "prod": "webpack-dev-server --hot --progress --colors --content-base build --env=production --inline --history-api-fallback --output-public-path / --config webpack.dev.js --port 8081",
+    "precommit": "npm run tslint"
+  },
+  "author": "Hexacta <hexacta.com>",
+  "contributors": [
+    {
+      "name": "Enoc Montiel",
+      "email": "emontiel@hexacta.com"
+    },
+    {
+      "name": "Martin Carrera",
+      "email": "mcarrera@hexacta.com"
+    }
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "angular-recaptcha": "^3.0.3",
+    "angular-touch": "^1.5.8",
+    "angular-ui-bootstrap": "1.1.2",
+    "angular-ui-router": "0.2.17",
+    "bootstrap": "^3.3.5",
+    "checklist-model": "^0.10.0",
+    "file-loader": "^0.9.0",
+    "ng-tags-input": "^3.1.1"
+  },
+  "devDependencies": {
+    "angular-animate": "^1.4.1",
+    "angular-carousel": "1.0.1",
+    "angular-local-storage": "^0.2.7",
+    "copy-webpack-plugin": "^1.1.1",
+    "css-loader": "0.19.0",
+    "expose-loader": "^0.7.1",
+    "extract-text-webpack-plugin": "0.9.1",
+    "html-loader": "^0.4.0",
+    "html-webpack-plugin": "1.6.1",
+    "husky": "^0.11.4",
+    "jquery": "^2.2.0",
+    "ng-annotate-webpack-plugin": "^0.1.2",
+    "ng-file-upload": "^12.0.4",
+    "ngtemplate-loader": "^1.3.1",
+    "style-loader": "0.12.4",
+    "ts-loader": "0.8.0",
+    "tslint": "^3.14.0",
+    "typescript": "1.7.5",
+    "typings": "^1.3.0",
+    "url-loader": "0.5.6",
+    "webpack": "1.12.2",
+    "webpack-config-loader": "0.1.0",
+    "webpack-dev-server": "1.12.0",
+    "yargs": "3.32.0"
+  },
+  "license": "MIT"
+}

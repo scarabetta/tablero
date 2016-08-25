@@ -1,0 +1,1059 @@
+/*Estilos generales*/
+
+body {
+    background-color: #e8e8e8;
+}
+
+#main-nav .form-control::-webkit-input-placeholder {
+    color: #e8e8e8;
+}
+
+.jumbotron {
+    background-image: url(../educacion4.png);
+}
+
+.jumbotron h1 {
+    font-size: 45px;
+}
+
+.jumbotron p {
+    font-size: 16px;
+}
+
+.jumbotron-main .navbar-default .dropdown-menu li a:focus {
+    color: #888;
+}
+
+.notPadding {
+    padding: 0;
+}
+
+.jumbotron-main .btn {
+    opacity: .8;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.title {
+    color: #afafaf;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: "Gotham", Helvetica, Arial, sans-serif;
+    letter-spacing: -0.5px;
+    margin: 10px 0 10px 0;
+}
+
+.title-jurisdiccion {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.glyphicon-edit {
+    color: #4265bc!important;
+}
+
+.exit {
+    font-style: italic;
+    color: #6a6a6a;
+}
+
+.navbar-form.navbar-right {
+    margin: 7px 15px 0 15px
+}
+
+.navbar-form .form-control {
+    width: 260px !important;
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid #717171 !important;
+    color: #e8e8e8 !important;
+}
+
+.user .dropdown-menu {
+    width: auto;
+    min-width: 100%!important;
+}
+
+.main-container {
+    background: #f5f5f5;
+    padding-top: 0;
+    padding-bottom: 0 !important;
+}
+
+.section-img {
+    background-image: url(../educacion4.png);
+    width: 100%;
+    height: 450px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section-img .container {
+    text-align: center;
+    padding-top: 70px;
+}
+
+.mision {
+    color: #fff;
+    width: 80%;
+    margin: 0 auto;
+}
+
+button {
+    margin: 5px 5px 5px 0;
+}
+
+.navbar-default {
+    margin-bottom: 0;
+}
+
+.nameYear {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.contentSearch {
+    margin-bottom: 0;
+}
+
+.breadcrumb {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+hr {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.firstLabel {
+    /*font-size: 24px;*/
+    font-size: 18px;
+}
+
+.secondLabel {
+    /*font-size: 18px;*/
+    font-size: 16px;
+}
+
+.thirdLabel {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.content-level-1 li {
+    list-style: none;
+}
+
+.content-level-1 ul {
+    padding-left: 10px;
+}
+
+.firstLabel i,
+.secondLabel i {
+    font-size: 12px;
+    color: #000;
+}
+
+.glyphicon-chevron-down {
+    transition: all .3s ease;
+    transform: rotate(0deg);
+}
+
+.collapsed .glyphicon-chevron-down {
+    transform: rotate(-90deg);
+}
+
+.contentFormProyect {
+    background: #ededed;
+    border: 1px solid #ddd;
+    width: 100%;
+    padding: 15px 0;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.contentFormProyect.sectionForm {
+    margin-top: 0;
+}
+
+.sectionForm .contentLine {
+    padding-right: 0;
+    clear: left;
+}
+
+.obj-estrategico {
+    margin-top: 0;
+}
+
+.name-btn {
+    font-size: 11px;
+}
+
+.glyphicon-th-list {
+    /*color: #666!important;*/
+    color: #3f90d8!important
+}
+
+.totalPresupuesto {
+    text-align: right;
+    padding-top: 7px;
+    font-size: 14px;
+}
+
+label {
+    text-transform: uppercase;
+    color: #6c6c6c;
+    font-size: 12px;
+}
+
+.option {
+    text-transform: none;
+    color: #000;
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+.viewArbol {
+    padding-left: 10px;
+}
+
+.btn-arbol {
+    float: right;
+    margin: 0;
+}
+
+.newProyect {
+    float: left;
+    margin-top: 18px;
+}
+
+.formNewProyect {
+    background: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #ddd;
+    width: 98%;
+    float: right;
+}
+
+.formNewProyect span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.formNewProyect .thirdLabel {
+    margin: 0;
+}
+
+.glyphicon-cog {
+    font-size: 16px!important;
+    color: #676767;
+    margin: 0 8px;
+}
+
+.removeProyect {
+    float: right;
+    padding-top: 5px;
+}
+
+.newObj {
+    margin-bottom: 10px;
+}
+
+input[type=file] {
+    font-size: 14px;
+}
+
+.description {
+    font-size: 12px;
+    color: #000;
+}
+
+.description span {
+    font-size: 12px;
+    color: #838383;
+    font-weight: 700;
+}
+
+.titleInfoProyect {
+    font-size: 12px;
+    color: #afafaf;
+    text-transform: uppercase;
+}
+
+.numberProyect {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.content-level-1 {
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.content-button {
+    text-align: right;
+}
+
+.content-button button {
+    margin: 0;
+}
+
+.lineProyect {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.line-inner-proyect {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    border-top: 1px dashed #ccc;
+}
+
+.date {
+    font-size: 12px;
+    color: #000;
+}
+
+.end-date {
+    padding-right: 43px;
+}
+
+.register {
+    font-size: 16px;
+    color: #919191;
+    font-weight: 700;
+    margin: 10px 0;
+}
+
+.title-year {
+    margin-top: 5px;
+    font-family: "Gotham", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    font-size: 30px;
+    color: #000;
+    float: left;
+}
+
+.contentDate,
+.box-date {
+    float: right;
+    width: 250px;
+    padding-right: 15px;
+    padding-top: 7px;
+}
+
+.contentDate .title,
+.box-date .date {
+    width: 75px;
+}
+
+.contentDate .title {
+    margin: 0;
+}
+
+.menuExcel .dropdown-toggle {
+    width: 55px;
+    margin-left: 25px;
+}
+
+.menuExcel img {
+    width: 20px;
+    float: left;
+}
+
+.content-first-btn {
+    margin: 10px 0;
+}
+
+.breadcrumb {
+    padding: 0;
+}
+
+.glyphicon-usd {
+    float: left;
+    top: 10px !important;
+}
+
+.btn-presupuesto {
+    margin: 0;
+    float: left;
+    margin: 0 15px;
+}
+
+.default-content {
+    background: #f1f1f1;
+    color: #000;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.checkbox label,
+.radio label {
+    min-height: 20px;
+    padding-left: 20px;
+    margin-bottom: 0;
+    cursor: pointer;
+    font-family: "OpenSans", Helvetica, Arial, sans-serif;
+}
+
+.info {
+    text-align: left;
+    padding: 5px 0;
+}
+
+.title-import-excel {
+    font-size: 20px;
+    margin: 15px 0 0 0;
+}
+
+.title-help {
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+.content-import {
+    border: 1px dashed #215093;
+    padding: 20px;
+    text-align: center;
+}
+
+.content-import p {
+    font-size: 18px;
+}
+
+.reference {
+    font-size: 12px;
+    color: #6c6c6c;
+}
+
+.help-block {
+    font-size: 12px;
+    clear: left;
+    color: #6c6c6c;
+    font-style: italic;
+}
+
+.menuExcel {
+    float: left;
+    margin-left: 15px;
+}
+
+.menuExcel img {
+    width: 20px!important;
+}
+
+#exampleInputFile {
+    color: #000;
+    float: left;
+    padding-top: 5px;
+}
+
+.opcional {
+    font-style: italic;
+    font-size: 13px;
+    text-transform: lowercase;
+    font-family: "OpenSansRegular", Helvetica, Arial, sans-serif
+}
+
+.title-total {
+    text-align: right;
+    padding-top: 4px;
+    font-size: 16px;
+    color: #000;
+}
+
+.content-action {
+    float: right;
+}
+
+.content-actionForm {
+    float: right;
+    clear: right;
+    margin-bottom: 20px;
+}
+
+.content-actionForm .btn {
+    min-width: 160px;
+    min-height: 35px;
+}
+
+.content-actionForm i {
+    float: left;
+}
+
+.content-actionForm span {
+    font-size: 12px;
+}
+
+.content-actionForm .glyphicon-remove {
+    font-size: 13px;
+    color: #d04848;
+    margin-top: 2px;
+}
+
+.content-actionForm .glyphicon-transfer {
+    font-size: 15px;
+    color: #6faf29;
+    margin-top: 3px;
+}
+
+.content-actionForm .glyphicon-th-list {
+    margin-top: 2px;
+}
+
+.content-actionForm .caret {
+    float: right;
+    margin-top: 9px;
+}
+
+.contentFormProyect .btn {
+    margin: 0;
+}
+
+.contentTag {
+    border: 1px solid #cecece;
+    width: 100%;
+    padding: 15px 0;
+    float: left;
+    background: #d8d8d8;
+    margin: 0;
+}
+
+.tagProyect {
+    margin-right: 15px;
+    font-size: 12px;
+    background: #f6f6f6;
+    width: auto;
+    padding: 2px 15px;
+    float: left;
+}
+
+.tagProyect i {
+    font-size: 11px;
+    color: #d04848;
+    top: 2px;
+}
+
+.contentTag .line-inner-proyect {
+    margin: 8px 0;
+}
+
+.contentTag .line-inner-proyect {
+    border-top: 1px dashed #989898;
+}
+
+.titleMenu {
+    font-size: 12px;
+    color: #a0a0a0;
+}
+
+.titleMobile {
+    display: none;
+}
+
+.content-dateProyect {
+    float: left;
+    margin: 0 15px;
+}
+
+.abm-list {
+    padding-left: 0;
+}
+
+.abm-list li {
+    list-style: none;
+}
+
+.name-item {
+    padding-top: 8px;
+}
+
+.btn-item {
+    text-align: right;
+}
+
+
+/*.btn-item .btn{
+  margin: 5px 0;
+  padding: 5px; color: #7cbb37;
+  font-size: 12px;
+}*/
+
+.btn-item .btn.active {
+    color: #7cbb37;
+}
+
+.btn-item .btn.no-active {
+    color: #f34f4f;
+}
+
+.btn-default {
+    margin: 0;
+}
+
+.page-info {
+    background: #fbfbfb;
+    padding-bottom: 0px;
+    margin: 0 0 15px 0;
+}
+
+.default-page {
+    border-bottom: 2px solid #f1f1f1;
+}
+
+.select-page {
+    border-bottom: 2px solid #669e2b;
+}
+
+.select-text {
+    color: #fff!important;
+}
+
+
+/*.page,
+.container {
+    width: 80vw;
+}*/
+
+.select-content {
+    color: #fff;
+    padding-bottom: 10px;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#90b328), to(#669e2b));
+    background-image: -webkit-linear-gradient(top, #90b328 0%, #669e2b 100%);
+    background-image: linear-gradient(to bottom, #90b328 0%, #669e2b 100%);
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#90b328', endColorstr='#669e2b', GradientType=0);
+    background-color: #669e2b;
+    border-color: #608835;
+}
+
+.content-obj {
+    margin-bottom: 15px;
+}
+
+.line {
+    font-size: 11px !important;
+    color: #d04848 !important;
+    top: 8px !important;
+}
+
+.add-line {
+    margin-bottom: 5px !important;
+}
+
+.action-collapse {
+    margin: 0;
+    float: right;
+}
+
+.action-collapse .glyphicon {
+    font-size: 12px;
+}
+
+.attach {
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+
+.attach {
+    font-size: 14px;
+    padding-bottom: 5px;
+}
+
+.attach i {
+    font-size: 11px;
+    color: #d04848;
+}
+
+.alert {
+    margin-bottom: 5px;
+}
+
+.incomplete {
+    color: #844c26;
+    background-color: #ffefde;
+    padding: 0 5px;
+    font-weight: 800;
+}
+
+.complete {
+    color: #456225;
+    font-weight: 800;
+}
+
+.validate {
+    color: #0d605c;
+}
+
+.alert i {
+    margin-right: 5px;
+}
+
+.reporte-plan {
+    margin: 0 0 15px 0;
+    color: #844c26;
+    text-decoration: underline;
+}
+
+.contentFormProyect .btn-success {
+    margin: 0 15px 0 0;
+}
+
+.btn-success i {
+    color: #fff;
+    font-size: 12px;
+}
+
+.btn-default i {
+    color: #666;
+    font-size: 12px;
+}
+
+
+/*Estilos carrousel*/
+
+#owl-demo .item {
+    margin: 10px;
+    color: #000;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #fff;
+    text-align: left;
+    padding: 15px;
+}
+
+.owl-item > .item .row {
+    opacity: 0.4;
+}
+
+.owl-item.center > .item .row {
+    opacity: 1 !important;
+}
+
+.customNavigation {
+    text-align: center;
+}
+
+//use styles below to disable ugly selection
+.customNavigation a {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.owl-theme {
+    padding-bottom: 15px;
+    position: relative;
+    top: -90px;
+    height: auto;
+    /*min-height: 500px;*/
+}
+
+.dropdown-menu {
+    min-width: 200px;
+    padding: 5px!important;
+}
+
+.dropdown-menu.columns-2 {
+    min-width: 400px;
+}
+
+.dropdown-menu.columns-3 {
+    min-width: 600px;
+}
+
+.dropdown-menu li a {
+    padding: 5px 15px;
+    font-weight: 300;
+}
+
+.multi-column-dropdown {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+.multi-column-dropdown li a {
+    display: block;
+    clear: both;
+    line-height: 1.428571429;
+    color: #333;
+    white-space: normal;
+}
+
+.multi-column-dropdown li a:hover {
+    text-decoration: none;
+    color: #888;
+    background-color: #e5e5e5;
+}
+
+.alert-success {
+    float: left;
+}
+
+.alert-text {
+    width: 75%;
+    float: left;
+}
+
+.alert-success button {
+    float: right;
+}
+
+.text-newProyect {
+    margin-bottom: 8px;
+    opacity: .5;
+}
+
+.toggle.btn {
+    min-height: 30px!important;
+}
+
+.toggle-off {
+    font-size: 12px;
+}
+
+
+/*MEDIA QUERY*/
+
+@media (max-width: 1024px) {
+    .alert-success button {
+        float: left;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 990px) {
+    .alert-warning {
+        float: left;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .default-page,
+    .default-content {
+        float: left;
+        width: 100%;
+    }
+    .content-first-btn,
+    .content-first-btn .btn-default {
+        float: left;
+    }
+    hr {
+        float: left;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-total,
+    .totalPresupuesto {
+        text-align: left;
+    }
+    .content-actionForm {
+        float: left;
+        clear: none;
+        margin-right: 15px;
+    }
+    .inputPresupuesto-monto {
+        padding-right: 0;
+    }
+    .option {
+        clear: left;
+        float: left;
+        width: 100%;
+        margin-bottom: 10px!important;
+    }
+    .radio,
+    .checkbox {
+        margin: 0;
+    }
+    .content-button button {
+        float: left;
+        margin: 15px 0;
+    }
+    .contentDate {
+        display: none;
+    }
+    .titleMobile {
+        font-size: 12px;
+        color: #afafaf;
+        display: block;
+    }
+    .btn-item {
+        text-align: left;
+    }
+    .dropdown-menu.multi-column {
+        min-width: 240px !important;
+        overflow-x: hidden;
+    }
+    .glyphicon-usd {
+        left: 15px;
+    }
+    /*.contentFormProyect .add-line{
+    float: right;
+  }*/
+}
+
+#header .bac-header {
+    background-image: url(https://gcba.github.io/BAstrap/bastrap3/bac-header.svg);
+}
+
+#footer .bac-footer {
+    background-image: url(https://gcba.github.io/BAstrap/bastrap3/bac-footer.svg);
+}
+
+.dragover {
+    border: 1px solid #000;
+}
+
+.carousel-card {
+    background: #fff;
+    height: 300px;
+}
+
+
+/* start 'enter' transition on main view */
+
+main.ng-enter {
+    /* transition on enter for .5s */
+    transition: .8s;
+    /* start with opacity 0 (invisible) */
+    opacity: 0;
+}
+
+
+/* end 'enter' transition on main view */
+
+main.ng-enter-active {
+    /* end with opacity 1 (fade in) */
+    opacity: 1;
+}
+
+.textObjOp {
+    margin-top: 10px;
+}
+
+.pageContanerCustom {
+    width: 70vw;
+    margin: auto;
+    margin-top: -120px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+tags-input .tags {
+    margin-top: -5px !important;
+    color: #555 !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+}
+
+.force-display li a:focus {
+    color: #888;
+}
+
+.force-display {
+    display: block !important;
+    min-width: 200px;
+    padding: 5px!important;
+}
+
+.force-display.columns-2 {
+    min-width: 400px;
+}
+
+.force-display.columns-3 {
+    min-width: 600px;
+}
+
+.force-display li a {
+    padding: 5px 15px;
+    font-weight: 300;
+    display: block;
+    clear: both;
+    line-height: 1.428571429;
+    color: #333;
+    white-space: normal;
+    text-decoration: none;
+}
+
+.usig_acv div.footer {
+    display: none;
+}
+
+.agrupador {
+    font-size: 22px !important;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+.agrupador i {
+    font-size: 24px !important;
+}
+
+.titleProgress {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.centerProgress {
+    margin-left: 28% !important;
+}
+
+.dataProgress {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.contentButtonRight {
+    width: 85% !important;
+}
+
+.fullButtonRight {
+    width: 100% !important;
+}
+
+.completoClass {
+    color: #456225;
+    background-color: #f0f6df;
+}
+
+.incompletoClass {
+    color: #844c26;
+    background-color: #ffefde;
+}
+
+.whiteColor {
+    color: #fff !important;
+}
+
+.yellowBarModel {
+    background-color: #FFB702 !important;
+}

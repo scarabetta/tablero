@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>USIG - Datos Utiles</title>
+    <style>
+    	body {
+		  background-color: white;
+		  margin: auto;
+		  margin-top: 25px;
+		  margin-bottom: 25px;
+		  color: #333;
+		  font-family: helvetica, arial, sans-serif;
+		  font-size: 13px;
+    		width: 550px;
+    	}	
+		#page {
+		  border: 1px solid #ccc;
+		  padding: 25px;
+		  padding-top: 0px;
+		}
+		#buscador {
+		  line-height: 1.5;
+		  margin-bottom: 20px;
+		}
+		
+		#buscador input.text {
+			border: 1px solid #ccc;
+			margin-bottom: 4px;
+			width: 300px;
+		}
+		#ejemplo {
+			display:block;
+			color: #555;
+			font-size: 11px;
+			margin-bottom: 10px;
+		}		
+		#datos {
+			display: none;
+		}
+		td {
+			padding: 10px;
+		}
+    </style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="//servicios.usig.buenosaires.gob.ar/usig-js/3.1/usig.AutoCompleterFull.min.js" type="text/javascript"></script> 
+
+	<script type="text/javascript">
+	$.noConflict();
+	jQuery(document).ready(function($) {
+
+		var ac = new usig.AutoCompleter('o', {
+       		onReady: function() {
+       			$('#o').val('').removeAttr('disabled').focus();	        			
+       		},
+       		afterGeoCoding: function(pt) {
+    			if (pt instanceof usig.Punto) {
+    				$.ajax({
+    					type: 'GET',
+    					url: '//ws.usig.buenosaires.gob.ar/datos_utiles',
+    					dataType: 'jsonp',
+    		       		success: function(data) {
+    		       			$.each(data, function(k, v) {
+    		       				$('#'+k).html(v);
+    		       			});
+    		       			$('#datos').show();
+    		       		}, 
+    		       		error: function() { console.log('Error');}, 
+    		       		data: pt				
+    		    	});
+    			}
+       		} 
+       	});
+		
+		$('#mainForm').bind("submit", function () {
+			return false;
+		});		
+		
+	});	
+	</script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div id="logo"><h1>USIG - Datos Utiles </h1></div>
+      </div>
+      <div id="buscador">
+       <form id="mainForm" accept-charset="utf-8">
+      	<label for="o">Direccion</label>
+     	<input type="text" size="30" name="o" id="o" title="Origen del recorrido" class="text"/>
+     	<span id="ejemplo">ej.: Callao y Corrientes, Florida 550, Teatro San Martín, etc.</span>
+	   	<br/>
+	    <div id="datos">
+	    	<table>
+	    		<tr><td>Barrio:</td><td id="barrio"></td>
+	    		<tr><td>Comuna:</td><td id="comuna"></td>
+	    	</table>
+	    </div>
+       </form>
+      </div>
+    </div>
+  </body>
+</html>

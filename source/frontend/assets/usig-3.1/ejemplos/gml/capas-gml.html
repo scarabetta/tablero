@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><script id="f5_cspm">(function(){var f5_cspm={f5_p:'JLHNNLCADDDCHJGBHJHGGPEAPPDGEAKIGOHMNJBBHOHBANKEDCMABPMJKAEAAIGKIBNJGFLOALNGIJAEAHJFNCCGIHEDJEIABONNKCOAHPKLANGOBHKBIGOJHLIIMEME',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,32,(latency>>8));str=f5_cspm.set_byte(str,33,(latency&0xff));str=f5_cspm.set_byte(str,27,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='aaaaaaaaaaaaaaa='+encodeURIComponent(cookie_val)+';path=/';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'){if(pair[1]=='1234'){var d=new Date();d.setTime(d.getTime()-1);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;';setTimeout(f5_cspm.wait_perf_data,100);}}}}}
+f5_cspm.go();}());</script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>USIG - Mapa Interactivo de Buenos Aires</title>
+    <link rel="stylesheet" type="text/css" href="../css/ejemplos.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<link href="../../lib/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="../../lib/google-code-prettify/prettify.js"></script>	
+	<script src="../../usig.AutoCompleterFull.min.js" type="text/javascript"></script> 
+	<script src="../../usig.MapaInteractivo.min.js" type="text/javascript"></script>     
+	<style>
+        body {
+    		width: 940px;
+    	}
+    	#panel-codigo {
+    		width: 400px;
+    		height: 550px;
+    		float: left;
+    		margin: 15px 15px 15px 0;
+    		background: #fefedd;
+    		border: 1px solid #efefaa;
+    		padding: 10px;
+    		font-size: 90%;
+    	}
+    	#panel-codigo > label {
+    		display: block;
+    		margin-bottom: 12px;
+    	}
+    	#panel-codigo > pre {
+    		overflow: auto;
+    		font-size: 90%;
+    		height: 460px;
+    		background: #F7F7F9;
+    		border: 1px solid #E1E1E8;    	
+    	}
+    	#panel-mapa {
+    		float: left;
+    	}
+    	pre.prettyprint {
+    		border: none;
+    		display: none;
+    	}
+    </style>	
+	<script type="text/javascript">
+	
+	$.noConflict();
+	
+	jQuery(document).ready(function($) {
+		var selectedOption = null;
+		var activeLayer = null;
+		
+		function afterGeoCoding(pt) {
+			if (pt instanceof usig.Punto) {
+				if (selectedOption instanceof usig.Direccion) {
+					selectedOption.setCoordenadas(pt);
+				}				
+//              Ejemplo con el onClick		
+				var dirId = mapa.addMarker(selectedOption, true, function(ev, place, popup) {
+					popup.show();
+				});
+// 				var dirId = mapa.addMarker(selectedOption, true, function(ev, place) {
+// 					alert('Click en '+place.toString());
+// 				});
+			}		
+		}
+		
+		var ac = new usig.AutoCompleter('b', {
+       		onReady: function() {
+       			$('#b').val('').removeAttr('disabled').focus();	        			
+       		},
+       		afterSelection: function(option) {
+       			if (option instanceof usig.Direccion || option instanceof usig.inventario.Objeto) {
+       				selectedOption = option;
+       			}
+       		},
+       		afterGeoCoding: afterGeoCoding
+       	});
+		
+		$('#mainForm').bind("submit", function () {
+			return false;
+		});
+		
+		$('#mapa').css('width', 450).css('height', 493);
+          
+		var mapa = new usig.MapaInteractivo('mapa', {
+			includeToolbar: false,
+			includePanZoomBar: true,
+			trackVisits: false,
+			baseLayer: 'mapabsas_informacion_basica',
+			// OpenLayersJS: 'http://10.75.0.125/wk8/OpenLayers/OpenLayers.js',
+			onReady: function() {
+				
+				function clickHandler(e, popup) {
+					if (popup) {
+						popup.contentDiv.innerHTML = "<h3>" + e.feature.attributes['Nombre'] +"</h3><p class='indicator'>Buscando información...</p>";
+	        			popup.updateSize();
+						popup.show();
+	    				$.ajax({
+	    					url: "//epok.buenosaires.gob.ar/dependenciasculturales/detalle/"+e.feature.attributes['Id']+"/",
+	    					dataType: 'jsonp',
+	    					success: function(data) {
+	    						if (popup != null && data.id==e.feature.attributes['Id']) {
+	    							$div = $(popup.contentDiv);
+		    	        			$('p.indicator', $div).remove();
+		    	        			var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
+		    	        			$.each(data.contenido, function(k, v) {
+		    	        				if (v.nombreId != 'nombre' && v.valor != '') {
+		    	        					content+='<li><b>'+v.nombre+'</b>: '+v.valor+'</li>';
+		    	        				}
+		    	        			});
+		    	        			content+='</ul>';
+		    	        			$div.append(content);
+		    	        			popup.updateSize();
+	    						}
+	    					},
+	    					error: function(e) {
+	    						usig.debug(e);
+	    					}
+	    				});
+					}
+				}
+				
+				var layers = {};
+				/* 
+				Agrego una capa con todos los parametros por defecto. Aplica
+				simbologia y escalado automatico
+				 */
+				layers['bibliotecas'] = {
+						name: 'Bibliotecas',
+						options: { 
+							url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=2"
+						} 
+				};
+				
+				/* 
+				Agrego una capa personalizando el color del punto y especificando
+				un handler para el click. Aplica highlight y escalado automatico. 
+				 */
+				layers['cines'] = {
+					name: 'Cines',
+					options: { 
+						url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=4",
+						symbolizer: {
+							fillColor: '#00ffff' // Cyan 
+						},
+						popup: true,
+						onClick: clickHandler
+					} 
+				};
+
+				/* 
+				Agrego una capa seteando una imagen como icono y especificando
+				un handler para el click. Aplica highlight y escalado automatico. 
+				 */
+				layers['escuelas'] = {
+						name: 'Escuelas',
+						options: { 
+							url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=6",
+		                	symbolizer: {
+		                		externalGraphic: 'images/escuela.png',
+					            backgroundGraphic: 'images/fondos/cir_rojo.png',
+					            pointRadius: 15
+		                	},
+		                	minPointRadius: 7,
+							popup: true,
+							onClick: clickHandler
+						}
+				};
+				
+				/* 
+				Agrego una capa seteando una imagen como icono y otra como sombra con 
+				sus respectivos offsets y especificando	un handler para el click. 
+				Aplica highlight y escalado automatico. 
+				 */
+				layers['archivos'] = {
+						name: 'Archivos',
+						options: { 
+							url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=1",
+							symbolizer: {
+								externalGraphic: '../../images/pincho_inclinado.png',
+								graphicWidth: 20,
+								graphicHeight: 36,
+								graphicXOffset: -4,
+								graphicYOffset: -34,
+								backgroundGraphic: '../../images/pincho_inclinado_shadow.png',
+		                        backgroundWidth: 28,
+		                        backgroundHeight: 8,
+		                        backgroundXOffset: 1,
+		                        backgroundYOffset: -7,
+		                        graphicZIndex: 10,
+		                        backgroundGraphicZIndex: 9
+							},
+							popup: true,
+							onClick: clickHandler
+						} 
+				};
+				
+				/* 
+				Agrego una capa especficando una clasificacion para los elementos a partir
+				de un atributo de los datos y un handler para el click. 
+				Aplica simbologia, highlight y escalado automatico. 
+				 */
+				layers['cultura-auto'] = {
+						name: 'Cultura (c/simbología automática)',
+						options: { 
+							url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?sector=1",
+							clases: [
+						         {
+									filter: {
+			                	      property: 'ActividadPrincipal',
+			                	      type: '==',
+			                	      value: 'Biblioteca'
+				                	}
+								},
+				               	{
+									filter: {
+			                	      property: 'ActividadPrincipal',
+			                	      type: '==',
+			                	      value: 'Centro Cultural'
+					                }
+			                	}],
+							popup: true,
+							onClick: clickHandler
+						}
+				};
+				/* 
+				Agrego una capa especficando una clasificacion para los elementos a partir
+				de un atributo de los datos y especificando icono para cada clase, uno
+				por defecto y un handler para el click. 
+				Aplica highlight y escalado automatico. 
+				 */
+				layers['cultura'] = {
+						name: 'Cultura',
+						options: { 
+							url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?sector=1",
+		                	symbolizer: {
+		                		externalGraphic: 'images/sitios_culturales.png',
+					            backgroundGraphic: 'images/fondos/cua_verde.png',
+					            pointRadius: 15
+		                	},
+							minPointRadius: 7,
+							clases: [
+						         {
+									filter: {
+			                	      property: 'ActividadPrincipal',
+			                	      type: '==',
+			                	      value: 'Biblioteca'
+				                	},
+				                	symbolizer: {
+				                		externalGraphic: 'images/dep_culturales.png',
+							            backgroundGraphic: 'images/fondos/cua_violeta.png'
+				                	}
+								},
+				               	{
+									filter: {
+			                	      property: 'ActividadPrincipal',
+			                	      type: '==',
+			                	      value: 'Centro Cultural'
+					                },
+				                	symbolizer: {
+				                		externalGraphic: 'images/cen_culturales.png',
+							            backgroundGraphic: 'images/fondos/cua_azul.png'
+				                	}
+			                	}],
+							popup: true,
+							onClick: clickHandler
+						}
+				};
+				
+				function activate(layerId) {
+					if (activeLayer != null) {
+						mapa.removeLayer(activeLayer);
+					}
+					activeLayer = mapa.addVectorLayer(layers[layerId].name, layers[layerId].options);
+					$('pre.prettyprint').hide();
+					$('#'+layerId).show();
+				}
+				
+				$.each(layers, function(i, layer) {
+					if (!activeLayer) {
+						activate(i);
+					}
+					$('select.menu').append($('<option value="'+i+'">'+layer.name+'</option>'));
+				});
+				
+				$('select.menu').change(function() {
+					activate($(this).val());
+				});				
+			}
+		
+		});
+
+		window.mapa = mapa;
+	});	
+	</script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div id="logo"><h1>Ejemplo: Mapa Interactivo con capas GML</h1>
+        	<p>Este ejemplo muestra como cargar capas de puntos desde un archivo GML, asignarle iconos customizados a cada una e incluso como mostrar datos asociados en el popup.</p>
+        </div>
+      </div>
+      <div id="panel-codigo">
+      	<label for="menu">Seleccione una capa para verla en el mapa y ver el código fuente necesario para agregarla:</label>
+       	<select name="menu" class="menu">
+		</select>
+		<pre id="bibliotecas" class="prettyprint">
+/* 
+Agrego una capa con todos los parametros por defecto. Aplica
+simbologia y escalado automatico
+ */
+var layer = mapa.addVectorLayer('Bibliotecas', { 
+  url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=2"
+});
+		</pre>    
+		<pre id="cines" class="prettyprint">
+/* 
+Agrego una capa personalizando el color del punto y especificando
+un handler para el click. Aplica highlight y escalado automatico. 
+ */
+var layer = mapa.addVectorLayer('Cines', { 
+  url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=4",
+  symbolizer: {
+    fillColor: '#00ffff' // Cyan 
+  },
+  popup: true,
+  onClick: clickHandler
+});
+		</pre>    
+      	<pre id="escuelas" class="prettyprint">
+/* 
+Agrego una capa seteando una imagen como icono y especificando
+un handler para el click. Aplica highlight y escalado automatico. 
+ */
+var layer = mapa.addVectorLayer('Escuelas', { 
+  url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=6",
+  symbolizer: {
+    externalGraphic: 'images/escuela.png',
+    backgroundGraphic: 'images/fondos/cir_rojo.png',
+    pointRadius: 15
+  },
+  minPointRadius: 7,
+  popup: true,
+  onClick: clickHandler
+});
+      	</pre>		
+      	<pre id="archivos" class="prettyprint">
+/* 
+Agrego una capa seteando una imagen como icono y otra como 
+sombra con sus respectivos offsets y especificando un handler 
+para el click. 
+Aplica highlight y escalado automatico. 
+ */
+var layer = mapa.addVectorLayer('Archivos', { 
+  url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?actividades=1",
+  symbolizer: {
+    externalGraphic: '../../images/pincho_inclinado.png',
+    graphicWidth: 20,
+    graphicHeight: 36,
+    graphicXOffset: -4,
+    graphicYOffset: -34,
+    backgroundGraphic: '../../images/pincho_inclinado_shadow.png',
+    backgroundWidth: 28,
+    backgroundHeight: 8,
+    backgroundXOffset: 1,
+    backgroundYOffset: -7,
+    graphicZIndex: 10,
+    backgroundGraphicZIndex: 9
+  },
+  popup: true,
+  onClick: clickHandler
+});	      	
+      	</pre>
+      	<pre id="cultura" class="prettyprint">
+/* 
+Agrego una capa especficando una clasificacion para los 
+elementos a partir de un atributo de los datos y 
+especificando icono para cada clase, uno por defecto y un 
+handler para el click. 
+Aplica highlight y escalado automatico. 
+*/
+var layer = mapa.addVectorLayer('Cultura', { 
+  url: "//epok.buenosaires.gob.ar/dependenciasculturales/buscar?sector=1",
+  symbolizer: {
+    externalGraphic: 'images/sitios_culturales.png',
+    backgroundGraphic: 'images/fondos/cua_verde.png',
+    pointRadius: 15
+  },
+  minPointRadius: 7,
+  clases: [
+    {
+      filter: {
+        property: 'ActividadPrincipal',
+        type: '==',
+        value: 'Biblioteca'
+      },
+      symbolizer: {
+        externalGraphic: 'images/dep_culturales.png',
+        backgroundGraphic: 'images/fondos/cua_violeta.png'
+      }
+    },
+    {
+      filter: {
+        property: 'ActividadPrincipal',
+        type: '==',
+        value: 'Centro Cultural'
+      },
+      symbolizer: {
+        externalGraphic: 'images/cen_culturales.png',
+        backgroundGraphic: 'images/fondos/cua_azul.png'
+      }
+    }],
+  popup: true,
+  onClick: clickHandler
+});
+			</pre>
+      	<pre id="cultura-auto" class="prettyprint">
+/* 
+Agrego una capa especficando una clasificacion para los 
+elementos a partir de un atributo de los datos y 
+un handler para el click. 
+Aplica simbologia, highlight y escalado automatico. 
+*/
+var layer = mapa.addVectorLayer('Cultura', { 
+  url: "http://epok.buenosaires.gob.ar/dependenciasculturales/buscar?sector=1",
+  clases: [
+    {
+      filter: {
+        property: 'ActividadPrincipal',
+        type: '==',
+        value: 'Biblioteca'
+      }
+    },
+    {
+      filter: {
+        property: 'ActividadPrincipal',
+        type: '==',
+        value: 'Centro Cultural'
+      }
+    }],
+  popup: true,
+  onClick: clickHandler
+});
+			</pre>
+      </div>
+      <div id="panel-mapa">
+	      <div id="buscador">
+	       <form id="mainForm" accept-charset="utf-8">
+	      	<label for="b">Buscar</label>
+	     	<input type="text" size="40" name="b" id="b" title="Lugar a buscar" class="text"/>
+	     	<span id="ejemplo">ej.: Callao y Corrientes, Florida 550, Teatro San Martín, etc.</span>
+	       </form>
+	      </div>
+	      <div id="mapa"></div>
+	  </div>
+      <div id="footer">
+        <p>&copy; 2012 USIG - Unidad de Sistemas de Información Geográfica</p>
+      </div>
+    </div>
+    <script type="text/javascript">
+    	prettyPrint();    
+    </script>
+  </body>
+</html>

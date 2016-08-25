@@ -1,0 +1,49 @@
+<br ng-if="formCtrl.idobjetivoestrategico">
+<div id="grupo-level-3-3" class="contentFormProyect obj-estrategico collapse in" aria-expanded="true">
+    <div class="col-md-2 col-sm-2 col-xs-12 pull-right" ng-show="formCtrl.idobjetivoestrategico">
+    <div id="{{formCtrl.currentStrategicObjective.idObjetivoJurisdiccional}}"></div>
+        <div class="dropdown content-actionForm">
+            <button class="btn btn-default" type="button" ng-click="formCtrl.deleteStrategicObjective(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)">
+                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                <span class="" style="font-size: 11px;">Eliminar</span>
+            </button>
+        </div>
+    </div>
+     <div class="col-md-9 col-sm-12 col-xs-12">
+        <form role="form">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="name">Nombre de Objetivo Estrat&eacute;gico</label>
+                    <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentStrategicObjective.nombre" required>
+                </div>
+            </div>
+            <div class="row" ng-if="formCtrl.currentStrategicObjective.indicadoresEstrategicos.length > 0">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label for="responsable">Indicadores</label>
+                </div>
+            </div>
+            <div class="row" ng-repeat="indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index">
+                <div class="form-group col-md-5 col-sm-3 col-xs-11 add-line">
+                    <input type="text" class="form-control" ng-model="indicador.nombre" placeholder="Indicador">
+                </div>
+                <div class="form-group col-md-6 col-sm-5 col-xs-11 add-line">
+                    <input type="text" class="form-control" ng-model="indicador.descripcion" placeholder="Forma de medici&oacute;n">
+                </div>
+                <i class="glyphicon glyphicon-remove line" aria-hidden="true"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i> 
+                <div class="col-md-11 col-sm-8 col-xs-11">
+                    <hr class="line-inner-proyect">
+                </div>
+                <!-- <div class="form-group col-md-1 col-sm-1">
+                  <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.removeIndicador($index)"><i class="glyphicon glyphicon-minus" aria-hidden="true"></i></button>
+                </div> -->
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4 col-sm-4">
+                  <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.addIndicador()">Agregar nuevo indicador</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success" ng-click="formCtrl.saveStrategicObjective()"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Estrat&eacute;gico</button>
+            <button type="button" class="btn btn-link" ng-click="formCtrl.cancelStrategicObjective()">Cancelar y descartar cambios</button>
+        </form>
+    </div>
+</div>

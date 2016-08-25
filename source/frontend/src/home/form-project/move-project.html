@@ -1,0 +1,30 @@
+<div class="modal fade" id="moverModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Mover proyecto</h4>
+      </div>
+      <div class="modal-body">
+        <ul class="force-display" aria-labelledby="dropdownMenu1">
+          <div ng-repeat="objJ in moveProjectCtrl.jurisdiccion.objetivosJurisdiccionales">
+            <li class="titleMenu">{{objJ.nombre}}</li>
+            <div ng-repeat="objO in objJ.objetivosOperativos">
+              <li>
+                <a ng-click="moveProjectCtrl.changeOperativeObjective(objO.idObjetivoOperativo)" data-dismiss="modal">
+                  <i class="glyphicon glyphicon-chevron-right"
+                    ng-show="moveProjectCtrl.currentproject.idObjetivoOperativo2 === objO.idObjetivoOperativo"></i>
+                  {{objO.nombre}}
+                </a></li>
+            </div>
+            <li role="separator" class="divider"></li>
+          </div>
+        </ul>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>

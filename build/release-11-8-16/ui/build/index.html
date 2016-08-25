@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="app" >
+<head>
+    <meta charset="UTF-8">
+    <script src="https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit&hl=es" async defer></script>
+    <title>ProyectosBA</title>
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    
+    
+    <link href="/styles.css" rel="stylesheet">
+    
+    <base href="/">
+</head>
+<body>
+<div ui-view="baheader"></div>
+<footer>
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-6" id="footer">
+                    <a class="navbar-brand bac-footer" href="http://www.buenosaires.gob.ar" target="_blank">Buenos Aires Ciudad</a>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="sub-brand">
+                        <p>Secretaría de Planificación, Evaluación y Coordinación de Gestión<br />
+                            <span class="text-muted">Jefatura de Gabinete de Ministros</span><br />
+                            <attversion></attversion></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="bundle.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+{
+    "version": {
+        "backend": "0.0.1"
+    },
+    "proyecto": [{
+        "id": 2,
+        "nombre": "Enoc Montiel",
+        "codigo": null,
+        "descripcion": "sadfasdf",
+        "presupuestosPorAnio": [],
+        "tipoProyecto": "nuevo",
+        "meta": 123,
+        "unidadMeta": "adfasdf",
+        "poblacionAfectada": 23423,
+        "liderProyecto": "asdfdsaf",
+        "area": "asdfasdf",
+        "tipoUbicacionGeografica": "Comuna",
+        "direccion": "",
+        "cambioLegislativo": false,
+        "fechaInicio": 1451617200000,
+        "fechaFin": 1483239600000,
+        "prioridadJurisdiccional": "3. Baja",
+        "idJurisdiccion2": null,
+        "idObjetivoJurisdiccional2": null,
+        "idObjetivoOperativo2": 22,
+        "organismosCorresponsables": null,
+        "estado": "completo",
+        "ejesDeGobierno": [{
+            "idEjeDeGobierno": 3,
+            "nombre": "Disfrute",
+            "descripcion": "Tenemos una Ciudad hermosa con infinitas posibilidades para disfrutarla cada día más. Queremos convivir mejor en esta Ciudad: que\nlos vecinos se sientan movilizados y comprometidos, que la cuiden y respeten participando activamente a través de la cultura, el deporte y el turismo. Y lograr la mejor Ciudad para todos.",
+            "ejemplos": "Seguridad\nHigiene y Reciclado\nCambio Cultural\nParticipación Ciudadana\nTurismo\nPlan Gastronómico\nJJOO de la Juventud\nCultura cerca de la gente\nEcoparque"
+        }, {
+            "idEjeDeGobierno": 4,
+            "nombre": "Escala Humana",
+            "descripcion": "Queremos que la gente camine por la calle y se encuentre. El espacio público tiene que disfrutarse, no es solo un lugar para transitar.\nEl espacio público es un servicio público.\nEs socializador, igualador, y brinda las mismas\noportunidades para todos.",
+            "ejemplos": "Mantenimiento\nRegeneración Urbana\nTransporte Público\nPaseo del Bajo\nSolicitudes y Trámites"
+        }, {
+            "idEjeDeGobierno": 5,
+            "nombre": "Integración social",
+            "descripcion": "Queremos una Ciudad al alcance de todos, donde todos los vecinos se sientan parte. Por eso, es nuestra prioridad seguir trabajando en una reforma integral del sistema de salud, en la educación y en el acompañamiento a nuestros adultos mayores.",
+            "ejemplos": "Desarrollo del Sur\nIntegración de Villas (foco en 31 y 20)\nMejoras en Educación\nReforma Integral de Salud\nAdultos Mayores"
+        }],
+        "poblacionesMeta": [{
+            "idPoblacionMeta": 3,
+            "nombre": "Adulto"
+        }, {
+            "idPoblacionMeta": 4,
+            "nombre": "Adulto Mayor"
+        }, {
+            "idPoblacionMeta": 8,
+            "nombre": "Empresa"
+        }],
+        "comunas": [{
+            "idComuna": 3,
+            "abreviatura": "C1",
+            "nombre": "Comuna 1"
+        }, {
+            "idComuna": 4,
+            "abreviatura": "C2",
+            "nombre": "Comuna 2"
+        }]
+    }],
+    "comuna": [{
+        "idComuna": 3,
+        "abreviatura": "C1",
+        "nombre": "Comuna 1"
+    }, {
+        "idComuna": 4,
+        "abreviatura": "C2",
+        "nombre": "Comuna 2"
+    }, {
+        "idComuna": 5,
+        "abreviatura": "C3",
+        "nombre": "Comuna 3"
+    }, {
+        "idComuna": 6,
+        "abreviatura": "C4",
+        "nombre": "Comuna 4"
+    }, {
+        "idComuna": 7,
+        "abreviatura": "C5",
+        "nombre": "Comuna 5"
+    }, {
+        "idComuna": 8,
+        "abreviatura": "C6",
+        "nombre": "Comuna 6"
+    }, {
+        "idComuna": 9,
+        "abreviatura": "C7",
+        "nombre": "Comuna 7"
+    }, {
+        "idComuna": 10,
+        "abreviatura": "C8",
+        "nombre": "Comuna 8"
+    }, {
+        "idComuna": 11,
+        "abreviatura": "C9",
+        "nombre": "Comuna 9"
+    }, {
+        "idComuna": 12,
+        "abreviatura": "C10",
+        "nombre": "Comuna 10"
+    }, {
+        "idComuna": 13,
+        "abreviatura": "C11",
+        "nombre": "Comuna 11"
+    }, {
+        "idComuna": 14,
+        "abreviatura": "C12",
+        "nombre": "Comuna 12"
+    }, {
+        "idComuna": 15,
+        "abreviatura": "C13",
+        "nombre": "Comuna 13"
+    }, {
+        "idComuna": 16,
+        "abreviatura": "C14",
+        "nombre": "Comuna 14"
+    }, {
+        "idComuna": 17,
+        "abreviatura": "C15",
+        "nombre": "Comuna 15"
+    }],
+    "ejeDeGobierno": [{
+        "idEjeDeGobierno": 3,
+        "nombre": "Disfrute",
+        "descripcion": "Tenemos una Ciudad hermosa con infinitas posibilidades para disfrutarla cada día más. Queremos convivir mejor en esta Ciudad: que\nlos vecinos se sientan movilizados y comprometidos, que la cuiden y respeten participando activamente a través de la cultura, el deporte y el turismo. Y lograr la mejor Ciudad para todos.",
+        "ejemplos": "Seguridad\nHigiene y Reciclado\nCambio Cultural\nParticipación Ciudadana\nTurismo\nPlan Gastronómico\nJJOO de la Juventud\nCultura cerca de la gente\nEcoparque"
+    }, {
+        "idEjeDeGobierno": 4,
+        "nombre": "Escala Humana",
+        "descripcion": "Queremos que la gente camine por la calle y se encuentre. El espacio público tiene que disfrutarse, no es solo un lugar para transitar.\nEl espacio público es un servicio público.\nEs socializador, igualador, y brinda las mismas\noportunidades para todos.",
+        "ejemplos": "Mantenimiento\nRegeneración Urbana\nTransporte Público\nPaseo del Bajo\nSolicitudes y Trámites"
+    }, {
+        "idEjeDeGobierno": 5,
+        "nombre": "Integración social",
+        "descripcion": "Queremos una Ciudad al alcance de todos, donde todos los vecinos se sientan parte. Por eso, es nuestra prioridad seguir trabajando en una reforma integral del sistema de salud, en la educación y en el acompañamiento a nuestros adultos mayores.",
+        "ejemplos": "Desarrollo del Sur\nIntegración de Villas (foco en 31 y 20)\nMejoras en Educación\nReforma Integral de Salud\nAdultos Mayores"
+    }, {
+        "idEjeDeGobierno": 6,
+        "nombre": "Creatividad",
+        "descripcion": "Queremos una Ciudad donde la creatividad, el diseño y el arte sean pilares fundamentales de\nnuestra cultura. Una Ciudad inteligente, que facilite la comunicación, que apoye los proyectos emprendedores y el espíritu de trabajo y de mejora continua. Por eso, trabajaremos promoviendo la inversión, la innovación técnica y la generación constante de nuevos empleos.",
+        "ejemplos": "Cuidad Inteligente\nEmprendedorismo\nGobierno Eficiente y Transparente\nProyectos Público Privados\nDistritos Creativos"
+    }, {
+        "idEjeDeGobierno": 7,
+        "nombre": "Ninguno",
+        "descripcion": "",
+        "ejemplos": ""
+    }],
+    "poblacionMeta": [{
+        "idPoblacionMeta": 3,
+        "nombre": "Adulto"
+    }, {
+        "idPoblacionMeta": 4,
+        "nombre": "Adulto Mayor"
+    }, {
+        "idPoblacionMeta": 5,
+        "nombre": "Ciudadano en General"
+    }, {
+        "idPoblacionMeta": 6,
+        "nombre": "Desempleado"
+    }, {
+        "idPoblacionMeta": 7,
+        "nombre": "Emprendedor"
+    }, {
+        "idPoblacionMeta": 8,
+        "nombre": "Empresa"
+    }, {
+        "idPoblacionMeta": 9,
+        "nombre": "Estudiante"
+    }, {
+        "idPoblacionMeta": 10,
+        "nombre": "Joven"
+    }, {
+        "idPoblacionMeta": 11,
+        "nombre": "Jubilado"
+    }, {
+        "idPoblacionMeta": 12,
+        "nombre": "Mujer"
+    }, {
+        "idPoblacionMeta": 13,
+        "nombre": "Niño"
+    }, {
+        "idPoblacionMeta": 14,
+        "nombre": "PyME"
+    }, {
+        "idPoblacionMeta": 15,
+        "nombre": "Trabajador"
+    }, {
+        "idPoblacionMeta": 16,
+        "nombre": "Turista"
+    }],
+    "usuarios": [{
+        "nombre": "Martin",
+        "mail": "mcarrera@hexacta.com",
+        "contrasena": "asd",
+        "tipo": "1",
+        "token": "4f7rF47D6r7de5f"
+    }, {
+        "nombre": "Enoc",
+        "mail": "emontiel@hexacta.com",
+        "contrasena": "1234",
+        "tipo": "2",
+        "token": "5f78dE54Frt752U"
+    }],
+    "jurisdiccion": [{
+        "id": "000001",
+        "nombre": "Agencia Gubernamental de Control",
+        "abreviatura": "AGC",
+        "mision": "Transformar las conductas del ciudadano incrementando su nivel de compromiso en el cumplimiento de 'las normas ciudadanas' a través de un estado que administra un modelo de gestión de la convivencia con herramientas ágiles, transparentes e inteligentes.",
+        "objetivosJurisdiccionales": [{
+            "id": "000001",
+            "codigo": "1",
+            "nombre": "Integrar todos los Organismos Administrativos Permisionarios en un Organismo único de Registración y Normalización de datos (permisos y habilitaciones productivas y comerciales) desarrollando un único canal de interacción con el vecino que agilice los servicios otorgados por la Agencia y los dote de mayor transparencia.",
+            "objetivosOperativos": [{
+                "idObjetivoOperativo": "000001",
+                "codigo": "1.1",
+                "nombre": "Consolidar y agilizar el tratamiento digital de los procesos de habilitación y registro.",
+                "proyectos": [{
+                    "idProyecto": "000001",
+                    "codigo": "1.1.1",
+                    "nombre": "Automatizar el manejo de la data para la copa Hexacta.",
+                    "descripcion": "desarrollar un sistema para automatizacion y digitalizacion de toda la data para el torneo.",
+                    "fechaInicio": "2017-01-01T00:00:00.000-0300",
+                    "fechaFin": "2017-01-01T00:00:00.000-0300",
+                    "prioridadJurisdiccional": "Alta",
+                    "estado": "Aprobado",
+                    "responsableOperativo": {
+                        "id": "000001",
+                        "nombreUsuario": "enocmontiel",
+                        "nombre": "Enoc",
+                        "apellido": "Montiel"
+                    },
+                    "liderProyecto": {
+                        "id": "000002",
+                        "nombreUsuario": "martincarrera",
+                        "nombre": "Martin",
+                        "apellido": "Carrera"
+                    }
+                }, {
+                    "idProyecto": "000002",
+                    "codigo": "1.1.2",
+                    "nombre": "Automatizar el manejo de la data para reservas de IT.",
+                    "descripcion": "desarrollar un sistema para automatizacion y digitalizacion de toda la data para las reservas de dispositivos.",
+                    "fechaInicio": "2017-01-01T00:00:00.000-0300",
+                    "fechaFin": "2017-01-01T00:00:00.000-0300",
+                    "prioridadJurisdiccional": "Media",
+                    "estado": "Aprobado",
+                    "responsableOperativo": {
+                        "id": "000001",
+                        "nombreUsuario": "enocmontiel",
+                        "nombre": "Enoc",
+                        "apellido": "Montiel"
+                    },
+                    "liderProyecto": {
+                        "id": "000002",
+                        "nombreUsuario": "martincarrera",
+                        "nombre": "Martin",
+                        "apellido": "Carrera"
+                    }
+                }]
+            }, {
+                "idObjetivoOperativo": "000002",
+                "codigo": "1.2",
+                "nombre": "Redefinir normas de seguridad a fin de regularizar las actividades en función de su realidad y problemática actual",
+                "proyectos": [{
+                    "idProyecto": "000003",
+                    "codigo": "1.2.1",
+                    "nombre": "Equipo de seguridad especializado para prevenir robos en la empresa",
+                    "descripcion": "Crear un equipo de respuesta inmediata para mantener la seguridad y bienestar en la empresa.",
+                    "fechaInicio": "2017-01-01T00:00:00.000-0300",
+                    "fechaFin": "2017-01-01T00:00:00.000-0300",
+                    "prioridadJurisdiccional": "Alta",
+                    "estado": "En proceso",
+                    "responsableOperativo": {
+                        "id": "000001",
+                        "nombreUsuario": "enocmontiel",
+                        "nombre": "Enoc",
+                        "apellido": "Montiel"
+                    },
+                    "liderProyecto": {
+                        "id": "000002",
+                        "nombreUsuario": "martincarrera",
+                        "nombre": "Martin",
+                        "apellido": "Carrera"
+                    }
+                }]
+            }]
+        }, {
+            "id": "000002",
+            "codigo": "2",
+            "nombre": "Garantizar la Igualdad de Oportunidades.",
+            "objetivosOperativos": [{
+                "idObjetivoOperativo": "000003",
+                "codigo": "2.1",
+                "nombre": "Promover a través del juego el derecho a crecer en libertad, en conocimiento de los propios derechos.",
+                "proyectos": [{
+                    "idProyecto": "000004",
+                    "codigo": "2.1.1",
+                    "nombre": "Creacion de una cancha de futbol",
+                    "descripcion": "Preveer al barrio de una cancha publica para fortalecer el deporte y el crecimiento de los niños",
+                    "fechaInicio": "2017-01-01T00:00:00.000-0300",
+                    "fechaFin": "2017-01-01T00:00:00.000-0300",
+                    "prioridadJurisdiccional": "Baja",
+                    "estado": "Negado",
+                    "responsableOperativo": {
+                        "id": "000001",
+                        "nombreUsuario": "enocmontiel",
+                        "nombre": "Enoc",
+                        "apellido": "Montiel"
+                    },
+                    "liderProyecto": {
+                        "id": "000002",
+                        "nombreUsuario": "martincarrera",
+                        "nombre": "Martin",
+                        "apellido": "Carrera"
+                    }
+                }]
+            }]
+        }]
+    }]
+}

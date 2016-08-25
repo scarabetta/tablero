@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><script id="f5_cspm">(function(){var f5_cspm={f5_p:'NFFKBJFAALJHNLEHIDIHIHJPLJEKLLFPEMPNLODABMABJEBPKIHDAPHDODGAANJMIBFJLJAEAMEKNFMAAHPPNNBMOBGBJPFJKABJPCLAAOMBNLMCHIKHCPMLBLFPJAKE',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,32,(latency>>8));str=f5_cspm.set_byte(str,33,(latency&0xff));str=f5_cspm.set_byte(str,27,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='aaaaaaaaaaaaaaa='+encodeURIComponent(cookie_val)+';path=/';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'){if(pair[1]=='1234'){var d=new Date();d.setTime(d.getTime()-1);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;';setTimeout(f5_cspm.wait_perf_data,100);}}}}}
+f5_cspm.go();}());</script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>USIG - Mapa Estatico</title>
+    <link rel="stylesheet" type="text/css" href="css/ejemplos.css" />
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="../usig.AutoCompleterFull.min.js" type="text/javascript"></script> 
+	<script src="../usig.SuggesterCatastro.min.js" type="text/javascript"></script> 
+	<script src="../usig.MapaEstatico.min.js" type="text/javascript"></script> 
+
+    
+	<script type="text/javascript">
+	$.noConflict();
+	jQuery(document).ready(function($) {
+
+		var direccion, optsMapaSMP, optsMapaDir = null;
+		
+		var ac = new usig.AutoCompleter('dir', {
+       		rootUrl: '../',
+       		skin: 'usig4',
+       		onReady: function() {
+       			$('#dir').val('').focus();
+       		},
+       		afterSelection: function(option) {
+       			direccion = option;
+       		},
+       		afterGeoCoding: function(pt) {
+    			if (pt instanceof usig.Punto) {
+    				if (direccion instanceof usig.Direccion) {
+    					direccion.setCoordenadas(pt);
+    				}				
+    			}
+    			if (direccion instanceof usig.ParcelaCatastral) {
+           			cargarMapaEstatico(direccion);
+           		}else if(direccion instanceof usig.Direccion){
+               		if (direccion.getTipo() == usig.Direccion.CALLE_Y_CALLE){
+               			cargarMapaEstatico(direccion);
+                   	}else{
+                   		geoCoder.getSMP(direccion.getCalle().codigo, direccion.getAltura(), cargarMapaEstatico, onError);
+                    }
+           		}else if(direccion instanceof usig.inventario.Objeto){
+           			var coord = direccion.ubicacion.getCentroide();
+               		geoCoder.reverseGeoCoding(coord.lon, coord.lat, cargarMapaEstatico, onError);
+           		}
+       		} 
+       	});
+		 
+		ac.addSuggester('Catastro', { inputPause: 200, minTextLength: 1, showError: false });
+		geoCoder = new usig.GeoCoder();
+
+		function onError(){
+		};
+
+		function cargarMapaEstatico(data) {
+			var radio = $('#radio').val();
+			if (data.smp) {
+				var pt = data.centroide?data.centroide:data.punto;
+				optsMapaSMP = {
+					punto: new usig.Punto(pt.x, pt.y),
+					smp: data.smp,
+					width: 500,
+					radio: radio
+				};
+				optsMapaDir = {
+					punto: new usig.Punto(pt.x, pt.y),
+					marcarPunto: true,
+					desc: data.smp,
+					width: 500,
+					radio: radio 
+				};
+			}else if (direccion instanceof usig.Direccion) {
+				if (direccion.getTipo() == usig.Direccion.CALLE_ALTURA && data.smp){
+					optsMapaSMP = {
+						x: direccion.getCoordenadas().lon, 
+						y: direccion.getCoordenadas().lat,
+						smp: data.smp,
+						desc: direccion.toString(),
+						width: 500,
+						radio: radio
+					};
+				}else {optsMapaSMP = null;}
+				
+				optsMapaDir = {
+					dir: direccion.toString(),
+					marcarPunto: true,
+					desc: direccion.toString(),
+					width: 500,
+					radio: radio 
+				};
+			}else if (direccion instanceof usig.inventario.Objeto) {
+				optsMapaSMP = {
+						punto: direccion.ubicacion.getCentroide(),
+						smp: data.parcela,
+						desc: direccion.toString(),
+						width: 500,
+						radio: radio  
+					};
+				optsMapaDir = {
+						punto: direccion.ubicacion.getCentroide(),
+						marcarPunto: true,
+						desc: direccion.toString(),
+						width: 500,
+						radio: radio  
+					};
+			}
+			
+			$('#mapa-estaticoSMP').html('');
+			$('#mapa-estaticoDir').html('');
+			if (optsMapaSMP) {
+				$('#mapa-estaticoSMP').append(new usig.MapaEstatico(optsMapaSMP));
+			}else{
+				$('#mapa-estaticoSMP').html('<p>Parcela Inexistente</p>');
+			}
+			$('#mapa-estaticoDir').append(new usig.MapaEstatico(optsMapaDir));
+		};
+			
+		$('#mainForm').bind("submit", function () {
+			return false;
+		});
+		
+	});
+	</script>
+  </head>
+  <body>
+  <div id="page">
+    <div id="header">
+      <div id="logo"><h1>Ejemplo: Muestra un mapa estatico a partir de una direccion, lugar o parcela.</h1>
+      <p>Este ejemplo muestra las diferentes opciones para cargar un mapa estatico a partir de una direccion, un lugar o una seccion-manzana-parcela.</p>
+      </div>
+    </div>
+    <div id="buscador">
+		<form id="mainForm" accept-charset="utf-8">
+			<label for="dir">Ingrese Direccion, Lugar o Seccion-Manzana-Parcela:</label>
+		    <input type="text" size="30" name="dir" id="dir" title="Direccion" class="text"/>
+		    <span id="ejemplo">ej.: Monroe 3677, Retiro, 63-108B-004</span>
+	    </form>
+	</div>  
+	<div>
+		<p>El radio que se muestra alrededor del centro del mapa.</p>
+	   	<label style="display: inline;" for="radio" style="font-weight:normal;">Radio (en metros):</label>	
+		<input  type="text" name="radio"  id="radio" style="width:40px;" value="200"/>
+	</div>
+	</br> 
+	<div id="mapa-estaticoSMP">
+	</div>
+	</br>
+	<div id="mapa-estaticoDir">
+	</div>
+    <div id="footer">
+       <p>&copy; 2012 USIG - Unidad de Sistemas de Información Geográfica</p>
+    </div>  
+    </div> 
+  </body>
+</html>

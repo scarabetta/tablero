@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# save this file to .git/hooks/
+# and make it executable
+
+# Delete .js files from /src folder and subfolders
+cd ./$(git rev-parse --show-cdup)
+
+# Clean-up js files
+NUM_JS_FILES=$( find ./src/ -name "*.js" -type f | wc -l | tr -d ' ' )
+if [ $NUM_JS_FILES -gt 0 ]; then
+    find ./src/ -name "*.js" -type f | xargs rm -f
+    printf "\e[00;31mDeleted $NUM_JS_FILES .js files\e[00m\n"
+fi
+
+# Clean-up js.map files
+NUM_JS_FILES=$( find ./src/ -name "*.js.map" -type f | wc -l | tr -d ' ' )
+if [ $NUM_JS_FILES -gt 0 ]; then
+    find ./src/ -name "*.js.map" -type f | xargs rm -f
+    printf "\e[00;31mDeleted $NUM_JS_FILES .js.map files\e[00m\n"
+fi
+
+# Delete empty directories
+NUM_EMPTY_DIRS=$( find ./src/ -type d -empty | wc -l | tr -d ' ' )
+if [ $NUM_EMPTY_DIRS -gt 0 ]; then
+    find ./src/ -type d -empty -type f | xargs rm -f
+    printf "\e[00;31mDeleted $NUM_EMPTY_DIRS empty directories\e[00m\n"
+fi

@@ -1,0 +1,152 @@
+<!-- <onboarding-popover enabled="true" steps="homeCtrl.onboardingSteps" on-finish-callback='homeCtrl.myCallbackFunction' step-index='homeCtrl.onboardingIndex'></onboarding-popover> -->
+<div class="pageContanerCustom">
+    <div class="item page">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="title-year">Plan 2017</h2>
+
+                <div class="dropdown menuExcel" id="dropdownExcel">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <img src="../../assets/icono-xls.png">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <!-- <li><a href="#">Descargar Excel con todos los proyectos</a></li> -->
+                        <li><a ng-click="homeCtrl.downloadExcel()">Descargar Excel maestro</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a ui-sref="home.upload">Importar proyecto de Excel</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                <div id="notifications">
+                    
+                </div>
+                <div class="content-first-btn">
+                    <button type="button" class="btn btn-default" ng-click="homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Objetivo Estrat&eacute;gico</button>
+                    <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.collapseAll()">
+                    <i class="glyphicon glyphicon-chevron-up" aria-hidden="true"></i> Colapsar todo
+                  </button>
+                 <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.showAll()"> 
+                    <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i> Desplegar todo
+                  </button>
+                </div>
+                <hr>
+                <div id="add-strategic-objetive"></div>
+
+                <!-- objetivos estrategicos -->
+                    <p ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"</p>
+                    <ul class="content-level-1" ng-repeat="objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text">
+                        <li class="firstLabel">
+                            <span id="{{objJ.idObjetivoJurisdiccional}}">
+                                <div class="row">
+                                    <div class="col-md-12 default-content" >
+                                        <div class="title">Objetivos Estrat&eacute;gicos</div>
+                                        <div class="col-md-9 collapsed" data-toggle="collapse" href="#grupo-level-{{objJ.idObjetivoJurisdiccional}}">
+                                            <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i> 
+                                            {{ objJ.nombre }}
+                                            <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)"></i>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-default btn-arbol" ng-click="homeCtrl.addOperativeObjective(objJ.idObjetivoJurisdiccional, objJ.idObjetivoJurisdiccional)">
+                                            <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Obj. Operativo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </span>
+
+                            <!-- Inicio de Objetivos Operativos -->
+                            <span id="grupo-level-{{objJ.idObjetivoJurisdiccional}}" class="collapse">
+                                <span ng-if="objJ.objetivosOperativos.length > 0" class="title viewArbol">Objetivos Operativos</span>
+                                <span ng-if="objJ.objetivosOperativos.length === 0">
+                                    <div class="col-md-9 col-sm-8 col-xs-12">
+                                        <br>
+                                        <p class="description">No existen objetivos operativos para este objetivo estratégico.</p>
+                                    </div>
+                                </span>
+                                <div id="add-operative-objetive-{{objJ.idObjetivoJurisdiccional}}"></div>
+                                <ul>
+                                    <li class="secondLabel" ng-repeat="objO in objJ.objetivosOperativos  | filter:homeCtrl.search.searchText.text">
+                                        <span id="{{objO.idObjetivoOperativo}}">
+                                            <div class="row content-obj">
+                                                <div class="col-md-9 col-sm-8 collapsed textObjOp" data-toggle="collapse" href="#grupo-level-2-{{objO.idObjetivoOperativo}}">
+                                                    <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                                                    {{ objO.nombre }}
+                                                    <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" ng-click="homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)" data-placement="top" title="" data-original-title="Editar"></i>
+                                                </div>
+                                                <div class="col-md-3 col-sm-4">
+                                                    <div class="content-button">
+                                                      <button type="button" class="btn btn-default btn-arbol" ng-click="homeCtrl.addProject(objO.idObjetivoOperativo)" id="addProjectButton-{{objO.idObjetivoOperativo}}">
+                                                        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Proyecto
+                                                      </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </span>
+
+                                        <!-- Inicio de Proyectos -->
+
+                                        <span ng-if="objO.proyectos.length > 0" id="grupo-level-2-{{objO.idObjetivoOperativo}}" class="collapse">
+                                            <div class="col-md-9 col-sm-8 col-xs-12" style="margin-bottom:10px;>
+                                                <span class="title viewArbol">Proyectos</span>
+                                            </div>
+                                            <div class="contentDate">
+                                                <span class="title left">Inicio</span>
+                                                <span class="title left">Fin</span>
+                                                <span class="title right">Estado</span>
+                                            </div>
+                                            <ul id="addproject"">
+                                                <li ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
+                                                    
+                                                    <div class="col-md-9 col-sm-8 col-xs-12 collapsed" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}" >
+                                                        <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
+                                                        <span class="thirdLabel" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}">{{proyecto.nombre}}  <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></i></span>
+                                                    </div>
+
+                                                    <div class="box-date">
+                                                        <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
+                                                        <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
+                                                        <span class="date right" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}">{{proyecto.estado}}</span>
+                                                    </div>
+
+                                                    <div id="grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}" class="col-md-12 collapse">
+                                                        <p class="description">"{{proyecto.descripcion}}"</p>
+                                                        <p class="description"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                                        <hr class="line-inner-proyect" id="{{proyecto.idProyecto}}">
+                                                        <div ng-if="$last && objO.proyectos.length > 0"><br></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </span>
+
+
+                                        <span ng-if="objO.proyectos.length === 0" id="grupo-level-2-{{objO.idObjetivoOperativo}}" class="collapse">
+                                            <div class="col-md-9 col-sm-8 col-xs-12">
+                                                <p class="description">No existen proyectos para este objetivo operativo.</p>
+                                            </div>
+                                        </span>
+
+                                        <!-- Fin de proyectos -->
+
+                                    </li>
+                                </ul>
+                            </span>
+
+                            <!-- FIN de Objetivos Operativos -->
+
+                        </li>
+                    </ul>
+                </div>
+                <!-- FIN de objetivos estrategicos -->
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>

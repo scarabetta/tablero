@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><script id="f5_cspm">(function(){var f5_cspm={f5_p:'ADAGMCEFNICGOFIPEHHCFFHBPJENPOCABGNJEHEHJIBBLDFBFFEKFIHONHJAFCNNIBCBNADOPDLBOKMHAHEJBGJFPKBGPIOADAJKFGECCLLGIBPNPIAKFMCBPJJKILHF',setCharAt:function(str,index,chr){if(index>str.length-1)return str;return str.substr(0,index)+chr+str.substr(index+1);},get_byte:function(str,i){var s=(i/16)|0;i=(i&15);s=s*32;return((str.charCodeAt(i+16+s)-65)<<4)|(str.charCodeAt(i+s)-65);},set_byte:function(str,i,b){var s=(i/16)|0;i=(i&15);s=s*32;str=f5_cspm.setCharAt(str,(i+16+s),String.fromCharCode((b>>4)+65));str=f5_cspm.setCharAt(str,(i+s),String.fromCharCode((b&15)+65));return str;},set_latency:function(str,latency){latency=latency&0xffff;str=f5_cspm.set_byte(str,32,(latency>>8));str=f5_cspm.set_byte(str,33,(latency&0xff));str=f5_cspm.set_byte(str,27,2);return str;},wait_perf_data:function(){try{var wp=window.performance.timing;if(wp.loadEventEnd>0){var res=wp.loadEventEnd-wp.navigationStart;if(res<60001){var cookie_val=f5_cspm.set_latency(f5_cspm.f5_p,res);window.document.cookie='aaaaaaaaaaaaaaa='+encodeURIComponent(cookie_val)+';path=/';}
+return;}}
+catch(err){return;}
+setTimeout(f5_cspm.wait_perf_data,100);return;},go:function(){var chunk=window.document.cookie.split(/\s*;\s*/);for(var i=0;i<chunk.length;++i){var pair=chunk[i].split(/\s*=\s*/);if(pair[0]=='f5_cspm'){if(pair[1]=='1234'){var d=new Date();d.setTime(d.getTime()-1);window.document.cookie='f5_cspm=;expires='+d.toUTCString()+';path=/;';setTimeout(f5_cspm.wait_perf_data,100);}}}}}
+f5_cspm.go();}());</script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>USIG - Fotos de Parcela</title>
+    <link rel="stylesheet" type="text/css" href="css/ejemplos.css" />
+    <style>
+        body {
+    		width: 95%;
+    	}
+    </style>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="../usig.GeoCoder.min.js" type="text/javascript"></script> 
+	<script src="../usig.FotosParcela.min.js" type="text/javascript"></script> 
+	<script src="../usig.MapaInteractivo.min.js" type="text/javascript"></script> 
+	    
+	<script type="text/javascript">
+	$.noConflict();
+	jQuery(document).ready(function($) {
+
+		var fotosParcela = null;
+		
+		$('#mainForm').bind("submit", function () {
+			return false;
+		});	
+
+		var popupHTML = '<div id="foto" style="height: 200px; width:250px"></div>'+
+					'<div class="foto-recorrido" style="display: none;cursor: pointer; height: 20px; width:250px">'+
+					'<a class="btn_ant" style="cursor: pointer;" >Anterior</a>&nbsp;<div class="fecha-foto"style="display:inline;"></div>&nbsp;<a class="btn_sig" >Siguiente</a>'+
+					'</div>';
+					
+		function onLoadFotos() {	
+			fotosParcela.setFechaFoto($('.fecha-foto'));
+			if (fotosParcela.numFotos() > 1) {
+				$('div.foto-recorrido').show();
+			} else {
+				$('div.foto-recorrido').hide();
+			}			
+		}
+
+ 		$('#mapa').css('width', Math.floor($('body').width()/2)-40).css('height', 450);
+
+		function onReverseGeoCoding(data) {
+			if (data.puerta_x && data.puerta_y){
+				var opts = {
+						instantPopup: true
+					};
+				var idMarker = miMapa.addMarker(new usig.Punto(data.puerta_x,data.puerta_y), true, 
+					function(ev, place, popup) {
+						popup.setContentHTML(popupHTML);
+						if (data.parcela){
+							fotosParcela = new usig.FotosParcela(data.parcela, {
+									maxHeight : 195, 
+									maxWidth : 243, 
+									onLoad: onLoadFotos
+									});
+							fotosParcela.cargarFoto($('#foto'));
+						} 
+						popup.setSize(new OpenLayers.Size(260, 220));
+						popup.show();
+	
+						$('.foto-recorrido .btn_ant').click(function() {
+							var idFoto = fotosParcela.fotoAnterior();
+							$('#foto').html('');
+							fotosParcela.cargarFoto($('#foto'));
+							fotosParcela.setFechaFoto($('.fecha-foto'));
+						});
+	
+						$('.foto-recorrido .btn_sig').click(function() {
+							var idFoto = fotosParcela.fotoSiguiente();
+							$('#foto').html('');
+							fotosParcela.cargarFoto($('#foto'));
+							fotosParcela.setFechaFoto($('.fecha-foto'));
+						});
+
+					}, opts);
+			}
+		};
+		
+		function onReverseGeoCodingError(e) {
+			usig.debug('Se produjo un error con el geocoder inverso.');
+		};
+		
+		/**
+		 * Click sobre el mapa
+		 */
+        function clickHandler(e) {
+    		var lonLat = miMapa.api.getLonLatFromViewPortPx(e.xy);
+    		geoCoder.reverseGeoCoding(lonLat.lon, lonLat.lat, onReverseGeoCoding, onReverseGeoCodingError);
+        };
+  
+        geoCoder = new usig.GeoCoder();
+        	
+		miMapa = new usig.MapaInteractivo('mapa', {
+			rootUrl: '../',
+			onMapClick : clickHandler
+		});		
+	});	
+	
+	</script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div id="logo"><h1>USIG - Foto de Parcela</h1>
+        <p>Este ejemplo muestra la foto de fachada de una parcela a partir de las coordenadas que se obtienen haciendo click en el mapa.</p>
+        </div>
+      </div>
+      <div id="buscador">
+       <form id="mainForm" accept-charset="utf-8">
+	    <div id="mapa"></div>
+       </form>
+      </div>
+      <div id="footer">
+        <p>&copy; 2012 USIG - Unidad de Sistemas de Información Geográfica</p>
+      </div>
+    </div>
+  </body>
+</html>

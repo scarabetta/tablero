@@ -1,0 +1,19 @@
+{
+  "name": "solicitudesBA",
+  "globalDependencies": {
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e",
+    "angular-animate": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-animate.d.ts#f0b2681b481397d0c03557ac2ac4d70c1c61c464",
+    "angular-local-storage": "github:DefinitelyTyped/DefinitelyTyped/angular-local-storage/angular-local-storage.d.ts#73f7bb99692823f1811817f9753a02b57af5305e",
+    "angular-ui-bootstrap": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-bootstrap/angular-ui-bootstrap.d.ts#7b28209e09c95aa4b92b52ae3c0b91f64780ac26",
+    "angular-ui-router": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-router/angular-ui-router.d.ts#70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e",
+    "assertion-error": "github:DefinitelyTyped/DefinitelyTyped/assertion-error/assertion-error.d.ts#3030a4be536b6530c06b80081f1333dc0de4d703",
+    "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#3030a4be536b6530c06b80081f1333dc0de4d703",
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e",
+    "lodash": "github:DefinitelyTyped/DefinitelyTyped/lodash/lodash.d.ts#c0d876601e0f8236fd6b57626eb62c4e485f1563",
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#3030a4be536b6530c06b80081f1333dc0de4d703",
+    "ng-file-upload": "github:DefinitelyTyped/DefinitelyTyped/ng-file-upload/ng-file-upload.d.ts#7de6c3dd94feaeb21f20054b9f30d5dabc5efabd",
+    "ng-table": "registry:dt/ng-table#0.0.0+20160108212918",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#70bf7e2bfeb0d5b1b651ef3219bcc65c8eec117e",
+    "sinon": "github:DefinitelyTyped/DefinitelyTyped/sinon/sinon.d.ts#3030a4be536b6530c06b80081f1333dc0de4d703"
+  }
+}

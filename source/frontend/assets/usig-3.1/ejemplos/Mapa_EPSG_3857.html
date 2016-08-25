@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>USIG - Mapa Interactivo de Buenos Aires</title>
+    <link rel="stylesheet" type="text/css" href="css/ejemplos.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="../usig.MapaInteractivo.min.js" type="text/javascript"></script> 
+    
+	<script type="text/javascript">
+	$.noConflict();
+	jQuery(document).ready(function($) {
+		
+		$('#mapa').css('width', 600).css('height', 450);
+		
+		var mapa = new usig.MapaInteractivo('mapa', {
+			baseLayer: 'mapabsas_default_3857',
+			bounds: [-6586111.0983854, -4163569.2579354, -6423147.3540814, -4060073.5216372],
+			initBounds: [-6517826.22446, -4125200.57343, -6491737.97612, -4098977.26534],
+			OpenLayersOptions: {
+				controls: [],
+				resolutions: [152.8740565703525, 76.43702828517624, 38.21851414258813, 19.10925707129406, 9.554628535647032, 4.777314267823516, 2.388657133911758, 1.194328566955879, 0.5971642834779395], 
+				projection: "EPSG:3857",
+				units: 'm'
+			},
+		});
+
+		
+	});	
+	</script>
+  </head>
+  <body>
+    <div id="page">
+      <div id="header">
+        <div id="logo"><h1>Ejemplo: Mapa en coordenadas EPSG:3857 (Google)</h1>
+        <p>Este ejemplo muestra como usar el mapa interactivo de la Ciudad con un set de tiles en coordenadas <a href="http://wiki.openstreetmap.org/wiki/EPSG:3857" target="_blank">EPSG:3857</a>.</p>
+        </div>
+      </div>
+	    <div id="mapa"></div>
+      <div id="footer">
+        <p>&copy; 2013 USIG - Unidad de Sistemas de Información Geográfica</p>
+      </div>
+    </div>
+  </body>
+</html>

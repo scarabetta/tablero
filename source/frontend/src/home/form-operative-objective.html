@@ -1,0 +1,35 @@
+<div id="grupo-level-3-3" class="contentFormProyect collapse in" aria-expanded="true">
+    <div class="col-md-2 col-sm-2 col-xs-12 pull-right">
+        <!-- <div class="dropdown content-actionForm">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
+                <span class="caret"></span>
+                <span class="" style="font-size: 11px;">Mover</span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li class="titleMenu">Plan 2017</li>
+                <li><a href="#">Obj. Estratégico 1</a></li>
+                <li><a href="#">Obj. Estratégico 2</a></li>
+            </ul>
+        </div> -->
+        <div id="{{formCtrl.currentOperativeObjective.idObjetivoOperativo}}"></div>
+        <div class="dropdown content-actionForm" ng-show="formCtrl.currentOperativeObjective.idObjetivoOperativo">
+            <button class="btn btn-default" type="button" ng-click="formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)">
+                <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                <span class="" style="font-size: 11px;">Eliminar</span>
+            </button>
+        </div>
+    </div>
+    <div class="col-md-10 col-sm-10 col-xs-12">
+        <form role="form">
+            <div class="row">
+                <div class="form-group col-md-12">
+                    <label for="name">Nombre de Objetivo Operativo</label>
+                    <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentOperativeObjective.nombre">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success" ng-click="formCtrl.saveOperativeObjective()"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Operativo</button>
+            <button type="button" class="btn btn-link" ng-click="formCtrl.cancelOperativeObjective()">Cancelar y descartar cambios</button>
+        </form>
+    </div>
+</div>
