@@ -20,15 +20,13 @@
 
             </div>
             <div class="col-md-12">
-                <div id="notifications">
-                    
-                </div>
+                <div id="notifications" class="row"></div>
                 <div class="content-first-btn">
                     <button type="button" class="btn btn-default" ng-click="homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Objetivo Estrat&eacute;gico</button>
                     <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.collapseAll()">
                     <i class="glyphicon glyphicon-chevron-up" aria-hidden="true"></i> Colapsar todo
                   </button>
-                 <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.showAll()"> 
+                 <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.showAll()">
                     <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i> Desplegar todo
                   </button>
                 </div>
@@ -39,12 +37,12 @@
                     <p ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"</p>
                     <ul class="content-level-1" ng-repeat="objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text">
                         <li class="firstLabel">
-                            <span id="{{objJ.idObjetivoJurisdiccional}}">
+                            <span id="es-{{objJ.idObjetivoJurisdiccional}}">
                                 <div class="row">
                                     <div class="col-md-12 default-content" >
                                         <div class="title">Objetivos Estrat&eacute;gicos</div>
                                         <div class="col-md-9 collapsed" data-toggle="collapse" href="#grupo-level-{{objJ.idObjetivoJurisdiccional}}">
-                                            <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i> 
+                                            <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
                                             {{ objJ.nombre }}
                                             <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)"></i>
                                         </div>
@@ -69,7 +67,7 @@
                                 <div id="add-operative-objetive-{{objJ.idObjetivoJurisdiccional}}"></div>
                                 <ul>
                                     <li class="secondLabel" ng-repeat="objO in objJ.objetivosOperativos  | filter:homeCtrl.search.searchText.text">
-                                        <span id="{{objO.idObjetivoOperativo}}">
+                                        <span id="op-{{objO.idObjetivoOperativo}}">
                                             <div class="row content-obj">
                                                 <div class="col-md-9 col-sm-8 collapsed textObjOp" data-toggle="collapse" href="#grupo-level-2-{{objO.idObjetivoOperativo}}">
                                                     <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
@@ -89,7 +87,7 @@
                                         <!-- Inicio de Proyectos -->
 
                                         <span ng-if="objO.proyectos.length > 0" id="grupo-level-2-{{objO.idObjetivoOperativo}}" class="collapse">
-                                            <div class="col-md-9 col-sm-8 col-xs-12" style="margin-bottom:10px;>
+                                            <div class="col-md-9 col-sm-8 col-xs-12" style="margin-bottom:10px;">
                                                 <span class="title viewArbol">Proyectos</span>
                                             </div>
                                             <div class="contentDate">
@@ -97,9 +95,9 @@
                                                 <span class="title left">Fin</span>
                                                 <span class="title right">Estado</span>
                                             </div>
-                                            <ul id="addproject"">
+                                            <ul id="addproject">
                                                 <li ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
-                                                    
+
                                                     <div class="col-md-9 col-sm-8 col-xs-12 collapsed" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}" >
                                                         <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
                                                         <span class="thirdLabel" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}">{{proyecto.nombre}}  <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></i></span>
@@ -116,7 +114,7 @@
                                                         <p class="description"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>
                                                     </div>
                                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                                        <hr class="line-inner-proyect" id="{{proyecto.idProyecto}}">
+                                                        <hr class="line-inner-proyect" id="proyecto-{{proyecto.idProyecto}}">
                                                         <div ng-if="$last && objO.proyectos.length > 0"><br></div>
                                                     </div>
                                                 </li>

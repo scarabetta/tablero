@@ -9,6 +9,8 @@ import {Comuna} from "../models/jurisdiccion";
 import {Proyecto} from "../models/jurisdiccion";
 import {ObjetivoOperativo} from "../models/jurisdiccion";
 import {ObjetivoJurisdiccional} from "../models/jurisdiccion";
+import {Usuario} from "../models/jurisdiccion";
+import {Rol} from "../models/jurisdiccion";
 
 module Services {
 
@@ -60,6 +62,14 @@ module Services {
             project.fechaInicio = new Date(project.fechaInicio);
             project.fechaFin = new Date(project.fechaFin);
             return this.$http.post(this.apiBaseUrl + "proyecto/", project)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        presentProject(project): ng.IPromise<any> {
+            project.fechaInicio = new Date(project.fechaInicio);
+            project.fechaFin = new Date(project.fechaFin);
+            return this.$http.post(this.apiBaseUrl + "proyecto/presentar", project)
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
@@ -130,6 +140,73 @@ module Services {
             return this.$http.get<ObjetivoJurisdiccional>(this.apiBaseUrl + "objetivoJurisdiccional/" + idStrategicObjective)
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
+        }
+
+        getUsers(): ng.IPromise<any> {
+            return this.$http.get<Usuario>(this.apiBaseUrl + "usuario/")
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getUserByToken(): ng.IPromise<any> {
+            return this.$http.get<Usuario>(this.apiBaseUrl + "usuario/porToken/")
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getUser(id): ng.IPromise<any> {
+            return this.$http.get<Usuario>(this.apiBaseUrl + "usuario/" + id)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        presaveUser(user) {
+          if (user.jurisdicciones) {
+            user.jurisdicciones = user.jurisdicciones.map((entry) => {
+              return {"idJurisdiccion": entry.idJurisdiccion};
+            });
+          }
+          if (user.roles) {
+            user.roles = user.roles.map((entry) => {
+              return {"idRol": entry.idRol};
+            });
+          }
+        }
+
+        saveUser(user): ng.IPromise<any> {
+            this.presaveUser(user);
+            return this.$http.post(this.apiBaseUrl + "usuario/", user)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        updateUser(user): ng.IPromise<any> {
+            this.presaveUser(user);
+            return this.$http.put(this.apiBaseUrl + "usuario/", user)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        toggleUserState(user): ng.IPromise<any> {
+            this.presaveUser(user);
+            return this.$http.put(this.apiBaseUrl + "usuario/", user)
+                .then((response) => response.data)
+                .catch((response) => {
+                  user.activo = !user.activo;
+                  console.log(response.data);
+                });
+        }
+
+        deleteUser(id): ng.IPromise<any> {
+            return this.$http.delete(this.apiBaseUrl + "usuario/" + id)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getRoles(): ng.IPromise<any> {
+          return this.$http.get<Rol>(this.apiBaseUrl + "rol/")
+          .then((response) => response.data)
+          .catch((response) => console.log(response.data));
         }
 
         serviceVersion(): ng.IPromise<any> {

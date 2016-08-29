@@ -1,9 +1,9 @@
 <!--success / warning / danger-->
-<div class="alert alert-{{notificationCtrl.type}}" id="alert">
+<div class="alert alert-{{notificationCtrl.type}} alert-block" id="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <!--ok-sign / remove-sign / exclamation-sign-->
     <i class="glyphicon glyphicon-{{notificationCtrl.icon}}" aria-hidden="true"></i>
-    <strong>{{notificationCtrl.title}} - </strong>{{notificationCtrl.text}} 
+    <strong>{{notificationCtrl.title}} - </strong>{{notificationCtrl.text}}
     <a style="cursor: pointer;" ng-if="notificationCtrl.gotoform" ng-click="notificationCtrl.goToCurrentForm()">{{notificationCtrl.textlink}}</a>
     <a style="cursor: pointer;" ng-if="notificationCtrl.gotoestrategico" ng-click="notificationCtrl.goToCurrentEstrategico()">{{notificationCtrl.textlink}}</a>
     <a style="cursor: pointer;" ng-if="notificationCtrl.gotooperativo" ng-click="notificationCtrl.goToCurrentOperativo()">{{notificationCtrl.textlink}}</a>

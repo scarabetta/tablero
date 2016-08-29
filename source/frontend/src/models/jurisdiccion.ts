@@ -82,8 +82,34 @@ export interface Comuna {
 }
 
 export interface Usuario {
-    id: number;
+    idUsuario: number;
+    activo: boolean;
+    apellido: string;
+    descripcion: string;
+    email: string;
+    jurisdicciones: JurisdiccionId[];
     nombreUsuario: string;
     nombre: string;
-    apellido: string;
+    roles: Rol[];
+}
+
+export interface JurisdiccionId {
+  idJurisdiccion: number;
+}
+
+export interface Rol {
+  idRol: number;
+  nombre: string;
+  descripcion: string;
+  usuarios: Usuario[];
+  permisosEntidad: PermisoEntidad[];
+}
+
+export interface PermisoEntidad {
+  idPermisoEntidad: number;
+  alta: boolean;
+  baja: boolean;
+  gestion: boolean;
+  modificacion: boolean;
+  nombre: string;
 }
