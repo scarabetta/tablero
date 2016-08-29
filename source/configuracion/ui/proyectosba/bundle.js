@@ -46,22 +46,22 @@
 
 	var config = __webpack_require__(1);
 	__webpack_require__(2);
-	__webpack_require__(63);
-	__webpack_require__(70);
 	__webpack_require__(71);
-	__webpack_require__(101);
-	__webpack_require__(102);
-	__webpack_require__(103);
-	__webpack_require__(105);
-	__webpack_require__(106);
-	__webpack_require__(108);
+	__webpack_require__(78);
+	__webpack_require__(79);
 	__webpack_require__(109);
 	__webpack_require__(110);
-	__webpack_require__(112);
+	__webpack_require__(111);
 	__webpack_require__(113);
-	__webpack_require__(115);
+	__webpack_require__(114);
 	__webpack_require__(116);
 	__webpack_require__(117);
+	__webpack_require__(118);
+	__webpack_require__(120);
+	__webpack_require__(121);
+	__webpack_require__(123);
+	__webpack_require__(124);
+	__webpack_require__(125);
 	/* tslint:disable:no-console */
 	console.info("Configuration: api=" + config.apiBaseUrl);
 	/* tslint:enable */
@@ -95,13 +95,14 @@
 	var app_auth_interceptor_ts_1 = __webpack_require__(31);
 	var app_local_storage_config_ts_1 = __webpack_require__(33);
 	var home_module_ts_1 = __webpack_require__(34);
-	var login_module_ts_1 = __webpack_require__(53);
-	var menu_component_ts_1 = __webpack_require__(57);
-	var notification_component_ts_1 = __webpack_require__(58);
-	var jurisdiccion_header_component_ts_1 = __webpack_require__(60);
-	var app_version_component_ts_1 = __webpack_require__(62);
+	var login_module_ts_1 = __webpack_require__(55);
+	var users_module_ts_1 = __webpack_require__(59);
+	var menu_component_ts_1 = __webpack_require__(65);
+	var notification_component_ts_1 = __webpack_require__(66);
+	var jurisdiccion_header_component_ts_1 = __webpack_require__(68);
+	var app_version_component_ts_1 = __webpack_require__(70);
 	angular.module('app', ['ui.router', 'ui.bootstrap', 'ngAnimate', 'vcRecaptcha', 'ngFileUpload', 'angularValidator',
-	    'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home_module_ts_1.home, login_module_ts_1.login])
+	    'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home_module_ts_1.home, login_module_ts_1.login, users_module_ts_1.users])
 	    .config(app_routes_ts_1["default"])
 	    .config(app_local_storage_config_ts_1["default"])
 	    .config(app_auth_interceptor_ts_1["default"])
@@ -36459,10 +36460,10 @@
 	 * angular-ui-bootstrap
 	 * http://angular-ui.github.io/bootstrap/
 
-	 * Version: 1.1.2 - 2016-02-01
+	 * Version: 1.3.3 - 2016-05-22
 	 * License: MIT
-	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
-	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/popup.html","uib/template/datepicker/year.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
+	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
+	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
 	angular.module('ui.bootstrap.collapse', [])
 
 	  .directive('uibCollapse', ['$animate', '$q', '$parse', '$injector', function($animate, $q, $parse, $injector) {
@@ -36631,6 +36632,7 @@
 	    },
 	    scope: {
 	      heading: '@',               // Interpolate the heading attribute onto this scope
+	      panelClass: '@?',           // Ditto with panelClass
 	      isOpen: '=?',
 	      isDisabled: '=?'
 	    },
@@ -36690,12 +36692,23 @@
 	    link: function(scope, element, attrs, controller) {
 	      scope.$watch(function() { return controller[attrs.uibAccordionTransclude]; }, function(heading) {
 	        if (heading) {
-	          element.find('span').html('');
-	          element.find('span').append(heading);
+	          var elem = angular.element(element[0].querySelector(getHeaderSelectors()));
+	          elem.html('');
+	          elem.append(heading);
 	        }
 	      });
 	    }
 	  };
+
+	  function getHeaderSelectors() {
+	      return 'uib-accordion-header,' +
+	          'data-uib-accordion-header,' +
+	          'x-uib-accordion-header,' +
+	          'uib\\:accordion-header,' +
+	          '[uib-accordion-header],' +
+	          '[data-uib-accordion-header],' +
+	          '[x-uib-accordion-header]';
+	  }
 	});
 
 	angular.module('ui.bootstrap.alert', [])
@@ -36775,7 +36788,7 @@
 
 	      if (attrs.uibUncheckable) {
 	        scope.$watch(uncheckableExpr, function(uncheckable) {
-	          attrs.$set('uncheckable', uncheckable ? '' : null);
+	          attrs.$set('uncheckable', uncheckable ? '' : undefined);
 	        });
 	      }
 	    }
@@ -36830,35 +36843,41 @@
 	  var self = this,
 	    slides = self.slides = $scope.slides = [],
 	    SLIDE_DIRECTION = 'uib-slideDirection',
-	    currentIndex = -1,
+	    currentIndex = $scope.active,
 	    currentInterval, isPlaying, bufferedTransitions = [];
-	  self.currentSlide = null;
 
 	  var destroyed = false;
 
 	  self.addSlide = function(slide, element) {
-	    slide.$element = element;
-	    slides.push(slide);
+	    slides.push({
+	      slide: slide,
+	      element: element
+	    });
+	    slides.sort(function(a, b) {
+	      return +a.slide.index - +b.slide.index;
+	    });
 	    //if this is the first slide or the slide is set to active, select it
-	    if (slides.length === 1 || slide.active) {
+	    if (slide.index === $scope.active || slides.length === 1 && !angular.isNumber($scope.active)) {
 	      if ($scope.$currentTransition) {
 	        $scope.$currentTransition = null;
 	      }
 
-	      self.select(slides[slides.length - 1]);
+	      currentIndex = slide.index;
+	      $scope.active = slide.index;
+	      setActive(currentIndex);
+	      self.select(slides[findSlideIndex(slide)]);
 	      if (slides.length === 1) {
 	        $scope.play();
 	      }
-	    } else {
-	      slide.active = false;
 	    }
 	  };
 
 	  self.getCurrentIndex = function() {
-	    if (self.currentSlide && angular.isDefined(self.currentSlide.index)) {
-	      return +self.currentSlide.index;
+	    for (var i = 0; i < slides.length; i++) {
+	      if (slides[i].slide.index === currentIndex) {
+	        return i;
+	      }
 	    }
-	    return currentIndex;
 	  };
 
 	  self.next = $scope.next = function() {
@@ -36869,7 +36888,7 @@
 	      return;
 	    }
 
-	    return self.select(getSlideByIndex(newIndex), 'next');
+	    return self.select(slides[newIndex], 'next');
 	  };
 
 	  self.prev = $scope.prev = function() {
@@ -36880,65 +36899,75 @@
 	      return;
 	    }
 
-	    return self.select(getSlideByIndex(newIndex), 'prev');
+	    return self.select(slides[newIndex], 'prev');
 	  };
 
 	  self.removeSlide = function(slide) {
-	    if (angular.isDefined(slide.index)) {
-	      slides.sort(function(a, b) {
-	        return +a.index > +b.index;
-	      });
-	    }
+	    var index = findSlideIndex(slide);
 
-	    var bufferedIndex = bufferedTransitions.indexOf(slide);
+	    var bufferedIndex = bufferedTransitions.indexOf(slides[index]);
 	    if (bufferedIndex !== -1) {
 	      bufferedTransitions.splice(bufferedIndex, 1);
 	    }
-	    //get the index of the slide inside the carousel
-	    var index = slides.indexOf(slide);
-	    slides.splice(index, 1);
-	    $timeout(function() {
-	      if (slides.length > 0 && slide.active) {
-	        if (index >= slides.length) {
-	          self.select(slides[index - 1]);
-	        } else {
-	          self.select(slides[index]);
-	        }
-	      } else if (currentIndex > index) {
-	        currentIndex--;
-	      }
-	    });
 
-	    //clean the currentSlide when no more slide
+	    //get the index of the slide inside the carousel
+	    slides.splice(index, 1);
+	    if (slides.length > 0 && currentIndex === index) {
+	      if (index >= slides.length) {
+	        currentIndex = slides.length - 1;
+	        $scope.active = currentIndex;
+	        setActive(currentIndex);
+	        self.select(slides[slides.length - 1]);
+	      } else {
+	        currentIndex = index;
+	        $scope.active = currentIndex;
+	        setActive(currentIndex);
+	        self.select(slides[index]);
+	      }
+	    } else if (currentIndex > index) {
+	      currentIndex--;
+	      $scope.active = currentIndex;
+	    }
+
+	    //clean the active value when no more slide
 	    if (slides.length === 0) {
-	      self.currentSlide = null;
+	      currentIndex = null;
+	      $scope.active = null;
 	      clearBufferedTransitions();
 	    }
 	  };
 
 	  /* direction: "prev" or "next" */
 	  self.select = $scope.select = function(nextSlide, direction) {
-	    var nextIndex = $scope.indexOfSlide(nextSlide);
+	    var nextIndex = findSlideIndex(nextSlide.slide);
 	    //Decide direction if it's not given
 	    if (direction === undefined) {
 	      direction = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
 	    }
 	    //Prevent this user-triggered transition from occurring if there is already one in progress
-	    if (nextSlide && nextSlide !== self.currentSlide && !$scope.$currentTransition) {
-	      goNext(nextSlide, nextIndex, direction);
-	    } else if (nextSlide && nextSlide !== self.currentSlide && $scope.$currentTransition) {
-	      bufferedTransitions.push(nextSlide);
-	      nextSlide.active = false;
+	    if (nextSlide.slide.index !== currentIndex &&
+	      !$scope.$currentTransition) {
+	      goNext(nextSlide.slide, nextIndex, direction);
+	    } else if (nextSlide && nextSlide.slide.index !== currentIndex && $scope.$currentTransition) {
+	      bufferedTransitions.push(slides[nextIndex]);
 	    }
 	  };
 
 	  /* Allow outside people to call indexOf on slides array */
 	  $scope.indexOfSlide = function(slide) {
-	    return angular.isDefined(slide.index) ? +slide.index : slides.indexOf(slide);
+	    return +slide.slide.index;
 	  };
 
 	  $scope.isActive = function(slide) {
-	    return self.currentSlide === slide;
+	    return $scope.active === slide.slide.index;
+	  };
+
+	  $scope.isPrevDisabled = function() {
+	    return $scope.active === 0 && $scope.noWrap();
+	  };
+
+	  $scope.isNextDisabled = function() {
+	    return $scope.active === slides.length - 1 && $scope.noWrap();
 	  };
 
 	  $scope.pause = function() {
@@ -36968,6 +36997,24 @@
 
 	  $scope.$watchCollection('slides', resetTransition);
 
+	  $scope.$watch('active', function(index) {
+	    if (angular.isNumber(index) && currentIndex !== index) {
+	      for (var i = 0; i < slides.length; i++) {
+	        if (slides[i].slide.index === index) {
+	          index = i;
+	          break;
+	        }
+	      }
+
+	      var slide = slides[index];
+	      if (slide) {
+	        setActive(index);
+	        self.select(slides[index]);
+	        currentIndex = index;
+	      }
+	    }
+	  });
+
 	  function clearBufferedTransitions() {
 	    while (bufferedTransitions.length) {
 	      bufferedTransitions.shift();
@@ -36975,9 +37022,6 @@
 	  }
 
 	  function getSlideByIndex(index) {
-	    if (angular.isUndefined(slides[index].index)) {
-	      return slides[index];
-	    }
 	    for (var i = 0, l = slides.length; i < l; ++i) {
 	      if (slides[i].index === index) {
 	        return slides[i];
@@ -36985,26 +37029,36 @@
 	    }
 	  }
 
-	  function goNext(slide, index, direction) {
-	    if (destroyed) { return; }
+	  function setActive(index) {
+	    for (var i = 0; i < slides.length; i++) {
+	      slides[i].slide.active = i === index;
+	    }
+	  }
 
-	    angular.extend(slide, {direction: direction, active: true});
-	    angular.extend(self.currentSlide || {}, {direction: direction, active: false});
+	  function goNext(slide, index, direction) {
+	    if (destroyed) {
+	      return;
+	    }
+
+	    angular.extend(slide, {direction: direction});
+	    angular.extend(slides[currentIndex].slide || {}, {direction: direction});
 	    if ($animate.enabled($element) && !$scope.$currentTransition &&
-	      slide.$element && self.slides.length > 1) {
-	      slide.$element.data(SLIDE_DIRECTION, slide.direction);
-	      if (self.currentSlide && self.currentSlide.$element) {
-	        self.currentSlide.$element.data(SLIDE_DIRECTION, slide.direction);
+	      slides[index].element && self.slides.length > 1) {
+	      slides[index].element.data(SLIDE_DIRECTION, slide.direction);
+	      var currentIdx = self.getCurrentIndex();
+
+	      if (angular.isNumber(currentIdx) && slides[currentIdx].element) {
+	        slides[currentIdx].element.data(SLIDE_DIRECTION, slide.direction);
 	      }
 
 	      $scope.$currentTransition = true;
-	      $animate.on('addClass', slide.$element, function(element, phase) {
+	      $animate.on('addClass', slides[index].element, function(element, phase) {
 	        if (phase === 'close') {
 	          $scope.$currentTransition = null;
 	          $animate.off('addClass', element);
 	          if (bufferedTransitions.length) {
-	            var nextSlide = bufferedTransitions.pop();
-	            var nextIndex = $scope.indexOfSlide(nextSlide);
+	            var nextSlide = bufferedTransitions.pop().slide;
+	            var nextIndex = nextSlide.index;
 	            var nextDirection = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
 	            clearBufferedTransitions();
 
@@ -37014,11 +37068,20 @@
 	      });
 	    }
 
-	    self.currentSlide = slide;
-	    currentIndex = index;
+	    $scope.active = slide.index;
+	    currentIndex = slide.index;
+	    setActive(index);
 
 	    //every time you change slides, reset the timer
 	    restartTimer();
+	  }
+
+	  function findSlideIndex(slide) {
+	    for (var i = 0; i < slides.length; i++) {
+	      if (slides[i].slide === slide) {
+	        return i;
+	      }
+	    }
 	  }
 
 	  function resetTimer() {
@@ -37063,6 +37126,7 @@
 	      return attrs.templateUrl || 'uib/template/carousel/carousel.html';
 	    },
 	    scope: {
+	      active: '=',
 	      interval: '=',
 	      noTransition: '=',
 	      noPause: '=',
@@ -37080,7 +37144,6 @@
 	      return attrs.templateUrl || 'uib/template/carousel/slide.html';
 	    },
 	    scope: {
-	      active: '=?',
 	      actual: '=?',
 	      index: '=?'
 	    },
@@ -37089,12 +37152,6 @@
 	      //when the scope is destroyed then remove the slide from the current slides array
 	      scope.$on('$destroy', function() {
 	        carouselCtrl.removeSlide(scope);
-	      });
-
-	      scope.$watch('active', function(active) {
-	        if (active) {
-	          carouselCtrl.select(scope);
-	        }
 	      });
 	    }
 	  };
@@ -37180,7 +37237,7 @@
 	      {
 	        key: 'yy',
 	        regex: '\\d{2}',
-	        apply: function(value) { this.year = +value + 2000; },
+	        apply: function(value) { value = +value; this.year = value < 69 ? value + 2000 : value + 1900; },
 	        formatter: function(date) {
 	          var _date = new Date();
 	          _date.setFullYear(Math.abs(date.getFullYear()));
@@ -37475,11 +37532,13 @@
 	        _format = _format.replace(match[1] + mapper.key, '');
 	      }
 
+	      var endStr = i === map.length - 1 ? _format : '';
+
 	      if (mapper.apply) {
-	        return str + mapper.apply.call(null, date);
+	        return str + mapper.apply.call(null, date) + endStr;
 	      }
 
-	      return str;
+	      return str + endStr;
 	    }, '');
 	  };
 
@@ -37593,8 +37652,9 @@
 	    return date && timezone ? convertTimezoneToLocal(date, timezone, true) : date;
 	  }
 
-	  //https://github.com/angular/angular.js/blob/4daafd3dbe6a80d578f5a31df1bb99c77559543e/src/Angular.js#L1207
+	  //https://github.com/angular/angular.js/blob/622c42169699ec07fc6daaa19fe6d224e5d2f70e/src/Angular.js#L1207
 	  function timezoneToOffset(timezone, fallback) {
+	    timezone = timezone.replace(/:/g, '');
 	    var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
 	    return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
 	  }
@@ -37607,8 +37667,9 @@
 
 	  function convertTimezoneToLocal(date, timezone, reverse) {
 	    reverse = reverse ? -1 : 1;
-	    var timezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
-	    return addDateMinutes(date, reverse * (timezoneOffset - date.getTimezoneOffset()));
+	    var dateTimezoneOffset = date.getTimezoneOffset();
+	    var timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
+	    return addDateMinutes(date, reverse * (timezoneOffset - dateTimezoneOffset));
 	  }
 	}]);
 
@@ -37627,7 +37688,7 @@
 
 	  return {
 	    restrict: 'A',
-	    compile: function (tElement, tAttrs) {
+	    compile: function(tElement, tAttrs) {
 	      var linkedScopes = [];
 	      var instances = [];
 	      var expToData = {};
@@ -37646,7 +37707,7 @@
 	          element: element
 	        });
 
-	        exps.forEach(function (exp, k) {
+	        exps.forEach(function(exp, k) {
 	          addForExp(exp, scope);
 	        });
 
@@ -37659,9 +37720,9 @@
 	        var compareWithExp = matches[2];
 	        var data = expToData[exp];
 	        if (!data) {
-	          var watchFn = function (compareWithVal) {
+	          var watchFn = function(compareWithVal) {
 	            var newActivated = null;
-	            instances.some(function (instance) {
+	            instances.some(function(instance) {
 	              var thisVal = instance.scope.$eval(onExp);
 	              if (thisVal === compareWithVal) {
 	                newActivated = instance;
@@ -37696,20 +37757,661 @@
 	        instances.splice(index, 1);
 	        if (linkedScopes.length) {
 	          var newWatchScope = linkedScopes[0];
-	          angular.forEach(expToData, function (data) {
+	          angular.forEach(expToData, function(data) {
 	            if (data.scope === removedScope) {
 	              data.watcher = newWatchScope.$watch(data.compareWithExp, data.watchFn);
 	              data.scope = newWatchScope;
 	            }
 	          });
-	        }
-	        else {
+	        } else {
 	          expToData = {};
 	        }
 	      }
 	    }
 	  };
 	}]);
+	angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.isClass'])
+
+	.value('$datepickerSuppressError', false)
+
+	.value('$datepickerLiteralWarning', true)
+
+	.constant('uibDatepickerConfig', {
+	  datepickerMode: 'day',
+	  formatDay: 'dd',
+	  formatMonth: 'MMMM',
+	  formatYear: 'yyyy',
+	  formatDayHeader: 'EEE',
+	  formatDayTitle: 'MMMM yyyy',
+	  formatMonthTitle: 'yyyy',
+	  maxDate: null,
+	  maxMode: 'year',
+	  minDate: null,
+	  minMode: 'day',
+	  ngModelOptions: {},
+	  shortcutPropagation: false,
+	  showWeeks: true,
+	  yearColumns: 5,
+	  yearRows: 4
+	})
+
+	.controller('UibDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfig', '$datepickerLiteralWarning', '$datepickerSuppressError', 'uibDateParser',
+	  function($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerLiteralWarning, $datepickerSuppressError, dateParser) {
+	  var self = this,
+	      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
+	      ngModelOptions = {},
+	      watchListeners = [],
+	      optionsUsed = !!$attrs.datepickerOptions;
+
+	  if (!$scope.datepickerOptions) {
+	    $scope.datepickerOptions = {};
+	  }
+
+	  // Modes chain
+	  this.modes = ['day', 'month', 'year'];
+
+	  [
+	    'customClass',
+	    'dateDisabled',
+	    'datepickerMode',
+	    'formatDay',
+	    'formatDayHeader',
+	    'formatDayTitle',
+	    'formatMonth',
+	    'formatMonthTitle',
+	    'formatYear',
+	    'maxDate',
+	    'maxMode',
+	    'minDate',
+	    'minMode',
+	    'showWeeks',
+	    'shortcutPropagation',
+	    'startingDay',
+	    'yearColumns',
+	    'yearRows'
+	  ].forEach(function(key) {
+	    switch (key) {
+	      case 'customClass':
+	      case 'dateDisabled':
+	        $scope[key] = $scope.datepickerOptions[key] || angular.noop;
+	        break;
+	      case 'datepickerMode':
+	        $scope.datepickerMode = angular.isDefined($scope.datepickerOptions.datepickerMode) ?
+	          $scope.datepickerOptions.datepickerMode : datepickerConfig.datepickerMode;
+	        break;
+	      case 'formatDay':
+	      case 'formatDayHeader':
+	      case 'formatDayTitle':
+	      case 'formatMonth':
+	      case 'formatMonthTitle':
+	      case 'formatYear':
+	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
+	          $interpolate($scope.datepickerOptions[key])($scope.$parent) :
+	          datepickerConfig[key];
+	        break;
+	      case 'showWeeks':
+	      case 'shortcutPropagation':
+	      case 'yearColumns':
+	      case 'yearRows':
+	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
+	          $scope.datepickerOptions[key] : datepickerConfig[key];
+	        break;
+	      case 'startingDay':
+	        if (angular.isDefined($scope.datepickerOptions.startingDay)) {
+	          self.startingDay = $scope.datepickerOptions.startingDay;
+	        } else if (angular.isNumber(datepickerConfig.startingDay)) {
+	          self.startingDay = datepickerConfig.startingDay;
+	        } else {
+	          self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
+	        }
+
+	        break;
+	      case 'maxDate':
+	      case 'minDate':
+	        $scope.$watch('datepickerOptions.' + key, function(value) {
+	          if (value) {
+	            if (angular.isDate(value)) {
+	              self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	            } else {
+	              if ($datepickerLiteralWarning) {
+	                $log.warn('Literal date support has been deprecated, please switch to date object usage');
+	              }
+
+	              self[key] = new Date(dateFilter(value, 'medium'));
+	            }
+	          } else {
+	            self[key] = datepickerConfig[key] ?
+	              dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) :
+	              null;
+	          }
+
+	          self.refreshView();
+	        });
+
+	        break;
+	      case 'maxMode':
+	      case 'minMode':
+	        if ($scope.datepickerOptions[key]) {
+	          $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
+	            self[key] = $scope[key] = angular.isDefined(value) ? value : datepickerOptions[key];
+	            if (key === 'minMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) < self.modes.indexOf(self[key]) ||
+	              key === 'maxMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) > self.modes.indexOf(self[key])) {
+	              $scope.datepickerMode = self[key];
+	              $scope.datepickerOptions.datepickerMode = self[key];
+	            }
+	          });
+	        } else {
+	          self[key] = $scope[key] = datepickerConfig[key] || null;
+	        }
+
+	        break;
+	    }
+	  });
+
+	  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+
+	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
+	  if (angular.isDefined($attrs.ngDisabled)) {
+	    watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
+	      $scope.disabled = disabled;
+	      self.refreshView();
+	    }));
+	  }
+
+	  $scope.isActive = function(dateObject) {
+	    if (self.compare(dateObject.date, self.activeDate) === 0) {
+	      $scope.activeDateId = dateObject.uid;
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  this.init = function(ngModelCtrl_) {
+	    ngModelCtrl = ngModelCtrl_;
+	    ngModelOptions = ngModelCtrl_.$options || datepickerConfig.ngModelOptions;
+	    if ($scope.datepickerOptions.initDate) {
+	      self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.timezone) || new Date();
+	      $scope.$watch('datepickerOptions.initDate', function(initDate) {
+	        if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
+	          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
+	          self.refreshView();
+	        }
+	      });
+	    } else {
+	      self.activeDate = new Date();
+	    }
+
+	    var date = ngModelCtrl.$modelValue ? new Date(ngModelCtrl.$modelValue) : new Date();
+	    this.activeDate = !isNaN(date) ?
+	      dateParser.fromTimezone(date, ngModelOptions.timezone) :
+	      dateParser.fromTimezone(new Date(), ngModelOptions.timezone);
+
+	    ngModelCtrl.$render = function() {
+	      self.render();
+	    };
+	  };
+
+	  this.render = function() {
+	    if (ngModelCtrl.$viewValue) {
+	      var date = new Date(ngModelCtrl.$viewValue),
+	          isValid = !isNaN(date);
+
+	      if (isValid) {
+	        this.activeDate = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      } else if (!$datepickerSuppressError) {
+	        $log.error('Datepicker directive: "ng-model" value must be a Date object');
+	      }
+	    }
+	    this.refreshView();
+	  };
+
+	  this.refreshView = function() {
+	    if (this.element) {
+	      $scope.selectedDt = null;
+	      this._refreshView();
+	      if ($scope.activeDt) {
+	        $scope.activeDateId = $scope.activeDt.uid;
+	      }
+
+	      var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	      date = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      ngModelCtrl.$setValidity('dateDisabled', !date ||
+	        this.element && !this.isDisabled(date));
+	    }
+	  };
+
+	  this.createDateObject = function(date, format) {
+	    var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	    model = dateParser.fromTimezone(model, ngModelOptions.timezone);
+	    var today = new Date();
+	    today = dateParser.fromTimezone(today, ngModelOptions.timezone);
+	    var time = this.compare(date, today);
+	    var dt = {
+	      date: date,
+	      label: dateParser.filter(date, format),
+	      selected: model && this.compare(date, model) === 0,
+	      disabled: this.isDisabled(date),
+	      past: time < 0,
+	      current: time === 0,
+	      future: time > 0,
+	      customClass: this.customClass(date) || null
+	    };
+
+	    if (model && this.compare(date, model) === 0) {
+	      $scope.selectedDt = dt;
+	    }
+
+	    if (self.activeDate && this.compare(dt.date, self.activeDate) === 0) {
+	      $scope.activeDt = dt;
+	    }
+
+	    return dt;
+	  };
+
+	  this.isDisabled = function(date) {
+	    return $scope.disabled ||
+	      this.minDate && this.compare(date, this.minDate) < 0 ||
+	      this.maxDate && this.compare(date, this.maxDate) > 0 ||
+	      $scope.dateDisabled && $scope.dateDisabled({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  this.customClass = function(date) {
+	    return $scope.customClass({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  // Split array into smaller arrays
+	  this.split = function(arr, size) {
+	    var arrays = [];
+	    while (arr.length > 0) {
+	      arrays.push(arr.splice(0, size));
+	    }
+	    return arrays;
+	  };
+
+	  $scope.select = function(date) {
+	    if ($scope.datepickerMode === self.minMode) {
+	      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
+	      dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+	      dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
+	      ngModelCtrl.$setViewValue(dt);
+	      ngModelCtrl.$render();
+	    } else {
+	      self.activeDate = date;
+	      setMode(self.modes[self.modes.indexOf($scope.datepickerMode) - 1]);
+
+	      $scope.$emit('uib:datepicker.mode');
+	    }
+
+	    $scope.$broadcast('uib:datepicker.focus');
+	  };
+
+	  $scope.move = function(direction) {
+	    var year = self.activeDate.getFullYear() + direction * (self.step.years || 0),
+	        month = self.activeDate.getMonth() + direction * (self.step.months || 0);
+	    self.activeDate.setFullYear(year, month, 1);
+	    self.refreshView();
+	  };
+
+	  $scope.toggleMode = function(direction) {
+	    direction = direction || 1;
+
+	    if ($scope.datepickerMode === self.maxMode && direction === 1 ||
+	      $scope.datepickerMode === self.minMode && direction === -1) {
+	      return;
+	    }
+
+	    setMode(self.modes[self.modes.indexOf($scope.datepickerMode) + direction]);
+
+	    $scope.$emit('uib:datepicker.mode');
+	  };
+
+	  // Key event mapper
+	  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
+
+	  var focusElement = function() {
+	    self.element[0].focus();
+	  };
+
+	  // Listen for focus requests from popup directive
+	  $scope.$on('uib:datepicker.focus', focusElement);
+
+	  $scope.keydown = function(evt) {
+	    var key = $scope.keys[evt.which];
+
+	    if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
+	      return;
+	    }
+
+	    evt.preventDefault();
+	    if (!self.shortcutPropagation) {
+	      evt.stopPropagation();
+	    }
+
+	    if (key === 'enter' || key === 'space') {
+	      if (self.isDisabled(self.activeDate)) {
+	        return; // do nothing
+	      }
+	      $scope.select(self.activeDate);
+	    } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
+	      $scope.toggleMode(key === 'up' ? 1 : -1);
+	    } else {
+	      self.handleKeyDown(key, evt);
+	      self.refreshView();
+	    }
+	  };
+
+	  $scope.$on('$destroy', function() {
+	    //Clear all watch listeners on destroy
+	    while (watchListeners.length) {
+	      watchListeners.shift()();
+	    }
+	  });
+
+	  function setMode(mode) {
+	    $scope.datepickerMode = mode;
+	    $scope.datepickerOptions.datepickerMode = mode;
+	  }
+	}])
+
+	.controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+	  this.step = { months: 1 };
+	  this.element = $element;
+	  function getDaysInMonth(year, month) {
+	    return month === 1 && year % 4 === 0 &&
+	      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
+	  }
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    scope.showWeeks = ctrl.showWeeks;
+	    ctrl.refreshView();
+	  };
+
+	  this.getDates = function(startDate, n) {
+	    var dates = new Array(n), current = new Date(startDate), i = 0, date;
+	    while (i < n) {
+	      date = new Date(current);
+	      dates[i++] = date;
+	      current.setDate(current.getDate() + 1);
+	    }
+	    return dates;
+	  };
+
+	  this._refreshView = function() {
+	    var year = this.activeDate.getFullYear(),
+	      month = this.activeDate.getMonth(),
+	      firstDayOfMonth = new Date(this.activeDate);
+
+	    firstDayOfMonth.setFullYear(year, month, 1);
+
+	    var difference = this.startingDay - firstDayOfMonth.getDay(),
+	      numDisplayedFromPreviousMonth = difference > 0 ?
+	        7 - difference : - difference,
+	      firstDate = new Date(firstDayOfMonth);
+
+	    if (numDisplayedFromPreviousMonth > 0) {
+	      firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
+	    }
+
+	    // 42 is the number of days on a six-week calendar
+	    var days = this.getDates(firstDate, 42);
+	    for (var i = 0; i < 42; i ++) {
+	      days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
+	        secondary: days[i].getMonth() !== month,
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.labels = new Array(7);
+	    for (var j = 0; j < 7; j++) {
+	      scope.labels[j] = {
+	        abbr: dateFilter(days[j].date, this.formatDayHeader),
+	        full: dateFilter(days[j].date, 'EEEE')
+	      };
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
+	    scope.rows = this.split(days, 7);
+
+	    if (scope.showWeeks) {
+	      scope.weekNumbers = [];
+	      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
+	          numWeeks = scope.rows.length;
+	      for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
+	        scope.weekNumbers.push(
+	          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
+	      }
+	    }
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  function getISO8601WeekNumber(date) {
+	    var checkDate = new Date(date);
+	    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+	    var time = checkDate.getTime();
+	    checkDate.setMonth(0); // Compare with Jan 1
+	    checkDate.setDate(1);
+	    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+	  }
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getDate();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 7;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 7;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setMonth(month, 1);
+	      date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
+	    } else if (key === 'home') {
+	      date = 1;
+	    } else if (key === 'end') {
+	      date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
+	    }
+	    this.activeDate.setDate(date);
+	  };
+	}])
+
+	.controller('UibMonthpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  this.step = { years: 1 };
+	  this.element = $element;
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    ctrl.refreshView();
+	  };
+
+	  this._refreshView = function() {
+	    var months = new Array(12),
+	        year = this.activeDate.getFullYear(),
+	        date;
+
+	    for (var i = 0; i < 12; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(year, i, 1);
+	      months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
+	    scope.rows = this.split(months, 3);
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getMonth();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 3;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 3;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setFullYear(year);
+	    } else if (key === 'home') {
+	      date = 0;
+	    } else if (key === 'end') {
+	      date = 11;
+	    }
+	    this.activeDate.setMonth(date);
+	  };
+	}])
+
+	.controller('UibYearpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var columns, range;
+	  this.element = $element;
+
+	  function getStartingYear(year) {
+	    return parseInt((year - 1) / range, 10) * range + 1;
+	  }
+
+	  this.yearpickerInit = function() {
+	    columns = this.yearColumns;
+	    range = this.yearRows * columns;
+	    this.step = { years: range };
+	  };
+
+	  this._refreshView = function() {
+	    var years = new Array(range), date;
+
+	    for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(start + i, 0, 1);
+	      years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = [years[0].label, years[range - 1].label].join(' - ');
+	    scope.rows = this.split(years, columns);
+	    scope.columns = columns;
+	  };
+
+	  this.compare = function(date1, date2) {
+	    return date1.getFullYear() - date2.getFullYear();
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getFullYear();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - columns;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + columns;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      date += (key === 'pageup' ? - 1 : 1) * range;
+	    } else if (key === 'home') {
+	      date = getStartingYear(this.activeDate.getFullYear());
+	    } else if (key === 'end') {
+	      date = getStartingYear(this.activeDate.getFullYear()) + range - 1;
+	    }
+	    this.activeDate.setFullYear(date);
+	  };
+	}])
+
+	.directive('uibDatepicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/datepicker.html';
+	    },
+	    scope: {
+	      datepickerOptions: '=?'
+	    },
+	    require: ['uibDatepicker', '^ngModel'],
+	    controller: 'UibDatepickerController',
+	    controllerAs: 'datepicker',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      datepickerCtrl.init(ngModelCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibDaypicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/day.html';
+	    },
+	    require: ['^uibDatepicker', 'uibDaypicker'],
+	    controller: 'UibDaypickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        daypickerCtrl = ctrls[1];
+
+	      daypickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibMonthpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/month.html';
+	    },
+	    require: ['^uibDatepicker', 'uibMonthpicker'],
+	    controller: 'UibMonthpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        monthpickerCtrl = ctrls[1];
+
+	      monthpickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibYearpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/year.html';
+	    },
+	    require: ['^uibDatepicker', 'uibYearpicker'],
+	    controller: 'UibYearpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var ctrl = ctrls[0];
+	      angular.extend(ctrl, ctrls[1]);
+	      ctrl.yearpickerInit();
+
+	      ctrl.refreshView();
+	    }
+	  };
+	});
+
 	angular.module('ui.bootstrap.position', [])
 
 	/**
@@ -37724,6 +38426,11 @@
 	     * Do not access this variable directly, use scrollbarWidth() instead.
 	     */
 	    var SCROLLBAR_WIDTH;
+	    /**
+	     * scrollbar on body and html element in IE and Edge overlay
+	     * content and should be considered 0 width.
+	     */
+	    var BODY_SCROLLBAR_WIDTH;
 	    var OVERFLOW_REGEX = {
 	      normal: /(auto|scroll)/,
 	      hidden: /(auto|scroll|hidden)/
@@ -37734,6 +38441,7 @@
 	      secondary: /^(top|bottom|left|right|center)$/,
 	      vertical: /^(top|bottom)$/
 	    };
+	    var BODY_REGEX = /(HTML|BODY)/;
 
 	    return {
 
@@ -37745,7 +38453,7 @@
 	       * @returns {element} A HTML element.
 	       */
 	      getRawNode: function(elem) {
-	        return elem[0] || elem;
+	        return elem.nodeName ? elem : elem[0] || elem;
 	      },
 
 	      /**
@@ -37787,12 +38495,25 @@
 	      /**
 	       * Provides the scrollbar width, concept from TWBS measureScrollbar()
 	       * function in https://github.com/twbs/bootstrap/blob/master/js/modal.js
+	       * In IE and Edge, scollbar on body and html element overlay and should
+	       * return a width of 0.
 	       *
 	       * @returns {number} The width of the browser scollbar.
 	       */
-	      scrollbarWidth: function() {
+	      scrollbarWidth: function(isBody) {
+	        if (isBody) {
+	          if (angular.isUndefined(BODY_SCROLLBAR_WIDTH)) {
+	            var bodyElem = $document.find('body');
+	            bodyElem.addClass('uib-position-body-scrollbar-measure');
+	            BODY_SCROLLBAR_WIDTH = $window.innerWidth - bodyElem[0].clientWidth;
+	            BODY_SCROLLBAR_WIDTH = isFinite(BODY_SCROLLBAR_WIDTH) ? BODY_SCROLLBAR_WIDTH : 0;
+	            bodyElem.removeClass('uib-position-body-scrollbar-measure');
+	          }
+	          return BODY_SCROLLBAR_WIDTH;
+	        }
+
 	        if (angular.isUndefined(SCROLLBAR_WIDTH)) {
-	          var scrollElem = angular.element('<div style="position: absolute; top: -9999px; width: 50px; height: 50px; overflow: scroll;"></div>');
+	          var scrollElem = angular.element('<div class="uib-position-scrollbar-measure"></div>');
 	          $document.find('body').append(scrollElem);
 	          SCROLLBAR_WIDTH = scrollElem[0].offsetWidth - scrollElem[0].clientWidth;
 	          SCROLLBAR_WIDTH = isFinite(SCROLLBAR_WIDTH) ? SCROLLBAR_WIDTH : 0;
@@ -37803,6 +38524,57 @@
 	      },
 
 	      /**
+	       * Provides the padding required on an element to replace the scrollbar.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**scrollbarWidth**: the width of the scrollbar</li>
+	       *     <li>**widthOverflow**: whether the the width is overflowing</li>
+	       *     <li>**right**: the amount of right padding on the element needed to replace the scrollbar</li>
+	       *     <li>**rightOriginal**: the amount of right padding currently on the element</li>
+	       *     <li>**heightOverflow**: whether the the height is overflowing</li>
+	       *     <li>**bottom**: the amount of bottom padding on the element needed to replace the scrollbar</li>
+	       *     <li>**bottomOriginal**: the amount of bottom padding currently on the element</li>
+	       *   </ul>
+	       */
+	      scrollbarPadding: function(elem) {
+	        elem = this.getRawNode(elem);
+
+	        var elemStyle = $window.getComputedStyle(elem);
+	        var paddingRight = this.parseStyle(elemStyle.paddingRight);
+	        var paddingBottom = this.parseStyle(elemStyle.paddingBottom);
+	        var scrollParent = this.scrollParent(elem, false, true);
+	        var scrollbarWidth = this.scrollbarWidth(scrollParent, BODY_REGEX.test(scrollParent.tagName));
+
+	        return {
+	          scrollbarWidth: scrollbarWidth,
+	          widthOverflow: scrollParent.scrollWidth > scrollParent.clientWidth,
+	          right: paddingRight + scrollbarWidth,
+	          originalRight: paddingRight,
+	          heightOverflow: scrollParent.scrollHeight > scrollParent.clientHeight,
+	          bottom: paddingBottom + scrollbarWidth,
+	          originalBottom: paddingBottom
+	         };
+	      },
+
+	      /**
+	       * Checks to see if the element is scrollable.
+	       *
+	       * @param {element} elem - The element to check.
+	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
+	       *   default is false.
+	       *
+	       * @returns {boolean} Whether the element is scrollable.
+	       */
+	      isScrollable: function(elem, includeHidden) {
+	        elem = this.getRawNode(elem);
+
+	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
+	        var elemStyle = $window.getComputedStyle(elem);
+	        return overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX);
+	      },
+
+	      /**
 	       * Provides the closest scrollable ancestor.
 	       * A port of the jQuery UI scrollParent method:
 	       * https://github.com/jquery/jquery-ui/blob/master/ui/scroll-parent.js
@@ -37810,15 +38582,20 @@
 	       * @param {element} elem - The element to find the scroll parent of.
 	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
 	       *   default is false.
+	       * @param {boolean=} [includeSelf=false] - Should the element being passed be
+	       * included in the scrollable llokup.
 	       *
 	       * @returns {element} A HTML element.
 	       */
-	      scrollParent: function(elem, includeHidden) {
+	      scrollParent: function(elem, includeHidden, includeSelf) {
 	        elem = this.getRawNode(elem);
 
 	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
 	        var documentEl = $document[0].documentElement;
 	        var elemStyle = $window.getComputedStyle(elem);
+	        if (includeSelf && overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX)) {
+	          return elem;
+	        }
 	        var excludeStatic = elemStyle.position === 'absolute';
 	        var scrollParent = elem.parentElement || documentEl;
 
@@ -38082,7 +38859,7 @@
 	        var targetElemPos = {top: 0, left: 0, placement: ''};
 
 	        if (placement[2]) {
-	          var viewportOffset = this.viewportOffset(hostElem);
+	          var viewportOffset = this.viewportOffset(hostElem, appendToBody);
 
 	          var targetElemStyle = $window.getComputedStyle(targetElem);
 	          var adjustedSize = {
@@ -38188,10 +38965,17 @@
 	          return;
 	        }
 
+	        var arrowCss = {
+	          top: '',
+	          bottom: '',
+	          left: '',
+	          right: ''
+	        };
+
 	        placement = this.parsePlacement(placement);
 	        if (placement[1] === 'center') {
 	          // no adjustment necessary - just reset styles
-	          angular.element(arrowElem).css({top: '', bottom: '', right: '', left: '', margin: ''});
+	          angular.element(arrowElem).css(arrowCss);
 	          return;
 	        }
 
@@ -38206,14 +38990,6 @@
 	        }
 	        borderRadiusProp += '-radius';
 	        var borderRadius = $window.getComputedStyle(isTooltip ? innerElem : elem)[borderRadiusProp];
-
-	        var arrowCss = {
-	          top: 'auto',
-	          bottom: 'auto',
-	          left: 'auto',
-	          right: 'auto',
-	          margin: 0
-	        };
 
 	        switch (placement[0]) {
 	          case 'top':
@@ -38237,682 +39013,9 @@
 	    };
 	  }]);
 
-	angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
+	angular.module('ui.bootstrap.datepickerPopup', ['ui.bootstrap.datepicker', 'ui.bootstrap.position'])
 
-	.value('$datepickerSuppressError', false)
-
-	.constant('uibDatepickerConfig', {
-	  datepickerMode: 'day',
-	  formatDay: 'dd',
-	  formatMonth: 'MMMM',
-	  formatYear: 'yyyy',
-	  formatDayHeader: 'EEE',
-	  formatDayTitle: 'MMMM yyyy',
-	  formatMonthTitle: 'yyyy',
-	  maxDate: null,
-	  maxMode: 'year',
-	  minDate: null,
-	  minMode: 'day',
-	  ngModelOptions: {},
-	  shortcutPropagation: false,
-	  showWeeks: true,
-	  yearColumns: 5,
-	  yearRows: 4
-	})
-
-	.controller('UibDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
-	  function($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
-	  var self = this,
-	      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
-	      ngModelOptions = {},
-	      watchListeners = [];
-
-	  // Modes chain
-	  this.modes = ['day', 'month', 'year'];
-
-	  if ($attrs.datepickerOptions) {
-	    angular.forEach([
-	      'formatDay',
-	      'formatDayHeader',
-	      'formatDayTitle',
-	      'formatMonth',
-	      'formatMonthTitle',
-	      'formatYear',
-	      'initDate',
-	      'maxDate',
-	      'maxMode',
-	      'minDate',
-	      'minMode',
-	      'showWeeks',
-	      'shortcutPropagation',
-	      'startingDay',
-	      'yearColumns',
-	      'yearRows'
-	    ], function(key) {
-	      switch (key) {
-	        case 'formatDay':
-	        case 'formatDayHeader':
-	        case 'formatDayTitle':
-	        case 'formatMonth':
-	        case 'formatMonthTitle':
-	        case 'formatYear':
-	          self[key] = angular.isDefined($scope.datepickerOptions[key]) ? $interpolate($scope.datepickerOptions[key])($scope.$parent) : datepickerConfig[key];
-	          break;
-	        case 'showWeeks':
-	        case 'shortcutPropagation':
-	        case 'yearColumns':
-	        case 'yearRows':
-	          self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
-	            $scope.datepickerOptions[key] : datepickerConfig[key];
-	          break;
-	        case 'startingDay':
-	          if (angular.isDefined($scope.datepickerOptions.startingDay)) {
-	            self.startingDay = $scope.datepickerOptions.startingDay;
-	          } else if (angular.isNumber(datepickerConfig.startingDay)) {
-	            self.startingDay = datepickerConfig.startingDay;
-	          } else {
-	            self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
-	          }
-
-	          break;
-	        case 'maxDate':
-	        case 'minDate':
-	          if ($scope.datepickerOptions[key]) {
-	            $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
-	              if (value) {
-	                if (angular.isDate(value)) {
-	                  self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
-	                } else {
-	                  self[key] = new Date(dateFilter(value, 'medium'));
-	                }
-	              } else {
-	                self[key] = null;
-	              }
-
-	              self.refreshView();
-	            });
-	          } else {
-	            self[key] = datepickerConfig[key] ? dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) : null;
-	          }
-
-	          break;
-	        case 'maxMode':
-	        case 'minMode':
-	          if ($scope.datepickerOptions[key]) {
-	            $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
-	              self[key] = $scope[key] = angular.isDefined(value) ? value : datepickerOptions[key];
-	              if (key === 'minMode' && self.modes.indexOf($scope.datepickerMode) < self.modes.indexOf(self[key]) ||
-	                key === 'maxMode' && self.modes.indexOf($scope.datepickerMode) > self.modes.indexOf(self[key])) {
-	                $scope.datepickerMode = self[key];
-	              }
-	            });
-	          } else {
-	            self[key] = $scope[key] = datepickerConfig[key] || null;
-	          }
-
-	          break;
-	        case 'initDate':
-	          if ($scope.datepickerOptions.initDate) {
-	            this.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.timezone) || new Date();
-	            $scope.$watch(function() { return $scope.datepickerOptions.initDate; }, function(initDate) {
-	              if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
-	                self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
-	                self.refreshView();
-	              }
-	            });
-	          } else {
-	            this.activeDate = new Date();
-	          }
-	      }
-	    });
-	  } else {
-	    // Interpolated configuration attributes
-	    angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle'], function(key) {
-	      self[key] = angular.isDefined($attrs[key]) ? $interpolate($attrs[key])($scope.$parent) : datepickerConfig[key];
-	    });
-
-	    // Evaled configuration attributes
-	    angular.forEach(['showWeeks', 'yearRows', 'yearColumns', 'shortcutPropagation'], function(key) {
-	      self[key] = angular.isDefined($attrs[key]) ?
-	        $scope.$parent.$eval($attrs[key]) : datepickerConfig[key];
-	    });
-
-	    if (angular.isDefined($attrs.startingDay)) {
-	      self.startingDay = $scope.$parent.$eval($attrs.startingDay);
-	    } else if (angular.isNumber(datepickerConfig.startingDay)) {
-	      self.startingDay = datepickerConfig.startingDay;
-	    } else {
-	      self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
-	    }
-
-	    // Watchable date attributes
-	    angular.forEach(['minDate', 'maxDate'], function(key) {
-	      if ($attrs[key]) {
-	        watchListeners.push($scope.$parent.$watch($attrs[key], function(value) {
-	          if (value) {
-	            if (angular.isDate(value)) {
-	              self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
-	            } else {
-	              self[key] = new Date(dateFilter(value, 'medium'));
-	            }
-	          } else {
-	            self[key] = null;
-	          }
-
-	          self.refreshView();
-	        }));
-	      } else {
-	        self[key] = datepickerConfig[key] ? dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) : null;
-	      }
-	    });
-
-	    angular.forEach(['minMode', 'maxMode'], function(key) {
-	      if ($attrs[key]) {
-	        watchListeners.push($scope.$parent.$watch($attrs[key], function(value) {
-	          self[key] = $scope[key] = angular.isDefined(value) ? value : $attrs[key];
-	          if (key === 'minMode' && self.modes.indexOf($scope.datepickerMode) < self.modes.indexOf(self[key]) ||
-	            key === 'maxMode' && self.modes.indexOf($scope.datepickerMode) > self.modes.indexOf(self[key])) {
-	            $scope.datepickerMode = self[key];
-	          }
-	        }));
-	      } else {
-	        self[key] = $scope[key] = datepickerConfig[key] || null;
-	      }
-	    });
-
-	    if (angular.isDefined($attrs.initDate)) {
-	      this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
-	      watchListeners.push($scope.$parent.$watch($attrs.initDate, function(initDate) {
-	        if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
-	          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
-	          self.refreshView();
-	        }
-	      }));
-	    } else {
-	      this.activeDate = new Date();
-	    }
-	  }
-
-	  $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
-	  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
-
-	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
-	  if (angular.isDefined($attrs.ngDisabled)) {
-	    watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
-	      $scope.disabled = disabled;
-	      self.refreshView();
-	    }));
-	  }
-
-	  $scope.isActive = function(dateObject) {
-	    if (self.compare(dateObject.date, self.activeDate) === 0) {
-	      $scope.activeDateId = dateObject.uid;
-	      return true;
-	    }
-	    return false;
-	  };
-
-	  this.init = function(ngModelCtrl_) {
-	    ngModelCtrl = ngModelCtrl_;
-	    ngModelOptions = ngModelCtrl_.$options || datepickerConfig.ngModelOptions;
-
-	    if (ngModelCtrl.$modelValue) {
-	      this.activeDate = ngModelCtrl.$modelValue;
-	    }
-
-	    ngModelCtrl.$render = function() {
-	      self.render();
-	    };
-	  };
-
-	  this.render = function() {
-	    if (ngModelCtrl.$viewValue) {
-	      var date = new Date(ngModelCtrl.$viewValue),
-	          isValid = !isNaN(date);
-
-	      if (isValid) {
-	        this.activeDate = dateParser.fromTimezone(date, ngModelOptions.timezone);
-	      } else if (!$datepickerSuppressError) {
-	        $log.error('Datepicker directive: "ng-model" value must be a Date object');
-	      }
-	    }
-	    this.refreshView();
-	  };
-
-	  this.refreshView = function() {
-	    if (this.element) {
-	      $scope.selectedDt = null;
-	      this._refreshView();
-	      if ($scope.activeDt) {
-	        $scope.activeDateId = $scope.activeDt.uid;
-	      }
-
-	      var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
-	      date = dateParser.fromTimezone(date, ngModelOptions.timezone);
-	      ngModelCtrl.$setValidity('dateDisabled', !date ||
-	        this.element && !this.isDisabled(date));
-	    }
-	  };
-
-	  this.createDateObject = function(date, format) {
-	    var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
-	    model = dateParser.fromTimezone(model, ngModelOptions.timezone);
-	    var dt = {
-	      date: date,
-	      label: dateParser.filter(date, format),
-	      selected: model && this.compare(date, model) === 0,
-	      disabled: this.isDisabled(date),
-	      current: this.compare(date, new Date()) === 0,
-	      customClass: this.customClass(date) || null
-	    };
-
-	    if (model && this.compare(date, model) === 0) {
-	      $scope.selectedDt = dt;
-	    }
-
-	    if (self.activeDate && this.compare(dt.date, self.activeDate) === 0) {
-	      $scope.activeDt = dt;
-	    }
-
-	    return dt;
-	  };
-
-	  this.isDisabled = function(date) {
-	    return $scope.disabled ||
-	      this.minDate && this.compare(date, this.minDate) < 0 ||
-	      this.maxDate && this.compare(date, this.maxDate) > 0 ||
-	      $attrs.dateDisabled && $scope.dateDisabled({date: date, mode: $scope.datepickerMode});
-	  };
-
-	  this.customClass = function(date) {
-	    return $scope.customClass({date: date, mode: $scope.datepickerMode});
-	  };
-
-	  // Split array into smaller arrays
-	  this.split = function(arr, size) {
-	    var arrays = [];
-	    while (arr.length > 0) {
-	      arrays.push(arr.splice(0, size));
-	    }
-	    return arrays;
-	  };
-
-	  $scope.select = function(date) {
-	    if ($scope.datepickerMode === self.minMode) {
-	      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
-	      dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
-	      dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
-	      ngModelCtrl.$setViewValue(dt);
-	      ngModelCtrl.$render();
-	    } else {
-	      self.activeDate = date;
-	      $scope.datepickerMode = self.modes[self.modes.indexOf($scope.datepickerMode) - 1];
-	    }
-	  };
-
-	  $scope.move = function(direction) {
-	    var year = self.activeDate.getFullYear() + direction * (self.step.years || 0),
-	        month = self.activeDate.getMonth() + direction * (self.step.months || 0);
-	    self.activeDate.setFullYear(year, month, 1);
-	    self.refreshView();
-	  };
-
-	  $scope.toggleMode = function(direction) {
-	    direction = direction || 1;
-
-	    if ($scope.datepickerMode === self.maxMode && direction === 1 ||
-	      $scope.datepickerMode === self.minMode && direction === -1) {
-	      return;
-	    }
-
-	    $scope.datepickerMode = self.modes[self.modes.indexOf($scope.datepickerMode) + direction];
-	  };
-
-	  // Key event mapper
-	  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
-
-	  var focusElement = function() {
-	    self.element[0].focus();
-	  };
-
-	  // Listen for focus requests from popup directive
-	  $scope.$on('uib:datepicker.focus', focusElement);
-
-	  $scope.keydown = function(evt) {
-	    var key = $scope.keys[evt.which];
-
-	    if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
-	      return;
-	    }
-
-	    evt.preventDefault();
-	    if (!self.shortcutPropagation) {
-	      evt.stopPropagation();
-	    }
-
-	    if (key === 'enter' || key === 'space') {
-	      if (self.isDisabled(self.activeDate)) {
-	        return; // do nothing
-	      }
-	      $scope.select(self.activeDate);
-	    } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
-	      $scope.toggleMode(key === 'up' ? 1 : -1);
-	    } else {
-	      self.handleKeyDown(key, evt);
-	      self.refreshView();
-	    }
-	  };
-
-	  $scope.$on("$destroy", function() {
-	    //Clear all watch listeners on destroy
-	    while (watchListeners.length) {
-	      watchListeners.shift()();
-	    }
-	  });
-	}])
-
-	.controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-	  this.step = { months: 1 };
-	  this.element = $element;
-	  function getDaysInMonth(year, month) {
-	    return month === 1 && year % 4 === 0 &&
-	      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
-	  }
-
-	  this.init = function(ctrl) {
-	    angular.extend(ctrl, this);
-	    scope.showWeeks = ctrl.showWeeks;
-	    ctrl.refreshView();
-	  };
-
-	  this.getDates = function(startDate, n) {
-	    var dates = new Array(n), current = new Date(startDate), i = 0, date;
-	    while (i < n) {
-	      date = new Date(current);
-	      dates[i++] = date;
-	      current.setDate(current.getDate() + 1);
-	    }
-	    return dates;
-	  };
-
-	  this._refreshView = function() {
-	    var year = this.activeDate.getFullYear(),
-	      month = this.activeDate.getMonth(),
-	      firstDayOfMonth = new Date(this.activeDate);
-
-	    firstDayOfMonth.setFullYear(year, month, 1);
-
-	    var difference = this.startingDay - firstDayOfMonth.getDay(),
-	      numDisplayedFromPreviousMonth = difference > 0 ?
-	        7 - difference : - difference,
-	      firstDate = new Date(firstDayOfMonth);
-
-	    if (numDisplayedFromPreviousMonth > 0) {
-	      firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
-	    }
-
-	    // 42 is the number of days on a six-week calendar
-	    var days = this.getDates(firstDate, 42);
-	    for (var i = 0; i < 42; i ++) {
-	      days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
-	        secondary: days[i].getMonth() !== month,
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.labels = new Array(7);
-	    for (var j = 0; j < 7; j++) {
-	      scope.labels[j] = {
-	        abbr: dateFilter(days[j].date, this.formatDayHeader),
-	        full: dateFilter(days[j].date, 'EEEE')
-	      };
-	    }
-
-	    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
-	    scope.rows = this.split(days, 7);
-
-	    if (scope.showWeeks) {
-	      scope.weekNumbers = [];
-	      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
-	          numWeeks = scope.rows.length;
-	      for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
-	        scope.weekNumbers.push(
-	          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
-	      }
-	    }
-	  };
-
-	  this.compare = function(date1, date2) {
-	    var _date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-	    var _date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-	    _date1.setFullYear(date1.getFullYear());
-	    _date2.setFullYear(date2.getFullYear());
-	    return _date1 - _date2;
-	  };
-
-	  function getISO8601WeekNumber(date) {
-	    var checkDate = new Date(date);
-	    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
-	    var time = checkDate.getTime();
-	    checkDate.setMonth(0); // Compare with Jan 1
-	    checkDate.setDate(1);
-	    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
-	  }
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getDate();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - 7;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + 7;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
-	      this.activeDate.setMonth(month, 1);
-	      date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
-	    } else if (key === 'home') {
-	      date = 1;
-	    } else if (key === 'end') {
-	      date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
-	    }
-	    this.activeDate.setDate(date);
-	  };
-	}])
-
-	.controller('UibMonthpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  this.step = { years: 1 };
-	  this.element = $element;
-
-	  this.init = function(ctrl) {
-	    angular.extend(ctrl, this);
-	    ctrl.refreshView();
-	  };
-
-	  this._refreshView = function() {
-	    var months = new Array(12),
-	        year = this.activeDate.getFullYear(),
-	        date;
-
-	    for (var i = 0; i < 12; i++) {
-	      date = new Date(this.activeDate);
-	      date.setFullYear(year, i, 1);
-	      months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
-	    scope.rows = this.split(months, 3);
-	  };
-
-	  this.compare = function(date1, date2) {
-	    var _date1 = new Date(date1.getFullYear(), date1.getMonth());
-	    var _date2 = new Date(date2.getFullYear(), date2.getMonth());
-	    _date1.setFullYear(date1.getFullYear());
-	    _date2.setFullYear(date2.getFullYear());
-	    return _date1 - _date2;
-	  };
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getMonth();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - 3;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + 3;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
-	      this.activeDate.setFullYear(year);
-	    } else if (key === 'home') {
-	      date = 0;
-	    } else if (key === 'end') {
-	      date = 11;
-	    }
-	    this.activeDate.setMonth(date);
-	  };
-	}])
-
-	.controller('UibYearpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  var columns, range;
-	  this.element = $element;
-
-	  function getStartingYear(year) {
-	    return parseInt((year - 1) / range, 10) * range + 1;
-	  }
-
-	  this.yearpickerInit = function() {
-	    columns = this.yearColumns;
-	    range = this.yearRows * columns;
-	    this.step = { years: range };
-	  };
-
-	  this._refreshView = function() {
-	    var years = new Array(range), date;
-
-	    for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
-	      date = new Date(this.activeDate);
-	      date.setFullYear(start + i, 0, 1);
-	      years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.title = [years[0].label, years[range - 1].label].join(' - ');
-	    scope.rows = this.split(years, columns);
-	    scope.columns = columns;
-	  };
-
-	  this.compare = function(date1, date2) {
-	    return date1.getFullYear() - date2.getFullYear();
-	  };
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getFullYear();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - columns;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + columns;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      date += (key === 'pageup' ? - 1 : 1) * range;
-	    } else if (key === 'home') {
-	      date = getStartingYear(this.activeDate.getFullYear());
-	    } else if (key === 'end') {
-	      date = getStartingYear(this.activeDate.getFullYear()) + range - 1;
-	    }
-	    this.activeDate.setFullYear(date);
-	  };
-	}])
-
-	.directive('uibDatepicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/datepicker.html';
-	    },
-	    scope: {
-	      datepickerMode: '=?',
-	      datepickerOptions: '=?',
-	      dateDisabled: '&',
-	      customClass: '&',
-	      shortcutPropagation: '&?'
-	    },
-	    require: ['uibDatepicker', '^ngModel'],
-	    controller: 'UibDatepickerController',
-	    controllerAs: 'datepicker',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	      datepickerCtrl.init(ngModelCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibDaypicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/day.html';
-	    },
-	    require: ['^uibDatepicker', 'uibDaypicker'],
-	    controller: 'UibDaypickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0],
-	        daypickerCtrl = ctrls[1];
-
-	      daypickerCtrl.init(datepickerCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibMonthpicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/month.html';
-	    },
-	    require: ['^uibDatepicker', 'uibMonthpicker'],
-	    controller: 'UibMonthpickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0],
-	        monthpickerCtrl = ctrls[1];
-
-	      monthpickerCtrl.init(datepickerCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibYearpicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/year.html';
-	    },
-	    require: ['^uibDatepicker', 'uibYearpicker'],
-	    controller: 'UibYearpickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var ctrl = ctrls[0];
-	      angular.extend(ctrl, ctrls[1]);
-	      ctrl.yearpickerInit();
-
-	      ctrl.refreshView();
-	    }
-	  };
-	})
+	.value('$datepickerPopupLiteralWarning', true)
 
 	.constant('uibDatepickerPopupConfig', {
 	  altInputFormats: [],
@@ -38922,7 +39025,7 @@
 	  closeText: 'Done',
 	  currentText: 'Today',
 	  datepickerPopup: 'yyyy-MM-dd',
-	  datepickerPopupTemplateUrl: 'uib/template/datepicker/popup.html',
+	  datepickerPopupTemplateUrl: 'uib/template/datepickerPopup/popup.html',
 	  datepickerTemplateUrl: 'uib/template/datepicker/datepicker.html',
 	  html5Types: {
 	    date: 'yyyy-MM-dd',
@@ -38930,37 +39033,49 @@
 	    'month': 'yyyy-MM'
 	  },
 	  onOpenFocus: true,
-	  showButtonBar: true
+	  showButtonBar: true,
+	  placement: 'auto bottom-left'
 	})
 
-	.controller('UibDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfig', '$timeout', 'uibDatepickerConfig',
-	function(scope, element, attrs, $compile, $parse, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig) {
+	.controller('UibDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$log', '$parse', '$window', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfig', '$timeout', 'uibDatepickerConfig', '$datepickerPopupLiteralWarning',
+	function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig, $datepickerPopupLiteralWarning) {
 	  var cache = {},
 	    isHtml5DateInput = false;
 	  var dateFormat, closeOnDateSelection, appendToBody, onOpenFocus,
-	    datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl,
-	    ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [];
-
-	  scope.watchData = {};
+	    datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl, scrollParentEl,
+	    ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [],
+	    timezone;
 
 	  this.init = function(_ngModel_) {
 	    ngModel = _ngModel_;
-	    ngModelOptions = _ngModel_.$options || datepickerConfig.ngModelOptions;
-	    closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : datepickerPopupConfig.closeOnDateSelection;
-	    appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : datepickerPopupConfig.appendToBody;
-	    onOpenFocus = angular.isDefined(attrs.onOpenFocus) ? scope.$parent.$eval(attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
-	    datepickerPopupTemplateUrl = angular.isDefined(attrs.datepickerPopupTemplateUrl) ? attrs.datepickerPopupTemplateUrl : datepickerPopupConfig.datepickerPopupTemplateUrl;
-	    datepickerTemplateUrl = angular.isDefined(attrs.datepickerTemplateUrl) ? attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
-	    altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats) : datepickerPopupConfig.altInputFormats;
+	    ngModelOptions = _ngModel_.$options;
+	    closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ?
+	      $scope.$parent.$eval($attrs.closeOnDateSelection) :
+	      datepickerPopupConfig.closeOnDateSelection;
+	    appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ?
+	      $scope.$parent.$eval($attrs.datepickerAppendToBody) :
+	      datepickerPopupConfig.appendToBody;
+	    onOpenFocus = angular.isDefined($attrs.onOpenFocus) ?
+	      $scope.$parent.$eval($attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
+	    datepickerPopupTemplateUrl = angular.isDefined($attrs.datepickerPopupTemplateUrl) ?
+	      $attrs.datepickerPopupTemplateUrl :
+	      datepickerPopupConfig.datepickerPopupTemplateUrl;
+	    datepickerTemplateUrl = angular.isDefined($attrs.datepickerTemplateUrl) ?
+	      $attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
+	    altInputFormats = angular.isDefined($attrs.altInputFormats) ?
+	      $scope.$parent.$eval($attrs.altInputFormats) :
+	      datepickerPopupConfig.altInputFormats;
 
-	    scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
+	    $scope.showButtonBar = angular.isDefined($attrs.showButtonBar) ?
+	      $scope.$parent.$eval($attrs.showButtonBar) :
+	      datepickerPopupConfig.showButtonBar;
 
-	    if (datepickerPopupConfig.html5Types[attrs.type]) {
-	      dateFormat = datepickerPopupConfig.html5Types[attrs.type];
+	    if (datepickerPopupConfig.html5Types[$attrs.type]) {
+	      dateFormat = datepickerPopupConfig.html5Types[$attrs.type];
 	      isHtml5DateInput = true;
 	    } else {
-	      dateFormat = attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
-	      attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
+	      dateFormat = $attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
+	      $attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
 	        var newDateFormat = value || datepickerPopupConfig.datepickerPopup;
 	        // Invalidate the $modelValue to ensure that formatters re-run
 	        // FIXME: Refactor when PR is merged: https://github.com/angular/angular.js/pull/10764
@@ -38979,17 +39094,28 @@
 	      throw new Error('uibDatepickerPopup must have a date format specified.');
 	    }
 
-	    if (isHtml5DateInput && attrs.uibDatepickerPopup) {
+	    if (isHtml5DateInput && $attrs.uibDatepickerPopup) {
 	      throw new Error('HTML5 date input types do not support custom formats.');
 	    }
 
 	    // popup element used to display calendar
 	    popupEl = angular.element('<div uib-datepicker-popup-wrap><div uib-datepicker></div></div>');
-	    scope.ngModelOptions = angular.copy(ngModelOptions);
-	    scope.ngModelOptions.timezone = null;
+	    if (ngModelOptions) {
+	      timezone = ngModelOptions.timezone;
+	      $scope.ngModelOptions = angular.copy(ngModelOptions);
+	      $scope.ngModelOptions.timezone = null;
+	      if ($scope.ngModelOptions.updateOnDefault === true) {
+	        $scope.ngModelOptions.updateOn = $scope.ngModelOptions.updateOn ?
+	          $scope.ngModelOptions.updateOn + ' default' : 'default';
+	      }
+
+	      popupEl.attr('ng-model-options', 'ngModelOptions');
+	    } else {
+	      timezone = null;
+	    }
+
 	    popupEl.attr({
 	      'ng-model': 'date',
-	      'ng-model-options': 'ngModelOptions',
 	      'ng-change': 'dateSelection(date)',
 	      'template-url': datepickerPopupTemplateUrl
 	    });
@@ -38998,84 +39124,18 @@
 	    datepickerEl = angular.element(popupEl.children()[0]);
 	    datepickerEl.attr('template-url', datepickerTemplateUrl);
 
+	    if (!$scope.datepickerOptions) {
+	      $scope.datepickerOptions = {};
+	    }
+
 	    if (isHtml5DateInput) {
-	      if (attrs.type === 'month') {
-	        datepickerEl.attr('datepicker-mode', '"month"');
-	        datepickerEl.attr('min-mode', 'month');
+	      if ($attrs.type === 'month') {
+	        $scope.datepickerOptions.datepickerMode = 'month';
+	        $scope.datepickerOptions.minMode = 'month';
 	      }
 	    }
 
-	    if (scope.datepickerOptions) {
-	      angular.forEach(scope.datepickerOptions, function(value, option) {
-	        // Ignore this options, will be managed later
-	        if (['minDate', 'maxDate', 'minMode', 'maxMode', 'initDate', 'datepickerMode'].indexOf(option) === -1) {
-	          datepickerEl.attr(cameltoDash(option), value);
-	        } else {
-	          datepickerEl.attr(cameltoDash(option), 'datepickerOptions.' + option);
-	        }
-	      });
-	    }
-
-	    angular.forEach(['minMode', 'maxMode', 'datepickerMode', 'shortcutPropagation'], function(key) {
-	      if (attrs[key]) {
-	        var getAttribute = $parse(attrs[key]);
-	        var propConfig = {
-	          get: function() {
-	            return getAttribute(scope.$parent);
-	          }
-	        };
-
-	        datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
-
-	        // Propagate changes from datepicker to outside
-	        if (key === 'datepickerMode') {
-	          var setAttribute = getAttribute.assign;
-	          propConfig.set = function(v) {
-	            setAttribute(scope.$parent, v);
-	          };
-	        }
-
-	        Object.defineProperty(scope.watchData, key, propConfig);
-	      }
-	    });
-
-	    angular.forEach(['minDate', 'maxDate', 'initDate'], function(key) {
-	      if (attrs[key]) {
-	        var getAttribute = $parse(attrs[key]);
-
-	        watchListeners.push(scope.$parent.$watch(getAttribute, function(value) {
-	          if (key === 'minDate' || key === 'maxDate') {
-	            if (value === null) {
-	              cache[key] = null;
-	            } else if (angular.isDate(value)) {
-	              cache[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
-	            } else {
-	              cache[key] = new Date(dateFilter(value, 'medium'));
-	            }
-
-	            scope.watchData[key] = value === null ? null : cache[key];
-	          } else {
-	            scope.watchData[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
-	          }
-	        }));
-
-	        datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
-	      }
-	    });
-
-	    if (attrs.dateDisabled) {
-	      datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
-	    }
-
-	    angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle', 'showWeeks', 'startingDay', 'yearRows', 'yearColumns'], function(key) {
-	      if (angular.isDefined(attrs[key])) {
-	        datepickerEl.attr(cameltoDash(key), attrs[key]);
-	      }
-	    });
-
-	    if (attrs.customClass) {
-	      datepickerEl.attr('custom-class', 'customClass({ date: date, mode: mode })');
-	    }
+	    datepickerEl.attr('datepicker-options', 'datepickerOptions');
 
 	    if (!isHtml5DateInput) {
 	      // Internal API to maintain the correct ng-invalid-[key] class
@@ -39084,54 +39144,58 @@
 	      ngModel.$parsers.unshift(parseDate);
 	      ngModel.$formatters.push(function(value) {
 	        if (ngModel.$isEmpty(value)) {
-	          scope.date = value;
+	          $scope.date = value;
 	          return value;
 	        }
 
-	        scope.date = dateParser.fromTimezone(value, ngModelOptions.timezone);
-
-	        if (angular.isNumber(scope.date)) {
-	          scope.date = new Date(scope.date);
+	        if (angular.isNumber(value)) {
+	          value = new Date(value);
 	        }
 
-	        return dateParser.filter(scope.date, dateFormat);
+	        $scope.date = dateParser.fromTimezone(value, timezone);
+
+	        return dateParser.filter($scope.date, dateFormat);
 	      });
 	    } else {
 	      ngModel.$formatters.push(function(value) {
-	        scope.date = dateParser.fromTimezone(value, ngModelOptions.timezone);
+	        $scope.date = dateParser.fromTimezone(value, timezone);
 	        return value;
 	      });
 	    }
 
 	    // Detect changes in the view from the text box
 	    ngModel.$viewChangeListeners.push(function() {
-	      scope.date = parseDateString(ngModel.$viewValue);
+	      $scope.date = parseDateString(ngModel.$viewValue);
 	    });
 
-	    element.on('keydown', inputKeydownBind);
+	    $element.on('keydown', inputKeydownBind);
 
-	    $popup = $compile(popupEl)(scope);
+	    $popup = $compile(popupEl)($scope);
 	    // Prevent jQuery cache memory leak (template is now redundant after linking)
 	    popupEl.remove();
 
 	    if (appendToBody) {
 	      $document.find('body').append($popup);
 	    } else {
-	      element.after($popup);
+	      $element.after($popup);
 	    }
 
-	    scope.$on('$destroy', function() {
-	      if (scope.isOpen === true) {
+	    $scope.$on('$destroy', function() {
+	      if ($scope.isOpen === true) {
 	        if (!$rootScope.$$phase) {
-	          scope.$apply(function() {
-	            scope.isOpen = false;
+	          $scope.$apply(function() {
+	            $scope.isOpen = false;
 	          });
 	        }
 	      }
 
 	      $popup.remove();
-	      element.off('keydown', inputKeydownBind);
+	      $element.off('keydown', inputKeydownBind);
 	      $document.off('click', documentClickBind);
+	      if (scrollParentEl) {
+	        scrollParentEl.off('scroll', positionPopup);
+	      }
+	      angular.element($window).off('resize', positionPopup);
 
 	      //Clear all watch listeners on destroy
 	      while (watchListeners.length) {
@@ -39140,88 +39204,124 @@
 	    });
 	  };
 
-	  scope.getText = function(key) {
-	    return scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
+	  $scope.getText = function(key) {
+	    return $scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
 	  };
 
-	  scope.isDisabled = function(date) {
+	  $scope.isDisabled = function(date) {
 	    if (date === 'today') {
-	      date = new Date();
+	      date = dateParser.fromTimezone(new Date(), timezone);
 	    }
 
-	    return scope.watchData.minDate && scope.compare(date, cache.minDate) < 0 ||
-	        scope.watchData.maxDate && scope.compare(date, cache.maxDate) > 0;
+	    var dates = {};
+	    angular.forEach(['minDate', 'maxDate'], function(key) {
+	      if (!$scope.datepickerOptions[key]) {
+	        dates[key] = null;
+	      } else if (angular.isDate($scope.datepickerOptions[key])) {
+	        dates[key] = dateParser.fromTimezone(new Date($scope.datepickerOptions[key]), timezone);
+	      } else {
+	        if ($datepickerPopupLiteralWarning) {
+	          $log.warn('Literal date support has been deprecated, please switch to date object usage');
+	        }
+
+	        dates[key] = new Date(dateFilter($scope.datepickerOptions[key], 'medium'));
+	      }
+	    });
+
+	    return $scope.datepickerOptions &&
+	      dates.minDate && $scope.compare(date, dates.minDate) < 0 ||
+	      dates.maxDate && $scope.compare(date, dates.maxDate) > 0;
 	  };
 
-	  scope.compare = function(date1, date2) {
+	  $scope.compare = function(date1, date2) {
 	    return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()) - new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
 	  };
 
 	  // Inner change
-	  scope.dateSelection = function(dt) {
+	  $scope.dateSelection = function(dt) {
 	    if (angular.isDefined(dt)) {
-	      scope.date = dt;
+	      $scope.date = dt;
 	    }
-	    var date = scope.date ? dateParser.filter(scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
-	    element.val(date);
+	    var date = $scope.date ? dateParser.filter($scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
+	    $element.val(date);
 	    ngModel.$setViewValue(date);
 
 	    if (closeOnDateSelection) {
-	      scope.isOpen = false;
-	      element[0].focus();
+	      $scope.isOpen = false;
+	      $element[0].focus();
 	    }
 	  };
 
-	  scope.keydown = function(evt) {
+	  $scope.keydown = function(evt) {
 	    if (evt.which === 27) {
 	      evt.stopPropagation();
-	      scope.isOpen = false;
-	      element[0].focus();
+	      $scope.isOpen = false;
+	      $element[0].focus();
 	    }
 	  };
 
-	  scope.select = function(date) {
+	  $scope.select = function(date, evt) {
+	    evt.stopPropagation();
+
 	    if (date === 'today') {
 	      var today = new Date();
-	      if (angular.isDate(scope.date)) {
-	        date = new Date(scope.date);
+	      if (angular.isDate($scope.date)) {
+	        date = new Date($scope.date);
 	        date.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
 	      } else {
 	        date = new Date(today.setHours(0, 0, 0, 0));
 	      }
 	    }
-	    scope.dateSelection(date);
+	    $scope.dateSelection(date);
 	  };
 
-	  scope.close = function() {
-	    scope.isOpen = false;
-	    element[0].focus();
+	  $scope.close = function(evt) {
+	    evt.stopPropagation();
+
+	    $scope.isOpen = false;
+	    $element[0].focus();
 	  };
 
-	  scope.disabled = angular.isDefined(attrs.disabled) || false;
-	  if (attrs.ngDisabled) {
-	    watchListeners.push(scope.$parent.$watch($parse(attrs.ngDisabled), function(disabled) {
-	      scope.disabled = disabled;
+	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
+	  if ($attrs.ngDisabled) {
+	    watchListeners.push($scope.$parent.$watch($parse($attrs.ngDisabled), function(disabled) {
+	      $scope.disabled = disabled;
 	    }));
 	  }
 
-	  scope.$watch('isOpen', function(value) {
+	  $scope.$watch('isOpen', function(value) {
 	    if (value) {
-	      if (!scope.disabled) {
-	        scope.position = appendToBody ? $position.offset(element) : $position.position(element);
-	        scope.position.top = scope.position.top + element.prop('offsetHeight');
-
+	      if (!$scope.disabled) {
 	        $timeout(function() {
+	          positionPopup();
+
 	          if (onOpenFocus) {
-	            scope.$broadcast('uib:datepicker.focus');
+	            $scope.$broadcast('uib:datepicker.focus');
 	          }
+
 	          $document.on('click', documentClickBind);
+
+	          var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
+	          if (appendToBody || $position.parsePlacement(placement)[2]) {
+	            scrollParentEl = scrollParentEl || angular.element($position.scrollParent($element));
+	            if (scrollParentEl) {
+	              scrollParentEl.on('scroll', positionPopup);
+	            }
+	          } else {
+	            scrollParentEl = null;
+	          }
+
+	          angular.element($window).on('resize', positionPopup);
 	        }, 0, false);
 	      } else {
-	        scope.isOpen = false;
+	        $scope.isOpen = false;
 	      }
 	    } else {
 	      $document.off('click', documentClickBind);
+	      if (scrollParentEl) {
+	        scrollParentEl.off('scroll', positionPopup);
+	      }
+	      angular.element($window).off('resize', positionPopup);
 	    }
 	  });
 
@@ -39230,10 +39330,10 @@
 	  }
 
 	  function parseDateString(viewValue) {
-	    var date = dateParser.parse(viewValue, dateFormat, scope.date);
+	    var date = dateParser.parse(viewValue, dateFormat, $scope.date);
 	    if (isNaN(date)) {
 	      for (var i = 0; i < altInputFormats.length; i++) {
-	        date = dateParser.parse(viewValue, altInputFormats[i], scope.date);
+	        date = dateParser.parse(viewValue, altInputFormats[i], $scope.date);
 	        if (!isNaN(date)) {
 	          return date;
 	        }
@@ -39259,7 +39359,7 @@
 	    if (angular.isString(viewValue)) {
 	      var date = parseDateString(viewValue);
 	      if (!isNaN(date)) {
-	        return dateParser.toTimezone(date, ngModelOptions.timezone);
+	        return dateParser.toTimezone(date, timezone);
 	      }
 	    }
 
@@ -39269,7 +39369,7 @@
 	  function validator(modelValue, viewValue) {
 	    var value = modelValue || viewValue;
 
-	    if (!attrs.ngRequired && !value) {
+	    if (!$attrs.ngRequired && !value) {
 	      return true;
 	    }
 
@@ -39293,38 +39393,54 @@
 	  }
 
 	  function documentClickBind(event) {
-	    if (!scope.isOpen && scope.disabled) {
+	    if (!$scope.isOpen && $scope.disabled) {
 	      return;
 	    }
 
 	    var popup = $popup[0];
-	    var dpContainsTarget = element[0].contains(event.target);
+	    var dpContainsTarget = $element[0].contains(event.target);
 	    // The popup node may not be an element node
 	    // In some browsers (IE) only element nodes have the 'contains' function
 	    var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
-	    if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
-	      scope.$apply(function() {
-	        scope.isOpen = false;
+	    if ($scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
+	      $scope.$apply(function() {
+	        $scope.isOpen = false;
 	      });
 	    }
 	  }
 
 	  function inputKeydownBind(evt) {
-	    if (evt.which === 27 && scope.isOpen) {
+	    if (evt.which === 27 && $scope.isOpen) {
 	      evt.preventDefault();
 	      evt.stopPropagation();
-	      scope.$apply(function() {
-	        scope.isOpen = false;
+	      $scope.$apply(function() {
+	        $scope.isOpen = false;
 	      });
-	      element[0].focus();
-	    } else if (evt.which === 40 && !scope.isOpen) {
+	      $element[0].focus();
+	    } else if (evt.which === 40 && !$scope.isOpen) {
 	      evt.preventDefault();
 	      evt.stopPropagation();
-	      scope.$apply(function() {
-	        scope.isOpen = true;
+	      $scope.$apply(function() {
+	        $scope.isOpen = true;
 	      });
 	    }
 	  }
+
+	  function positionPopup() {
+	    if ($scope.isOpen) {
+	      var dpElement = angular.element($popup[0].querySelector('.uib-datepicker-popup'));
+	      var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
+	      var position = $position.positionElements($element, dpElement, placement, appendToBody);
+	      dpElement.css({top: position.top + 'px', left: position.left + 'px'});
+	      if (dpElement.hasClass('uib-position-measure')) {
+	        dpElement.removeClass('uib-position-measure');
+	      }
+	    }
+	  }
+
+	  $scope.$on('uib:datepicker.mode', function() {
+	    $timeout(positionPopup, 0, false);
+	  });
 	}])
 
 	.directive('uibDatepickerPopup', function() {
@@ -39336,9 +39452,7 @@
 	      isOpen: '=?',
 	      currentText: '@',
 	      clearText: '@',
-	      closeText: '@',
-	      dateDisabled: '&',
-	      customClass: '&'
+	      closeText: '@'
 	    },
 	    link: function(scope, element, attrs, ctrls) {
 	      var ngModel = ctrls[0],
@@ -39354,7 +39468,7 @@
 	    replace: true,
 	    transclude: true,
 	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/popup.html';
+	      return attrs.templateUrl || 'uib/template/datepickerPopup/popup.html';
 	    }
 	  };
 	});
@@ -39391,10 +39505,10 @@
 	.service('uibDropdownService', ['$document', '$rootScope', function($document, $rootScope) {
 	  var openScope = null;
 
-	  this.open = function(dropdownScope) {
+	  this.open = function(dropdownScope, element) {
 	    if (!openScope) {
 	      $document.on('click', closeDropdown);
-	      $document.on('keydown', keybindFilter);
+	      element.on('keydown', keybindFilter);
 	    }
 
 	    if (openScope && openScope !== dropdownScope) {
@@ -39404,11 +39518,11 @@
 	    openScope = dropdownScope;
 	  };
 
-	  this.close = function(dropdownScope) {
+	  this.close = function(dropdownScope, element) {
 	    if (openScope === dropdownScope) {
 	      openScope = null;
 	      $document.off('click', closeDropdown);
-	      $document.off('keydown', keybindFilter);
+	      element.off('keydown', keybindFilter);
 	    }
 	  };
 
@@ -39441,6 +39555,7 @@
 
 	  var keybindFilter = function(evt) {
 	    if (evt.which === 27) {
+	      evt.stopPropagation();
 	      openScope.focusToggleElement();
 	      closeDropdown();
 	    } else if (openScope.isKeynavEnabled() && [38, 40].indexOf(evt.which) !== -1 && openScope.isOpen) {
@@ -39501,7 +39616,12 @@
 	  };
 
 	  this.toggle = function(open) {
-	    return scope.isOpen = arguments.length ? !!open : !scope.isOpen;
+	    scope.isOpen = arguments.length ? !!open : !scope.isOpen;
+	    if (angular.isFunction(setIsOpen)) {
+	      setIsOpen(scope, scope.isOpen);
+	    }
+
+	    return scope.isOpen;
 	  };
 
 	  // Allow other directives to watch status
@@ -39568,7 +39688,8 @@
 	    if (appendTo && self.dropdownMenu) {
 	      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
 	        css,
-	        rightalign;
+	        rightalign,
+	        scrollbarWidth;
 
 	      css = {
 	        top: pos.top + 'px',
@@ -39581,7 +39702,8 @@
 	        css.right = 'auto';
 	      } else {
 	        css.left = 'auto';
-	        css.right = window.innerWidth -
+	        scrollbarWidth = $position.scrollbarWidth(true);
+	        css.right = window.innerWidth - scrollbarWidth -
 	          (pos.left + $element.prop('offsetWidth')) + 'px';
 	      }
 
@@ -39604,12 +39726,15 @@
 	    }
 
 	    var openContainer = appendTo ? appendTo : $element;
+	    var hasOpenClass = openContainer.hasClass(appendTo ? appendToOpenClass : openClass);
 
-	    $animate[isOpen ? 'addClass' : 'removeClass'](openContainer, appendTo ? appendToOpenClass : openClass).then(function() {
-	      if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
-	        toggleInvoker($scope, { open: !!isOpen });
-	      }
-	    });
+	    if (hasOpenClass === !isOpen) {
+	      $animate[isOpen ? 'addClass' : 'removeClass'](openContainer, appendTo ? appendToOpenClass : openClass).then(function() {
+	        if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
+	          toggleInvoker($scope, { open: !!isOpen });
+	        }
+	      });
+	    }
 
 	    if (isOpen) {
 	      if (self.dropdownMenuTemplateUrl) {
@@ -39624,7 +39749,7 @@
 	      }
 
 	      scope.focusToggleElement();
-	      uibDropdownService.open(scope);
+	      uibDropdownService.open(scope, $element);
 	    } else {
 	      if (self.dropdownMenuTemplateUrl) {
 	        if (templateScope) {
@@ -39635,18 +39760,12 @@
 	        self.dropdownMenu = newEl;
 	      }
 
-	      uibDropdownService.close(scope);
+	      uibDropdownService.close(scope, $element);
 	      self.selectedOption = null;
 	    }
 
 	    if (angular.isFunction(setIsOpen)) {
 	      setIsOpen($scope, isOpen);
-	    }
-	  });
-
-	  $scope.$on('$locationChangeSuccess', function() {
-	    if (scope.getAutoClose() !== 'disabled') {
-	      scope.isOpen = false;
 	    }
 	  });
 	}])
@@ -39774,7 +39893,7 @@
 	      }
 	    };
 	  });
-	angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap'])
+	angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.position'])
 	/**
 	 * A helper, internal data structure that stores all references attached to key
 	 */
@@ -39879,8 +39998,8 @@
 	/**
 	 * A helper directive for the $modal service. It creates a backdrop element.
 	 */
-	  .directive('uibModalBackdrop', ['$animateCss', '$injector', '$uibModalStack',
-	  function($animateCss, $injector, $modalStack) {
+	  .directive('uibModalBackdrop', ['$animate', '$injector', '$uibModalStack',
+	  function($animate, $injector, $modalStack) {
 	    return {
 	      replace: true,
 	      templateUrl: 'uib/template/modal/backdrop.html',
@@ -39892,16 +40011,12 @@
 
 	    function linkFn(scope, element, attrs) {
 	      if (attrs.modalInClass) {
-	        $animateCss(element, {
-	          addClass: attrs.modalInClass
-	        }).start();
+	        $animate.addClass(element, attrs.modalInClass);
 
 	        scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
 	          var done = setIsAsync();
 	          if (scope.modalOptions.animation) {
-	            $animateCss(element, {
-	              removeClass: attrs.modalInClass
-	            }).start().then(done);
+	            $animate.removeClass(element, attrs.modalInClass).then(done);
 	          } else {
 	            done();
 	          }
@@ -39910,8 +40025,8 @@
 	    }
 	  }])
 
-	  .directive('uibModalWindow', ['$uibModalStack', '$q', '$animate', '$animateCss', '$document',
-	  function($modalStack, $q, $animate, $animateCss, $document) {
+	  .directive('uibModalWindow', ['$uibModalStack', '$q', '$animateCss', '$document',
+	  function($modalStack, $q, $animateCss, $document) {
 	    return {
 	      scope: {
 	        index: '@'
@@ -39965,18 +40080,20 @@
 
 	            scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
 	              var done = setIsAsync();
-	              if ($animateCss) {
-	                $animateCss(element, {
-	                  removeClass: attrs.modalInClass
-	                }).start().then(done);
-	              } else {
-	                $animate.removeClass(element, attrs.modalInClass).then(done);
-	              }
+	              $animateCss(element, {
+	                removeClass: attrs.modalInClass
+	              }).start().then(done);
 	            });
 	          }
 
 
 	          $q.when(animationPromise).then(function() {
+	            // Notify {@link $modalStack} that modal is rendered.
+	            var modal = $modalStack.getTop();
+	            if (modal) {
+	              $modalStack.modalRendered(modal.key);
+	            }
+
 	            /**
 	             * If something within the freshly-opened modal already has focus (perhaps via a
 	             * directive that causes focus). then no need to try and focus anything.
@@ -39998,12 +40115,6 @@
 	              }
 	            }
 	          });
-
-	          // Notify {@link $modalStack} that modal is rendered.
-	          var modal = $modalStack.getTop();
-	          if (modal) {
-	            $modalStack.modalRendered(modal.key);
-	          }
 	        });
 	      }
 	    };
@@ -40031,8 +40142,8 @@
 	  })
 
 	  .factory('$uibModalStack', ['$animate', '$animateCss', '$document',
-	    '$compile', '$rootScope', '$q', '$$multiMap', '$$stackedMap',
-	    function($animate, $animateCss, $document, $compile, $rootScope, $q, $$multiMap, $$stackedMap) {
+	    '$compile', '$rootScope', '$q', '$$multiMap', '$$stackedMap', '$uibPosition',
+	    function($animate, $animateCss, $document, $compile, $rootScope, $q, $$multiMap, $$stackedMap, $uibPosition) {
 	      var OPENED_MODAL_CLASS = 'modal-open';
 
 	      var backdropDomEl, backdropScope;
@@ -40041,13 +40152,20 @@
 	      var $modalStack = {
 	        NOW_CLOSING_EVENT: 'modal.stack.now-closing'
 	      };
+	      var topModalIndex = 0;
+	      var previousTopOpenedModal = null;
 
 	      //Modal focus behavior
-	      var focusableElementList;
-	      var focusIndex = 0;
-	      var tababbleSelector = 'a[href], area[href], input:not([disabled]), ' +
+	      var tabableSelector = 'a[href], area[href], input:not([disabled]), ' +
 	        'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
 	        'iframe, object, embed, *[tabindex], *[contenteditable=true]';
+	      var scrollbarPadding;
+
+	      function isVisible(element) {
+	        return !!(element.offsetWidth ||
+	          element.offsetHeight ||
+	          element.getClientRects().length);
+	      }
 
 	      function backdropIndex() {
 	        var topBackdropIndex = -1;
@@ -40056,6 +40174,12 @@
 	          if (openedWindows.get(opened[i]).value.backdrop) {
 	            topBackdropIndex = i;
 	          }
+	        }
+
+	        // If any backdrop exist, ensure that it's index is always
+	        // right below the top modal
+	        if (topBackdropIndex > -1 && topBackdropIndex < topModalIndex) {
+	          topBackdropIndex = topModalIndex;
 	        }
 	        return topBackdropIndex;
 	      }
@@ -40072,11 +40196,24 @@
 
 	        //clean up the stack
 	        openedWindows.remove(modalInstance);
+	        previousTopOpenedModal = openedWindows.top();
+	        if (previousTopOpenedModal) {
+	          topModalIndex = parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10);
+	        }
 
 	        removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, function() {
 	          var modalBodyClass = modalWindow.openedClass || OPENED_MODAL_CLASS;
 	          openedClasses.remove(modalBodyClass, modalInstance);
-	          appendToElement.toggleClass(modalBodyClass, openedClasses.hasKey(modalBodyClass));
+	          var areAnyOpen = openedClasses.hasKey(modalBodyClass);
+	          appendToElement.toggleClass(modalBodyClass, areAnyOpen);
+	          if (!areAnyOpen && scrollbarPadding && scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
+	            if (scrollbarPadding.originalRight) {
+	              appendToElement.css({paddingRight: scrollbarPadding.originalRight + 'px'});
+	            } else {
+	              appendToElement.css({paddingRight: ''});
+	            }
+	            scrollbarPadding = null;
+	          }
 	          toggleTopWindowClass(true);
 	        }, modalWindow.closedDeferred);
 	        checkRemoveBackdrop();
@@ -40137,9 +40274,7 @@
 	          }
 	          afterAnimating.done = true;
 
-	          $animateCss(domEl, {
-	            event: 'leave'
-	          }).start().then(function() {
+	          $animate.leave(domEl).then(function() {
 	            domEl.remove();
 	            if (closedDeferred) {
 	              closedDeferred.resolve();
@@ -40177,15 +40312,15 @@
 	              break;
 	            }
 	            case 9: {
-	              $modalStack.loadFocusElementList(modal);
+	              var list = $modalStack.loadFocusElementList(modal);
 	              var focusChanged = false;
 	              if (evt.shiftKey) {
-	                if ($modalStack.isFocusInFirstItem(evt) || $modalStack.isModalFocused(evt, modal)) {
-	                  focusChanged = $modalStack.focusLastFocusableElement();
+	                if ($modalStack.isFocusInFirstItem(evt, list) || $modalStack.isModalFocused(evt, modal)) {
+	                  focusChanged = $modalStack.focusLastFocusableElement(list);
 	                }
 	              } else {
-	                if ($modalStack.isFocusInLastItem(evt)) {
-	                  focusChanged = $modalStack.focusFirstFocusableElement();
+	                if ($modalStack.isFocusInLastItem(evt, list)) {
+	                  focusChanged = $modalStack.focusFirstFocusableElement(list);
 	                }
 	              }
 
@@ -40193,6 +40328,7 @@
 	                evt.preventDefault();
 	                evt.stopPropagation();
 	              }
+
 	              break;
 	            }
 	          }
@@ -40204,6 +40340,10 @@
 	          modalBodyClass = modal.openedClass || OPENED_MODAL_CLASS;
 
 	        toggleTopWindowClass(false);
+
+	        // Store the current top first, to determine what index we ought to use
+	        // for the current top modal
+	        previousTopOpenedModal = openedWindows.top();
 
 	        openedWindows.add(modalInstance, {
 	          deferred: modal.deferred,
@@ -40238,30 +40378,32 @@
 	          }
 	          $compile(backdropDomEl)(backdropScope);
 	          $animate.enter(backdropDomEl, appendToElement);
+	          scrollbarPadding = $uibPosition.scrollbarPadding(appendToElement);
+	          if (scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
+	            appendToElement.css({paddingRight: scrollbarPadding.right + 'px'});
+	          }
 	        }
 
+	        // Set the top modal index based on the index of the previous top modal
+	        topModalIndex = previousTopOpenedModal ? parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10) + 1 : 0;
 	        var angularDomEl = angular.element('<div uib-modal-window="modal-window"></div>');
 	        angularDomEl.attr({
 	          'template-url': modal.windowTemplateUrl,
 	          'window-class': modal.windowClass,
 	          'window-top-class': modal.windowTopClass,
 	          'size': modal.size,
-	          'index': openedWindows.length() - 1,
+	          'index': topModalIndex,
 	          'animate': 'animate'
 	        }).html(modal.content);
 	        if (modal.animation) {
 	          angularDomEl.attr('modal-animation', 'true');
 	        }
 
-	        $animate.enter($compile(angularDomEl)(modal.scope), appendToElement)
-	          .then(function() {
-	            $animate.addClass(appendToElement, modalBodyClass);
-	          });
+	        appendToElement.addClass(modalBodyClass);
+	        $animate.enter($compile(angularDomEl)(modal.scope), appendToElement);
 
 	        openedWindows.top().value.modalDomEl = angularDomEl;
 	        openedWindows.top().value.modalOpener = modalOpener;
-
-	        $modalStack.clearFocusListCache();
 	      };
 
 	      function broadcastClosing(modalWindow, resultOrReason, closing) {
@@ -40308,16 +40450,17 @@
 	        }
 	      };
 
-	      $modalStack.focusFirstFocusableElement = function() {
-	        if (focusableElementList.length > 0) {
-	          focusableElementList[0].focus();
+	      $modalStack.focusFirstFocusableElement = function(list) {
+	        if (list.length > 0) {
+	          list[0].focus();
 	          return true;
 	        }
 	        return false;
 	      };
-	      $modalStack.focusLastFocusableElement = function() {
-	        if (focusableElementList.length > 0) {
-	          focusableElementList[focusableElementList.length - 1].focus();
+
+	      $modalStack.focusLastFocusableElement = function(list) {
+	        if (list.length > 0) {
+	          list[list.length - 1].focus();
 	          return true;
 	        }
 	        return false;
@@ -40333,32 +40476,29 @@
 	        return false;
 	      };
 
-	      $modalStack.isFocusInFirstItem = function(evt) {
-	        if (focusableElementList.length > 0) {
-	          return (evt.target || evt.srcElement) === focusableElementList[0];
+	      $modalStack.isFocusInFirstItem = function(evt, list) {
+	        if (list.length > 0) {
+	          return (evt.target || evt.srcElement) === list[0];
 	        }
 	        return false;
 	      };
 
-	      $modalStack.isFocusInLastItem = function(evt) {
-	        if (focusableElementList.length > 0) {
-	          return (evt.target || evt.srcElement) === focusableElementList[focusableElementList.length - 1];
+	      $modalStack.isFocusInLastItem = function(evt, list) {
+	        if (list.length > 0) {
+	          return (evt.target || evt.srcElement) === list[list.length - 1];
 	        }
 	        return false;
-	      };
-
-	      $modalStack.clearFocusListCache = function() {
-	        focusableElementList = [];
-	        focusIndex = 0;
 	      };
 
 	      $modalStack.loadFocusElementList = function(modalWindow) {
-	        if (focusableElementList === undefined || !focusableElementList.length) {
-	          if (modalWindow) {
-	            var modalDomE1 = modalWindow.value.modalDomEl;
-	            if (modalDomE1 && modalDomE1.length) {
-	              focusableElementList = modalDomE1[0].querySelectorAll(tababbleSelector);
-	            }
+	        if (modalWindow) {
+	          var modalDomE1 = modalWindow.value.modalDomEl;
+	          if (modalDomE1 && modalDomE1.length) {
+	            var elements = modalDomE1[0].querySelectorAll(tabableSelector);
+	            return elements ?
+	              Array.prototype.filter.call(elements, function(element) {
+	                return isVisible(element);
+	              }) : elements;
 	          }
 	        }
 	      };
@@ -40445,25 +40585,34 @@
 	                  }
 	                });
 
-	                var ctrlInstance, ctrlLocals = {};
+	                var ctrlInstance, ctrlInstantiate, ctrlLocals = {};
 
 	                //controllers
 	                if (modalOptions.controller) {
 	                  ctrlLocals.$scope = modalScope;
+	                  ctrlLocals.$scope.$resolve = {};
 	                  ctrlLocals.$uibModalInstance = modalInstance;
 	                  angular.forEach(tplAndVars[1], function(value, key) {
 	                    ctrlLocals[key] = value;
+	                    ctrlLocals.$scope.$resolve[key] = value;
 	                  });
 
-	                  ctrlInstance = $controller(modalOptions.controller, ctrlLocals);
-	                  if (modalOptions.controllerAs) {
-	                    if (modalOptions.bindToController) {
-	                      ctrlInstance.$close = modalScope.$close;
-	                      ctrlInstance.$dismiss = modalScope.$dismiss;
-	                      angular.extend(ctrlInstance, providedScope);
-	                    }
+	                  // the third param will make the controller instantiate later,private api
+	                  // @see https://github.com/angular/angular.js/blob/master/src/ng/controller.js#L126
+	                  ctrlInstantiate = $controller(modalOptions.controller, ctrlLocals, true, modalOptions.controllerAs);
+	                  if (modalOptions.controllerAs && modalOptions.bindToController) {
+	                    ctrlInstance = ctrlInstantiate.instance;
+	                    ctrlInstance.$close = modalScope.$close;
+	                    ctrlInstance.$dismiss = modalScope.$dismiss;
+	                    angular.extend(ctrlInstance, {
+	                      $resolve: ctrlLocals.$scope.$resolve
+	                    }, providedScope);
+	                  }
 
-	                    modalScope[modalOptions.controllerAs] = ctrlInstance;
+	                  ctrlInstance = ctrlInstantiate();
+
+	                  if (angular.isFunction(ctrlInstance.$onInit)) {
+	                    ctrlInstance.$onInit();
 	                  }
 	                }
 
@@ -40527,7 +40676,7 @@
 	        };
 
 	        if ($attrs.itemsPerPage) {
-	          ctrl._watchers.push($scope.$parent.$watch($parse($attrs.itemsPerPage), function(value) {
+	          ctrl._watchers.push($scope.$parent.$watch($attrs.itemsPerPage, function(value) {
 	            ctrl.itemsPerPage = parseInt(value, 10);
 	            $scope.totalPages = ctrl.calculateTotalPages();
 	            ctrl.updatePage();
@@ -40648,7 +40797,8 @@
 	  var maxSize = angular.isDefined($attrs.maxSize) ? $scope.$parent.$eval($attrs.maxSize) : uibPaginationConfig.maxSize,
 	    rotate = angular.isDefined($attrs.rotate) ? $scope.$parent.$eval($attrs.rotate) : uibPaginationConfig.rotate,
 	    forceEllipses = angular.isDefined($attrs.forceEllipses) ? $scope.$parent.$eval($attrs.forceEllipses) : uibPaginationConfig.forceEllipses,
-	    boundaryLinkNumbers = angular.isDefined($attrs.boundaryLinkNumbers) ? $scope.$parent.$eval($attrs.boundaryLinkNumbers) : uibPaginationConfig.boundaryLinkNumbers;
+	    boundaryLinkNumbers = angular.isDefined($attrs.boundaryLinkNumbers) ? $scope.$parent.$eval($attrs.boundaryLinkNumbers) : uibPaginationConfig.boundaryLinkNumbers,
+	    pageLabel = angular.isDefined($attrs.pageLabel) ? function(idx) { return $scope.$parent.$eval($attrs.pageLabel, {$page: idx}); } : angular.identity;
 	  $scope.boundaryLinks = angular.isDefined($attrs.boundaryLinks) ? $scope.$parent.$eval($attrs.boundaryLinks) : uibPaginationConfig.boundaryLinks;
 	  $scope.directionLinks = angular.isDefined($attrs.directionLinks) ? $scope.$parent.$eval($attrs.directionLinks) : uibPaginationConfig.directionLinks;
 
@@ -40700,7 +40850,7 @@
 
 	    // Add page number links
 	    for (var number = startPage; number <= endPage; number++) {
-	      var page = makePage(number, number, number === currentPage);
+	      var page = makePage(number, pageLabel(number), number === currentPage);
 	      pages.push(page);
 	    }
 
@@ -40842,7 +40992,7 @@
 	  /**
 	   * This allows you to extend the set of trigger mappings available. E.g.:
 	   *
-	   *   $tooltipProvider.setTriggers( 'openTrigger': 'closeTrigger' );
+	   *   $tooltipProvider.setTriggers( { 'openTrigger': 'closeTrigger' } );
 	   */
 	  this.setTriggers = function setTriggers(triggers) {
 	    angular.extend(triggerMap, triggers);
@@ -40915,17 +41065,17 @@
 	      var startSym = $interpolate.startSymbol();
 	      var endSym = $interpolate.endSymbol();
 	      var template =
-	        '<div '+ directiveName + '-popup '+
-	          'title="' + startSym + 'title' + endSym + '" '+
+	        '<div '+ directiveName + '-popup ' +
+	          'uib-title="' + startSym + 'title' + endSym + '" ' +
 	          (options.useContentExp ?
 	            'content-exp="contentExp()" ' :
 	            'content="' + startSym + 'content' + endSym + '" ') +
-	          'placement="' + startSym + 'placement' + endSym + '" '+
-	          'popup-class="' + startSym + 'popupClass' + endSym + '" '+
+	          'placement="' + startSym + 'placement' + endSym + '" ' +
+	          'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
 	          'animation="animation" ' +
-	          'is-open="isOpen"' +
+	          'is-open="isOpen" ' +
 	          'origin-scope="origScope" ' +
-	          'style="visibility: hidden; display: block; top: -9999px; left: -9999px;"' +
+	          'class="uib-position-measure"' +
 	          '>' +
 	        '</div>';
 
@@ -40948,6 +41098,7 @@
 	            var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen']) ? $parse(attrs[prefix + 'IsOpen']) : false;
 	            var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
 	            var observers = [];
+	            var lastPlacement;
 
 	            var positionTooltip = function() {
 	              // check if tooltip exists and is not empty
@@ -40955,36 +41106,29 @@
 
 	              if (!positionTimeout) {
 	                positionTimeout = $timeout(function() {
-	                  // Reset the positioning.
-	                  tooltip.css({ top: 0, left: 0 });
-
-	                  // Now set the calculated positioning.
 	                  var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
-	                  tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px', visibility: 'visible' });
+	                  tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px' });
 
-	                  // If the placement class is prefixed, still need
-	                  // to remove the TWBS standard class.
-	                  if (options.placementClassPrefix) {
-	                    tooltip.removeClass('top bottom left right');
+	                  if (!tooltip.hasClass(ttPosition.placement.split('-')[0])) {
+	                    tooltip.removeClass(lastPlacement.split('-')[0]);
+	                    tooltip.addClass(ttPosition.placement.split('-')[0]);
 	                  }
 
-	                  tooltip.removeClass(
-	                    options.placementClassPrefix + 'top ' +
-	                    options.placementClassPrefix + 'top-left ' +
-	                    options.placementClassPrefix + 'top-right ' +
-	                    options.placementClassPrefix + 'bottom ' +
-	                    options.placementClassPrefix + 'bottom-left ' +
-	                    options.placementClassPrefix + 'bottom-right ' +
-	                    options.placementClassPrefix + 'left ' +
-	                    options.placementClassPrefix + 'left-top ' +
-	                    options.placementClassPrefix + 'left-bottom ' +
-	                    options.placementClassPrefix + 'right ' +
-	                    options.placementClassPrefix + 'right-top ' +
-	                    options.placementClassPrefix + 'right-bottom');
+	                  if (!tooltip.hasClass(options.placementClassPrefix + ttPosition.placement)) {
+	                    tooltip.removeClass(options.placementClassPrefix + lastPlacement);
+	                    tooltip.addClass(options.placementClassPrefix + ttPosition.placement);
+	                  }
 
-	                  var placement = ttPosition.placement.split('-');
-	                  tooltip.addClass(placement[0] + ' ' + options.placementClassPrefix + ttPosition.placement);
-	                  $position.positionArrow(tooltip, ttPosition.placement);
+	                  // first time through tt element will have the
+	                  // uib-position-measure class or if the placement
+	                  // has changed we need to position the arrow.
+	                  if (tooltip.hasClass('uib-position-measure')) {
+	                    $position.positionArrow(tooltip, ttPosition.placement);
+	                    tooltip.removeClass('uib-position-measure');
+	                  } else if (lastPlacement !== ttPosition.placement) {
+	                    $position.positionArrow(tooltip, ttPosition.placement);
+	                  }
+	                  lastPlacement = ttPosition.placement;
 
 	                  positionTimeout = null;
 	                }, 0, false);
@@ -41159,6 +41303,8 @@
 
 	              ttScope.popupClass = attrs[prefix + 'Class'];
 	              ttScope.placement = angular.isDefined(attrs[prefix + 'Placement']) ? attrs[prefix + 'Placement'] : options.placement;
+	              var placement = $position.parsePlacement(ttScope.placement);
+	              lastPlacement = placement[1] ? placement[0] + '-' + placement[1] : placement[0];
 
 	              var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
 	              var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
@@ -41334,7 +41480,7 @@
 	            }
 
 	            appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
-	            
+
 	            // Make sure tooltip is destroyed and removed.
 	            scope.$on('$destroy', function onDestroyTooltip() {
 	              unregisterTriggers();
@@ -41436,8 +41582,6 @@
 	        // // in TWBS, so we need the primary position.
 	        var position = $uibPosition.parsePlacement(scope.placement);
 	        element.addClass(position[0]);
-	      } else {
-	        element.addClass('top');
 	      }
 
 	      if (scope.popupClass) {
@@ -41502,7 +41646,7 @@
 	.directive('uibPopoverTemplatePopup', function() {
 	  return {
 	    replace: true,
-	    scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+	    scope: { uibTitle: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
 	      originScope: '&' },
 	    templateUrl: 'uib/template/popover/popover-template.html'
 	  };
@@ -41517,7 +41661,7 @@
 	.directive('uibPopoverHtmlPopup', function() {
 	  return {
 	    replace: true,
-	    scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    scope: { contentExp: '&', uibTitle: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
 	    templateUrl: 'uib/template/popover/popover-html.html'
 	  };
 	})
@@ -41531,7 +41675,7 @@
 	.directive('uibPopoverPopup', function() {
 	  return {
 	    replace: true,
-	    scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    scope: { uibTitle: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
 	    templateUrl: 'uib/template/popover/popover.html'
 	  };
 	})
@@ -41552,7 +41696,7 @@
 	      animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
 
 	  this.bars = [];
-	  $scope.max = angular.isDefined($scope.max) ? $scope.max : progressConfig.max;
+	  $scope.max = getMaxOrDefault();
 
 	  this.addBar = function(bar, element, attrs) {
 	    if (!animate) {
@@ -41561,7 +41705,7 @@
 
 	    this.bars.push(bar);
 
-	    bar.max = $scope.max;
+	    bar.max = getMaxOrDefault();
 	    bar.title = attrs && angular.isDefined(attrs.title) ? attrs.title : 'progressbar';
 
 	    bar.$watch('value', function(value) {
@@ -41592,12 +41736,17 @@
 	    });
 	  };
 
-	  $scope.$watch('max', function(max) {
+	  //$attrs.$observe('maxParam', function(maxParam) {
+	  $scope.$watch('maxParam', function(maxParam) {
 	    self.bars.forEach(function(bar) {
-	      bar.max = $scope.max;
+	      bar.max = getMaxOrDefault();
 	      bar.recalculatePercentage();
 	    });
 	  });
+
+	  function getMaxOrDefault () {
+	    return angular.isDefined($scope.maxParam) ? $scope.maxParam : progressConfig.max;
+	  }
 	}])
 
 	.directive('uibProgress', function() {
@@ -41607,7 +41756,7 @@
 	    controller: 'UibProgressController',
 	    require: 'uibProgress',
 	    scope: {
-	      max: '=?'
+	      maxParam: '=?max'
 	    },
 	    templateUrl: 'uib/template/progressbar/progress.html'
 	  };
@@ -41636,7 +41785,7 @@
 	    controller: 'UibProgressController',
 	    scope: {
 	      value: '=',
-	      max: '=?',
+	      maxParam: '=?max',
 	      type: '@'
 	    },
 	    templateUrl: 'uib/template/progressbar/progressbar.html',
@@ -41652,11 +41801,13 @@
 	  max: 5,
 	  stateOn: null,
 	  stateOff: null,
+	  enableReset: true,
 	  titles : ['one', 'two', 'three', 'four', 'five']
 	})
 
 	.controller('UibRatingController', ['$scope', '$attrs', 'uibRatingConfig', function($scope, $attrs, ratingConfig) {
-	  var ngModelCtrl = { $setViewValue: angular.noop };
+	  var ngModelCtrl = { $setViewValue: angular.noop },
+	    self = this;
 
 	  this.init = function(ngModelCtrl_) {
 	    ngModelCtrl = ngModelCtrl_;
@@ -41672,7 +41823,9 @@
 
 	    this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
 	    this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
-	    var tmpTitles = angular.isDefined($attrs.titles) ? $scope.$parent.$eval($attrs.titles) : ratingConfig.titles ;
+	    this.enableReset = angular.isDefined($attrs.enableReset) ?
+	      $scope.$parent.$eval($attrs.enableReset) : ratingConfig.enableReset;
+	    var tmpTitles = angular.isDefined($attrs.titles) ? $scope.$parent.$eval($attrs.titles) : ratingConfig.titles;
 	    this.titles = angular.isArray(tmpTitles) && tmpTitles.length > 0 ?
 	      tmpTitles : ratingConfig.titles;
 
@@ -41699,7 +41852,8 @@
 
 	  $scope.rate = function(value) {
 	    if (!$scope.readonly && value >= 0 && value <= $scope.range.length) {
-	      ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue === value ? 0 : value);
+	      var newViewValue = self.enableReset && ngModelCtrl.$viewValue === value ? 0 : value;
+	      ngModelCtrl.$setViewValue(newViewValue);
 	      ngModelCtrl.$render();
 	    }
 	  };
@@ -41726,6 +41880,7 @@
 
 	  this.render = function() {
 	    $scope.value = ngModelCtrl.$viewValue;
+	    $scope.title = self.getTitle($scope.value - 1);
 	  };
 	}])
 
@@ -41733,7 +41888,7 @@
 	  return {
 	    require: ['uibRating', 'ngModel'],
 	    scope: {
-	      readonly: '=?',
+	      readonly: '=?readOnly',
 	      onHover: '&',
 	      onLeave: '&'
 	    },
@@ -41751,66 +41906,119 @@
 
 	.controller('UibTabsetController', ['$scope', function ($scope) {
 	  var ctrl = this,
-	      tabs = ctrl.tabs = $scope.tabs = [];
+	    oldIndex;
+	  ctrl.tabs = [];
 
-	  ctrl.select = function(selectedTab) {
-	    angular.forEach(tabs, function(tab) {
-	      if (tab.active && tab !== selectedTab) {
-	        tab.active = false;
-	        tab.onDeselect();
-	        selectedTab.selectCalled = false;
+	  ctrl.select = function(index, evt) {
+	    if (!destroyed) {
+	      var previousIndex = findTabIndex(oldIndex);
+	      var previousSelected = ctrl.tabs[previousIndex];
+	      if (previousSelected) {
+	        previousSelected.tab.onDeselect({
+	          $event: evt,
+	          $selectedIndex: index
+	        });
+	        if (evt && evt.isDefaultPrevented()) {
+	          return;
+	        }
+	        previousSelected.tab.active = false;
 	      }
-	    });
-	    selectedTab.active = true;
-	    // only call select if it has not already been called
-	    if (!selectedTab.selectCalled) {
-	      selectedTab.onSelect();
-	      selectedTab.selectCalled = true;
+
+	      var selected = ctrl.tabs[index];
+	      if (selected) {
+	        selected.tab.onSelect({
+	          $event: evt
+	        });
+	        selected.tab.active = true;
+	        ctrl.active = selected.index;
+	        oldIndex = selected.index;
+	      } else if (!selected && angular.isDefined(oldIndex)) {
+	        ctrl.active = null;
+	        oldIndex = null;
+	      }
 	    }
 	  };
 
 	  ctrl.addTab = function addTab(tab) {
-	    tabs.push(tab);
-	    // we can't run the select function on the first tab
-	    // since that would select it twice
-	    if (tabs.length === 1 && tab.active !== false) {
-	      tab.active = true;
-	    } else if (tab.active) {
-	      ctrl.select(tab);
-	    } else {
-	      tab.active = false;
+	    ctrl.tabs.push({
+	      tab: tab,
+	      index: tab.index
+	    });
+	    ctrl.tabs.sort(function(t1, t2) {
+	      if (t1.index > t2.index) {
+	        return 1;
+	      }
+
+	      if (t1.index < t2.index) {
+	        return -1;
+	      }
+
+	      return 0;
+	    });
+
+	    if (tab.index === ctrl.active || !angular.isDefined(ctrl.active) && ctrl.tabs.length === 1) {
+	      var newActiveIndex = findTabIndex(tab.index);
+	      ctrl.select(newActiveIndex);
 	    }
 	  };
 
 	  ctrl.removeTab = function removeTab(tab) {
-	    var index = tabs.indexOf(tab);
-	    //Select a new tab if the tab to be removed is selected and not destroyed
-	    if (tab.active && tabs.length > 1 && !destroyed) {
-	      //If this is the last tab, select the previous tab. else, the next tab.
-	      var newActiveIndex = index === tabs.length - 1 ? index - 1 : index + 1;
-	      ctrl.select(tabs[newActiveIndex]);
+	    var index;
+	    for (var i = 0; i < ctrl.tabs.length; i++) {
+	      if (ctrl.tabs[i].tab === tab) {
+	        index = i;
+	        break;
+	      }
 	    }
-	    tabs.splice(index, 1);
+
+	    if (ctrl.tabs[index].index === ctrl.active) {
+	      var newActiveTabIndex = index === ctrl.tabs.length - 1 ?
+	        index - 1 : index + 1 % ctrl.tabs.length;
+	      ctrl.select(newActiveTabIndex);
+	    }
+
+	    ctrl.tabs.splice(index, 1);
 	  };
+
+	  $scope.$watch('tabset.active', function(val) {
+	    if (angular.isDefined(val) && val !== oldIndex) {
+	      ctrl.select(findTabIndex(val));
+	    }
+	  });
 
 	  var destroyed;
 	  $scope.$on('$destroy', function() {
 	    destroyed = true;
 	  });
+
+	  function findTabIndex(index) {
+	    for (var i = 0; i < ctrl.tabs.length; i++) {
+	      if (ctrl.tabs[i].index === index) {
+	        return i;
+	      }
+	    }
+	  }
 	}])
 
 	.directive('uibTabset', function() {
 	  return {
 	    transclude: true,
 	    replace: true,
-	    scope: {
+	    scope: {},
+	    bindToController: {
+	      active: '=?',
 	      type: '@'
 	    },
 	    controller: 'UibTabsetController',
-	    templateUrl: 'uib/template/tabs/tabset.html',
+	    controllerAs: 'tabset',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/tabs/tabset.html';
+	    },
 	    link: function(scope, element, attrs) {
-	      scope.vertical = angular.isDefined(attrs.vertical) ? scope.$parent.$eval(attrs.vertical) : false;
-	      scope.justified = angular.isDefined(attrs.justified) ? scope.$parent.$eval(attrs.justified) : false;
+	      scope.vertical = angular.isDefined(attrs.vertical) ?
+	        scope.$parent.$eval(attrs.vertical) : false;
+	      scope.justified = angular.isDefined(attrs.justified) ?
+	        scope.$parent.$eval(attrs.justified) : false;
 	    }
 	  };
 	})
@@ -41819,11 +42027,14 @@
 	  return {
 	    require: '^uibTabset',
 	    replace: true,
-	    templateUrl: 'uib/template/tabs/tab.html',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/tabs/tab.html';
+	    },
 	    transclude: true,
 	    scope: {
-	      active: '=?',
 	      heading: '@',
+	      index: '=?',
+	      classes: '@?',
 	      onSelect: '&select', //This callback is called in contentHeadingTransclude
 	                          //once it inserts the tab's content into the dom
 	      onDeselect: '&deselect'
@@ -41833,12 +42044,6 @@
 	    },
 	    controllerAs: 'tab',
 	    link: function(scope, elm, attrs, tabsetCtrl, transclude) {
-	      scope.$watch('active', function(active) {
-	        if (active) {
-	          tabsetCtrl.select(scope);
-	        }
-	      });
-
 	      scope.disabled = false;
 	      if (attrs.disable) {
 	        scope.$parent.$watch($parse(attrs.disable), function(value) {
@@ -41846,9 +42051,29 @@
 	        });
 	      }
 
-	      scope.select = function() {
+	      if (angular.isUndefined(attrs.index)) {
+	        if (tabsetCtrl.tabs && tabsetCtrl.tabs.length) {
+	          scope.index = Math.max.apply(null, tabsetCtrl.tabs.map(function(t) { return t.index; })) + 1;
+	        } else {
+	          scope.index = 0;
+	        }
+	      }
+
+	      if (angular.isUndefined(attrs.classes)) {
+	        scope.classes = '';
+	      }
+
+	      scope.select = function(evt) {
 	        if (!scope.disabled) {
-	          scope.active = true;
+	          var index;
+	          for (var i = 0; i < tabsetCtrl.tabs.length; i++) {
+	            if (tabsetCtrl.tabs[i].tab === scope) {
+	              index = i;
+	              break;
+	            }
+	          }
+
+	          tabsetCtrl.select(index, evt);
 	        }
 	      };
 
@@ -41884,7 +42109,7 @@
 	    restrict: 'A',
 	    require: '^uibTabset',
 	    link: function(scope, elm, attrs) {
-	      var tab = scope.$eval(attrs.uibTabContentTransclude);
+	      var tab = scope.$eval(attrs.uibTabContentTransclude).tab;
 
 	      //Now our tab is ready to be transcluded: both the tab heading area
 	      //and the tab content area are loaded.  Transclude 'em both.
@@ -41908,7 +42133,8 @@
 	      node.hasAttribute('x-uib-tab-heading') ||
 	      node.tagName.toLowerCase() === 'uib-tab-heading' ||
 	      node.tagName.toLowerCase() === 'data-uib-tab-heading' ||
-	      node.tagName.toLowerCase() === 'x-uib-tab-heading'
+	      node.tagName.toLowerCase() === 'x-uib-tab-heading' ||
+	      node.tagName.toLowerCase() === 'uib:tab-heading'
 	    );
 	  }
 	});
@@ -41933,7 +42159,8 @@
 	  var selected = new Date(),
 	    watchers = [],
 	    ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl
-	    meridians = angular.isDefined($attrs.meridians) ? $scope.$parent.$eval($attrs.meridians) : timepickerConfig.meridians || $locale.DATETIME_FORMATS.AMPMS;
+	    meridians = angular.isDefined($attrs.meridians) ? $scope.$parent.$eval($attrs.meridians) : timepickerConfig.meridians || $locale.DATETIME_FORMATS.AMPMS,
+	    padHours = angular.isDefined($attrs.padHours) ? $scope.$parent.$eval($attrs.padHours) : true;
 
 	  $scope.tabindex = angular.isDefined($attrs.tabindex) ? $attrs.tabindex : 0;
 	  $element.removeAttr('tabindex');
@@ -42080,7 +42307,7 @@
 	    var hours = +$scope.hours;
 	    var valid = $scope.showMeridian ? hours > 0 && hours < 13 :
 	      hours >= 0 && hours < 24;
-	    if (!valid) {
+	    if (!valid || $scope.hours === '') {
 	      return undefined;
 	    }
 
@@ -42097,7 +42324,11 @@
 
 	  function getMinutesFromTemplate() {
 	    var minutes = +$scope.minutes;
-	    return minutes >= 0 && minutes < 60 ? minutes : undefined;
+	    var valid = minutes >= 0 && minutes < 60;
+	    if (!valid || $scope.minutes === '') {
+	      return undefined;
+	    }
+	    return minutes;
 	  }
 
 	  function getSecondsFromTemplate() {
@@ -42105,12 +42336,12 @@
 	    return seconds >= 0 && seconds < 60 ? seconds : undefined;
 	  }
 
-	  function pad(value) {
+	  function pad(value, noPad) {
 	    if (value === null) {
 	      return '';
 	    }
 
-	    return angular.isDefined(value) && value.toString().length < 2 ?
+	    return angular.isDefined(value) && value.toString().length < 2 && !noPad ?
 	      '0' + value : value.toString();
 	  }
 
@@ -42237,11 +42468,13 @@
 
 	    hoursInputEl.bind('blur', function(e) {
 	      ngModelCtrl.$setTouched();
-	      if ($scope.hours === null || $scope.hours === '') {
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if ($scope.hours === null || $scope.hours === '') {
 	        invalidate(true);
 	      } else if (!$scope.invalidHours && $scope.hours < 10) {
 	        $scope.$apply(function() {
-	          $scope.hours = pad($scope.hours);
+	          $scope.hours = pad($scope.hours, !padHours);
 	        });
 	      }
 	    });
@@ -42267,7 +42500,9 @@
 
 	    minutesInputEl.bind('blur', function(e) {
 	      ngModelCtrl.$setTouched();
-	      if ($scope.minutes === null) {
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if ($scope.minutes === null) {
 	        invalidate(undefined, true);
 	      } else if (!$scope.invalidMinutes && $scope.minutes < 10) {
 	        $scope.$apply(function() {
@@ -42290,7 +42525,9 @@
 	    };
 
 	    secondsInputEl.bind('blur', function(e) {
-	      if (!$scope.invalidSeconds && $scope.seconds < 10) {
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if (!$scope.invalidSeconds && $scope.seconds < 10) {
 	        $scope.$apply( function() {
 	          $scope.seconds = pad($scope.seconds);
 	        });
@@ -42350,7 +42587,7 @@
 	        hours = hours === 0 || hours === 12 ? 12 : hours % 12; // Convert 24 to 12 hour system
 	      }
 
-	      $scope.hours = keyboardChange === 'h' ? hours : pad(hours);
+	      $scope.hours = keyboardChange === 'h' ? hours : pad(hours, !padHours);
 	      if (keyboardChange !== 'm') {
 	        $scope.minutes = pad(minutes);
 	      }
@@ -42377,6 +42614,12 @@
 	    var newDate = new Date(date);
 	    newDate.setHours(dt.getHours(), dt.getMinutes(), dt.getSeconds());
 	    return newDate;
+	  }
+
+	  function modelIsEmpty() {
+	    return ($scope.hours === null || $scope.hours === '') &&
+	      ($scope.minutes === null || $scope.minutes === '') &&
+	      (!$scope.showSeconds || $scope.showSeconds && ($scope.seconds === null || $scope.seconds === ''));
 	  }
 
 	  $scope.showSpinners = angular.isDefined($attrs.showSpinners) ?
@@ -42503,6 +42746,10 @@
 	      minLength = 1;
 	    }
 
+	    originalScope.$watch(attrs.typeaheadMinLength, function (newVal) {
+	        minLength = !newVal && newVal !== 0 ? 1 : newVal;
+	    });
+
 	    //minimal wait time after last character typed before typeahead kicks-in
 	    var waitTime = originalScope.$eval(attrs.typeaheadWaitMs) || 0;
 
@@ -42514,6 +42761,12 @@
 
 	    //binding to a variable that indicates if matches are being retrieved asynchronously
 	    var isLoadingSetter = $parse(attrs.typeaheadLoading).assign || angular.noop;
+
+	    //a function to determine if an event should cause selection
+	    var isSelectEvent = attrs.typeaheadShouldSelect ? $parse(attrs.typeaheadShouldSelect) : function(scope, vals) {
+	      var evt = vals.$event;
+	      return evt.which === 13 || evt.which === 9;
+	    };
 
 	    //a callback executed when a match is selected
 	    var onSelectCallback = $parse(attrs.typeaheadOnSelect);
@@ -42589,6 +42842,7 @@
 	      element.after(inputsContainer);
 	      hintInputElem = element.clone();
 	      hintInputElem.attr('placeholder', '');
+	      hintInputElem.attr('tabindex', '-1');
 	      hintInputElem.val('');
 	      hintInputElem.css({
 	        'position': 'absolute',
@@ -42829,8 +43083,15 @@
 	        return;
 	      }
 
-	      // if there's nothing selected (i.e. focusFirst) and enter or tab is hit, clear the results
-	      if (scope.activeIdx === -1 && (evt.which === 9 || evt.which === 13)) {
+	      var shouldSelect = isSelectEvent(originalScope, {$event: evt});
+
+	      /**
+	       * if there's nothing selected (i.e. focusFirst) and enter or tab is hit
+	       * or
+	       * shift + tab is pressed to bring focus to the previous element
+	       * then clear the results
+	       */
+	      if (scope.activeIdx === -1 && shouldSelect || evt.which === 9 && !!evt.shiftKey) {
 	        resetMatches();
 	        scope.$digest();
 	        return;
@@ -42839,36 +43100,36 @@
 	      evt.preventDefault();
 	      var target;
 	      switch (evt.which) {
-	        case 9:
-	        case 13:
-	          scope.$apply(function () {
-	            if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
-	              $$debounce(function() {
-	                scope.select(scope.activeIdx, evt);
-	              }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
-	            } else {
-	              scope.select(scope.activeIdx, evt);
-	            }
-	          });
-	          break;
-	        case 27:
+	        case 27: // escape
 	          evt.stopPropagation();
 
 	          resetMatches();
-	          scope.$digest();
+	          originalScope.$digest();
 	          break;
-	        case 38:
+	        case 38: // up arrow
 	          scope.activeIdx = (scope.activeIdx > 0 ? scope.activeIdx : scope.matches.length) - 1;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
-	        case 40:
+	        case 40: // down arrow
 	          scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
+	        default:
+	          if (shouldSelect) {
+	            scope.$apply(function() {
+	              if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
+	                $$debounce(function() {
+	                  scope.select(scope.activeIdx, evt);
+	                }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
+	              } else {
+	                scope.select(scope.activeIdx, evt);
+	              }
+	            });
+	          }
 	      }
 	    });
 
@@ -42895,7 +43156,10 @@
 	        });
 	      }
 	      if (!isEditable && modelCtrl.$error.editable) {
-	        modelCtrl.$viewValue = '';
+	        modelCtrl.$setViewValue();
+	        // Reset validity as we are clearing
+	        modelCtrl.$setValidity('editable', true);
+	        modelCtrl.$setValidity('parse', true);
 	        element.val('');
 	      }
 	      hasFocus = false;
@@ -42909,7 +43173,7 @@
 	      if (element[0] !== evt.target && evt.which !== 3 && scope.matches.length !== 0) {
 	        resetMatches();
 	        if (!$rootScope.$$phase) {
-	          scope.$digest();
+	          originalScope.$digest();
 	        }
 	      }
 	    };
@@ -43116,7 +43380,7 @@
 	    "<div class=\"panel\" ng-class=\"panelClass || 'panel-default'\">\n" +
 	    "  <div role=\"tab\" id=\"{{::headingId}}\" aria-selected=\"{{isOpen}}\" class=\"panel-heading\" ng-keypress=\"toggleOpen($event)\">\n" +
 	    "    <h4 class=\"panel-title\">\n" +
-	    "      <a role=\"button\" data-toggle=\"collapse\" href aria-expanded=\"{{isOpen}}\" aria-controls=\"{{::panelId}}\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" uib-accordion-transclude=\"heading\"><span ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
+	    "      <a role=\"button\" data-toggle=\"collapse\" href aria-expanded=\"{{isOpen}}\" aria-controls=\"{{::panelId}}\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" uib-accordion-transclude=\"heading\"><span uib-accordion-header ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
 	    "    </h4>\n" +
 	    "  </div>\n" +
 	    "  <div id=\"{{::panelId}}\" aria-labelledby=\"{{::headingId}}\" aria-hidden=\"{{!isOpen}}\" role=\"tabpanel\" class=\"panel-collapse collapse\" uib-collapse=\"!isOpen\">\n" +
@@ -43147,11 +43411,11 @@
 	  $templateCache.put("uib/template/carousel/carousel.html",
 	    "<div ng-mouseenter=\"pause()\" ng-mouseleave=\"play()\" class=\"carousel\" ng-swipe-right=\"prev()\" ng-swipe-left=\"next()\">\n" +
 	    "  <div class=\"carousel-inner\" ng-transclude></div>\n" +
-	    "  <a role=\"button\" href class=\"left carousel-control\" ng-click=\"prev()\" ng-show=\"slides.length > 1\">\n" +
+	    "  <a role=\"button\" href class=\"left carousel-control\" ng-click=\"prev()\" ng-class=\"{ disabled: isPrevDisabled() }\" ng-show=\"slides.length > 1\">\n" +
 	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-left\"></span>\n" +
 	    "    <span class=\"sr-only\">previous</span>\n" +
 	    "  </a>\n" +
-	    "  <a role=\"button\" href class=\"right carousel-control\" ng-click=\"next()\" ng-show=\"slides.length > 1\">\n" +
+	    "  <a role=\"button\" href class=\"right carousel-control\" ng-click=\"next()\" ng-class=\"{ disabled: isNextDisabled() }\" ng-show=\"slides.length > 1\">\n" +
 	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-right\"></span>\n" +
 	    "    <span class=\"sr-only\">next</span>\n" +
 	    "  </a>\n" +
@@ -43160,7 +43424,8 @@
 	    "      <span class=\"sr-only\">slide {{ $index + 1 }} of {{ slides.length }}<span ng-if=\"isActive(slide)\">, currently active</span></span>\n" +
 	    "    </li>\n" +
 	    "  </ol>\n" +
-	    "</div>");
+	    "</div>\n" +
+	    "");
 	}]);
 
 	angular.module("uib/template/carousel/slide.html", []).run(["$templateCache", function($templateCache) {
@@ -43177,7 +43442,8 @@
 	    "  <uib-daypicker ng-switch-when=\"day\" tabindex=\"0\"></uib-daypicker>\n" +
 	    "  <uib-monthpicker ng-switch-when=\"month\" tabindex=\"0\"></uib-monthpicker>\n" +
 	    "  <uib-yearpicker ng-switch-when=\"year\" tabindex=\"0\"></uib-yearpicker>\n" +
-	    "</div>");
+	    "</div>\n" +
+	    "");
 	}]);
 
 	angular.module("uib/template/datepicker/day.html", []).run(["$templateCache", function($templateCache) {
@@ -43245,23 +43511,6 @@
 	    "");
 	}]);
 
-	angular.module("uib/template/datepicker/popup.html", []).run(["$templateCache", function($templateCache) {
-	  $templateCache.put("uib/template/datepicker/popup.html",
-	    "<div>\n" +
-	    "  <ul class=\"uib-datepicker-popup dropdown-menu\" dropdown-nested ng-if=\"isOpen\" ng-style=\"{top: position.top+'px', left: position.left+'px'}\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
-	    "    <li ng-transclude></li>\n" +
-	    "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
-	    "    <span class=\"btn-group pull-left\">\n" +
-	    "      <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today')\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
-	    "      <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null)\">{{ getText('clear') }}</button>\n" +
-	    "    </span>\n" +
-	    "      <button type=\"button\" class=\"btn btn-sm btn-success pull-right uib-close\" ng-click=\"close()\">{{ getText('close') }}</button>\n" +
-	    "    </li>\n" +
-	    "  </ul>\n" +
-	    "</div>\n" +
-	    "");
-	}]);
-
 	angular.module("uib/template/datepicker/year.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/datepicker/year.html",
 	    "<table class=\"uib-yearpicker\" role=\"grid\" aria-labelledby=\"{{::uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
@@ -43289,6 +43538,23 @@
 	    "    </tr>\n" +
 	    "  </tbody>\n" +
 	    "</table>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepickerPopup/popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepickerPopup/popup.html",
+	    "<div>\n" +
+	    "  <ul class=\"uib-datepicker-popup dropdown-menu uib-position-measure\" dropdown-nested ng-if=\"isOpen\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
+	    "    <li ng-transclude></li>\n" +
+	    "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
+	    "      <span class=\"btn-group pull-left\">\n" +
+	    "        <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today', $event)\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
+	    "        <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null, $event)\">{{ getText('clear') }}</button>\n" +
+	    "      </span>\n" +
+	    "      <button type=\"button\" class=\"btn btn-sm btn-success pull-right uib-close\" ng-click=\"close($event)\">{{ getText('close') }}</button>\n" +
+	    "    </li>\n" +
+	    "  </ul>\n" +
+	    "</div>\n" +
 	    "");
 	}]);
 
@@ -43381,7 +43647,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
 	    "      <div class=\"popover-content\" ng-bind-html=\"contentExp()\"></div>\n" +
 	    "  </div>\n" +
 	    "</div>\n" +
@@ -43397,7 +43663,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
 	    "      <div class=\"popover-content\"\n" +
 	    "        uib-tooltip-template-transclude=\"contentExp()\"\n" +
 	    "        tooltip-template-transclude-scope=\"originScope()\"></div>\n" +
@@ -43415,7 +43681,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
 	    "      <div class=\"popover-content\" ng-bind=\"content\"></div>\n" +
 	    "  </div>\n" +
 	    "</div>\n" +
@@ -43443,17 +43709,17 @@
 
 	angular.module("uib/template/rating/rating.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/rating/rating.html",
-	    "<span ng-mouseleave=\"reset()\" ng-keydown=\"onKeydown($event)\" tabindex=\"0\" role=\"slider\" aria-valuemin=\"0\" aria-valuemax=\"{{range.length}}\" aria-valuenow=\"{{value}}\">\n" +
+	    "<span ng-mouseleave=\"reset()\" ng-keydown=\"onKeydown($event)\" tabindex=\"0\" role=\"slider\" aria-valuemin=\"0\" aria-valuemax=\"{{range.length}}\" aria-valuenow=\"{{value}}\" aria-valuetext=\"{{title}}\">\n" +
 	    "    <span ng-repeat-start=\"r in range track by $index\" class=\"sr-only\">({{ $index < value ? '*' : ' ' }})</span>\n" +
-	    "    <i ng-repeat-end ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"glyphicon\" ng-class=\"$index < value && (r.stateOn || 'glyphicon-star') || (r.stateOff || 'glyphicon-star-empty')\" ng-attr-title=\"{{r.title}}\" aria-valuetext=\"{{r.title}}\"></i>\n" +
+	    "    <i ng-repeat-end ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"glyphicon\" ng-class=\"$index < value && (r.stateOn || 'glyphicon-star') || (r.stateOff || 'glyphicon-star-empty')\" ng-attr-title=\"{{r.title}}\"></i>\n" +
 	    "</span>\n" +
 	    "");
 	}]);
 
 	angular.module("uib/template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/tabs/tab.html",
-	    "<li ng-class=\"{active: active, disabled: disabled}\" class=\"uib-tab\">\n" +
-	    "  <a href ng-click=\"select()\" uib-tab-heading-transclude>{{heading}}</a>\n" +
+	    "<li ng-class=\"[{active: active, disabled: disabled}, classes]\" class=\"uib-tab nav-item\">\n" +
+	    "  <a href ng-click=\"select($event)\" class=\"nav-link\" uib-tab-heading-transclude>{{heading}}</a>\n" +
 	    "</li>\n" +
 	    "");
 	}]);
@@ -43461,11 +43727,11 @@
 	angular.module("uib/template/tabs/tabset.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/tabs/tabset.html",
 	    "<div>\n" +
-	    "  <ul class=\"nav nav-{{type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" +
+	    "  <ul class=\"nav nav-{{tabset.type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" +
 	    "  <div class=\"tab-content\">\n" +
-	    "    <div class=\"tab-pane\" \n" +
-	    "         ng-repeat=\"tab in tabs\" \n" +
-	    "         ng-class=\"{active: tab.active}\"\n" +
+	    "    <div class=\"tab-pane\"\n" +
+	    "         ng-repeat=\"tab in tabset.tabs\"\n" +
+	    "         ng-class=\"{active: tabset.active === tab.index}\"\n" +
 	    "         uib-tab-content-transclude=\"tab\">\n" +
 	    "    </div>\n" +
 	    "  </div>\n" +
@@ -43487,15 +43753,15 @@
 	    "    </tr>\n" +
 	    "    <tr>\n" +
 	    "      <td class=\"form-group uib-time hours\" ng-class=\"{'has-error': invalidHours}\">\n" +
-	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
+	    "        <input type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td class=\"uib-separator\">:</td>\n" +
 	    "      <td class=\"form-group uib-time minutes\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
-	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
+	    "        <input type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td ng-show=\"showSeconds\" class=\"uib-separator\">:</td>\n" +
 	    "      <td class=\"form-group uib-time seconds\" ng-class=\"{'has-error': invalidSeconds}\" ng-show=\"showSeconds\">\n" +
-	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
+	    "        <input type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td ng-show=\"showMeridian\" class=\"uib-time am-pm\"><button type=\"button\" ng-class=\"{disabled: noToggleMeridian()}\" class=\"btn btn-default text-center\" ng-click=\"toggleMeridian()\" ng-disabled=\"noToggleMeridian()\" tabindex=\"{{::tabindex}}\">{{meridian}}</button></td>\n" +
 	    "    </tr>\n" +
@@ -43530,10 +43796,13 @@
 	    "</ul>\n" +
 	    "");
 	}]);
-	angular.module('ui.bootstrap.carousel').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'); });
-	angular.module('ui.bootstrap.datepicker').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-datepicker-popup.dropdown-menu{display:block;}.uib-button-bar{padding:10px 9px 2px;}</style>'); });
-	angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); });
-	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); });
+	angular.module('ui.bootstrap.carousel').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibCarouselCss && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'); angular.$$uibCarouselCss = true; });
+	angular.module('ui.bootstrap.datepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-left,.uib-right{width:100%}</style>'); angular.$$uibDatepickerCss = true; });
+	angular.module('ui.bootstrap.position').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibPositionCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-position-measure{display:block !important;visibility:hidden !important;position:absolute !important;top:-9999px !important;left:-9999px !important;}.uib-position-scrollbar-measure{position:absolute !important;top:-9999px !important;width:50px !important;height:50px !important;overflow:scroll !important;}.uib-position-body-scrollbar-measure{overflow:scroll !important;}</style>'); angular.$$uibPositionCss = true; });
+	angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerpopupCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker-popup.dropdown-menu{display:block;float:none;margin:0;}.uib-button-bar{padding:10px 9px 2px;}</style>'); angular.$$uibDatepickerpopupCss = true; });
+	angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
+	angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
+	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
 
 /***/ },
 /* 15 */
@@ -64161,7 +64430,8 @@
 	var move_project_component_ts_1 = __webpack_require__(47);
 	var services_ts_1 = __webpack_require__(49);
 	var search_ts_1 = __webpack_require__(50);
-	var autocomplete_directive_ts_1 = __webpack_require__(51);
+	var alertmodal_ts_1 = __webpack_require__(51);
+	var autocomplete_directive_ts_1 = __webpack_require__(53);
 	var Home;
 	(function (Home) {
 	    Home.home = angular.module('app.home', ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'angular-carousel', 'ngTouch'])
@@ -64171,6 +64441,7 @@
 	        .component('formoperativeobjective', form_operative_objective_component_1.formOperativeObjectiveComponent)
 	        .component('formstrategicobjective', form_strategic_objective_component_1.formStrategicObjectiveComponent)
 	        .component('moveproject', move_project_component_ts_1.moveProjectComponent)
+	        .component('alertmodal', alertmodal_ts_1.alertComponent)
 	        .service('services', services_ts_1.GeneralServices)
 	        .service('search', search_ts_1.Search)
 	        .directive("usigautocomplete", autocomplete_directive_ts_1.usigAutocompleteDirective)
@@ -64378,7 +64649,7 @@
 	                    }
 	                });
 	            }
-	            this.importURL = config.apiBaseUrl + 'importar/proyecto';
+	            this.importURL = config.authBaseUrl + 'api/importar/proyecto';
 	            this.pisarProyectos = false;
 	        }
 	        HomeController.prototype.addStrategicObjective = function (idJurisdiccion) {
@@ -64399,7 +64670,7 @@
 	            if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
 	                var referralDivFactory = this.$compile(" <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> ");
 	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(idStrategicObjective);
+	                var containerDiv = document.getElementById("es-" + idStrategicObjective);
 	                angular.element(containerDiv).append(referralDiv);
 	            }
 	            else {
@@ -64440,7 +64711,7 @@
 	            if (!angular.element(document.getElementsByTagName('formoperativeobjective')).length) {
 	                var referralDivFactory = this.$compile(" <formoperativeobjective idoperativeobjective='" + idOperativeObjective + "'></formoperativeobjective> ");
 	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(idOperativeObjective);
+	                var containerDiv = document.getElementById("op-" + idOperativeObjective);
 	                angular.element(containerDiv).append(referralDiv);
 	            }
 	            else {
@@ -64460,7 +64731,7 @@
 	            if (!angular.element(document.getElementsByTagName('formproject')).length) {
 	                var referralDivFactory = this.$compile(" <formproject idproject='" + idProject + "'></formproject> ");
 	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(idProject);
+	                var containerDiv = document.getElementById("proyecto-" + idProject);
 	                angular.element(containerDiv).append(referralDiv);
 	            }
 	            else {
@@ -64480,7 +64751,7 @@
 	            if (!angular.element(document.getElementsByTagName('formproject')).length) {
 	                var referralDivFactory = this.$compile(" <formproject idobjetivo='" + idObjetivo + "'></formproject> ");
 	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(idObjetivo);
+	                var containerDiv = document.getElementById("op-" + idObjetivo);
 	                angular.element(containerDiv).append(referralDiv);
 	            }
 	            else {
@@ -64513,6 +64784,8 @@
 	            });
 	        };
 	        HomeController.prototype.addNotification = function (data) {
+	            var formDiv = document.getElementsByTagName('alertmodal');
+	            angular.element(formDiv).remove();
 	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '"></notification> '); // tslint:disable-line
 	            var referralDiv = referralDivFactory(this.$scope);
 	            var containerDiv = document.getElementById('notifications');
@@ -64602,7 +64875,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/home-tree.html';
-	var html = "<!-- <onboarding-popover enabled=\"true\" steps=\"homeCtrl.onboardingSteps\" on-finish-callback='homeCtrl.myCallbackFunction' step-index='homeCtrl.onboardingIndex'></onboarding-popover> -->\n<div class=\"pageContanerCustom\">\n    <div class=\"item page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h2 class=\"title-year\">Plan 2017</h2>\n\n                <div class=\"dropdown menuExcel\" id=\"dropdownExcel\">\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        <img src=\"" + __webpack_require__(39) + "\">\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                        <!-- <li><a href=\"#\">Descargar Excel con todos los proyectos</a></li> -->\n                        <li><a ng-click=\"homeCtrl.downloadExcel()\">Descargar Excel maestro</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a ui-sref=\"home.upload\">Importar proyecto de Excel</a></li>\n                    </ul>\n                </div>\n\n            </div>\n            <div class=\"col-md-12\">\n                <div id=\"notifications\">\n                    \n                </div>\n                <div class=\"content-first-btn\">\n                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)\"><i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Objetivo Estrat&eacute;gico</button>\n                    <button type=\"button\" class=\"btn btn-link action-collapse\" ng-click=\"homeCtrl.collapseAll()\">\n                    <i class=\"glyphicon glyphicon-chevron-up\" aria-hidden=\"true\"></i> Colapsar todo\n                  </button>\n                 <button type=\"button\" class=\"btn btn-link action-collapse\" ng-click=\"homeCtrl.showAll()\"> \n                    <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i> Desplegar todo\n                  </button>\n                </div>\n                <hr>\n                <div id=\"add-strategic-objetive\"></div>\n\n                <!-- objetivos estrategicos -->\n                    <p ng-show=\"(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0\">No hay resultados para mostrar de su busqueda: \"{{homeCtrl.search.searchText.text}}\"</p>\n                    <ul class=\"content-level-1\" ng-repeat=\"objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text\">\n                        <li class=\"firstLabel\">\n                            <span id=\"{{objJ.idObjetivoJurisdiccional}}\">\n                                <div class=\"row\">\n                                    <div class=\"col-md-12 default-content\" >\n                                        <div class=\"title\">Objetivos Estrat&eacute;gicos</div>\n                                        <div class=\"col-md-9 collapsed\" data-toggle=\"collapse\" href=\"#grupo-level-{{objJ.idObjetivoJurisdiccional}}\">\n                                            <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i> \n                                            {{ objJ.nombre }}\n                                            <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)\"></i>\n                                        </div>\n                                        <div class=\"col-md-3\">\n                                            <button type=\"button\" class=\"btn btn-default btn-arbol\" ng-click=\"homeCtrl.addOperativeObjective(objJ.idObjetivoJurisdiccional, objJ.idObjetivoJurisdiccional)\">\n                                            <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Obj. Operativo\n                                            </button>\n                                        </div>\n                                    </div>\n                                </div>\n                            </span>\n\n                            <!-- Inicio de Objetivos Operativos -->\n                            <span id=\"grupo-level-{{objJ.idObjetivoJurisdiccional}}\" class=\"collapse\">\n                                <span ng-if=\"objJ.objetivosOperativos.length > 0\" class=\"title viewArbol\">Objetivos Operativos</span>\n                                <span ng-if=\"objJ.objetivosOperativos.length === 0\">\n                                    <div class=\"col-md-9 col-sm-8 col-xs-12\">\n                                        <br>\n                                        <p class=\"description\">No existen objetivos operativos para este objetivo estratégico.</p>\n                                    </div>\n                                </span>\n                                <div id=\"add-operative-objetive-{{objJ.idObjetivoJurisdiccional}}\"></div>\n                                <ul>\n                                    <li class=\"secondLabel\" ng-repeat=\"objO in objJ.objetivosOperativos  | filter:homeCtrl.search.searchText.text\">\n                                        <span id=\"{{objO.idObjetivoOperativo}}\">\n                                            <div class=\"row content-obj\">\n                                                <div class=\"col-md-9 col-sm-8 collapsed textObjOp\" data-toggle=\"collapse\" href=\"#grupo-level-2-{{objO.idObjetivoOperativo}}\">\n                                                    <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i>\n                                                    {{ objO.nombre }}\n                                                    <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" ng-click=\"homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\"></i>\n                                                </div>\n                                                <div class=\"col-md-3 col-sm-4\">\n                                                    <div class=\"content-button\">\n                                                      <button type=\"button\" class=\"btn btn-default btn-arbol\" ng-click=\"homeCtrl.addProject(objO.idObjetivoOperativo)\" id=\"addProjectButton-{{objO.idObjetivoOperativo}}\">\n                                                        <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Proyecto\n                                                      </button>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                        </span>\n\n                                        <!-- Inicio de Proyectos -->\n\n                                        <span ng-if=\"objO.proyectos.length > 0\" id=\"grupo-level-2-{{objO.idObjetivoOperativo}}\" class=\"collapse\">\n                                            <div class=\"col-md-9 col-sm-8 col-xs-12\" style=\"margin-bottom:10px;>\n                                                <span class=\"title viewArbol\">Proyectos</span>\n                                            </div>\n                                            <div class=\"contentDate\">\n                                                <span class=\"title left\">Inicio</span>\n                                                <span class=\"title left\">Fin</span>\n                                                <span class=\"title right\">Estado</span>\n                                            </div>\n                                            <ul id=\"addproject\"\">\n                                                <li ng-repeat=\"proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text\">\n                                                    \n                                                    <div class=\"col-md-9 col-sm-8 col-xs-12 collapsed\" data-toggle=\"collapse\" href=\"#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}\" >\n                                                        <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i>\n                                                        <span class=\"thirdLabel\" ng-class=\"{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}\">{{proyecto.nombre}}  <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" ng-click=\"homeCtrl.editProject(proyecto.idProyecto)\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\"></i></span>\n                                                    </div>\n\n                                                    <div class=\"box-date\">\n                                                        <span class=\"date left\">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>\n                                                        <span class=\"date left\">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>\n                                                        <span class=\"date right\" ng-class=\"{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}\">{{proyecto.estado}}</span>\n                                                    </div>\n\n                                                    <div id=\"grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}\" class=\"col-md-12 collapse\">\n                                                        <p class=\"description\">\"{{proyecto.descripcion}}\"</p>\n                                                        <p class=\"description\"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>\n                                                    </div>\n                                                    <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                                                        <hr class=\"line-inner-proyect\" id=\"{{proyecto.idProyecto}}\">\n                                                        <div ng-if=\"$last && objO.proyectos.length > 0\"><br></div>\n                                                    </div>\n                                                </li>\n                                            </ul>\n                                        </span>\n\n\n                                        <span ng-if=\"objO.proyectos.length === 0\" id=\"grupo-level-2-{{objO.idObjetivoOperativo}}\" class=\"collapse\">\n                                            <div class=\"col-md-9 col-sm-8 col-xs-12\">\n                                                <p class=\"description\">No existen proyectos para este objetivo operativo.</p>\n                                            </div>\n                                        </span>\n\n                                        <!-- Fin de proyectos -->\n\n                                    </li>\n                                </ul>\n                            </span>\n\n                            <!-- FIN de Objetivos Operativos -->\n\n                        </li>\n                    </ul>\n                </div>\n                <!-- FIN de objetivos estrategicos -->\n\n\n\n            </div>\n        </div>\n    </div>\n</div>\n</div>\n";
+	var html = "<!-- <onboarding-popover enabled=\"true\" steps=\"homeCtrl.onboardingSteps\" on-finish-callback='homeCtrl.myCallbackFunction' step-index='homeCtrl.onboardingIndex'></onboarding-popover> -->\n<div class=\"pageContanerCustom\">\n    <div class=\"item page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h2 class=\"title-year\">Plan 2017</h2>\n\n                <div class=\"dropdown menuExcel\" id=\"dropdownExcel\">\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        <img src=\"" + __webpack_require__(39) + "\">\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                        <!-- <li><a href=\"#\">Descargar Excel con todos los proyectos</a></li> -->\n                        <li><a ng-click=\"homeCtrl.downloadExcel()\">Descargar Excel maestro</a></li>\n                        <li role=\"separator\" class=\"divider\"></li>\n                        <li><a ui-sref=\"home.upload\">Importar proyecto de Excel</a></li>\n                    </ul>\n                </div>\n\n            </div>\n            <div class=\"col-md-12\">\n                <div id=\"notifications\" class=\"row\"></div>\n                <div class=\"content-first-btn\">\n                    <button type=\"button\" class=\"btn btn-default\" ng-click=\"homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)\"><i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Objetivo Estrat&eacute;gico</button>\n                    <button type=\"button\" class=\"btn btn-link action-collapse\" ng-click=\"homeCtrl.collapseAll()\">\n                    <i class=\"glyphicon glyphicon-chevron-up\" aria-hidden=\"true\"></i> Colapsar todo\n                  </button>\n                 <button type=\"button\" class=\"btn btn-link action-collapse\" ng-click=\"homeCtrl.showAll()\">\n                    <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i> Desplegar todo\n                  </button>\n                </div>\n                <hr>\n                <div id=\"add-strategic-objetive\"></div>\n\n                <!-- objetivos estrategicos -->\n                    <p ng-show=\"(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0\">No hay resultados para mostrar de su busqueda: \"{{homeCtrl.search.searchText.text}}\"</p>\n                    <ul class=\"content-level-1\" ng-repeat=\"objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text\">\n                        <li class=\"firstLabel\">\n                            <span id=\"es-{{objJ.idObjetivoJurisdiccional}}\">\n                                <div class=\"row\">\n                                    <div class=\"col-md-12 default-content\" >\n                                        <div class=\"title\">Objetivos Estrat&eacute;gicos</div>\n                                        <div class=\"col-md-9 collapsed\" data-toggle=\"collapse\" href=\"#grupo-level-{{objJ.idObjetivoJurisdiccional}}\">\n                                            <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i>\n                                            {{ objJ.nombre }}\n                                            <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)\"></i>\n                                        </div>\n                                        <div class=\"col-md-3\">\n                                            <button type=\"button\" class=\"btn btn-default btn-arbol\" ng-click=\"homeCtrl.addOperativeObjective(objJ.idObjetivoJurisdiccional, objJ.idObjetivoJurisdiccional)\">\n                                            <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Obj. Operativo\n                                            </button>\n                                        </div>\n                                    </div>\n                                </div>\n                            </span>\n\n                            <!-- Inicio de Objetivos Operativos -->\n                            <span id=\"grupo-level-{{objJ.idObjetivoJurisdiccional}}\" class=\"collapse\">\n                                <span ng-if=\"objJ.objetivosOperativos.length > 0\" class=\"title viewArbol\">Objetivos Operativos</span>\n                                <span ng-if=\"objJ.objetivosOperativos.length === 0\">\n                                    <div class=\"col-md-9 col-sm-8 col-xs-12\">\n                                        <br>\n                                        <p class=\"description\">No existen objetivos operativos para este objetivo estratégico.</p>\n                                    </div>\n                                </span>\n                                <div id=\"add-operative-objetive-{{objJ.idObjetivoJurisdiccional}}\"></div>\n                                <ul>\n                                    <li class=\"secondLabel\" ng-repeat=\"objO in objJ.objetivosOperativos  | filter:homeCtrl.search.searchText.text\">\n                                        <span id=\"op-{{objO.idObjetivoOperativo}}\">\n                                            <div class=\"row content-obj\">\n                                                <div class=\"col-md-9 col-sm-8 collapsed textObjOp\" data-toggle=\"collapse\" href=\"#grupo-level-2-{{objO.idObjetivoOperativo}}\">\n                                                    <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i>\n                                                    {{ objO.nombre }}\n                                                    <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" ng-click=\"homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\"></i>\n                                                </div>\n                                                <div class=\"col-md-3 col-sm-4\">\n                                                    <div class=\"content-button\">\n                                                      <button type=\"button\" class=\"btn btn-default btn-arbol\" ng-click=\"homeCtrl.addProject(objO.idObjetivoOperativo)\" id=\"addProjectButton-{{objO.idObjetivoOperativo}}\">\n                                                        <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Proyecto\n                                                      </button>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                        </span>\n\n                                        <!-- Inicio de Proyectos -->\n\n                                        <span ng-if=\"objO.proyectos.length > 0\" id=\"grupo-level-2-{{objO.idObjetivoOperativo}}\" class=\"collapse\">\n                                            <div class=\"col-md-9 col-sm-8 col-xs-12\" style=\"margin-bottom:10px;\">\n                                                <span class=\"title viewArbol\">Proyectos</span>\n                                            </div>\n                                            <div class=\"contentDate\">\n                                                <span class=\"title left\">Inicio</span>\n                                                <span class=\"title left\">Fin</span>\n                                                <span class=\"title right\">Estado</span>\n                                            </div>\n                                            <ul id=\"addproject\">\n                                                <li ng-repeat=\"proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text\">\n\n                                                    <div class=\"col-md-9 col-sm-8 col-xs-12 collapsed\" data-toggle=\"collapse\" href=\"#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}\" >\n                                                        <i class=\"glyphicon glyphicon-chevron-down\" aria-hidden=\"true\"></i>\n                                                        <span class=\"thirdLabel\" ng-class=\"{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}\">{{proyecto.nombre}}  <i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" ng-click=\"homeCtrl.editProject(proyecto.idProyecto)\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\"></i></span>\n                                                    </div>\n\n                                                    <div class=\"box-date\">\n                                                        <span class=\"date left\">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>\n                                                        <span class=\"date left\">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>\n                                                        <span class=\"date right\" ng-class=\"{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto'}\">{{proyecto.estado}}</span>\n                                                    </div>\n\n                                                    <div id=\"grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}\" class=\"col-md-12 collapse\">\n                                                        <p class=\"description\">\"{{proyecto.descripcion}}\"</p>\n                                                        <p class=\"description\"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>\n                                                    </div>\n                                                    <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                                                        <hr class=\"line-inner-proyect\" id=\"proyecto-{{proyecto.idProyecto}}\">\n                                                        <div ng-if=\"$last && objO.proyectos.length > 0\"><br></div>\n                                                    </div>\n                                                </li>\n                                            </ul>\n                                        </span>\n\n\n                                        <span ng-if=\"objO.proyectos.length === 0\" id=\"grupo-level-2-{{objO.idObjetivoOperativo}}\" class=\"collapse\">\n                                            <div class=\"col-md-9 col-sm-8 col-xs-12\">\n                                                <p class=\"description\">No existen proyectos para este objetivo operativo.</p>\n                                            </div>\n                                        </span>\n\n                                        <!-- Fin de proyectos -->\n\n                                    </li>\n                                </ul>\n                            </span>\n\n                            <!-- FIN de Objetivos Operativos -->\n\n                        </li>\n                    </ul>\n                </div>\n                <!-- FIN de objetivos estrategicos -->\n\n\n\n            </div>\n        </div>\n    </div>\n</div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -64617,7 +64890,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/home-upload.html';
-	var html = "<div class=\"pageContanerCustom\">\n    <div class=\"item page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h2 class=\"title-year\">Plan 2017</h2>\n                <div style=\"clear:both;\"></div>\n                 <div class=\"row\">\n                    <div class=\"col-md-12\">\n                        <p class=\"title-import-excel\">Importar Excel</p>\n                        <hr>\n                    </div>\n                    <form name=\"fileform\" ng-submit=\"homeCtrl.submit(fileform)\">\n                      <div class=\"col-md-12\">\n                        <input type=\"file\" id=\"archivoAImportar\" style=\"margin-left:10px;\">\n                        <hr>\n                        <!-- <div ng-model=\"homeCtrl.archivoAImportar\" class=\"content-import\">\n                          <p>Arrastrar a este recuadro el archivo a importar</p>\n                          <p>o</p> -->\n                          <div class=\"col-md-12\">\n                            <div class=\"form-group\">\n                              <p>La lista que estás importando puede tener datos repetidos, selecciona si deseás preserver los datos o reemplazarlos</p>\n                              <div class=\"radio\" ng-init=\"homeCtrl.pisarProyectos\">\n                                <label class=\"option\">\n                                  <input type=\"radio\" name=\"pisarProyectos\" id=\"pisarProyectos\" data-ng-value=\"false\" ng-model=\"homeCtrl.pisarProyectos\">\n                                  <p class=\"title-help\">Preservar los datos existentes en el sistema</p>\n                                  <!-- <p>Conservar datos existentes en POA, incorporando los nuevos datos presentes en el archivo. Se empleará la columna \"Cod. Identificación\" de los datos del archivo, para identificar a qué proyectos corresponde cada fila de nuevos datos.</p> -->\n                                </label>\n                              </div>\n                              <div class=\"radio\">\n                                <label class=\"option\">\n                                  <input type=\"radio\" name=\"pisarProyectos\" id=\"pisarProyectos\" data-ng-value=\"true\" ng-model=\"homeCtrl.pisarProyectos\">\n                                  <p class=\"title-help\">Reemplazar los datos existentes por los datos nuevos</p>\n                                  <!-- <p>Eliminar todos los datos existentes en POA, incorporar los datos del archivo como únicos datos.</p> -->\n                                </label>\n                              </div>\n                            </div>\n                          </div>\n                              <div class=\"col-md-12\">\n                                <button type=\"submit\" class=\"btn btn-default\">Importar con estas definiciones</button>\n                                <button type=\"button\" class=\"btn btn-link\" ui-sref=\"home\">Cancelar</button>\n                              </div>\n\n                            </div>\n                          </div>\n                        <!-- </div> -->\n                      </div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
+	var html = "<div class=\"pageContanerCustom\">\n    <div class=\"item page\">\n        <div class=\"row\">\n            <div class=\"col-md-12\">\n                <h2 class=\"title-year\">Plan 2017</h2>\n                <div style=\"clear:both;\"></div>\n                 <div class=\"row\">\n                    <div class=\"col-md-12\">\n                        <p class=\"title-import-excel\">Importar Excel</p>\n                        <hr>\n                    </div>\n                    <form name=\"fileform\" ng-submit=\"homeCtrl.submit(fileform)\">\n                      <div class=\"col-md-12\">\n                        <input type=\"file\" id=\"archivoAImportar\" style=\"margin-left:10px;\">\n                        <hr>\n                        <!-- <div ng-model=\"homeCtrl.archivoAImportar\" class=\"content-import\">\n                          <p>Arrastrar a este recuadro el archivo a importar</p>\n                          <p>o</p> -->\n                          <div class=\"col-md-12\">\n                            <div class=\"form-group\">\n                              <p>La lista que estás importando puede tener datos repetidos, selecciona si deseás preserver los datos o reemplazarlos</p>\n                              <div class=\"radio\" ng-init=\"homeCtrl.pisarProyectos\">\n                                <label class=\"option\">\n                                  <input type=\"radio\" name=\"pisarProyectos\" id=\"pisarProyectos\" data-ng-value=\"false\" ng-model=\"homeCtrl.pisarProyectos\">\n                                  <p class=\"title-help\">Preservar los datos existentes en el sistema</p>\n                                  <!-- <p>Conservar datos existentes en POA, incorporando los nuevos datos presentes en el archivo. Se empleará la columna \"Cod. Identificación\" de los datos del archivo, para identificar a qué proyectos corresponde cada fila de nuevos datos.</p> -->\n                                </label>\n                              </div>\n                              <div class=\"radio\">\n                                <label class=\"option\">\n                                  <input type=\"radio\" name=\"pisarProyectos\" id=\"pisarProyectos\" data-ng-value=\"true\" ng-model=\"homeCtrl.pisarProyectos\">\n                                  <p class=\"title-help\">Reemplazar los datos existentes por los datos nuevos</p>\n                                  <!-- <p>Eliminar todos los datos existentes en POA, incorporar los datos del archivo como únicos datos.</p> -->\n                                </label>\n                              </div>\n                            </div>\n                          </div>\n                              <div class=\"col-md-12\">\n                                <button type=\"submit\" class=\"btn btn-default\">Importar con estas definiciones</button>\n                                <button type=\"button\" class=\"btn btn-link\" ui-sref=\"home.tree\">Cancelar</button>\n                              </div>\n\n                            </div>\n                          </div>\n                        <!-- </div> -->\n                      </div>\n                    </form>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -64625,7 +64898,7 @@
 /* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var template = __webpack_require__(42);
+	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(42);
 	var Home;
 	(function (Home) {
 	    var FormProjectComponentController = (function () {
@@ -64640,6 +64913,12 @@
 	            this.localStorageService = localStorageService;
 	            this.$compile = $compile;
 	            this.idjurisdiccionKey = 'idJurisdiccionStorage';
+	            this.datePickerInicio = {
+	                status: false
+	            };
+	            this.datePickerFin = {
+	                status: false
+	            };
 	            /* tslint:disable */
 	            this.configDropDown = {
 	                selectAll: "Seleccionar todas",
@@ -64682,14 +64961,25 @@
 	            delete this.currentProject.idProyecto;
 	            if (this.idproject) {
 	                services.getProject(this.idproject).then(function (data) {
+	                    if (data.comunas.length === 0) {
+	                        _this.noDir = false;
+	                        _this.dirNoValidate = 'comunas';
+	                    }
+	                    else if (data.direccion === "") {
+	                        _this.noDir = false;
+	                        _this.dirNoValidate = 'direccion';
+	                    }
+	                    else {
+	                        _this.dirNoValidate = '';
+	                        _this.noDir = true;
+	                    }
 	                    data.fechaInicio = new Date(data.fechaInicio);
 	                    data.fechaFin = new Date(data.fechaFin);
 	                    _this.currentProject = data;
-	                    console.log(_this.currentProject);
 	                    services.comunas().then(function (data) {
 	                        _this.setTickedProperty(data, false);
 	                        _this.comunas = data;
-	                        if (_this.currentProject.comunas) {
+	                        if (_this.currentProject.comunas.length > 0) {
 	                            _this.currentProject.comunas.forEach(function (entry) {
 	                                _this.comunas.forEach(function (entryComuna) {
 	                                    if (entry.idComuna === entryComuna.idComuna) {
@@ -64708,32 +64998,49 @@
 	                    _this.comunas = data;
 	                });
 	                this.currentProject.idObjetivoOperativo2 = this.idobjetivo;
-	                this.currentProject.estado = "Incompleto";
 	                this.allInputs = false;
 	            }
 	            /* MARTIN HIZO ESTE CODIGO :)  POR FAVOR REFACTORIZAR, git no digas que fui yo que fue martin */
 	            $scope.$watch('formCtrl.currentProject', function (newVal, oldVal) {
 	                var errors = 0;
 	                for (var e in _this.currentProject) {
-	                    if ((e !== 'idObjetivoJurisdiccional2' && e !== 'idJurisdiccion2' && e !== 'organismosCorresponsables' && e !== 'codigo') && (_this.currentProject[e] === null || _this.currentProject[e] === "")) {
-	                        errors++;
+	                    if ((e !== 'idObjetivoJurisdiccional2' && e !== 'coordenadaX' && e !== 'coordenadaY' && e !== 'idJurisdiccion2' && e !== 'organismosCorresponsables' && e !== 'codigo' && e !== 'archivos') && (_this.currentProject[e] === null || _this.currentProject[e] === "" || _this.currentProject[e] === undefined || _this.currentProject[e].length === 0)) {
+	                        if (e !== _this.dirNoValidate) {
+	                            if (e === "dirección" || e === "Comunas" && !_this.noDir) {
+	                                errors++;
+	                            }
+	                        }
 	                    }
 	                }
 	                if (errors === 0) {
 	                    _this.allInputs = true;
-	                    _this.currentProject.estado = "Completo";
 	                    _this.countForm = "Has ingresado todos los campos.";
 	                }
 	                else {
+	                    _this.allInputs = false;
 	                    _this.percentForm = Math.round((18 - errors) * (100 / 18));
 	                    _this.countForm = "Te quedan " + errors + " datos por ingresar";
 	                }
 	            }, true);
 	        }
 	        ;
+	        FormProjectComponentController.prototype.presentProject = function () {
+	            var scope = this;
+	            this.services.presentProject(this.currentProject).then(function (data) {
+	                scope.$state.reload().then(function () {
+	                    var notificationData = {
+	                        "type": "success",
+	                        "icon": "ok-sign",
+	                        "title": "Ok",
+	                        "text": "El proyecto se presento con éxito." // tslint:disable-line
+	                    };
+	                    scope.addNotification(notificationData);
+	                });
+	            });
+	        };
 	        FormProjectComponentController.prototype.saveProject = function () {
 	            var _this = this;
-	            console.log(this.currentProject);
+	            var scope = this;
 	            if (this.idproject) {
 	                this.services.updateProject(this.currentProject).then(function (data) {
 	                    _this.$state.reload();
@@ -64741,11 +65048,38 @@
 	            }
 	            else {
 	                this.services.saveProject(this.currentProject).then(function (data) {
-	                    _this.$state.reload();
+	                    if (data.idProyecto) {
+	                        scope.$state.reload().then(function () {
+	                            var notificationData = {
+	                                "type": "success",
+	                                "icon": "ok-sign",
+	                                "title": "Ok",
+	                                "text": "El proyecto se creó con éxito como borrador." // tslint:disable-line
+	                            };
+	                            scope.addNotification(notificationData);
+	                        });
+	                    }
 	                });
 	            }
 	        };
+	        FormProjectComponentController.prototype.addAlert = function (data) {
+	            var formDiv = document.getElementsByTagName('alertmodal');
+	            angular.element(formDiv).remove();
+	            var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('alertmodalcomponent');
+	            angular.element(containerDiv).append(referralDiv);
+	        };
 	        FormProjectComponentController.prototype.deleteProject = function (id) {
+	            var dataAlert = {
+	                title: "Aviso",
+	                text: "Se va a eliminar el Proyecto. ¿Continuar?",
+	                callback: 'deleteProjectById',
+	                id: id
+	            };
+	            this.addAlert(dataAlert);
+	        };
+	        FormProjectComponentController.prototype.deleteProjectById = function (id) {
 	            var _this = this;
 	            this.services.deleteProject(id).then(function (data) {
 	                _this.$state.reload();
@@ -64759,11 +65093,29 @@
 	                entry["ticked"] = val;
 	            });
 	        };
-	        FormProjectComponentController.prototype.clearValuesUbicacion = function () {
-	            this.currentProject.direccion = "";
-	            this.setTickedProperty(this.comunas, false);
+	        FormProjectComponentController.prototype.openPickerInicio = function () {
+	            this.datePickerInicio.status = true;
+	        };
+	        FormProjectComponentController.prototype.openPickerFin = function () {
+	            this.datePickerFin.status = true;
+	        };
+	        FormProjectComponentController.prototype.clearValuesUbicacion = function (type) {
 	            if (this.currentProject.comunas) {
 	                this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
+	            }
+	            if (type === "Dirección") {
+	                this.dirNoValidate = 'comunas';
+	                this.noDir = false;
+	                this.setTickedProperty(this.comunas, false);
+	            }
+	            else if (type === "Comunas") {
+	                this.currentProject.direccion = "";
+	                this.dirNoValidate = 'direccion';
+	                this.noDir = false;
+	            }
+	            else {
+	                this.dirNoValidate = "";
+	                this.noDir = true;
 	            }
 	        };
 	        FormProjectComponentController.prototype.loadTags = function ($query) {
@@ -64773,27 +65125,35 @@
 	        };
 	        ;
 	        FormProjectComponentController.prototype.loadYears = function () {
+	            this.validDate = "";
 	            var start = this.currentProject.fechaInicio;
 	            var end = this.currentProject.fechaFin;
 	            if (start && end) {
-	                this.currentProject.presupuestosPorAnio = [];
-	                this.totalBudget = 0;
-	                for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
-	                    var p = {
-	                        'anio': y,
-	                        'presupuesto': 0
-	                    };
-	                    this.currentProject.presupuestosPorAnio.push(p);
+	                if (end < start) {
+	                    this.validDate = "La fecha de fin debe ser mayor a la fecha de inicio";
+	                    this.currentProject.fechaFin = null;
+	                }
+	                else {
+	                    this.currentProject.presupuestosPorAnio = [];
+	                    this.totalBudget = 0;
+	                    for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
+	                        var p = {
+	                            'anio': y,
+	                            'presupuesto': 0
+	                        };
+	                        this.currentProject.presupuestosPorAnio.push(p);
+	                    }
 	                }
 	            }
 	        };
 	        FormProjectComponentController.prototype.getTotalBudget = function () {
 	            var _this = this;
 	            this.totalBudget = 0;
+	            this.validDate = "";
 	            var pj = this.currentProject;
 	            if (pj && pj.presupuestosPorAnio && pj.presupuestosPorAnio.length > 0) {
 	                this.currentProject.presupuestosPorAnio.forEach(function (p) {
-	                    _this.totalBudget += p.presupuesto;
+	                    _this.totalBudget += Number(p.presupuesto);
 	                });
 	            }
 	            return this.totalBudget;
@@ -64811,6 +65171,21 @@
 	            var formDiv = document.getElementsByTagName('formproject');
 	            angular.element(formDiv).remove();
 	        };
+	        FormProjectComponentController.prototype.addNotification = function (data) {
+	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '"></notification> '); // tslint:disable-line
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('notifications');
+	            angular.element(containerDiv).append(referralDiv);
+	            this.goToTop();
+	        };
+	        FormProjectComponentController.prototype.goToElement = function (idElement) {
+	            $('html,body').animate({
+	                scrollTop: $("#" + idElement).offset().top }, 500);
+	        };
+	        FormProjectComponentController.prototype.goToTop = function () {
+	            $('html,body').animate({
+	                scrollTop: 0 }, 500);
+	        };
 	        return FormProjectComponentController;
 	    })();
 	    Home.FormProjectComponentController = FormProjectComponentController;
@@ -64826,13 +65201,14 @@
 	})(Home || (Home = {}));
 	module.exports = Home;
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
 /* 42 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/form-project.html';
-	var html = "<li id=\"projectFormID\">\n    <div class=\"col-md-12 contentFormProyect\">\n       <div class=\"col-md-3 col-sm-2 col-xs-12 pull-right\" id=\"moveprojectid\">\n            <!-- <div class=\"dropdown content-actionForm\">\n                <button disabled class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                    <i class=\"glyphicon glyphicon-transfer\" aria-hidden=\"true\"></i>\n                    <span>Cambiar estado</span>\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                    <li><a href=\"#\">Varificar</a></li>\n                    <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li>\n                </ul>\n            </div> -->\n            <div class=\"contentProgress content-actionForm\">\n                <div class=\"titleProgress\">Progreso de creación</div>\n                <div class=\"row\">\n                    <div class=\"c100 p{{formCtrl.percentForm}} centerProgress green\">\n                      <span>{{formCtrl.percentForm}}%</span>\n                      <div class=\"slice\">\n                        <div class=\"bar\"></div>\n                        <div class=\"fill\"></div>\n                      </div>\n                    </div>\n                </div>\n                <div class=\"dataProgress\">{{formCtrl.countForm}}</div>\n            </div>\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"modal\" data-target=\"#moverModal\" aria-haspopup=\"true\" aria-expanded=\"true\" ng-click=\"formCtrl.moveProject()\">\n                    <i class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></i>\n                    <span>Mover a ...</span>\n                    <!-- <span class=\"caret\"></span> -->\n                </button>\n            </div>\n            <div ng-if=\"formCtrl.currentProject.idProyecto\" class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" ng-click=\"formCtrl.deleteProject(formCtrl.currentProject.idProyecto)\">\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                    <span>Eliminar</span>\n                </button>\n            </div>\n        </div>\n\n\n    <div class=\"col-md-9 col-sm-10 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveProject()\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-list-alt\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Información inicial\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentProject.nombre\" required>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"descrption\">Descripción del proyecto</label>\n                    <textarea class=\"form-control\" rows=\"3\" ng-model=\"formCtrl.currentProject.descripcion\"></textarea>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Población\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <div></div>\n                    <label for=\"meta\">Meta</label>\n                    <input type=\"number\" class=\"form-control\" id=\"meta\" placeholder=\"Ej. 200\" ng-model=\"formCtrl.currentProject.meta\">\n                </div>\n                <div class=\"form-group col-md-9\">\n                    <label for=\"unit\">Unidad de la meta</label>\n                    <input type=\"text\" class=\"form-control\" id=\"unit\" placeholder=\"Ingresar unidad\" ng-model=\"formCtrl.currentProject.unidadMeta\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                    <label for=\"unit\">Cantidad de población afectada</label>\n                    <input type=\"number\" class=\"form-control\" id=\"unit\" placeholder=\"Ej. 200.000\" ng-model=\"formCtrl.currentProject.poblacionAfectada\">\n                </div>\n                <div class=\"form-group col-md-6\">\n                    <label for=\"type\">Segmento de la población afectada</label>\n                    <!-- <input type=\"text\" class=\"form-control\" id=\"type\" placeholder=\"Ej. Jubilados, Estudiantes\"> -->\n                    <tags-input ng-model=\"formCtrl.currentProject.poblacionesMeta\"\n                                display-property=\"nombre\"\n                                key-property=\"nombre\"\n                                add-from-autocomplete-only=\"true\"\n                                placeholder=\"Ej. Jubilados, Estudiantes\">\n                        <auto-complete source=\"formCtrl.loadTags($query)\"\n                                       min-length=\"0\"\n                                       load-on-focus=\"true\"\n                                       load-on-empty=\"true\">\n                        </auto-complete>\n                    </tags-input>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Responsables\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                    <label for=\"responsable\">Responsable</label>\n                    <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar l&iacute;der de proyecto\" ng-model=\"formCtrl.currentProject.liderProyecto\">\n                </div>\n                <div class=\"form-group col-md-6\">\n                    <label for=\"responsable\">Area</label>\n                    <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar &aacute;rea\" ng-model=\"formCtrl.currentProject.area\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                  <label for=\"responsable\">Organismos corresponsables</label>\n                  <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar m&aacute;ximo nivel jer&aacute;rquico\" ng-model=\"formCtrl.currentProject.organismosCorresponsables\">\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-map-marker\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Ubicación\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Ubicación geográfica</label>\n                    <select class=\"form-control\" ng-change=\"formCtrl.clearValuesUbicacion()\" ng-model=\"formCtrl.currentProject.tipoUbicacionGeografica\">\n                        <option>Comunas</option>\n                        <option>Dirección</option>\n                        <option>Sin Definir</option>\n                        <option>No Corresponde</option>\n                    </select>\n                </div>\n                <div class=\"form-group col-md-9\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'\">\n                    <label for=\"responsable\">Dirección</label>\n                    <!-- <input type=\"text\" class=\"form-control\" id=\"direccion\" placeholder=\"Ingresar dirección\" ng-model=\"formCtrl.currentProject.direccion\"> -->\n                    <usigautocomplete></usigautocomplete>\n                </div>\n                <div class=\"form-group col-md-9\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'\">\n                    <label for=\"responsable\">Comunas</label>\n                    <!-- <select class=\"form-control\" ng-model=\"formCtrl.currentProject.comunas\">\n                        <option ng-repeat=\"comuna in formCtrl.comunas\">{{comuna.nombre}}</option>\n                    </select> -->\n                    <div style=\"clear:both;\"></div>\n                    <isteven-multi-select\n                        input-model=\"formCtrl.comunas\"\n                        output-model=\"formCtrl.currentProject.comunas\"\n                        button-label=\"nombre\"\n                        item-label=\"nombre\"\n                        tick-property=\"ticked\"\n                        translation=\"formCtrl.configDropDown\"\n                        helper-elements=\"all none\">\n                    </isteven-multi-select>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-calendar\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Fechas y presupuestos\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Fecha de inicio</label>\n                    <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required>\n                </div>\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Fecha de fin</label>\n                    <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required>\n                </div>\n            </div>\n            <div ng-show=\"formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin\">\n              <div class=\"row\">\n                <div class=\"col-md-12\">\n                  <label for=\"responsable\">Presupuesto desglosado año por año:</label>\n                  <p class=\"reference\">Ingresá montos para calcular el total</p>\n                </div>\n              </div>\n              <div class=\"row\" ng-repeat=\"p in formCtrl.currentProject.presupuestosPorAnio\">\n                <div class=\"form-group col-md-2 col-sm-3 col-xs-12 add-line\">\n                  <input type=\"number\" class=\"form-control\" id=\"year\" ng-value=\"year\" ng-model=\"p.anio\" disabled=\"true\">\n                </div>\n                <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                  <input type=\"number\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudget()\" ng-model=\"p.presupuesto\">\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12 contentLine\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n              </div>\n              <div class=\"row\">\n                <div class=\"form-group col-md-2 col-sm-3 totalPresupuesto\">\n                  Total\n                </div>\n                <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                <div class=\"form-group col-md-4 col-sm-5\">\n                  <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudget\">\n                </div>\n              </div>\n\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Información adicional \n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Tipo de Proyecto</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.tipoProyecto\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios1\" value=\"Nuevo\" checked ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                        Nuevo\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios2\" value=\"Ampliación\" ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                        Ampliaci&oacute;n\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Eje de Gobierno</label>\n                <div class=\"checkbox\" ng-repeat=\"eje in formCtrl.ejesDeGobierno\">\n                    <label class=\"option\">\n                        <input type=\"checkbox\" data-checklist-model=\"formCtrl.currentProject.ejesDeGobierno\" data-checklist-value=\"eje\"> {{$index+1}}. {{eje.nombre}}\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Implica cambio legislativo</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.cambioLegislativo\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios3\" data-ng-value=\"false\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                        No\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios4\" data-ng-value=\"true\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                        S&iacute;\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Prioridad Jurisdiccional</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios1\" value=\"1.Alta\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        1. Alta\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"2.Media\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        2. Media\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"3.Baja\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        3. Baja\n                    </label>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-paperclip\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Archivos adjuntos\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <label for=\"exampleInputFile\">Adjuntar archivo <span class=\"opcional\">(Opcional)</span></label>\n                    <p class=\"reference\">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>\n                </div>\n\n<!--                 <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div> -->\n                <div class=\"col-md-12\">\n                    <button disabled type=\"button\" class=\"btn btn-default btn-presupuesto\"><i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar nuevo archivo</button>\n                </div>\n            </div>\n\n            <br />\n            <button ng-disabled=\"!formCtrl.allInputs\" type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></i> Guardar y Presentar</button>\n            <button type=\"submit\" ng-click=\"setAsPresented()\" class=\"btn btn-default\" id=\"draftButton\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Borrador</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancel()\">Cancel</button>\n            <br />\n            <p>* Para presentar un proyecto, todos los campos obligatorios deben estar completos.</p>\n        </form>\n    </div>\n\n</li>\n<div class=\"col-md-12\">\n    <hr>\n</div>\n";
+	var html = "<li id=\"projectFormID\">\n    <div class=\"col-md-12 contentFormProyect\" id=\"alertmodalcomponent\">\n       <div class=\"col-md-3 col-sm-2 col-xs-12 pull-right\" id=\"moveprojectid\">\n            <!-- <div class=\"dropdown content-actionForm\">\n                <button disabled class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                    <i class=\"glyphicon glyphicon-transfer\" aria-hidden=\"true\"></i>\n                    <span>Cambiar estado</span>\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                    <li><a href=\"#\">Varificar</a></li>\n                    <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li>\n                </ul>\n            </div> -->\n            <!-- <div class=\"contentProgress content-actionForm\">\n                <div class=\"titleProgress\">Progreso de creación</div>\n                <div class=\"row\">\n                    <div class=\"c100 p{{formCtrl.percentForm}} centerProgress green\">\n                      <span>{{formCtrl.percentForm}}%</span>\n                      <div class=\"slice\">\n                        <div class=\"bar\"></div>\n                        <div class=\"fill\"></div>\n                      </div>\n                    </div>\n                </div>\n                <div class=\"dataProgress\">{{formCtrl.countForm}}</div>\n            </div> -->\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"modal\" data-target=\"#moverModal\" aria-haspopup=\"true\" aria-expanded=\"true\" ng-click=\"formCtrl.moveProject()\">\n                    <i class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></i>\n                    <span>Mover a ...</span>\n                    <!-- <span class=\"caret\"></span> -->\n                </button>\n            </div>\n            <div ng-if=\"formCtrl.currentProject.idProyecto\" class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" data-toggle=\"modal\" data-target=\"#alertModalId\" ng-click=\"formCtrl.deleteProject(formCtrl.currentProject.idProyecto)\">\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                    <span>Eliminar</span>\n                </button>\n            </div>\n        </div>\n\n\n    <div class=\"col-md-9 col-sm-10 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveProject()\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-list-alt\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Información inicial\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentProject.nombre\" required>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"descrption\">Descripción del proyecto</label>\n                    <textarea class=\"form-control\" rows=\"3\" ng-model=\"formCtrl.currentProject.descripcion\"></textarea>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-user\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Población\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <div></div>\n                    <label for=\"meta\">Meta</label>\n                    <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"meta\" placeholder=\"Ej. 200\" ng-model=\"formCtrl.currentProject.meta\" maxlength=\"20\">\n                </div>\n                <div class=\"form-group col-md-9\">\n                    <label for=\"unit\">Unidad de la meta</label>\n                    <input type=\"text\" class=\"form-control\" id=\"unit\" placeholder=\"Ingresar unidad\" ng-model=\"formCtrl.currentProject.unidadMeta\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                    <label for=\"unit\">Cantidad de población afectada</label>\n                    <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"unit\" placeholder=\"Ej. 200.000\" ng-model=\"formCtrl.currentProject.poblacionAfectada\" maxlength=\"20\">\n                </div>\n                <div class=\"form-group col-md-6\">\n                    <label for=\"type\">Segmento de la población afectada</label>\n                    <!-- <input type=\"text\" class=\"form-control\" id=\"type\" placeholder=\"Ej. Jubilados, Estudiantes\"> -->\n                    <tags-input ng-model=\"formCtrl.currentProject.poblacionesMeta\"\n                                display-property=\"nombre\"\n                                key-property=\"nombre\"\n                                add-from-autocomplete-only=\"true\"\n                                placeholder=\"Ej. Jubilados, Estudiantes\">\n                        <auto-complete source=\"formCtrl.loadTags($query)\"\n                                       min-length=\"0\"\n                                       load-on-focus=\"true\"\n                                       load-on-empty=\"true\">\n                        </auto-complete>\n                    </tags-input>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Responsables\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                    <label for=\"responsable\">Responsable</label>\n                    <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar l&iacute;der de proyecto\" ng-model=\"formCtrl.currentProject.liderProyecto\">\n                </div>\n                <div class=\"form-group col-md-6\">\n                    <label for=\"responsable\">Area</label>\n                    <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar &aacute;rea\" ng-model=\"formCtrl.currentProject.area\">\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-6\">\n                  <label for=\"responsable\">Organismos corresponsables</label>\n                  <input type=\"text\" class=\"form-control\" id=\"responsable\" placeholder=\"Ingresar m&aacute;ximo nivel jer&aacute;rquico\" ng-model=\"formCtrl.currentProject.organismosCorresponsables\">\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-map-marker\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Ubicación\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Ubicación geográfica</label>\n                    <select class=\"form-control\" ng-change=\"formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)\" ng-model=\"formCtrl.currentProject.tipoUbicacionGeografica\">\n                        <option>Comunas</option>\n                        <option>Dirección</option>\n                        <option>Sin Definir</option>\n                        <option>No Corresponde</option>\n                    </select>\n                </div>\n                <div class=\"form-group col-md-9\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'\">\n                    <label for=\"responsable\">Dirección</label>\n                    <!-- <input type=\"text\" class=\"form-control\" id=\"direccion\" placeholder=\"Ingresar dirección\" ng-model=\"formCtrl.currentProject.direccion\"> -->\n                    <usigautocomplete></usigautocomplete>\n                </div>\n                <div class=\"form-group col-md-9\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'\">\n                    <label for=\"responsable\">Comunas</label>\n                    <!-- <select class=\"form-control\" ng-model=\"formCtrl.currentProject.comunas\">\n                        <option ng-repeat=\"comuna in formCtrl.comunas\">{{comuna.nombre}}</option>\n                    </select> -->\n                    <div style=\"clear:both;\"></div>\n                    <isteven-multi-select\n                        input-model=\"formCtrl.comunas\"\n                        output-model=\"formCtrl.currentProject.comunas\"\n                        button-label=\"nombre\"\n                        item-label=\"nombre\"\n                        tick-property=\"ticked\"\n                        translation=\"formCtrl.configDropDown\"\n                        helper-elements=\"all none\">\n                    </isteven-multi-select>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-calendar\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Fechas y presupuestos\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Fecha de inicio</label>\n                    <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required> -->\n                    <p class=\"input-group\">\n                      <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerInicio.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required/>\n                      <span class=\"input-group-btn\">\n                          <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerInicio()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                      </span>\n                    </p>\n                </div>\n                <div class=\"form-group col-md-3\">\n                    <label for=\"responsable\">Fecha de fin</label>\n                    <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" min=\"formCtrl.currentProject.fechaInicio\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required> -->\n                    <p class=\"input-group\">\n                      <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerFin.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required />\n                      <span class=\"input-group-btn\">\n                          <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerFin()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                      </span>\n                    </p>\n                </div>\n                <span class=\"errorForm\">{{formCtrl.validDate}}</span>\n            </div>\n            <div ng-show=\"formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''\">\n              <div class=\"row\">\n                <div class=\"col-md-12\">\n                  <label for=\"responsable\">Presupuesto desglosado año por año:</label>\n                  <p class=\"reference\">Ingresá montos para calcular el total</p>\n                </div>\n              </div>\n              <div class=\"row\" ng-repeat=\"p in formCtrl.currentProject.presupuestosPorAnio\">\n                <div class=\"form-group col-md-2 col-sm-3 col-xs-12 add-line\">\n                  <input type=\"number\" class=\"form-control\" id=\"year\" ng-value=\"year\" ng-model=\"p.anio\" disabled=\"true\">\n                </div>\n                <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                  <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength=\"15\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudget()\" ng-model=\"p.presupuesto\">\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12 contentLine\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n              </div>\n              <div class=\"row\">\n                <div class=\"form-group col-md-2 col-sm-3 totalPresupuesto\">\n                  Total\n                </div>\n                <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                <div class=\"form-group col-md-4 col-sm-5\">\n                  <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudget\">\n                </div>\n              </div>\n\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Información adicional\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Tipo de Proyecto</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.tipoProyecto\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios1\" value=\"Nuevo\" checked ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                        Nuevo\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios2\" value=\"Ampliación\" ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                        Ampliaci&oacute;n\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Eje de Gobierno</label>\n                <div class=\"checkbox\" ng-repeat=\"eje in formCtrl.ejesDeGobierno\">\n                    <label class=\"option\">\n                        <input type=\"checkbox\" data-checklist-model=\"formCtrl.currentProject.ejesDeGobierno\" data-checklist-value=\"eje\"> {{$index+1}}. {{eje.nombre}}\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Implica cambio legislativo</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.cambioLegislativo\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios3\" data-ng-value=\"false\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                        No\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios4\" data-ng-value=\"true\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                        S&iacute;\n                    </label>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <label for=\"unit\">Prioridad Jurisdiccional</label>\n                <div class=\"radio\" ng-init=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios1\" value=\"1.Alta\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        1. Alta\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"2.Media\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        2. Media\n                    </label>\n                    <label class=\"option\">\n                        <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"3.Baja\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                        3. Baja\n                    </label>\n                </div>\n            </div>\n            <hr>\n            <br>\n            <div class=\"row\">\n                <div class=\"form-group col-md-12 agrupador\">\n                    <i class=\"glyphicon glyphicon-paperclip\" aria-hidden=\"true\"></i>&nbsp;&nbsp;Archivos adjuntos\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-md-12\">\n                    <label for=\"exampleInputFile\">Adjuntar archivo <span class=\"opcional\">(Opcional)</span></label>\n                    <p class=\"reference\">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>\n                </div>\n\n<!--                 <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <div class=\"col-md-12 attach\">\n                    <span>Nombre del archivo.jpg</span>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                </div>\n                <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                    <hr class=\"line-inner-proyect\">\n                </div> -->\n                <div class=\"col-md-12\">\n                    <button disabled type=\"button\" class=\"btn btn-default btn-presupuesto\"><i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar nuevo archivo</button>\n                </div>\n            </div>\n\n            <br />\n            <button ng-show=\"formCtrl.currentProject.estado === 'Presentado'\" type=\"button\" ng-disabled=\"!formCtrl.allInputs\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></i> Guardar</button>\n            <button ng-show=\"formCtrl.currentProject.estado != 'Presentado'\" ng-disabled=\"!formCtrl.allInputs\" type=\"button\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-saved\" aria-hidden=\"true\"></i> Guardar y Presentar</button>\n            <button ng-show=\"formCtrl.currentProject.estado != 'Presentado'\" type=\"submit\" class=\"btn btn-default\" id=\"draftButton\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Borrador</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancel()\">Cancelar</button>\n            <br />\n            <p>* Para presentar un proyecto, todos los campos obligatorios deben estar completos.</p>\n        </form>\n    </div>\n\n</li>\n<div class=\"col-md-12\">\n    <hr>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -64840,7 +65216,7 @@
 /* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var template = __webpack_require__(44);
+	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(44);
 	var Home;
 	(function (Home) {
 	    var FormOperativeObjectiveComponentController = (function () {
@@ -64884,18 +65260,52 @@
 	            angular.element(formDiv).remove();
 	        };
 	        FormOperativeObjectiveComponentController.prototype.deleteOperativeObjective = function (id) {
+	            var dataAlert = {
+	                title: "Aviso",
+	                text: "Se va a eliminar el Objetivo Operativo. ¿Continuar?",
+	                callback: 'deleteOperativeObjectiveByID',
+	                id: id
+	            };
+	            this.addAlert(dataAlert);
+	        };
+	        FormOperativeObjectiveComponentController.prototype.deleteOperativeObjectiveByID = function (id) {
 	            var _this = this;
 	            if (this.currentOperativeObjective.proyectos.length > 0) {
-	                var referralDivFactory = this.$compile(' <div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Alerta!</strong> No puede borrar el Objetivo Operativo si posee Proyectos.</div> '); // tslint:disable-line
-	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(id);
-	                angular.element(containerDiv).append(referralDiv);
+	                var notificationData = {
+	                    "type": "warning",
+	                    "icon": "exclamation-sign",
+	                    "title": "Alerta",
+	                    "text": "No puede borrar el Objetivo Operativo si posee Proyectos.",
+	                    "action": "gotooperativo",
+	                    "valueAction": true,
+	                    "textlink": "Ir al formulario"
+	                };
+	                this.addNotification(notificationData);
 	            }
 	            else {
 	                this.services.deleteOperativeObjective(id).then(function (data) {
 	                    _this.$state.reload();
 	                });
 	            }
+	        };
+	        FormOperativeObjectiveComponentController.prototype.addNotification = function (data) {
+	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '"></notification> '); // tslint:disable-line
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('notifications');
+	            angular.element(containerDiv).append(referralDiv);
+	            this.goToTop();
+	        };
+	        FormOperativeObjectiveComponentController.prototype.goToTop = function () {
+	            $('html,body').animate({
+	                scrollTop: 0 }, 500);
+	        };
+	        FormOperativeObjectiveComponentController.prototype.addAlert = function (data) {
+	            var formDiv = document.getElementsByTagName('alertmodal');
+	            angular.element(formDiv).remove();
+	            var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('grupo-level-3-3');
+	            angular.element(containerDiv).append(referralDiv);
 	        };
 	        return FormOperativeObjectiveComponentController;
 	    })();
@@ -64912,13 +65322,14 @@
 	})(Home || (Home = {}));
 	module.exports = Home;
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
 /* 44 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/form-operative-objective.html';
-	var html = "<div id=\"grupo-level-3-3\" class=\"contentFormProyect collapse in\" aria-expanded=\"true\">\n    <div class=\"col-md-2 col-sm-2 col-xs-12 pull-right\">\n        <!-- <div class=\"dropdown content-actionForm\">\n            <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                <i class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></i>\n                <span class=\"caret\"></span>\n                <span class=\"\" style=\"font-size: 11px;\">Mover</span>\n            </button>\n            <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                <li class=\"titleMenu\">Plan 2017</li>\n                <li><a href=\"#\">Obj. Estratégico 1</a></li>\n                <li><a href=\"#\">Obj. Estratégico 2</a></li>\n            </ul>\n        </div> -->\n        <div id=\"{{formCtrl.currentOperativeObjective.idObjetivoOperativo}}\"></div>\n        <div class=\"dropdown content-actionForm\" ng-show=\"formCtrl.currentOperativeObjective.idObjetivoOperativo\">\n            <button class=\"btn btn-default\" type=\"button\" ng-click=\"formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)\">\n                <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                <span class=\"\" style=\"font-size: 11px;\">Eliminar</span>\n            </button>\n        </div>\n    </div>\n    <div class=\"col-md-10 col-sm-10 col-xs-12\">\n        <form role=\"form\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre de Objetivo Operativo</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentOperativeObjective.nombre\">\n                </div>\n            </div>\n            <button type=\"submit\" class=\"btn btn-success\" ng-click=\"formCtrl.saveOperativeObjective()\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Objetivo Operativo</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancelOperativeObjective()\">Cancelar y descartar cambios</button>\n        </form>\n    </div>\n</div>\n";
+	var html = "<div id=\"grupo-level-3-3\" class=\"contentFormProyect collapse in\" aria-expanded=\"true\">\n    <div class=\"col-md-2 col-sm-2 col-xs-12 pull-right\">\n        <!-- <div class=\"dropdown content-actionForm\">\n            <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                <i class=\"glyphicon glyphicon-th-list\" aria-hidden=\"true\"></i>\n                <span class=\"caret\"></span>\n                <span class=\"\" style=\"font-size: 11px;\">Mover</span>\n            </button>\n            <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                <li class=\"titleMenu\">Plan 2017</li>\n                <li><a href=\"#\">Obj. Estratégico 1</a></li>\n                <li><a href=\"#\">Obj. Estratégico 2</a></li>\n            </ul>\n        </div> -->\n        <div id=\"{{formCtrl.currentOperativeObjective.idObjetivoOperativo}}\"></div>\n        <div class=\"dropdown content-actionForm\" ng-show=\"formCtrl.currentOperativeObjective.idObjetivoOperativo\">\n            <button class=\"btn btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#alertModalId\" ng-click=\"formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)\">\n                <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                <span class=\"\" style=\"font-size: 11px;\">Eliminar</span>\n            </button>\n        </div>\n    </div>\n    <div class=\"col-md-10 col-sm-10 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveOperativeObjective()\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre de Objetivo Operativo</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentOperativeObjective.nombre\" required>\n                </div>\n            </div>\n            <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Objetivo Operativo</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancelOperativeObjective()\">Cancelar y descartar cambios</button>\n        </form>\n    </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -64926,7 +65337,7 @@
 /* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var template = __webpack_require__(46);
+	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(46);
 	var Home;
 	(function (Home) {
 	    var FormStrategicObjectiveComponentController = (function () {
@@ -64969,19 +65380,53 @@
 	            var formDiv = document.getElementsByTagName('formstrategicobjective');
 	            angular.element(formDiv).remove();
 	        };
-	        FormStrategicObjectiveComponentController.prototype.deleteStrategicObjective = function (id) {
+	        FormStrategicObjectiveComponentController.prototype.deleteStrategicObjectiveById = function (id) {
 	            var _this = this;
 	            if (this.currentStrategicObjective.objetivosOperativos.length > 0) {
-	                var referralDivFactory = this.$compile(' <div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Alerta!</strong> No puede borrar el Objetivo Estratégico si posee Objetivos Operativos.</div> '); // tslint:disable-line
-	                var referralDiv = referralDivFactory(this.$scope);
-	                var containerDiv = document.getElementById(id);
-	                angular.element(containerDiv).append(referralDiv);
+	                var notificationData = {
+	                    "type": "warning",
+	                    "icon": "exclamation-sign",
+	                    "title": "Alerta",
+	                    "text": "No puede borrar el Objetivo Estratégico si posee Proyectos.",
+	                    "action": "gotoestrategico",
+	                    "valueAction": true,
+	                    "textlink": "Ir al formulario"
+	                };
+	                this.addNotification(notificationData);
 	            }
 	            else {
 	                this.services.deleteStrategicObjective(id).then(function (data) {
 	                    _this.$state.reload();
 	                });
 	            }
+	        };
+	        FormStrategicObjectiveComponentController.prototype.deleteStrategicObjective = function (id) {
+	            var dataAlert = {
+	                title: "Aviso",
+	                text: "Se va a eliminar el Objetivo Estratégico. ¿Continuar?",
+	                callback: 'deleteStrategicObjectiveById',
+	                id: id
+	            };
+	            this.addAlert(dataAlert);
+	        };
+	        FormStrategicObjectiveComponentController.prototype.addNotification = function (data) {
+	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '"></notification> '); // tslint:disable-line
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('notifications');
+	            angular.element(containerDiv).append(referralDiv);
+	            this.goToTop();
+	        };
+	        FormStrategicObjectiveComponentController.prototype.goToTop = function () {
+	            $('html,body').animate({
+	                scrollTop: 0 }, 500);
+	        };
+	        FormStrategicObjectiveComponentController.prototype.addAlert = function (data) {
+	            var formDiv = document.getElementsByTagName('alertmodal');
+	            angular.element(formDiv).remove();
+	            var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('grupo-level-3-3');
+	            angular.element(containerDiv).append(referralDiv);
 	        };
 	        FormStrategicObjectiveComponentController.prototype.addIndicador = function () {
 	            if (!this.currentStrategicObjective.indicadoresEstrategicos) {
@@ -65007,13 +65452,14 @@
 	})(Home || (Home = {}));
 	module.exports = Home;
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
 /* 46 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/form-strategic-objective.html';
-	var html = "<br ng-if=\"formCtrl.idobjetivoestrategico\">\n<div id=\"grupo-level-3-3\" class=\"contentFormProyect obj-estrategico collapse in\" aria-expanded=\"true\">\n    <div class=\"col-md-2 col-sm-2 col-xs-12 pull-right\" ng-show=\"formCtrl.idobjetivoestrategico\">\n    <div id=\"{{formCtrl.currentStrategicObjective.idObjetivoJurisdiccional}}\"></div>\n        <div class=\"dropdown content-actionForm\">\n            <button class=\"btn btn-default\" type=\"button\" ng-click=\"formCtrl.deleteStrategicObjective(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)\">\n                <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                <span class=\"\" style=\"font-size: 11px;\">Eliminar</span>\n            </button>\n        </div>\n    </div>\n     <div class=\"col-md-9 col-sm-12 col-xs-12\">\n        <form role=\"form\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre de Objetivo Estrat&eacute;gico</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentStrategicObjective.nombre\" required>\n                </div>\n            </div>\n            <div class=\"row\" ng-if=\"formCtrl.currentStrategicObjective.indicadoresEstrategicos.length > 0\">\n                <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                    <label for=\"responsable\">Indicadores</label>\n                </div>\n            </div>\n            <div class=\"row\" ng-repeat=\"indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index\">\n                <div class=\"form-group col-md-5 col-sm-3 col-xs-11 add-line\">\n                    <input type=\"text\" class=\"form-control\" ng-model=\"indicador.nombre\" placeholder=\"Indicador\">\n                </div>\n                <div class=\"form-group col-md-6 col-sm-5 col-xs-11 add-line\">\n                    <input type=\"text\" class=\"form-control\" ng-model=\"indicador.descripcion\" placeholder=\"Forma de medici&oacute;n\">\n                </div>\n                <i class=\"glyphicon glyphicon-remove line\" aria-hidden=\"true\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\" ng-click=\"formCtrl.removeIndicador($index)\"></i> \n                <div class=\"col-md-11 col-sm-8 col-xs-11\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <!-- <div class=\"form-group col-md-1 col-sm-1\">\n                  <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.removeIndicador($index)\"><i class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></i></button>\n                </div> -->\n            </div>\n            <div class=\"row\">\n              <div class=\"form-group col-md-4 col-sm-4\">\n                  <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.addIndicador()\">Agregar nuevo indicador</button>\n              </div>\n            </div>\n            <button type=\"submit\" class=\"btn btn-success\" ng-click=\"formCtrl.saveStrategicObjective()\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Objetivo Estrat&eacute;gico</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancelStrategicObjective()\">Cancelar y descartar cambios</button>\n        </form>\n    </div>\n</div>\n";
+	var html = "<br ng-if=\"formCtrl.idobjetivoestrategico\">\n<div id=\"grupo-level-3-3\" class=\"contentFormProyect obj-estrategico collapse in\" aria-expanded=\"true\">\n    <div class=\"col-md-2 col-sm-2 col-xs-12 pull-right\" ng-show=\"formCtrl.idobjetivoestrategico\">\n    <div id=\"{{formCtrl.currentStrategicObjective.idObjetivoJurisdiccional}}\"></div>\n        <div class=\"dropdown content-actionForm\">\n            <button class=\"btn btn-default\" type=\"button\" data-toggle=\"modal\" data-target=\"#alertModalId\" ng-click=\"formCtrl.deleteStrategicObjective(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)\">\n                <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></i>\n                <span class=\"\" style=\"font-size: 11px;\">Eliminar</span>\n            </button>\n        </div>\n    </div>\n     <div class=\"col-md-9 col-sm-12 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveStrategicObjective()\">\n            <div class=\"row\">\n                <div class=\"form-group col-md-12\">\n                    <label for=\"name\">Nombre de Objetivo Estrat&eacute;gico</label>\n                    <input type=\"text\" class=\"form-control\" id=\"name\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentStrategicObjective.nombre\" required>\n                </div>\n            </div>\n            <div class=\"row\" ng-if=\"formCtrl.currentStrategicObjective.indicadoresEstrategicos.length > 0\">\n                <div class=\"col-md-12 col-sm-12 col-xs-12\">\n                    <label for=\"responsable\">Indicadores</label>\n                </div>\n            </div>\n            <div class=\"row\" ng-repeat=\"indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index\">\n                <div class=\"form-group col-md-5 col-sm-3 col-xs-11 add-line\">\n                    <input type=\"text\" class=\"form-control\" ng-model=\"indicador.nombre\" placeholder=\"Indicador\">\n                </div>\n                <div class=\"form-group col-md-6 col-sm-5 col-xs-11 add-line\">\n                    <input type=\"text\" class=\"form-control\" ng-model=\"indicador.descripcion\" placeholder=\"Forma de medici&oacute;n\">\n                </div>\n                <i class=\"glyphicon glyphicon-remove line\" aria-hidden=\"true\"  data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\" ng-click=\"formCtrl.removeIndicador($index)\"></i>\n                <div class=\"col-md-11 col-sm-8 col-xs-11\">\n                    <hr class=\"line-inner-proyect\">\n                </div>\n                <!-- <div class=\"form-group col-md-1 col-sm-1\">\n                  <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.removeIndicador($index)\"><i class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></i></button>\n                </div> -->\n            </div>\n            <div class=\"row\">\n              <div class=\"form-group col-md-4 col-sm-4\">\n                  <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.addIndicador()\">Agregar nuevo indicador</button>\n              </div>\n            </div>\n            <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar Objetivo Estrat&eacute;gico</button>\n            <button type=\"button\" class=\"btn btn-link\" ng-click=\"formCtrl.cancelStrategicObjective()\">Cancelar y descartar cambios</button>\n        </form>\n    </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -65119,6 +65565,13 @@
 	                .then(function (response) { return response.data; })
 	                .catch(function (response) { return console.log(response.data); });
 	        };
+	        GeneralServices.prototype.presentProject = function (project) {
+	            project.fechaInicio = new Date(project.fechaInicio);
+	            project.fechaFin = new Date(project.fechaFin);
+	            return this.$http.post(this.apiBaseUrl + "proyecto/presentar", project)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
 	        GeneralServices.prototype.updateProject = function (project) {
 	            project.fechaInicio = new Date(project.fechaInicio);
 	            project.fechaFin = new Date(project.fechaFin);
@@ -65173,6 +65626,64 @@
 	        };
 	        GeneralServices.prototype.getStrategicObjective = function (idStrategicObjective) {
 	            return this.$http.get(this.apiBaseUrl + "objetivoJurisdiccional/" + idStrategicObjective)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.getUsers = function () {
+	            return this.$http.get(this.apiBaseUrl + "usuario/")
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.getUserByToken = function () {
+	            return this.$http.get(this.apiBaseUrl + "usuario/porToken/")
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.getUser = function (id) {
+	            return this.$http.get(this.apiBaseUrl + "usuario/" + id)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.presaveUser = function (user) {
+	            if (user.jurisdicciones) {
+	                user.jurisdicciones = user.jurisdicciones.map(function (entry) {
+	                    return { "idJurisdiccion": entry.idJurisdiccion };
+	                });
+	            }
+	            if (user.roles) {
+	                user.roles = user.roles.map(function (entry) {
+	                    return { "idRol": entry.idRol };
+	                });
+	            }
+	        };
+	        GeneralServices.prototype.saveUser = function (user) {
+	            this.presaveUser(user);
+	            return this.$http.post(this.apiBaseUrl + "usuario/", user)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.updateUser = function (user) {
+	            this.presaveUser(user);
+	            return this.$http.put(this.apiBaseUrl + "usuario/", user)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.toggleUserState = function (user) {
+	            this.presaveUser(user);
+	            return this.$http.put(this.apiBaseUrl + "usuario/", user)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) {
+	                user.activo = !user.activo;
+	                console.log(response.data);
+	            });
+	        };
+	        GeneralServices.prototype.deleteUser = function (id) {
+	            return this.$http.delete(this.apiBaseUrl + "usuario/" + id)
+	                .then(function (response) { return response.data; })
+	                .catch(function (response) { return console.log(response.data); });
+	        };
+	        GeneralServices.prototype.getRoles = function () {
+	            return this.$http.get(this.apiBaseUrl + "rol/")
 	                .then(function (response) { return response.data; })
 	                .catch(function (response) { return console.log(response.data); });
 	        };
@@ -65235,7 +65746,52 @@
 /* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(52);
+	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(52);
+	var Home;
+	(function (Home) {
+	    var AlertController = (function () {
+	        /*@ngInject*/
+	        function AlertController() {
+	            $('#alertModalId').modal('hide');
+	            console.log(this.title);
+	            console.log(this.text);
+	        }
+	        AlertController.prototype.acept = function () {
+	            $('#alertModalId').modal('hide');
+	            this.callback();
+	        };
+	        return AlertController;
+	    })();
+	    Home.AlertController = AlertController;
+	    Home.alertComponent = {
+	        bindings: {
+	            title: '@',
+	            text: '@',
+	            callback: '&'
+	        },
+	        templateUrl: template,
+	        controller: AlertController,
+	        controllerAs: 'alertCtrl'
+	    };
+	})(Home || (Home = {}));
+	module.exports = Home;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/alert/alertmodal.html';
+	var html = "<div class=\"modal fade\" id=\"alertModalId\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\">\n       <div class=\"modal-dialog\" role=\"document\">\n           <div class=\"modal-content\">\n\n               <div class=\"modal-header\">\n                   <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>\n                   <h4 class=\"modal-title\" id=\"myModalLabel\">{{alertCtrl.title}}</h4>\n               </div>\n\n               <div class=\"modal-body\">\n                   <p>{{alertCtrl.text}}</p>\n                   <p class=\"debug-url\"></p>\n               </div>\n\n               <div class=\"modal-footer\">\n                   <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cancelar</button>\n                   <button type=\"button\" class=\"btn btn-ok\" ng-click=\"alertCtrl.acept()\">Aceptar</button>\n               </div>\n           </div>\n       </div>\n</div>\n";
+	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
+	module.exports = path;
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(54);
 	var Home;
 	(function (Home) {
 	    var selectedOption = null;
@@ -65274,21 +65830,21 @@
 
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {jQuery.extendIf=function(d,e){if(d&&e){for(var b in e){if(typeof d[b]=="undefined"){d[b]=e[b]}}}return d};if(typeof(Ext)=="undefined"){jQuery.extend(Function.prototype,{createCallback:function(){var b=arguments;var c=this;return function(){return c.apply(window,b)}},createDelegate:function(d,c,b){var e=this;return function(){var g=c||arguments;if(b===true){g=Array.prototype.slice.call(arguments,0);g=g.concat(c)}else{if(typeof b=="number"){g=Array.prototype.slice.call(arguments,0);var f=[b,0].concat(c);Array.prototype.splice.apply(g,f)}}return e.apply(d||window,g)}},defer:function(d,f,c,b){var e=this.createDelegate(f,c,b);if(d){return setTimeout(e,d)}e();return 0},createSequence:function(c,b){if(typeof c!="function"){return this}var d=this;return function(){var e=d.apply(this||window,arguments);c.apply(b||this||window,arguments);return e}},createInterceptor:function(c,b){if(typeof c!="function"){return this}var d=this;return function(){c.target=this;c.method=d;if(c.apply(b||this||window,arguments)===false){return}return d.apply(this||window,arguments)}}});jQuery.extendIf(String,{escape:function(b){return b.replace(/('|\\)/g,"\\$1")},leftPad:function(e,c,d){var b=new String(e);if(!d){d=" "}while(b.length<c){b=d+b}return b.toString()},format:function(c){var b=Array.prototype.slice.call(arguments,1);return c.replace(/\{(\d+)\}/g,function(d,e){return b[e]})}})}String.prototype.isInteger=function(){return !isNaN(parseInt(this))};String.prototype.isFloat=function(){return !isNaN(parseFloat(this))};String.prototype.toggle=function(c,b){return this==c?b:c};String.prototype.trim=function(){var b=/^\s+|\s+$/g;return function(){return this.replace(b,"")}}();String.prototype.translate=function(e,d){if(!(e.length&&d.length)||e.length!=d.length){return this}var c=this;for(var b=0;b<e.length;b++){if(typeof(e)=="string"){c=c.replace(new RegExp(e.charAt(b),"g"),d.charAt(b))}else{c=c.replace(new RegExp(e[b],"g"),d[b])}}return c};String.prototype.isDigit=function(){return/^\d+$/.test(this)};String.prototype.removeWords=function(f){var e=this.split(" ");var d=new Array();for(var c=0;c<e.length;c++){d.push(e[c]);for(var b=0;b<f.length;b++){if(d[c]==f[b]){d.pop();break}}}return d.join(" ")};jQuery.extendIf(Number.prototype,{constrain:function(c,b){return Math.min(Math.max(this,c),b)},isInteger:function(){return !isNaN(parseInt(this))},isFloat:function(){return !isNaN(parseFloat(this))}});jQuery.extendIf(Array.prototype,{indexOf:function(d){for(var c=0,b=this.length;c<b;c++){if(this[c]==d){return c}}return -1},removeObject:function(c){var b=this.indexOf(c);if(b!=-1){this.splice(b,1)}return this},binarySearch:function binarySearch(g,c){var b=0,f=this.length-1,d,e;while(b<=f){d=parseInt((b+f)/2,10);e=c(this[d],g);if(e<0){b=d+1;continue}if(e>0){f=d-1;continue}return d}return -1},inject:function(d,c){for(var b=0;b<this.length;b++){d=c(d,this[b],b)}return d},map:function(e,d){var b=new Array(this.length);for(var c=0,f=this.length;c<f;c++){if(c in this){b[c]=e.call(d,this[c],c,this)}}return b},intersect:function(){if(!arguments.length){return[]}var e=this;var d=a2=null;var h=0;while(h<arguments.length){d=[];a2=arguments[h];var c=e.length;var b=a2.length;for(var g=0;g<c;g++){for(var f=0;f<b;f++){if(e[g]===a2[f]){d.push(e[g])}}}e=d;h++}return d.unique()},unique:function(){var c=[];var b=this.length;for(var e=0;e<b;e++){for(var d=e+1;d<b;d++){if(this[e]===this[d]){d=++e}}c.push(this[e])}return c}});Date.prototype.getElapsed=function(b){return Math.abs((b||new Date()).getTime()-this.getTime())};if(typeof(usig)=="undefined"){usig={}}usig.debug=function(b){if(window.console&&window.console.log){window.console.log(b)}};if(typeof(usig)=="undefined"){usig={}}jQuery.extendIf(usig,{loadingJs:[],loadingJsListeners:{},__callLoadJsListeners:function(c){for(var d=0,b=usig.loadingJsListeners[c].length;d<b;d++){usig.loadingJsListeners[c][d]()}},loadJs:function(c,f){if(usig.loadingJs.indexOf(c)<0){usig.loadingJs.push(c);usig.loadingJsListeners[c]=(typeof(f)=="function")?[f]:[];var b=document.createElement("script"),d=document.getElementsByTagName("head")[0],e=false;b.onload=b.onreadystatechange=function(){if((b.readyState&&b.readyState!=="complete"&&b.readyState!=="loaded")||e){return false}b.onload=b.onreadystatechange=null;e=true;usig.__callLoadJsListeners(c)};b.src=c;d.insertBefore(b,d.firstChild)}else{usig.loadingJsListeners[c].push(f)}},loadCss:function(b){var c=document.createElement("link");c.setAttribute("rel","stylesheet");c.setAttribute("type","text/css");c.setAttribute("href",b);if(typeof c!="undefined"){document.getElementsByTagName("head")[0].appendChild(c)}},removeJs:function(b){var d=document.getElementsByTagName("script");for(var c=d.length;c>=0;c--){if(d[c]&&d[c].getAttribute("src")!=null&&d[c].getAttribute("src").indexOf(b)!=-1){d[c].parentNode.removeChild(d[c])}}},removeCss:function(b){var d=document.getElementsByTagName("link");for(var c=d.length;c>=0;c--){if(d[c]&&d[c].getAttribute("href")!=null&&d[c].getAttribute("href").indexOf(b)!=-1){d[c].parentNode.removeChild(d[c])}}},Animator:function(d,e,f,g){var c=0;function b(){if(d.length>c){e(d[c]);c++;setTimeout(b,f)}else{if(typeof(g)=="function"){g()}}}this.stop=function(){c=d.length+1};b()},parseUri:function(f){var b=["source","protocol","authority","domain","port","path","directoryPath","fileName","query","anchor"],c=new RegExp("^(?:([^:/?#.]+):)?(?://)?(([^:/?#]*)(?::(\\d*))?)((/(?:[^?#](?![^?#/]*\\.[^?#/.]+(?:[\\?#]|$)))*/?)?([^?#/]*))?(?:\\?([^#]*))?(?:#(.*))?").exec(f),e={};for(var d=0;d<10;d++){e[b[d]]=(c[d]?c[d]:"")}if(e.directoryPath.length>0){e.directoryPath=e.directoryPath.replace(/\/?$/,"/")}return e},registeredSuggesters:{},registerSuggester:function(b,c){usig.registeredSuggesters[b]=c},createSuggester:function(c,b){if(typeof(usig.registeredSuggesters[c])!="function"){throw"Suggester "+c+" is not registered.";return null}return new usig.registeredSuggesters[c](b)}});jQuery.expr[":"].Contains=function(c,d,b){return jQuery(c).text().toUpperCase().indexOf(b[3].toUpperCase())>=0};jQuery.expr[":"].ContainsFilter=function(c,d,b){if(c.innerHTML.indexOf("data-filter")>=0){var e=c.innerHTML.match(/data-filter\=\"(.*?)\"/)[1].toUpperCase().indexOf(b[3].toUpperCase())>=0}return jQuery(c).text().toUpperCase().indexOf(b[3].toUpperCase())>=0||e};(function(){var b=false,c=/xyz/.test(function(){xyz})?/\b_super\b/:/.*/;jQuery.Class=function(){};jQuery.Class.create=function(h){var g=this.prototype;b=true;var f=new this();b=false;for(var e in h){f[e]=typeof h[e]=="function"&&typeof g[e]=="function"&&c.test(h[e])?(function(i,j){return function(){var l=this._super;this._super=g[i];var k=j.apply(this,arguments);this._super=l;return k}})(e,h[e]):h[e]}function d(){if(!b&&d.prototype.init){return d.prototype.init.apply(this,arguments)}}d.prototype=f;d.prototype.constructor=d;d.extend=arguments.callee;return d}})();if(typeof(usig)=="undefined"){usig={}}usig.InputController=(function(b){return function(e,d){var h=document.getElementById(e);var c="";var g=b.extend({},usig.InputController.defaults,d);var i=function(k){var j=k.keyCode;if(window.event&&window.event.keyCode>0){j=window.event.keyCode}if(k.type!="blur"&&k.type!="focus"&&typeof(g.onKeyUp)=="function"){g.onKeyUp(j,h.value)}if(k.type!="blur"&&k.type!="focus"&&h.value!=c&&typeof(g.onChange)=="function"){c=h.value;g.onChange(h.value)}if(k.type=="blur"&&typeof(g.onBlur)=="function"){g.onBlur()}if(k.type=="focus"&&typeof(g.onFocus)=="function"){g.onFocus()}};var f=i.createDelegate(this);this.unbind=function(){b(h).unbind(g.events,f)};this.bind=function(){b(h).bind(g.events,f);c=b(h).val()};this.setOptions=function(j){g=b.extend({},g,j)};this.setValue=function(j){h.value=j;c=j};this.setFocus=function(){try{b(h).focus()}catch(j){}};if(!h){throw"InvalidField";return}else{this.bind()}}})(jQuery);usig.InputController.defaults={events:document.all?"blur keydown keyup input focus":"blur keydown input focus"};if(typeof(usig)=="undefined"){usig={}}usig.AutoCompleter=(function(b){return function(l,f,c){var d=document.getElementById(l),u=c,r=[],h={},v=b.extend({},usig.AutoCompleter.defaults,f),A=null,q=true,m=[],s=[],z=null,o={},t=0,k=false,g=false;d.setAttribute("autocomplete","off");this.unbind=function(){A.unbind();e();u.hide()};this.bind=function(){A.bind()};this.destroy=function(){this.unbind();u.remove();delete A;while(r.length>0){r.pop()}for(var K=0;K<m.length;K++){delete m[K]}};this.setViewControl=function(i){u=i;u.onSelection(I.createDelegate(this))};this.setOptions=function(i){v=b.extend({},v,i);u.setOptions(i)};this.addSuggester=function(N,L){var K=typeof(N)=="string"?N:N.name;if(typeof(h[K])=="undefined"){var i=N;if(typeof(N)=="string"){try{i=usig.createSuggester(K,{onReady:v.onReady,debug:v.debug,maxRetries:v.maxRetries,afterServerRequest:B.createDelegate(this,[K],1),afterServerResponse:F.createDelegate(this,[K],1),afterAbort:G.createDelegate(this,[K],1)})}catch(O){return false}}else{i.setOptions({debug:v.debug,maxRetries:v.maxRetries,afterServerRequest:B.createDelegate(this,[K],1),afterServerResponse:F.createDelegate(this,[K],1),afterAbort:G.createDelegate(this,[K],1)})}h[K]=i;o[K]=0;var M={inputPause:v.inputPause,maxSuggestions:v.maxSuggestions,serverTimeout:v.serverTimeout,minTextLength:v.minTextLength,maxRetries:v.maxRetries,showError:v.showError};M=b.extend({},M,L);r.push({suggester:i,options:M,inputTimer:null})}else{}};this.removeSuggester=function(K){if(typeof(h[K])!="undefined"){h[K]=undefined;for(var L=0;L<r.length;L++){if(r[L].suggester.name==K){r.removeObject(r[L]);break}}}else{}};this.setSuggesterOptions=function(L,K){if(typeof(h[L])!="undefined"){for(var M=0;M<r.length;M++){if(r[M].suggester.name==L){r[M].options=b.extend(r[M].options,K);break}}}else{}};this.getSuggesters=function(){var L={};for(var K=0;K<r.length;K++){L[r[K].suggester.name]=b.extend({},r[K].options)}return L};this.changeSkin=function(i){u.changeSkin(i)};this.getOptions=function(){return v};this.selectOption=function(i){return u.selectOption(i)};this.getNumSuggestions=function(){return u.getNumSuggestions()};this.getSuggestion=function(i){return u.getSuggestion(i)};this.hide=function(){u.hide()};this.ready=function(K){var i=false;if(K){i=h[K].ready()}else{for(E=0;E<r.length;E++){i=i||r[E].suggester.ready()}}return i};function y(){if(d.value!=""&&s.length>0){u.show(s,g)}s=[];z=null}function x(M,N){if(!N){s=[];g=false}for(var L=0,K=M.length;L<K;L++){s.push(M[L])}if(!z){g=N;z=y.defer(v.flushTimeout,this)}}function J(N,M){var L=N.suggester;var K=N.options;i=function i(P,O){if(d.value==O){if(P.getErrorMessage!=undefined){try{if(!k&&K.showError){u.showMessage(P.getErrorMessage())}}catch(Q){if(!k&&K.showError){u.showMessage(v.texts.nothingFound)}}}else{if(P.length==0){if(!k&&K.showError){u.showMessage(v.texts.nothingFound)}}else{P=P.map(function(R){R.suggesterName=L.name;return R});if(v.flushTimeout>0){x(P,k)}else{u.show(P,k)}k=true;if(!q){u.hide()}}}if(typeof(v.afterSuggest)=="function"){v.afterSuggest()}}else{}};L.getSuggestions(M,i.createDelegate(this,[M],1),K.maxSuggestions)}function e(){for(var K=0;K<r.length;K++){if(r[K].inputTimer){clearTimeout(r[K].inputTimer)}r[K].suggester.abort()}if(typeof(v.afterAbort)=="function"){v.afterAbort()}}function I(i){e();var K=i.toString();A.setValue(K);if(typeof(v.afterSelection)=="function"){v.afterSelection(i)}if(typeof(v.afterGeoCoding)=="function"){if(typeof(v.beforeGeoCoding)=="function"){v.beforeGeoCoding()}h[i.suggesterName].getGeoCoding(i,j)}A.setFocus()}function H(i,L,K){if(i.descripcion!=undefined&&i.descripcion!=""){return'<li class="acv_op"><a href="#" class="acv_op" name="'+L+'"><span class="tl"/><span class="tr"/><span>'+K(i.toString())+'</span><span class="clase">('+i.descripcion+")</span></a></li>"}else{return'<li class="acv_op"><a href="#" class="acv_op" name="'+L+'"><span class="tl"/><span class="tr"/><span>'+K(i.toString())+"</span></a></li>"}}function C(M){try{e();u.update(M);if(typeof(v.onInputChange)=="function"){v.onInputChange(M)}}catch(K){throw (K)}k=false;for(var L=0;L<r.length;L++){if(M.length>=r[L].options.minTextLength){r[L].inputTimer=J.defer(r[L].options.inputPause,this,[r[L],M])}}}function n(i){u.keyUp(i)}function w(){q=false;if(v.hideOnBlur){u.hide.defer(300)}}function p(){q=true}function G(i){if(o[i]>0){o[i]--;t--}}function B(i){o[i]++;t++;if(typeof(v.afterServerRequest)=="function"){v.afterServerRequest()}}function F(i){if(o[i]>0){o[i]--;t--}if(typeof(v.afterServerResponse)=="function"&&t==0){v.afterServerResponse()}}function j(i){if(i instanceof usig.Suggester.GeoCodingTypeError){A.setValue(d.value+" ")}v.afterGeoCoding(i)}try{A=new usig.InputController(l,{onKeyUp:n.createDelegate(this),onChange:C.createDelegate(this),onBlur:w.createDelegate(this),onFocus:p.createDelegate(this),debug:v.debug})}catch(D){throw (D)}for(var E=0;E<v.suggesters.length;E++){this.addSuggester(v.suggesters[E].suggester,v.suggesters[E].options)}if(!u){u=new usig.AutoCompleterDialog(l,{maxOptions:v.maxOptions,rootUrl:v.rootUrl,debug:v.debug,skin:v.skin,autoSelect:v.autoSelect,autoHideTimeout:v.autoHideTimeout,optionsFormatter:H,onEnterWithoutSelection:v.onEnterWithoutSelection,idDiv:v.idOptionsDiv});m.push(u)}u.onSelection(I.createDelegate(this))}})(jQuery);usig.AutoCompleter.defaults={inputPause:200,maxSuggestions:10,serverTimeout:30000,minTextLength:3,maxRetries:1,showError:true,maxOptions:10,offsetY:-5,zIndex:10000,autoHideTimeout:10000,flushTimeout:0,hideOnBlur:true,autoSelect:true,rootUrl:"//servicios.usig.buenosaires.gob.ar/usig-js/3.1/",skin:"bootstrap",idOptionsDiv:undefined,suggesters:[{suggester:"Direcciones",options:{inputPause:10,minTextLength:3}},{suggester:"Lugares",options:{inputPause:500,minTextLength:3,showError:false}}],debug:false,texts:{nothingFound:"No se hallaron resultados coincidentes con su b&uacute;squeda."}};if(typeof(usig)=="undefined"){usig={}}usig.AutoCompleterDialog=(function(b){return function(i,e){var c=document.getElementById(i),j=c.value,p=b.extend({},usig.AutoCompleterDialog.defaults,e),s=p.idDiv||"usig_acv_"+i,o=null,h=-1,r=false,d=false,m=0,x=null,g={},y={arrUp:38,arrDn:40,enter:13,esc:27};function l(){clearTimeout(o)}function q(){l();if(p.autoHideTimeout>0){o=t.defer(p.autoHideTimeout,this)}}function t(){if(x){x.fadeOut("slow")}}function u(z){l();if(x){b("#"+s+" div.content").html(z);x.show();h=-1}else{x=b('<div id="'+s+'" class="usig_acv">						<div class="header">							<div class="corner"/>							<div class="bar"/>						</div>						<div class="content">'+z+'</div>						<div class="footer">							<div class="corner"/>							<div class="bar"/>						</div>					</div>');var A=b(c).offset();x.css({position:"absolute",left:A.left+"px",top:(A.top+c.offsetHeight+parseInt(p.offsetY))+"px",width:c.offsetWidth,zIndex:p.zIndex});b("body").append(x);x.mouseover(l.createDelegate(this));x.mouseout(q.createDelegate(this));h=-1;x.show()}o=t.defer(p.autoHideTimeout,this)}function k(){if(x){h=-1;b("ul.options li.highlight",x).removeClass("highlight")}}function f(z){if(x){h=z;b("ul.options li.highlight",x).removeClass("highlight");if(typeof(z)=="string"){b('ul.options li:has(a[name="'+z+'"])',x).addClass("highlight");h=parseInt(z.replace(s,""))}else{b("ul.options li:has(a)",x).slice(z,z+1).addClass("highlight")}}}function n(z){var G=new z.constructor(z);G.marked=Array();var F=j.split(" ");for(var C=0;C<F.length;C++){var E=G.toLowerCase().indexOf(F[C].toLowerCase());if(E<0){var E=G.toLowerCase().indexOf(F[C].translate("áéíóúüÁÉÍÓÚÜàèìòùÀÈÌÒÙ","aeiouuAEIOUUaeiouAEIOU").toLowerCase())}if(E>=0){for(var D=0;D<F[C].length;D++){G.marked[E+D]=true}}}var B="";var A=false;for(var C=0;C<G.length;C++){if(G.marked[C]&&!A){B=B+"<em>"+G.substring(C,C+1);A=true}else{if((G.marked[C]&&A)||(!G.marked[C]&&!A)){B=B+G.substring(C,C+1)}else{B=B+"</em>"+G.substring(C,C+1);A=false}}}if(A){B=B+"</em>"}return B}function w(z){if(typeof(p.onSelection)=="function"){l();t();p.onSelection(z)}}function v(){l();h=-1;m=0;g={}}this.setOptions=function(z){p=b.extend({},p,z)};this.update=function(z){if(z==""&&x){x.hide()}j=z;v()};this.getOptions=function(){return p};this.show=function(A,z){var C="";var D=isNaN(parseInt(z))?0:parseInt(z);if(z!=undefined){if(D>0){b("ul.options li",x).slice(D).remove();m=b("ul.options li a",x).length}}else{m=0;g={}}var B=n;b.each(A,function(E,F){if(m>=p.maxOptions){return false}if(typeof(F)=="string"){C+='<li class="acv_op message">'+F+"</li>"}else{if(typeof(p.optionsFormatter)=="function"){C+=p.optionsFormatter(F,s+m,B);g[s+m]=F;m++}else{if(typeof(F.toString)=="function"){C+='<li class="acv_op"><a href="#" class="acv_op" name="'+s+m+'"><span class="tl"/><span class="tr"/><span>'+B(F.toString())+"</span></a></li>";g[s+m]=F;m++}}}});if((z===true||!isNaN(parseInt(z)))&&x&&b("ul.options li a",x).length>0){if(m>1&&d){d=false;k()}b("ul.options",x).append(C)}else{if(p.idDiv){x.html('<div class="content"><ul class="options">'+C+"</ul></div>");x.show()}else{u('<ul class="options">'+C+"</ul>")}}b("ul.options li.acv_op",x).mouseover((function(F,E){if(F.target.name){E(F.target.name)}else{E(b(F.target).parents("a").attr("name"))}r=true}).createDelegate(this,[f],1));b("ul.options li.acv_op",x).mouseout((function(E){if(r){r=false;k()}}).createDelegate(this));b("ul.options li.acv_op",x).click((function(F){F.preventDefault();var G=F.target?F.target:F.srcElement;var E=b(G).parents("a.acv_op").attr("name")||b("a.acv_op",b(G)).attr("name")||b(G).attr("name");w(g[E])}).createDelegate(this));if(p.autoSelect&&m==1){h=0;d=true;f(h)}};this.showMessage=function(z){if(p.idDiv){x.html('<div class="content"><div class="message">'+z+"</div></div>");x.show()}else{u('<div class="message">'+z+"</div>")}};this.keyUp=function(z){if(h==undefined){h=-1}if((z==y.arrDn||z==y.arrUp)&&m>0){if(x.css("display")!="block"){x.show()}else{q();h=z==y.arrDn?(h+1).constrain(0,m-1):(h-1).constrain(0,m-1);f(h)}}if(y.enter==z){if(x&&x.css("display")!="block"){if(typeof(p.onEnterWithoutSelection)=="function"){p.onEnterWithoutSelection(j)}x.show()}else{if(h>=0||m==1){if(h>=0){w(g[s+h])}else{w(g[s+"0"])}}else{if(m>0&&typeof(p.onEnterWithoutSelection)=="function"){p.onEnterWithoutSelection(j)}}}}if(y.esc==z){l();t()}};this.remove=function(){l();if(x){x.remove()}};this.onSelection=function(z){if(typeof(z)=="function"){p.onSelection=z}};this.selectOption=function(z){if(m>z){if(x.css("display")!="block"){x.show()}f(z);w(g[s+h]);return true}return false};this.getNumSuggestions=function(){return m};this.getSuggestion=function(z){var A=z||0;if(m>A){return g[s+A]}return false};this.changeSkin=function(z){usig.removeCss(p.rootUrl+"css/usig.AutoCompleterDialog."+p.skin+".css");p.skin=z;usig.loadCss(p.rootUrl+"css/usig.AutoCompleterDialog."+p.skin+".css")};this.hide=function(){l();if(x){x.hide()}};if(p.skin!="custom"){usig.loadCss(p.rootUrl+"css/usig.AutoCompleterDialog."+p.skin+".css")}if(p.idDiv){x=b("#"+p.idDiv);x.addClass("usig_acv")}}})(jQuery);usig.AutoCompleterDialog.defaults={maxOptions:10,debug:false,offsetY:-5,zIndex:10000,autoHideTimeout:5000,autoSelect:true,rootUrl:"//servicios.usig.buenosaires.gob.ar/usig-js/3.1/",skin:"usig4"};if(typeof(usig)=="undefined"){usig={}}usig.Suggester=(function(b){return jQuery.Class.create({init:function(d,c){this.name=d;this.cleanList=[];this.opts=b.extend({},usig.Suggester.defaults,c)},getSuggestions:function(c,e,d){throw new usig.Suggester.MethodNotImplemented()},getGeoCoding:function(c,d){throw new usig.Suggester.MethodNotImplemented()},abort:function(){},setOptions:function(c){this.opts=b.extend({},this.opts,c)},getOptions:function(){return this.opts},ready:function(){throw new usig.Suggester.MethodNotImplemented()},destroy:function(){for(var c=0;c<this.cleanList.length;c++){delete this.cleanList[c]}}})})(jQuery);usig.Suggester.defaults={debug:false,serverTimeout:15000,maxRetries:5,maxSuggestions:10};usig.Suggester.MethodNotImplemented=function(){this.msg="Suggester: Method Not Implemented.";this.toString=function(){return this.msg}};usig.Suggester.GeoCodingTypeError=function(){this.msg="Suggester: Wrong object type for geocoding.";this.toString=function(){return this.msg}};if(typeof(usig)=="undefined"){usig={}}usig.AjaxComponent=(function(b){return jQuery.Class.create({init:function(f,c,e){this.name=f;var d=e.dataType||(window.location.host==usig.parseUri(c).authority?"json":"jsonp");this.defaultParams={type:"GET",url:c,dataType:d};this.opts=b.extend({},usig.AjaxComponent.defaults,e)},mkRequest:function(h,l,j,e){var d=null,i=0;function c(n,o){clearTimeout(d);if(typeof(this.opts.afterServerResponse)=="function"){this.opts.afterServerResponse()}o(n)}function g(n,o){if(i>=this.opts.maxRetries){clearTimeout(d);if(typeof(o)=="function"){o(n)}}else{}}function k(n,p){if(n!=null&&n.readyState!=0&&n.readyState!=4){n.abort();if(typeof(this.opts.afterAbort)=="function"){this.opts.afterAbort()}if(this.opts.maxRetries>i){i++;var o=b.ajax(p);if(typeof(this.opts.afterRetry)=="function"){this.opts.afterRetry()}d=setTimeout(k.createDelegate(this,[o,m]),this.opts.serverTimeout)}else{if(typeof(p.error)=="function"){p.error("Se produjo un error al intentar acceder al servidor: "+p.url)}}}}if(typeof(l)!="function"){return}if(typeof(j)!="undefined"&&typeof(j)!="function"){return}var m=b.extend(true,{},this.defaultParams,{success:c.createDelegate(this,[l],1),error:g.createDelegate(this,[j],1),data:h});if(e){m.url=e}var f=b.ajax(m);if(typeof(this.opts.afterServerRequest)=="function"){this.opts.afterServerRequest()}if(this.opts.serverTimeout>0){d=setTimeout(k.createDelegate(this,[f,m]),this.opts.serverTimeout)}return f},setOptions:function(c){this.opts=b.extend({},this.opts,c)},getOptions:function(){return this.opts}})})(jQuery);usig.AjaxComponent.defaults={debug:false,serverTimeout:30000,maxRetries:1};if(typeof(usig)=="undefined"){usig={}}usig.Punto=function(c,b){this.x=this.lon=c;this.y=this.lat=b;this.getX=function(){return this.x};this.getY=function(){return this.y};this.toJson=function(){return'{ "x":'+this.x+', "y": '+this.y+" }"};this.toString=function(){return"("+this.x+", "+this.y+")"}};usig.Punto.fromWkt=function(c){var d=/^POINT *\(([0-9]+\.[0-9]+) ([0-9]+\.[0-9]+)\)$/;var b=null;if(resMatch=c.match(d)){b=new usig.Punto(resMatch[1],resMatch[2])}return b};usig.Punto.fromPunto=function(b){return new usig.Punto(b.getX(),b.getY())};usig.Punto.fromObj=function(b){return new usig.Punto(b.x,b.y)};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.Calle)=="undefined"){usig.Calle=function(b,c,e,d){this.codigo=b;this.nombre=c;this.alturaValida=function(g){if(e instanceof Array){if(e.length==0){throw (new usig.ErrorCalleSinAlturas(this.nombre));return false}var f=false;for(a in e){f=f||((parseInt(e[a][0])<=parseInt(g))&&(parseInt(e[a][1])>=parseInt(g)))}return f}};this.getTramos=function(){return e};this.toString=function(){return this.nombre};this.seCruzaCon=function(f){if(d){return d.indexOf(f.codigo)>=0}};this.toJson=function(){return{codigo:this.codigo,nombre:this.nombre}};this.isEqual=function(f){return this.codigo==f.codigo}};usig.Calle.fromObj=function(b){return new usig.Calle(b.codigo,b.nombre)}}if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.Direccion)=="undefined"){usig.Direccion=(function(b){return function(c,g){var f=null;var j=null;var i=0;var e=null;var h="";var d=null;if(c instanceof usig.Calle){f=c}else{return null}if(g instanceof usig.Calle){j=g;e=usig.Direccion.CALLE_Y_CALLE}else{if(!isNaN(parseInt(g))){e=usig.Direccion.CALLE_ALTURA;i=parseInt(g)}else{return null}}this.getCalle=function(){return f};this.getCalleCruce=function(){if(e==usig.Direccion.CALLE_Y_CALLE){return j}else{return null}};this.getAltura=function(){return i};this.getTipo=function(){return e};this.toString=function(){if(e==usig.Direccion.CALLE_ALTURA){return f.toString()+" "+(i>0?i:"S/N")}else{var k=j.toString();var l=k.match(/^(I|Hi|HI).*/)?" e ":" y ";return f.toString()+l+k}};this.setCoordenadas=function(k){d=usig.Punto.fromPunto(k)};this.setSmp=function(k){h=k};this.getCoordenadas=function(){return d};this.getSmp=function(){return h};this.clone=function(){var k=new usig.Direccion(f,g);return b.extend(true,k,this)};this.toJson=function(){return{tipo:e,calle:f.toJson(),altura:i,calle_cruce:j?j.toJson():null,smp:h,coordenadas:d}};this.isEqual=function(k){var l=(k instanceof usig.Direccion&&(e==k.getTipo())&&((e==usig.Direccion.CALLE_ALTURA&&f.isEqual(k.getCalle())&&i==k.getAltura())||(e==usig.Direccion.CALLE_Y_CALLE&&((f.isEqual(k.getCalle())&&j.isEqual(k.getCalleCruce()))||(f.isEqual(k.getCalleCruce())&&j.isEqual(k.getCalle()))))));return l}}})(jQuery);usig.Direccion.CALLE_ALTURA=0;usig.Direccion.CALLE_Y_CALLE=1;usig.Direccion.fromObj=function(d){var b=null;if(d.tipo!=undefined){b=new usig.Direccion(usig.Calle.fromObj(d.calle),(d.tipo==usig.Direccion.CALLE_ALTURA)?d.altura:usig.Calle.fromObj(d.calle_cruce))}else{var c=new usig.Calle(d.cod_calle,d.calle);if(d.cod_calle2!=null){b=new usig.Direccion(c,new usig.Calle(d.cod_calle2,d.calle2))}else{b=new usig.Direccion(c,d.altura)}}if(d.smp!=undefined&&d.smp!=null){b.setSmp(d.smp)}if(d.coordenadas!=undefined&&d.coordenadas!=null){if(typeof(d.coordenadas)=="string"){b.setCoordenadas(usig.Punto.fromWkt(d.coordenadas))}else{b.setCoordenadas(usig.Punto.fromObj(d.coordenadas))}}return b}}if(typeof(usig)=="undefined"){usig={}}usig.GeoCoder=(function(b){return usig.AjaxComponent.extend({metodos:["interpolacion","puertas","centroide"],init:function(c){var d=b.extend({},usig.GeoCoder.defaults,c);this._super("GeoCoder",usig.GeoCoder.defaults.server,d)},validarMetodo:function(c){if(c!=undefined){if(this.metodos.indexOf(c)>=0){return c}}else{if(this.opts.metodo!=undefined){return this.opts.metodo}}return undefined},onSuccess:function(c,d){if(typeof(c)!="string"){d(new usig.Punto(c.x,c.y))}else{d(c)}},geoCodificarDireccion:function(d,f,c,e){if(!(d instanceof usig.Direccion)){throw ("dir debe ser una instancia de usig.Direccion");return}if(d.getTipo()==usig.Direccion.CALLE_ALTURA){this.geoCodificarCodigoDeCalleAltura(d.getCalle().codigo,d.getAltura(),f,c,e)}else{this.geoCodificar2CodigosDeCalle(d.getCalle().codigo,d.getCalleCruce().codigo,f,c)}},geoCodificarCalleAltura:function(f,h,g,c,d){if(!h.isInteger()){throw ("altura tiene que ser un entero");return}var e={cod_calle:f,altura:h};d=this.validarMetodo(d);if(d!=undefined){e.metodo=d}this.mkRequest(e,this.onSuccess.createDelegate(this,[g],1),c,this.opts.server+"geocoding/")},geoCodificarCodigoDeCalleAltura:function(e,h,g,c,d){if(!e.isInteger()){throw ("codCalle tiene que ser un entero");return}if(!h.isInteger()){throw ("altura tiene que ser un entero");return}var f={cod_calle:e,altura:h};d=this.validarMetodo(d);if(d!=undefined){f.metodo=d}this.mkRequest(f,this.onSuccess.createDelegate(this,[g],1),c,this.opts.server+"geocoding/")},geoCodificarCalleYCalle:function(d,c,g,e){var f={cod_calle1:d,cod_calle2:c};this.mkRequest(f,this.onSuccess.createDelegate(this,[g],1),e,this.opts.server+"geocoding/")},geoCodificar2CodigosDeCalle:function(g,e,f,c){if(!g.isInteger()){throw ("codCalle1 tiene que ser un entero");return}if(!e.isInteger()){throw ("codCalle2 tiene que ser un entero");return}var d={cod_calle1:g,cod_calle2:e};this.mkRequest(d,this.onSuccess.createDelegate(this,[f],1),c,this.opts.server+"geocoding/")},reverseGeoCoding:function(c,g,f,d){var e={x:c,y:g};this.mkRequest(e,f,d,this.opts.server+"reversegeocoding/")},getSMP:function(g,f,e,c){var d={cod_calle:g,altura:f};this.mkRequest(d,e,c,this.opts.server+"smp/")}})})(jQuery);usig.GeoCoder.defaults={debug:false,server:"//ws.usig.buenosaires.gob.ar/geocoder/2.2/",metodo:undefined};if(typeof(usig)=="undefined"){usig={}}usig.Inventario=(function(b){return usig.AjaxComponent.extend({lastRequest:null,lastRequestEpok:null,init:function(c){var d=b.extend({},usig.Inventario.defaults,c);this._super("Inventario",usig.Inventario.defaults.server,d)},getCategorias:function(d,c){this.lastRequest=this.mkRequest({},d,c,this.opts.server+"getCategorias/")},getParcelaPorDir:function(d,e,c){this.lastRequest=this.mkRequest({cod_calle:d.cod,altura:d.alt},e,c,this.opts.server+"getParcela/")},getDir:function(d,e,c){this.lastRequest=this.mkRequest(d,e,c,this.opts.server+"getDir/")},getParcela:function(e,d,f,c){this.lastRequest=this.mkRequest(e,f,c,this.opts.server+"getParcela"+d+"/")},getDatosTransporte:function(d,e,c){this.lastRequest=this.mkRequest(d,e,c,this.opts.server+"getDatosTransporte/")},buscar:function(j,i,d,c){var f=b.extend({},usig.Inventario.defaults.searchOptions,c),g={start:f.start,limit:f.limit,texto:j,tipo:f.tipoBusqueda,totalFull:f.totalFull};function e(k,n){var m={},l=[];b.each(k.clasesEncontradas,function(o,p){m[p.id]=new usig.inventario.Clase(p.id,p.nombre,p.nombreId,p.nombreNorm)});b.each(k.instancias,function(o,p){l.push(new usig.inventario.Objeto(p,m[p.claseId]))});if(typeof(n)=="function"){n(l)}}if(f.categoria!=undefined){g.categoria=f.categoria}if(f.clase!=undefined){g.clase=f.clase}if(f.bbox){g.bbox=[f.extent.left,f.extent.bottom,f.extent.right,f.extent.top].join(",")}var h=e.createDelegate(this,[i],1);if(f.returnRawData){h=i}if(f.searchInventario){this.lastRequest=this.mkRequest(g,h,d,this.opts.server+"buscar/")}if(f.searchEpok){this.lastRequestEpok=this.mkRequest(g,h,d,this.opts.serverEpok+"buscar/")}},getObjeto:function(e,f,c){function d(h,j,i){if(i instanceof usig.inventario.Objeto){i.fill(h);j(i)}else{j(new usig.inventario.Objeto(h))}}var g=typeof(e)=="object"?e.id:e;if(typeof(g)=="string"){this.lastRequestEpok=this.mkRequest({id:g},d.createDelegate(this,[f,e],1),c,this.opts.serverEpok+"getObjectContent/")}else{g=parseInt(g);if(g>0){this.lastRequest=this.mkRequest({id:g},d.createDelegate(this,[f,e],1),c,this.opts.server+"getObjectContent/")}}},getFeatureInfo:function(d,e,c){this.lastRequest=this.mkRequest(d,e,c,this.opts.server+"getObjectContent/")},getCloseFeatures:function(d,e,c){this.lastRequest=this.mkRequest(d,e,c,this.opts.server+"objetosCercanos/")},getGeom:function(c,e,d){this.lastRequest=this.mkRequest({id:c},e,d,this.opts.server+"getGeometria/")},abort:function(){if(this.lastRequest){this.lastRequest.abort();this.lastRequest=null;if(typeof(this.opts.afterAbort)=="function"){this.opts.afterAbort()}}else{}}})})(jQuery);usig.Inventario.defaults={debug:false,server:"//inventario.usig.buenosaires.gob.ar/publico/",serverEpok:"//epok.buenosaires.gob.ar/",dataType:"jsonp",searchOptions:{start:0,limit:20,tipoBusqueda:"ranking",categoria:undefined,clase:undefined,bbox:false,totalFull:false,extent:undefined,returnRawData:false,searchInventario:false,searchEpok:true}};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.inventario)=="undefined"){usig.inventario={}}usig.inventario.Objeto=(function(b){return function(c,d){this.id=0;this.nombre=usig.inventario.Objeto.defaults.texts.noName;this.ubicacion=null;this.clase=d;this.direccionAsociada=null;this.fechaAlta=null;this.fechaUltimaModificacion=null;this.datos={};this.rawData={};this.descripcion=null;if(d!=undefined){this.descripcion=d.getNombre()}this.fill=function(f){if(f.id){this.id=f.id}if(f.nombre){this.nombre=f.nombre}if(f.ubicacion){this.ubicacion=new usig.inventario.Ubicacion(f.ubicacion);this.rawData.ubicacion=f.ubicacion}if(f.fechaAlta){this.fechaAlta=new Date(f.fechaAlta);this.rawData.fechaAlta=f.fechaAlta}if(f.fechaUltimaModificacion){this.fechaUltimaModificacion=new Date(f.fechaUltimaModificacion);this.rawData.fechaUltimaModificacion=f.fechaUltimaModificacion}if(f.direccionAsociada){try{this.direccionAsociada=usig.Direccion.fromObj(f.direccionAsociada);this.rawData.direccionAsociada=f.direccionAsociada}catch(g){}}else{if(f.direccionNormalizada&&usig.NormalizadorDirecciones){try{this.direccionAsociada=usig.NormalizadorDirecciones.normalizar(f.direccionNormalizada,10,true)[0];this.direccionAsociada.setCoordenadas(this.ubicacion.getCentroide());if(f.smp){this.direccionAsociada.setSmp(f.smp)}this.rawData.direccionAsociada=this.direccionAsociada.toJson()}catch(g){}}}if(f.contenido){var h=this.datos;b.each(f.contenido,function(j,e){h[e.nombreId]={alias:e.nombre,valor:e.valor,pos:e.posicion}});if(this.datos.nombre){this.nombre=this.datos.nombre.valor}}this.rawData=b.extend(this.rawData,f)};this.toString=function(){return this.nombre};this.getRawData=function(){return this.rawData};this.clone=function(){var e=new usig.inventario.Objeto(c,d);return b.extend(true,e,this)};this.toJson=function(){var e=this.getRawData();if(this.clase&&this.clase.toJson){e.clase=this.clase.toJson()}if(this.direccionAsociada&&this.direccionAsociada.toJson){e.direccionAsociada=this.direccionAsociada.toJson()}return e};this.isEqual=function(e){return e instanceof usig.inventario.Objeto&&e.id==this.id};this.getSmp=function(){return this.rawData.smp||(this.direccionAsociada?this.direccionAsociada.getSmp():"")};this.getCoordenadas=function(){if(this.ubicacion){return this.ubicacion.getCentroide()}else{if(this.direccionAsociada){return this.direccionAsociada.getCoordenadas()}}};this.fill(c);this.rawData=b.extend(this.rawData,c)}})(jQuery);usig.inventario.Objeto.fromObj=function(b){return new usig.inventario.Objeto(b,usig.inventario.Clase.fromObj(b.clase))};usig.inventario.Objeto.defaults={texts:{noName:"Sin Nombre"}};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.inventario)=="undefined"){usig.inventario={}}usig.inventario.Clase=function(e,d,c,b){this.getId=function(){return e};this.getNombre=function(){return d};this.getNombreId=function(){return c};this.getNombreNormalizado=function(){return b};this.toJson=function(){return{id:e,nombre:d,nombreId:c,nombreNormalizado:b}}};usig.inventario.Clase.fromObj=function(b){return new usig.inventario.Clase(b.id,b.nombre,b.nombreId,b.nombreNormalizado)};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.inventario)=="undefined"){usig.inventario={}}usig.inventario.Ubicacion=function(b){var c=null;if(b instanceof usig.Punto){c=b}else{if(b.centroide!=undefined){c=usig.Punto.fromWkt(b.centroide)}}this.getCentroide=function(){return c};this.getTipo=function(){return b.tipo}};if(typeof(usig)=="undefined"){usig={}}usig.SuggesterLugares=(function(b){return usig.Suggester.extend({init:function(c){if(c!=undefined){var d=b.extend({},usig.SuggesterLugares.defaults.searchOptions,c.searchOptions);c.searchOpts=d}var e=b.extend({},usig.SuggesterLugares.defaults,c);this._super("Lugares",e);if(!this.opts.inventario){this.opts.inventario=new usig.Inventario(e);this.cleanList.push(this.opts.inventario)}if(e.onReady&&typeof(e.onReady)=="function"){e.onReady()}},getSuggestions:function(e,g,f){var c=f!=undefined?f:this.opts.maxSuggestions;try{this.opts.inventario.buscar(e,g,function(){},{limit:c})}catch(d){g(d)}},getGeoCoding:function(c,d){if(!(c instanceof usig.inventario.Objeto)){d(new usig.Suggester.GeoCodingTypeError())}else{this.opts.inventario.getObjeto(c,function(e){if(e.direccionAsociada){d(e.direccionAsociada.getCoordenadas())}else{if(e.ubicacion){d(e.ubicacion.getCentroide())}}},function(){})}},abort:function(){this.opts.inventario.abort()},ready:function(){return true},setOptions:function(c){this._super(c);this.opts.inventario.setOptions(c)}})})(jQuery);usig.SuggesterLugares.defaults={serverTimeout:30000,maxRetries:1,maxSuggestions:10,searchOptions:{start:0,limit:20,tipoBusqueda:"ranking",categoria:undefined,clase:undefined,bbox:false,extent:undefined,returnRawData:false}};usig.registerSuggester("Lugares",usig.SuggesterLugares);if(typeof(usig)=="undefined"){usig={}}usig.SuggesterDirecciones=(function(b){return usig.Suggester.extend({init:function(c){var d=b.extend({},usig.SuggesterDirecciones.defaults,c);this._super("Direcciones",d);if(!this.opts.normalizadorDirecciones){this.opts.normalizadorDirecciones=usig.NormalizadorDirecciones.init({aceptarCallesSinAlturas:this.opts.acceptSN,callesEnMinusculas:this.opts.callesEnMinusculas,onReady:this.opts.onReady});this.cleanList.push(this.opts.normalizadorDirecciones)}if(!this.opts.geoCoder){this.opts.geoCoder=new usig.GeoCoder(this.opts);this.cleanList.push(this.opts.geoCoder)}},getSuggestions:function(e,h,g){var c=g!=undefined?g:this.opts.maxSuggestions;try{h(this.opts.normalizadorDirecciones.normalizar(e,c))}catch(d){if(this.opts.ignorarTextoSobrante){try{var f=this.opts.normalizadorDirecciones.buscarDireccion(e);if(f!==false){h([f.match])}else{h(d)}}catch(d){h(d)}}else{h(d)}}},getGeoCoding:function(c,d){if(!(c instanceof usig.Direccion)){d(new usig.Suggester.GeoCodingTypeError())}else{this.opts.geoCoder.geoCodificarDireccion(c,d)}},ready:function(){return this.opts.normalizadorDirecciones.listo()},setOptions:function(c){opts=b.extend({},this.opts,c);this._super(opts);this.opts.geoCoder.setOptions(opts)}})})(jQuery);usig.SuggesterDirecciones.defaults={debug:false,serverTimeout:5000,maxRetries:5,maxSuggestions:10,acceptSN:true,callesEnMinusculas:false,ignorarTextoSobrante:true};usig.registerSuggester("Direcciones",usig.SuggesterDirecciones);jQuery.extendIf=function(d,e){if(d&&e){for(var b in e){if(typeof d[b]=="undefined"){d[b]=e[b]}}}return d};if(typeof(Ext)=="undefined"){jQuery.extend(Function.prototype,{createCallback:function(){var b=arguments;var c=this;return function(){return c.apply(window,b)}},createDelegate:function(d,c,b){var e=this;return function(){var g=c||arguments;if(b===true){g=Array.prototype.slice.call(arguments,0);g=g.concat(c)}else{if(typeof b=="number"){g=Array.prototype.slice.call(arguments,0);var f=[b,0].concat(c);Array.prototype.splice.apply(g,f)}}return e.apply(d||window,g)}},defer:function(d,f,c,b){var e=this.createDelegate(f,c,b);if(d){return setTimeout(e,d)}e();return 0},createSequence:function(c,b){if(typeof c!="function"){return this}var d=this;return function(){var e=d.apply(this||window,arguments);c.apply(b||this||window,arguments);return e}},createInterceptor:function(c,b){if(typeof c!="function"){return this}var d=this;return function(){c.target=this;c.method=d;if(c.apply(b||this||window,arguments)===false){return}return d.apply(this||window,arguments)}}});jQuery.extendIf(String,{escape:function(b){return b.replace(/('|\\)/g,"\\$1")},leftPad:function(e,c,d){var b=new String(e);if(!d){d=" "}while(b.length<c){b=d+b}return b.toString()},format:function(c){var b=Array.prototype.slice.call(arguments,1);return c.replace(/\{(\d+)\}/g,function(d,e){return b[e]})}})}String.prototype.isInteger=function(){return !isNaN(parseInt(this))};String.prototype.isFloat=function(){return !isNaN(parseFloat(this))};String.prototype.toggle=function(c,b){return this==c?b:c};String.prototype.trim=function(){var b=/^\s+|\s+$/g;return function(){return this.replace(b,"")}}();String.prototype.translate=function(e,d){if(!(e.length&&d.length)||e.length!=d.length){return this}var c=this;for(var b=0;b<e.length;b++){if(typeof(e)=="string"){c=c.replace(new RegExp(e.charAt(b),"g"),d.charAt(b))}else{c=c.replace(new RegExp(e[b],"g"),d[b])}}return c};String.prototype.isDigit=function(){return/^\d+$/.test(this)};String.prototype.removeWords=function(f){var e=this.split(" ");var d=new Array();for(var c=0;c<e.length;c++){d.push(e[c]);for(var b=0;b<f.length;b++){if(d[c]==f[b]){d.pop();break}}}return d.join(" ")};jQuery.extendIf(Number.prototype,{constrain:function(c,b){return Math.min(Math.max(this,c),b)},isInteger:function(){return !isNaN(parseInt(this))},isFloat:function(){return !isNaN(parseFloat(this))}});jQuery.extendIf(Array.prototype,{indexOf:function(d){for(var c=0,b=this.length;c<b;c++){if(this[c]==d){return c}}return -1},removeObject:function(c){var b=this.indexOf(c);if(b!=-1){this.splice(b,1)}return this},binarySearch:function binarySearch(g,c){var b=0,f=this.length-1,d,e;while(b<=f){d=parseInt((b+f)/2,10);e=c(this[d],g);if(e<0){b=d+1;continue}if(e>0){f=d-1;continue}return d}return -1},inject:function(d,c){for(var b=0;b<this.length;b++){d=c(d,this[b],b)}return d},map:function(e,d){var b=new Array(this.length);for(var c=0,f=this.length;c<f;c++){if(c in this){b[c]=e.call(d,this[c],c,this)}}return b},intersect:function(){if(!arguments.length){return[]}var e=this;var d=a2=null;var h=0;while(h<arguments.length){d=[];a2=arguments[h];var c=e.length;var b=a2.length;for(var g=0;g<c;g++){for(var f=0;f<b;f++){if(e[g]===a2[f]){d.push(e[g])}}}e=d;h++}return d.unique()},unique:function(){var c=[];var b=this.length;for(var e=0;e<b;e++){for(var d=e+1;d<b;d++){if(this[e]===this[d]){d=++e}}c.push(this[e])}return c}});Date.prototype.getElapsed=function(b){return Math.abs((b||new Date()).getTime()-this.getTime())};if(typeof(usig)=="undefined"){usig={}}usig.debug=function(b){if(window.console&&window.console.log){window.console.log(b)}};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.Calle)=="undefined"){usig.Calle=function(b,c,e,d){this.codigo=b;this.nombre=c;this.alturaValida=function(g){if(e instanceof Array){if(e.length==0){throw (new usig.ErrorCalleSinAlturas(this.nombre));return false}var f=false;for(a in e){f=f||((parseInt(e[a][0])<=parseInt(g))&&(parseInt(e[a][1])>=parseInt(g)))}return f}};this.getTramos=function(){return e};this.toString=function(){return this.nombre};this.seCruzaCon=function(f){if(d){return d.indexOf(f.codigo)>=0}};this.toJson=function(){return{codigo:this.codigo,nombre:this.nombre}};this.isEqual=function(f){return this.codigo==f.codigo}};usig.Calle.fromObj=function(b){return new usig.Calle(b.codigo,b.nombre)}}if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.Direccion)=="undefined"){usig.Direccion=(function(b){return function(c,g){var f=null;var k=null;var j=0;var e=null;var h="";var d=null;if(c instanceof usig.Calle){f=c}else{return null}if(g instanceof usig.Calle){k=g;e=usig.Direccion.CALLE_Y_CALLE}else{if(!isNaN(parseInt(g))){e=usig.Direccion.CALLE_ALTURA;j=parseInt(g)}else{return null}}this.getCalle=function(){return f};this.getCalleCruce=function(){if(e==usig.Direccion.CALLE_Y_CALLE){return k}else{return null}};this.getAltura=function(){return j};this.getTipo=function(){return e};this.toString=function(){if(e==usig.Direccion.CALLE_ALTURA){res=f.toString()+" "+(j>0?j:"S/N")}else{var l=k.nombre;var m=l.match(/^(I|Hi|HI).*/)?" e ":" y ";res=f.nombre+m+k.nombre}if(f.partido!=undefined){res=res+", "+f.localidad}return res};this.setCoordenadas=function(l){d=usig.Punto.fromPunto(l)};this.setSmp=function(l){h=l};this.getCoordenadas=function(){return d};this.getSmp=function(){return h};this.clone=function(){var l=new usig.Direccion(f,g);return b.extend(true,l,this)};this.toJson=function(){return{tipo:e,calle:f.toJson(),altura:j,calle_cruce:k?k.toJson():null,smp:h,coordenadas:d}};this.isEqual=function(l){var m=(l instanceof usig.Direccion&&(e==l.getTipo())&&((e==usig.Direccion.CALLE_ALTURA&&f.isEqual(l.getCalle())&&j==l.getAltura())||(e==usig.Direccion.CALLE_Y_CALLE&&((f.isEqual(l.getCalle())&&k.isEqual(l.getCalleCruce()))||(f.isEqual(l.getCalleCruce())&&k.isEqual(l.getCalle()))))));return m}}})(jQuery);usig.Direccion.CALLE_ALTURA=0;usig.Direccion.CALLE_Y_CALLE=1;usig.Direccion.fromObj=function(d){var b=null;if(d.tipo!=undefined){b=new usig.Direccion(usig.Calle.fromObj(d.calle),(d.tipo==usig.Direccion.CALLE_ALTURA)?d.altura:usig.Calle.fromObj(d.calle_cruce))}else{var c=new usig.Calle(d.cod_calle,d.calle);if(d.cod_calle2!=null){b=new usig.Direccion(c,new usig.Calle(d.cod_calle2,d.calle2))}else{b=new usig.Direccion(c,d.altura)}}if(d.smp!=undefined&&d.smp!=null){b.setSmp(d.smp)}if(d.coordenadas!=undefined&&d.coordenadas!=null){if(typeof(d.coordenadas)=="string"){b.setCoordenadas(usig.Punto.fromWkt(d.coordenadas))}else{b.setCoordenadas(usig.Punto.fromObj(d.coordenadas))}}return b}}if(!this.JSON){this.JSON={}}(function(){function f(n){return n<10?"0"+n:n}if(typeof Date.prototype.toJSON!=="function"){Date.prototype.toJSON=function(key){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+f(this.getUTCMonth()+1)+"-"+f(this.getUTCDate())+"T"+f(this.getUTCHours())+":"+f(this.getUTCMinutes())+":"+f(this.getUTCSeconds())+"Z":null};String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(key){return this.valueOf()}}var cx=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,escapable=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,gap,indent,meta={"\b":"\\b","\t":"\\t","\n":"\\n","\f":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},rep;function quote(string){escapable.lastIndex=0;return escapable.test(string)?'"'+string.replace(escapable,function(a){var c=meta[a];return typeof c==="string"?c:"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+string+'"'}function str(key,holder){var i,k,v,length,mind=gap,partial,value=holder[key];if(value&&typeof value==="object"&&typeof value.toJSON==="function"){value=value.toJSON(key)}if(typeof rep==="function"){value=rep.call(holder,key,value)}switch(typeof value){case"string":return quote(value);case"number":return isFinite(value)?String(value):"null";case"boolean":case"null":return String(value);case"object":if(!value){return"null"}gap+=indent;partial=[];if(Object.prototype.toString.apply(value)==="[object Array]"){length=value.length;for(i=0;i<length;i+=1){partial[i]=str(i,value)||"null"}v=partial.length===0?"[]":gap?"[\n"+gap+partial.join(",\n"+gap)+"\n"+mind+"]":"["+partial.join(",")+"]";gap=mind;return v}if(rep&&typeof rep==="object"){length=rep.length;for(i=0;i<length;i+=1){k=rep[i];if(typeof k==="string"){v=str(k,value);if(v){partial.push(quote(k)+(gap?": ":":")+v)}}}}else{for(k in value){if(Object.hasOwnProperty.call(value,k)){v=str(k,value);if(v){partial.push(quote(k)+(gap?": ":":")+v)}}}}v=partial.length===0?"{}":gap?"{\n"+gap+partial.join(",\n"+gap)+"\n"+mind+"}":"{"+partial.join(",")+"}";gap=mind;return v}}if(typeof JSON.stringify!=="function"){JSON.stringify=function(value,replacer,space){var i;gap="";indent="";if(typeof space==="number"){for(i=0;i<space;i+=1){indent+=" "}}else{if(typeof space==="string"){indent=space}}rep=replacer;if(replacer&&typeof replacer!=="function"&&(typeof replacer!=="object"||typeof replacer.length!=="number")){throw new Error("JSON.stringify")}return str("",{"":value})}}if(typeof JSON.parse!=="function"){JSON.parse=function(text,reviver){var j;function walk(holder,key){var k,v,value=holder[key];if(value&&typeof value==="object"){for(k in value){if(Object.hasOwnProperty.call(value,k)){v=walk(value,k);if(v!==undefined){value[k]=v}else{delete value[k]}}}}return reviver.call(holder,key,value)}cx.lastIndex=0;if(cx.test(text)){text=text.replace(cx,function(a){return"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)})}if(/^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,"]").replace(/(?:^|:|,)(?:\s*\[)+/g,""))){j=eval("("+text+")");return typeof reviver==="function"?walk({"":j},""):j}throw new SyntaxError("JSON.parse")}}}());if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.data)=="undefined"){usig.data={}}if(typeof(usig.defaults)=="undefined"){usig.defaults={}}usig.defaults.Callejero={server:"//servicios.usig.buenosaires.gob.ar/callejero",lazyDataLoad:false,loadFullDatabase:true,callesEnMinusculas:false,encoding:"utf-8",expirationTime:10080};usig.Callejero=(function(h){var b={},p=this,e=false,m={ready:[]},n=false;function f(u,x){var t=true;for(var s=0;s<u.length;s++){var v=u[s];v.lastIndex=0;if(!v.test(x[2])){t=false;break}}return t}function q(s){n=false;if(s.length!=usig.data.Callejero.length){alert("Se produjo un error al cargar la información de cruces de calles.");return}for(var r=0;r<usig.data.Callejero.length;r++){usig.data.Callejero[r].push(s[r])}}function o(r){usig.data.Callejero=r;n=false;d("ready")}function j(){n=true;h.ajax({type:"GET",url:b.server,data:{full:1,cruces:1,encoding:b.encoding},dataType:"jsonp",success:q,error:function(){alert("Se produjo un error al intentar cargar la información de calles.")}})}function c(r){n=true;h.ajax({type:"GET",url:b.server,data:b.loadFullDatabase?{full:1,encoding:b.encoding,minusculas:b.callesEnMinusculas?1:0}:{encoding:b.encoding,minusculas:b.callesEnMinusculas?1:0},dataType:"jsonp",success:r,error:function(){alert("Se produjo un error al intentar cargar la información de calles.")}})}function g(){if(!n){if(!l()){c(o)}else{var s;try{if(localStorage.callejero){s=JSON.parse(localStorage.callejero)}if(s&&(new Date().getTime()<s.expiration)){o(JSON.parse(s.calles))}else{c(function(v){var t=b.expirationTime*60*1000;var u={calles:JSON.stringify(v),expiration:new Date().getTime()+t};try{localStorage.callejero=JSON.stringify(u)}catch(w){console.log("No se pudo grabar el callejero en LocalStorage.")}o(v)})}}catch(r){c(o)}}}}function l(){try{return"localStorage" in window&&window.localStorage!==null}catch(r){return false}}function d(s){for(var r=0;r<m[s].length;r++){m[s][r]()}}function k(t,s){var u=false;for(var r=0;r<m[t].length;r++){u=u||(m[t][r]==s)}if(!u){m[t].push(s)}}return{init:function(r){b=h.extend({},usig.defaults.Callejero,r);if(typeof(b.onReady)=="function"){k("ready",b.onReady)}e=true;if(!usig.data.Callejero&&!b.lazyDataLoad){g.defer(100)}else{if(usig.data.Callejero){d("ready");m.ready=[]}}return this},buscarPorCodigo:function(u){var r=[];if(/^[0-9]+$/.test(u)){var t=usig.data.Callejero.binarySearch(u,function(w,v){return w[0]-v});if(t>-1){var s=usig.data.Callejero[t];r.push(new usig.Calle(s[0],s[1],s[3],s[4]));i=t+1;while(i<usig.data.Callejero.length&&usig.data.Callejero[i][0]==u){s=usig.data.Callejero[i];r.push(new usig.Calle(s[0],s[1],s[3],s[4]));i++}i=t-1;while(i>=0&&usig.data.Callejero[i][0]==u){s=usig.data.Callejero[i];r.unshift(new usig.Calle(s[0],s[1],s[3],s[4]));i--}}}return r},matcheaCalle:function(w,r){var u=[];var t=[];var s=w.replace(/"/g,"").translate("áéíóúüÁÉÍÓÚÜàèìòùÀÈÌÒÙ","aeiouuAEIOUUaeiouAEIOU").toUpperCase().trim();var v=s.split(" ");wordsRE=v.map(function(z){return new RegExp("^"+z+"| "+z,"gi")});var y=new RegExp("SNO|SIN NOMBRE OFICIAL|NO OFICIAL|PASAJE|PJE","i");if(this.listo()){for(var x=0;x<usig.data.Callejero.length;x++){if(f(wordsRE,usig.data.Callejero[x])){if(!y.test(usig.data.Callejero[x][1])&&usig.data.Callejero[x][3].length!=0){u.push(new usig.Calle(usig.data.Callejero[x][0],usig.data.Callejero[x][1],usig.data.Callejero[x][3],usig.data.Callejero[x][4]))}else{t.push(new usig.Calle(usig.data.Callejero[x][0],usig.data.Callejero[x][1],usig.data.Callejero[x][3],usig.data.Callejero[x][4]))}if(!isNaN(parseInt(r))&&u.length>=parseInt(r)){break}}}u=u.concat(t);if(!isNaN(parseInt(r))&&u.length>=parseInt(r)){u=u.splice(0,r)}if(usig.data.Callejero[0].length<5&&!n){j()}}else{g();throw (new usig.ErrorEnCargaDelCallejero())}return u},tieneTramosComoAv:function(s){var r=usig.data.Callejero.binarySearch(s.codigo,function(u,t){return u[0]-t});return s.codigo!=0&&(usig.data.Callejero[r-1][0]==s.codigo||usig.data.Callejero[r+1][0]==s.codigo)},getNombreCalle:function(t,u){var r=this.buscarPorCodigo(t);for(var s=0;s<r.length;s++){if(r[s].alturaValida(u)){return r[s].nombre}}return""},listo:function(){return usig.data.Callejero&&usig.data.Callejero instanceof Array},inicializado:function(){return e}}})(jQuery);if(typeof(usig)=="undefined"){usig={}}usig.StringDireccion=(function(b){return function(e,d){this.tipo=usig.StringDireccion.INVALIDO;this.strCalles="";this.strAltura="";this.strInput=e.replace(/"/g,"").replace(/[\.,\(\)']/g," ").toUpperCase().trim();var j=/[sS][/\\][nN]/;function f(l,k){return l.isDigit()||(k&&j.test(l))}this.setearCalleAltura=function(){c=this.strInput.split(" ");this.maxWordLen=c.inject(0,function(n,l,m){return Math.max(l.trim().length,n)});var k=c.length;if(k>1&&f(c[k-1],d)){this.tipo=usig.StringDireccion.CALLE_ALTURA;this.strCalles=c.inject("",function(n,l,m){return m<(k-1)?(n!=""?n+" "+l:l):n});this.strAltura=c[k-1]}else{this.tipo=usig.StringDireccion.CALLE;this.strCalles=this.strInput}};if(this.strInput.length>0){var c=this.strInput.split(" Y ");if(c.length>=2){var h=g(this.strInput);c=h.split(" Y ");if(c.length>=2){this.tipo=usig.StringDireccion.CALLE_Y_CALLE;this.strCalles=[c[0].replace(" & "," Y "),c[1].replace(" & "," Y ")]}}c=this.strInput.split(" E ");if(c.length>=2){if(parseInt(c[c.length-1])!=c[c.length-1]){this.tipo=usig.StringDireccion.CALLE_Y_CALLE;this.strCalles=c}}if(this.tipo==usig.StringDireccion.INVALIDO){this.setearCalleAltura()}}else{this.tipo=usig.StringDireccion.INVALIDO}function g(k){return k.translate(["GELLY Y OBES","MENENDEZ Y PELAYO","OLAGUER Y FELIU","ORTEGA Y GASSET","PAULA Y RODRIGUEZ","PAZ Y FIGUEROA","PI Y MARGALL","RAMON Y CAJAL","TORRES Y TENORIO","TREINTA Y TRES"],["GELLY & OBES","MENENDEZ & PELAYO","OLAGUER & FELIU","ORTEGA & GASSET","PAULA & RODRIGUEZ","PAZ & FIGUEROA","PI & MARGALL","RAMON & CAJAL","TORRES & TENORIO","TREINTA & TRES"])}this.quitarAvsCalle=function(){var k=["AV","AVDA","AVENIDA"];if(this.tipo==usig.StringDireccion.CALLE_ALTURA){this.strCalles=this.strCalles.removeWords(k)}else{if(this.tipo==usig.StringDireccion.CALLE_Y_CALLE){this.strCalles[0]=this.strCalles[0].removeWords(k)}}};this.quitarAvsCalleCruce=function(){var k=["AV","AVDA","AVENIDA"];if(this.tipo==usig.StringDireccion.CALLE_Y_CALLE){this.strCalles[1]=this.strCalles[1].removeWords(k)}};this.quitarPasajes=function(){var k=["PJE","PSJE","PASAJE"];if(this.tipo==usig.StringDireccion.CALLE_ALTURA){this.strCalles=this.strCalles.removeWords(k)}else{if(this.tipo==usig.StringDireccion.CALLE_Y_CALLE){this.strCalles[0]=this.strCalles[0].removeWords(k);this.strCalles[1]=this.strCalles[1].removeWords(k)}}};this.esAlturaSN=function(k){return j.test(k)}}})(jQuery);usig.StringDireccion.CALLE=0;usig.StringDireccion.CALLE_ALTURA=1;usig.StringDireccion.CALLE_Y_CALLE=2;usig.StringDireccion.INVALIDO=-1;if(typeof(usig)=="undefined"){usig={}}usig.ErrorCalleInexistente=function(b){this.toString=function(){return"Calle inexistente: "+b};this.getNombreCalle=function(){return b};this.getErrorMessage=function(){return usig.ErrorCalleInexistente.defaults.texts.message}};usig.ErrorCalleInexistente.defaults={texts:{message:"No pudo hallarse ninguna calle existente que coincidiera con su b&uacute;squeda. Por favor, revise el nombre ingresado y vuelva a intentarlo."}};if(typeof(usig)=="undefined"){usig={}}usig.ErrorCalleInexistenteAEsaAltura=(function(b){return function(d,c,e){this.getCalle=function(){return d};this.getMatchings=function(){return c};this.getAltura=function(){return e};this.toString=function(){return"La calle "+d+" no existe a la altura "+e};this.getErrorMessage=function(){var f=usig.ErrorCalleInexistenteAEsaAltura.defaults.texts.message+"<ul>";b.each(c,function(h,j){var g=j.getTramos();b.each(g,function(k,l){f+="<li>"+j.nombre+" "+l[0]+"-"+l[1]+"</li>"})});f+="</ul>";return f}}})(jQuery);usig.ErrorCalleInexistenteAEsaAltura.defaults={texts:{message:"La altura indicada no es v&aacute;lida para la calle ingresada. A continuaci&oacute;n se muestran algunas opciones v&aacute;lidas halladas:"}};if(typeof(usig)=="undefined"){usig={}}usig.ErrorCruceInexistente=(function(b){return function(d,f,c,e){this.getCalle1=function(){return d};this.getCalle2=function(){return c};this.getMatchingsCalle1=function(){return f};this.getMatchingsCalle2=function(){return e};this.toString=function(){return"Cruce inexistente: "+d+" y "+c};this.getErrorMessage=function(){var g=usig.ErrorCruceInexistente.defaults.texts.message;g+="<br/>"+usig.ErrorCruceInexistente.defaults.texts.detalleCalle1+"<ul>";b.each(f,function(h,j){g+="<li>"+j.nombre+"</li>"});g+="</ul>";g+=usig.ErrorCruceInexistente.defaults.texts.detalleCalle2+"<ul>";b.each(e,function(h,j){g+="<li>"+j.nombre+"</li>"});g+="</ul>";return g}}})(jQuery);usig.ErrorCruceInexistente.defaults={texts:{message:"El cruce de calles indicado no existe. A continuaci&oacute;n se muestran algunas calles que coinciden con su b&uacute;squeda.",detalleCalle1:"Algunas calles halladas que coinciden con la 1ra calle ingresada son:",detalleCalle2:"Algunas calles halladas que coinciden con la 2da calle ingresada son:"}};if(typeof(usig)=="undefined"){usig={}}usig.ErrorCalleSinAlturas=function(b){this.toString=function(){return usig.ErrorCalleSinAlturas.defaults.texts.message.replace("{calle}",b)};this.getNombreCalle=function(){return b};this.getErrorMessage=function(){return usig.ErrorCalleSinAlturas.defaults.texts.message.replace("{calle}",b)}};usig.ErrorCalleSinAlturas.defaults={texts:{message:"La calle {calle} no posee alturas oficiales. Utilice intersecciones para hallar direcciones v&aacute;lidas sobre esta calle o escriba S/N en lugar de la altura."}};if(typeof(usig)=="undefined"){usig={}}usig.ErrorEnCargaDelCallejero=function(){this.toString=function(){return"Callejero no disponible."};this.getErrorMessage=function(){return"El callejero no se encuentra cargado aún o se produjo un error al intentar cargarlo"}};if(typeof(usig)=="undefined"){usig={}}if(typeof(usig.defaults)=="undefined"){usig.defaults={}}usig.defaults.NormalizadorDirecciones={lazyDataLoad:false,loadFullDatabase:true,aceptarCallesSinAlturas:false,callesEnMinusculas:false,maxPalabras:7};usig.NormalizadorDirecciones=(function(f){var h={},e=false,l={ready:[]},u=null;re={cruceCalles:/\s+y\s+/gi,calleAltura:[],calle:[]};function j(z,A,y){var c=u.matcheaCalle(z.strCalles);try{var x=s(z,c,A)}catch(w){throw (w)}if(x.length==0&&c.length>0){z.quitarAvsCalle();c=u.matcheaCalle(z.strCalles);try{x=s(z,c,A)}catch(w){throw (w)}x=n(x);if(x.length==0){throw (new usig.ErrorCalleInexistenteAEsaAltura(z.strCalles,c,z.strAltura))}}else{if(x.length==0&&c.length==0){z.quitarPasajes();c=u.matcheaCalle(z.strCalles);try{x=s(z,c,A)}catch(w){throw (w)}}}if(y&&x.length>1){f.each(x,function(C,B){if(m(z.strCalles,B.getCalle().nombre)){x=[B]}})}return x}function m(x,w){function c(y){y=y.replace(/"/g,"").translate("áéíóúüÁÉÍÓÚÜàèìòùÀÈÌÒÙ","aeiouuAEIOUUaeiouAEIOU").toUpperCase().trim();y=y.split(" ");return y}x=c(x);w=c(w);if(x.length==w.length){intersect=x.intersect(w);if(x.length==intersect.length){return true}}return false}function s(A,w,B){var c=new Array();var z=0;if(w.length!=0){for(var y=0;y<w.length;y++){try{if(w[y].alturaValida(A.strAltura)){c.push(new usig.Direccion(w[y],A.strAltura))}}catch(x){if(x instanceof usig.ErrorCalleSinAlturas&&h.aceptarCallesSinAlturas&&A.esAlturaSN(A.strAltura)){c.push(new usig.Direccion(w[y],0))}z++}if(!isNaN(parseInt(B))&&c.length>=parseInt(B)){break}}if(w.length==z&&c.length==0){throw (new usig.ErrorCalleSinAlturas(w[0].toString()))}}return c}function n(y,z){var x=z?z:"getCalle";var w=new Array();for(var c=0;c<y.length;c++){if(u.tieneTramosComoAv(y[c][x]())){w.push(y[c])}}return w}function t(J,I){var L=u.matcheaCalle(J.strCalles[0]);var K=u.matcheaCalle(J.strCalles[1]);var F=new Array();function G(N,M){return Math.min(N.codigo,M.codigo)+Math.max(N.codigo,M.codigo)}var c=new Array();for(var C=0;C<L.length;C++){for(var z=0;z<K.length;z++){if(L[C].codigo!=K[z].codigo&&F.indexOf(G(L[C],K[z]))<0&&L[C].seCruzaCon(K[z])&&K[z].seCruzaCon(L[C])){c.push(new usig.Direccion(L[C],K[z]));F.push(G(L[C],K[z]));if(!isNaN(parseInt(I))&&c.length>=parseInt(I)){break}}}if(!isNaN(parseInt(I))&&c.length>=parseInt(I)){break}}if(c.length==0&&L.length>0&&K.length>0){var E=J.strCalles[0].split(" ");var B=J.strCalles[1].split(" ");if(E.indexOf("AV")>=0||E.indexOf("AVDA")>=0||E.indexOf("AVENIDA")>=0){var D=f.extend(true,{},J);D.quitarAvsCalle();try{var y=t(D,I)}catch(H){throw (new usig.ErrorCruceInexistente(J.strCalles[0],L,J.strCalles[1],K))}n(y);if(y instanceof Array){return y}}if(B.indexOf("AV")>=0||B.indexOf("AVDA")>=0||B.indexOf("AVENIDA")>=0){var A=f.extend(true,{},J);A.quitarAvsCalleCruce();try{var x=t(A,I)}catch(H){throw (new usig.ErrorCruceInexistente(J.strCalles[0],L,J.strCalles[1],K))}n(x,"getCalleCruce");if(x instanceof Array){return x}}}if(c.length<I){var w=u.matcheaCalle(J.strInput);var C=0;while(c.length<I&&C<w.length){c.push(w[C]);C++}}if(c.length==0&&L.length>0&&K.length>0){throw (new usig.ErrorCruceInexistente(J.strCalles[0],L,J.strCalles[1],K))}return c}function p(w){for(var c=0;c<l[w].length;c++){l[w][c]()}if(w=="ready"){l.ready=[]}}function o(x,w){var y=false;for(var c=0;c<l[x].length;c++){y=y||(l[x][c]==w)}if(!y){l[x].push(w)}}function v(y,z,w){if(typeof(w)=="undefined"){w=true}if(typeof(jQuery)=="undefined"){throw ("Error: Este componente requiere jQuery y no se encontro.");return[]}var x=new usig.StringDireccion(y,h.aceptarCallesSinAlturas);var c=[];switch(x.tipo){case usig.StringDireccion.CALLE:c=u.matcheaCalle(x.strCalles,z);break;case usig.StringDireccion.CALLE_ALTURA:c=j(x,z,w);break;case usig.StringDireccion.CALLE_Y_CALLE:c=t(x,z);if(c.length==0){x.setearCalleAltura();c=j(x,z,w)}break;case usig.StringDireccion.INVALIDO:c=[];break}if(c instanceof Array){if(c.length>0){return c}else{throw (new usig.ErrorCalleInexistente(y))}}else{return c}}function d(w,x,z){textoCalle=w.substring(0,x).reverse();textoCruce=w.substr(x+z);conector=w.substr(x,z);var B=cruce="";var c=rCruce=[];try{try{for(var y=1;y<h.maxPalabras;++y){cruce=textoCruce.match(re.calle[y])[0];if(textoCruce.search(re.calle[y])!=0){throw"Direccion no valida"}rCruce=v(cruce,2,false)}}catch(A){cruce=textoCruce.match(re.calle[y-1])[0]}try{for(var y=1;y<h.maxPalabras;++y){B=textoCalle.match(re.calle[y])[0].reverse();if(textoCalle.search(re.calle[y])!=0){throw"Direccion no valida"}c=v(B,2,false)}}catch(A){B=textoCalle.match(re.calle[y-1])[0].reverse()}resultados=v(B+conector+cruce,2,false);if(resultados.length==1&&r(resultados[0],B+conector+cruce)){return{match:resultados[0],pos:w.search(B),len:B.length+conector.length+cruce.length}}else{return false}}catch(C){return false}return false}function q(c){textoDireccion=c.reverse();var x="";var A=[];try{try{for(var w=1;w<h.maxPalabras;++w){x=textoDireccion.match(re.calleAltura[w])[0].reverse();if(textoDireccion.search(re.calleAltura[w])!=0){throw"Direccion no valida"}A=v(x,2,false)}}catch(y){x=textoDireccion.match(re.calleAltura[w-1])[0].reverse();A=v(x,2,false)}if(r(A[0],x)){return{match:A[0],pos:c.search(x),len:x.length}}}catch(z){return false}return false}function b(c,w){var x=[];var y=/((\s+y\s+)|(\s+\d+))/gi;while(matcheo=y.exec(c)){if(matcheo[0].match(re.cruceCalles)){res=d(c,matcheo.index,matcheo[0].length)}else{res=q(c.substring(0,matcheo.index+matcheo[0].length))}if(res){if(x.length>0){if(res.pos==x[x.length-1].pos&&res.match.toString()==x[x.length-1].match.toString()){if(res.len>x[x.length-1].len){x.pop();x.push(res)}}else{x.push(res)}}else{x.push(res)}}if(!(!w||x.length<w)){return x}}return x.length>0?x:false}function k(y){var x=["Á","É","Í","Ó","Ú","Ü"];var w=["A","E","I","O","U","U"];for(var c=0;c<x.length;++c){y=y.replace(x[c],w[c])}return y}function r(y,w){var c=k(w.toUpperCase()).split(" ");var x=y.toString().toUpperCase().replace(/[,.]/g,"").split(" ");for(var A=0;A<c.length-1;A++){for(var z=0;z<x.length-1;z++){if(c[A]==x[z]&&c[A].length>3){return true}}}return false}function g(w,c){return w.pos-c.pos}return{normalizar:v,buscarDireccion:function(c){var w=b(c,1);return w?w[0]:false},buscarDirecciones:function(c,w){var x=b(c,w);return x?x:false},listo:function(){return u?u.listo():false},setOptions:function(c){h=f.extend({},h,c);if(typeof(h.onReady)=="function"){o("ready",h.onReady)}},init:function(c){h=f.extend({},usig.defaults.NormalizadorDirecciones,c);if(typeof(h.onReady)=="function"){o("ready",h.onReady)}u=usig.Callejero.init({lazyDataLoad:h.lazyDataLoad,loadFullDatabase:h.loadFullDatabase,callesEnMinusculas:h.callesEnMinusculas,onReady:p.createDelegate(this,["ready"])});for(var w=1;w<=h.maxPalabras;w++){re.calleAltura[w]=new RegExp("(\\d+(\\s+(\\w|\\d|á|é|í|ó|ú|ü|ñ|'|`|,|\\.)+){"+w+"})","gi");re.calle[w]=new RegExp("(\\w|\\d|á|é|í|ó|ú|ü|ñ|'|`|,|\\.)+(\\s+(\\w|\\d|á|é|í|ó|ú|ü|ñ|'|`|,|\\.)+){"+(w-1)+"}","gi")}String.prototype.reverse=function(){return this.split("").reverse().join("")};e=true;return this},c:u,inicializado:function(){return e}}})(jQuery);
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var config = __webpack_require__(1);
 	var angular = __webpack_require__(3);
 	__webpack_require__(17);
-	var login_routes_ts_1 = __webpack_require__(54);
-	var login_controller_ts_1 = __webpack_require__(55);
+	var login_routes_ts_1 = __webpack_require__(56);
+	var login_controller_ts_1 = __webpack_require__(57);
 	var services_ts_1 = __webpack_require__(49);
 	var Login;
 	(function (Login) {
@@ -65305,11 +65861,11 @@
 
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var login_controller_ts_1 = __webpack_require__(55);
-	var templateUrl = __webpack_require__(56);
+	var login_controller_ts_1 = __webpack_require__(57);
+	var templateUrl = __webpack_require__(58);
 	var Login;
 	(function (Login) {
 	    /*@ngInject*/
@@ -65332,21 +65888,24 @@
 
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports) {
 
 	var Login;
 	(function (Login) {
 	    var LoginController = (function () {
 	        /*@ngInject*/
-	        function LoginController(services, $state, vcRecaptchaService, localStorageService) {
+	        function LoginController(services, $state, vcRecaptchaService, localStorageService, $compile, $scope) {
 	            this.services = services;
 	            this.$state = $state;
 	            this.vcRecaptchaService = vcRecaptchaService;
 	            this.localStorageService = localStorageService;
+	            this.$compile = $compile;
+	            this.$scope = $scope;
 	            this.numberOfAttempts = 0;
 	            this.maxNumberOfAttempts = 3;
 	            this.tokenKey = 'token';
+	            this.currentUserKey = 'currentUser';
 	        }
 	        LoginController.prototype.login = function () {
 	            var _this = this;
@@ -65359,9 +65918,19 @@
 	                    .then(function (res) {
 	                    if (res && res.token) {
 	                        _this.localStorageService.set(_this.tokenKey, res.token);
-	                        _this.$state.go('home');
+	                        _this.services.getUserByToken().then(function (data) {
+	                            _this.localStorageService.set(_this.currentUserKey, data);
+	                        });
+	                        _this.$state.go('home.tree');
 	                    }
 	                    else {
+	                        var notificationData = {
+	                            "type": "warning",
+	                            "icon": "exclamation-sign",
+	                            "title": "Error",
+	                            "text": "El email y/o contraseña ingresados son incorrectos." // tslint:disable-line
+	                        };
+	                        _this.addNotification(notificationData);
 	                        _this.email = '';
 	                        _this.password = '';
 	                        _this.captcha = '';
@@ -65372,6 +65941,12 @@
 	                });
 	            }
 	        };
+	        LoginController.prototype.addNotification = function (data) {
+	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '"></notification> '); // tslint:disable-line
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('notificationLogin');
+	            angular.element(containerDiv).append(referralDiv);
+	        };
 	        return LoginController;
 	    })();
 	    Login.LoginController = LoginController;
@@ -65380,16 +65955,227 @@
 
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/login/login.html';
-	var html = "<main class=\"main-container no-padding-top\" role=\"main\">\n  <section>\n    <div class=\"container\">\n      <br>\n      <h3 class=\"text-center\">Plataforma de Gestión Integral</h3>\n      <br>\n      <div class=\"row\">\n        <div class=\"tab-content col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4\">\n          <div role=\"tabpanel\" class=\"tab-pane active\">\n            <div class=\"panel panel-default\">\n              <div class=\"panel-heading text-center\">Iniciá sesión</div>\n              <div class=\"panel-body\">\n                <form ng-submit=\"loginCtrl.login()\" id=\"login\" name=\"loginCtrl.form\">\n                  <div class=\"form-group\">\n                      <label for=\"exampleInputEmail1\">Correo electrónico</label>\n                      <input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Ingresar correo electrónico\" ng-model=\"loginCtrl.email\">\n                  </div>\n                  <div class=\"form-group\">\n                   <label for=\"InputPasword\">Contraseña</label>\n                    <input type=\"password\" class=\"form-control\" id=\"InputPasword\" placeholder=\"Ingresar Contraseña\" ng-model=\"loginCtrl.password\">\n                  </div>\n                  <div class=\"form-group\" ng-show=\"loginCtrl.numberOfAttempts >= loginCtrl.maxNumberOfAttempts\">\n                    <div vc-recaptcha ng-model=\"loginCtrl.captcha\"></div>\n                  </div>\n                  <br>\n                  <button type=\"submit\" class=\"btn btn-primary btn-lg btn-block\">Ingresar</button>\n                </form>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n</main>\n";
+	var html = "<main class=\"main-container no-padding-top\" role=\"main\">\n  <section>\n    <div class=\"container\">\n      <br>\n      <h3 class=\"text-center\">Plataforma de Gestión Integral</h3>\n      <br>\n      <div class=\"row\">\n        <div class=\"tab-content col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4\">\n          <div role=\"tabpanel\" class=\"tab-pane active\">\n            <div class=\"panel panel-default\">\n              <div class=\"panel-heading text-center\">Iniciá sesión</div>\n              <div class=\"panel-body\">\n                <div id=\"notificationLogin\"></div>\n                <form ng-submit=\"loginCtrl.login()\" id=\"login\" name=\"loginCtrl.form\">\n                  <div class=\"form-group\">\n                      <label for=\"exampleInputEmail1\">Correo electrónico</label>\n                      <input type=\"email\" class=\"form-control\" id=\"exampleInputEmail1\" placeholder=\"Ingresar correo electrónico\" ng-model=\"loginCtrl.email\" required>\n                  </div>\n                  <div class=\"form-group\">\n                   <label for=\"InputPasword\">Contraseña</label>\n                    <input type=\"password\" class=\"form-control\" id=\"InputPasword\" placeholder=\"Ingresar Contraseña\" ng-model=\"loginCtrl.password\" required>\n                  </div>\n                  <div class=\"form-group\" ng-show=\"loginCtrl.numberOfAttempts >= loginCtrl.maxNumberOfAttempts\">\n                    <div vc-recaptcha ng-model=\"loginCtrl.captcha\"></div>\n                  </div>\n                  <br>\n                  <button type=\"submit\" class=\"btn btn-primary btn-lg btn-block\">Ingresar</button>\n                </form>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n</main>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
 /***/ },
-/* 57 */
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var angular = __webpack_require__(3);
+	var users_routes_ts_1 = __webpack_require__(60);
+	var users_controller_ts_1 = __webpack_require__(61);
+	var services_ts_1 = __webpack_require__(49);
+	var form_user_component_ts_1 = __webpack_require__(63);
+	var Users;
+	(function (Users) {
+	    Users.users = angular.module('app.users', ['ui.router', 'ui.bootstrap'])
+	        .config(users_routes_ts_1.routes)
+	        .controller('usersCtrl', users_controller_ts_1.UsersController)
+	        .component('userform', form_user_component_ts_1.userFormComponent)
+	        .service('services', services_ts_1.GeneralServices)
+	        .name;
+	})(Users || (Users = {}));
+	module.exports = Users;
+
+
+/***/ },
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var users_controller_ts_1 = __webpack_require__(61);
+	var templateUrl = __webpack_require__(62);
+	var Users;
+	(function (Users) {
+	    /*@ngInject*/
+	    function routes($stateProvider) {
+	        $stateProvider
+	            .state('users', {
+	            url: '/users',
+	            templateUrl: templateUrl,
+	            controller: users_controller_ts_1.UsersController,
+	            controllerAs: 'usersCtrl',
+	            parent: 'root',
+	            data: {
+	                requireLogin: false
+	            }
+	        });
+	    }
+	    Users.routes = routes;
+	})(Users || (Users = {}));
+	module.exports = Users;
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {var Users;
+	(function (Users) {
+	    var UsersController = (function () {
+	        /*@ngInject*/
+	        function UsersController(services, $state, $scope, $compile) {
+	            var _this = this;
+	            this.services = services;
+	            this.$state = $state;
+	            this.$scope = $scope;
+	            this.$compile = $compile;
+	            services.getUsers().then(function (data) {
+	                _this.usuarios = data;
+	            });
+	        }
+	        UsersController.prototype.addUser = function () {
+	            if (!angular.element(document.getElementsByTagName('userform')).length) {
+	                var referralDivFactory = this.$compile(" <userform></userform> ");
+	                var referralDiv = referralDivFactory(this.$scope);
+	                var containerDiv = document.getElementById('newuser');
+	                angular.element(containerDiv).append(referralDiv);
+	            }
+	        };
+	        UsersController.prototype.editUser = function (id) {
+	            console.log(id);
+	            if (!angular.element(document.getElementsByTagName('userform')).length) {
+	                var referralDivFactory = this.$compile(" <userform currentuserid='" + id + "'></userform> ");
+	                var referralDiv = referralDivFactory(this.$scope);
+	                var containerDiv = document.getElementById("newuser");
+	                angular.element(containerDiv).append(referralDiv);
+	            }
+	        };
+	        UsersController.prototype.toggleUserState = function (user) {
+	            this.services.toggleUserState(user);
+	        };
+	        UsersController.prototype.addAlert = function (data) {
+	            var formDiv = document.getElementsByTagName('alertmodal');
+	            angular.element(formDiv).remove();
+	            var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('alertmodalcomponent');
+	            angular.element(containerDiv).append(referralDiv);
+	        };
+	        UsersController.prototype.deleteUserById = function (id) {
+	            var _this = this;
+	            this.services.deleteUser(id).then(function (data) {
+	                _this.$state.reload();
+	            });
+	        };
+	        UsersController.prototype.deleteUser = function (id) {
+	            var dataAlert = {
+	                title: "Aviso",
+	                text: "Se va a eliminar el Usuario. ¿Continuar?",
+	                callback: 'deleteUserById',
+	                id: id
+	            };
+	            this.addAlert(dataAlert);
+	        };
+	        UsersController.prototype.goToElement = function (idElement) {
+	            $('html,body').animate({
+	                scrollTop: $("#" + idElement).offset().top }, 500);
+	        };
+	        return UsersController;
+	    })();
+	    Users.UsersController = UsersController;
+	})(Users || (Users = {}));
+	module.exports = Users;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+
+/***/ },
+/* 62 */
+/***/ function(module, exports) {
+
+	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/users/users.html';
+	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\" id=\"alertmodalcomponent\">\n        <div class=\"row\">\n          <div class=\"col-lg-9 col-md-8 col-sm-4 col-xs-12\">\n            <button type=\"button\" class=\"btn btn-default\" ng-click=\"usersCtrl.addUser()\"><i class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\"></i> Agregar Nuevo</button>\n          </div>\n          <div class=\"col-lg-3 col-md-4 col-sm-8 col-xs-12\">\n            <div class=\"form-group has-button contentSearch searchPage\">\n              <input type=\"text\" class=\"form-control input-md\" id=\"buttonInput2\" placeholder=\"Buscar\" ng-model=\"usersCtrl.userFilter\">\n              <button class=\"btn\">\n                <span class=\"glyphicon glyphicon-search\"></span>\n              </button>\n            </div>\n          </div>\n          <div class=\"col-md-12\">\n            <hr>\n            <div id=\"newuser\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"table-responsive\">\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th>Nombre</th>\n            <th>Apellido</th>\n            <th>Mail</th>\n            <th class=\"colum-action\">Estado</th>\n            <th class=\"colum-action\">Editar</th>\n            <th class=\"colum-action\">Eliminar</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"user in usersCtrl.usuarios | filter: usersCtrl.userFilter\" id=\"user-{{user.idUsuario}}\">\n            <td class=\"thirdLabel\">{{user.nombre}}</td>\n            <td class=\"thirdLabel\">{{user.apellido}}</td>\n            <td>{{user.email}}</td>\n            <td>\n              <div class=\"switch\">\n                <input id=\"cmn-toggle-{{user.idUsuario}}\" class=\"cmn-toggle cmn-toggle-round\" type=\"checkbox\" ng-change=\"usersCtrl.toggleUserState(user)\"  ng-model=\"user.activo\">\n                <label for=\"cmn-toggle-{{user.idUsuario}}\"></label>\n              </div>\n            </td>\n            <td class=\"colum-action\"><i class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"usersCtrl.editUser(user.idUsuario)\"></i>\n            </td>\n            <td class=\"colum-action\"><i class=\"glyphicon glyphicon-remove line\" aria-hidden=\"true\" data-toggle=\"modal\" data-target=\"#alertModalId\" data-original-title=\"Eliminar\" ng-click=\"usersCtrl.deleteUser(user.idUsuario)\"></i>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n";
+	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
+	module.exports = path;
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var template = __webpack_require__(64);
+	var Home;
+	(function (Home) {
+	    var UserFormController = (function () {
+	        /*@ngInject*/
+	        function UserFormController(services, $state) {
+	            var _this = this;
+	            this.services = services;
+	            this.$state = $state;
+	            console.log('New user form');
+	            if (!this.currentuserid) {
+	                this.currentuser = {
+	                    "idUsuario": null,
+	                    "activo": false,
+	                    "apellido": "",
+	                    "descripcion": "",
+	                    "email": "",
+	                    "jurisdicciones": null,
+	                    "nombreUsuario": "",
+	                    "nombre": "",
+	                    "roles": new Array()
+	                };
+	            }
+	            else {
+	                services.getUser(this.currentuserid).then(function (data) {
+	                    _this.currentuser = data;
+	                    console.log(_this.currentuser);
+	                });
+	            }
+	            services.getRoles().then(function (data) {
+	                _this.roles = data;
+	            });
+	            services.jurisdicciones().then(function (data) {
+	                _this.jurisdicciones = data;
+	            });
+	        }
+	        UserFormController.prototype.loadTags = function ($query) {
+	            return this.jurisdicciones.filter(function (tag) {
+	                return tag.nombre.toLowerCase().indexOf($query.toLowerCase()) !== -1;
+	            });
+	        };
+	        UserFormController.prototype.submit = function () {
+	            var _this = this;
+	            console.log(this.currentuser);
+	            (this.currentuser.idUsuario ? this.services.updateUser(this.currentuser) : this.services.saveUser(this.currentuser))
+	                .then(function (data) {
+	                _this.$state.reload();
+	            });
+	        };
+	        UserFormController.prototype.cancel = function () {
+	            var formDiv = document.getElementsByTagName('userform');
+	            angular.element(formDiv).remove();
+	        };
+	        return UserFormController;
+	    })();
+	    Home.UserFormController = UserFormController;
+	    Home.userFormComponent = {
+	        bindings: {
+	            currentuserid: '@'
+	        },
+	        templateUrl: template,
+	        controller: UserFormController,
+	        controllerAs: 'userFormCtrl'
+	    };
+	})(Home || (Home = {}));
+	module.exports = Home;
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
+
+	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/users/form-user/form-user.html';
+	var html = "<div class=\"contentFormProyect admin\">\n  <div class=\"col-md-12 col-sm-12 col-xs-12 \">\n    <form role=\"form\" ng-submit=\"userFormCtrl.submit()\">\n      <div class=\"row\">\n        <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n          <label for=\"name\">Nombre</label>\n          <input type=\"text\" class=\"form-control\" id=\"name\" ng-model=\"userFormCtrl.currentuser.nombre\" placeholder=\"Ingresar nombre\" required>\n        </div>\n        <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n          <label for=\"name\">Apellido</label>\n          <input type=\"text\" class=\"form-control\" id=\"name\" ng-model=\"userFormCtrl.currentuser.apellido\" placeholder=\"Ingresar apellido\" required>\n        </div>\n        <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n          <label for=\"name\">Correo electrónico</label>\n          <input type=\"email\" class=\"form-control\" id=\"mail\" ng-model=\"userFormCtrl.currentuser.email\" placeholder=\"Ingresar mail\" required>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"form-group col-md-4\">\n          <label for=\"responsable\">Perfil</label>\n          <select class=\"form-control\" ng-model=\"userFormCtrl.currentuser.roles[0]\" ng-options=\"role.descripcion for role in userFormCtrl.roles track by role.idRol\" required>\n          </select>\n        </div>\n        <div class=\"form-group col-md-4\">\n          <label for=\"responsable\">Jurisdicción</label>\n          <tags-input ng-model=\"userFormCtrl.currentuser.jurisdicciones\"\n                      display-property=\"nombre\"\n                      key-property=\"idJurisdiccion\"\n                      add-from-autocomplete-only=\"true\"\n                      placeholder=\"Jurisdicciones\"\n                      required>\n              <auto-complete source=\"userFormCtrl.loadTags($query)\"\n                             min-length=\"1\"\n                             load-on-focus=\"true\"\n                             load-on-empty=\"true\"\n                             max-results-to-show=\"100\">\n              </auto-complete>\n          </tags-input>\n        </div>\n      </div>\n      <button type=\"submit\" class=\"btn btn-success\"><i class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\"></i> Guardar</button>\n      <button type=\"button\" ng-click=\"userFormCtrl.cancel()\" class=\"btn btn-link\">Cancelar</button>\n    </form>\n  </div>\n</div>\n";
+	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
+	module.exports = path;
+
+/***/ },
+/* 65 */
 /***/ function(module, exports) {
 
 	var Menu;
@@ -65408,8 +66194,10 @@
 	            this.search = search;
 	            this.localStorageService = localStorageService;
 	            this.idjurisdiccionKey = 'idJurisdiccionStorage';
+	            this.currentUserKey = 'currentUser';
 	            this.items = [
-	                { "state": "home", "title": "Alta de proyectos", "controllerAs": "homeCtrl" }
+	                { "state": "home.tree", "title": "Alta de proyectos", "controllerAs": "homeCtrl" },
+	                { "state": "users", "title": "Usuarios", "controllerAs": "usersCtrl" }
 	            ];
 	            this.isWaitingJurisdicciones = false;
 	        }
@@ -65420,7 +66208,6 @@
 	                    this.isWaitingJurisdicciones = true;
 	                    this.services.jurisdicciones().then(function (data) {
 	                        if (data) {
-	                            console.log('Obtuve data');
 	                            _this.jurisdiccion = data;
 	                            _this.setIdJurisdiccion();
 	                            _this.isWaitingJurisdicciones = false;
@@ -65432,6 +66219,24 @@
 	            else {
 	                return false;
 	            }
+	        };
+	        MenuController.prototype.showUsers = function (item) {
+	            if (item.state === 'users') {
+	                var userData = this.localStorageService.get(this.currentUserKey);
+	                var user = userData;
+	                var retVal = false;
+	                if (user) {
+	                    user.roles.forEach(function (rol) {
+	                        rol.permisosEntidad.forEach(function (permiso) {
+	                            if (permiso.nombre === "Gestion de usuarios" && permiso.gestion) {
+	                                retVal = true;
+	                            }
+	                        });
+	                    });
+	                }
+	                return retVal;
+	            }
+	            return true;
 	        };
 	        MenuController.prototype.setIdJurisdiccion = function () {
 	            if (!this.localStorageService.get(this.idjurisdiccionKey) && this.jurisdiccion) {
@@ -65456,7 +66261,7 @@
 	    })();
 	    Menu.MenuController = MenuController;
 	    Menu.menuComponent = {
-	        template: "<div class=\"jumbotron jumbotron-misc jumbotron-main\" ng-if=\"$ctrl.isLoginView()\">\n                   <nav  class=\"navbar navbar-default\" role=\"navigation\">\n                    <div class=\"container\">\n                        <div class=\"row\">\n                            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n                              <ul class=\"nav navbar-nav\">\n                                <li ui-sref=\"{{item.state}}\" ng-repeat=\"item in $ctrl.items\" ng-class=\"{active: $ctrl.$state.current.controllerAs==item.controllerAs}\">\n                                    <a>{{item.title}}</a>\n                                </li>\n                                <li ng-if=\"$ctrl.jurisdiccion.length > 1\" class=\"dropdown\">\n                                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Jurisdicci&oacute;n <b class=\"caret\"></b></a>\n                                    <ul class=\"dropdown-menu multi-column columns-3\">\n                                      <div class=\"row\">\n                                          <ul class=\"multi-column-dropdown\">\n                                            <div class=\"col-sm-4\" ng-repeat=\"item in $ctrl.jurisdiccion\">\n                                              <li><a ng-click=\"$ctrl.changeJurisdiccion(item.idJurisdiccion)\">\n                                              {{item.abreviatura}}\n                                              <i ng-if=\"$ctrl.currentJurisdiccion(item.idJurisdiccion)\" class=\"glyphicon glyphicon-eye-open\"></i>\n                                              </a>\n                                              </li>\n                                            </div>\n                                          </ul>\n                                      </div>\n                                    </ul>\n                                </li>\n                              </ul>\n                              <ul class=\"nav navbar-nav navbar-right\">\n                                <li><a ng-click=\"$ctrl.logout()\">Salir</a></li>\n                              </ul>\n                              <form class=\"navbar-form navbar-right\" role=\"search\">\n                                <div class=\"form-group\">\n                                  <input ng-model=\"$ctrl.searchTextModel\" class=\"form-control\" placeholder=\"Buscar en la Jurisdicci\u00F3n\" type=\"text\">\n                                </div>\n                                <button ng-click=\"$ctrl.applySearch()\" type=\"submit\" class=\"btn btn-default\">Buscar</button>\n                              </form>\n                            </div>\n                        </div>\n                    </div>\n                 </nav>\n                 <jurisdiccionheader></jurisdiccionheader>\n               </div>",
+	        template: "<div class=\"jumbotron jumbotron-misc jumbotron-main\" ng-if=\"$ctrl.isLoginView()\">\n                   <nav  class=\"navbar navbar-default\" role=\"navigation\">\n                    <div class=\"container\">\n                        <div class=\"row\">\n                            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n                              <ul class=\"nav navbar-nav\">\n                                <li ui-sref=\"{{item.state}}\" ng-repeat=\"item in $ctrl.items\" ng-class=\"{active: $ctrl.$state.current.controllerAs==item.controllerAs}\" ng-show=\"$ctrl.showUsers(item)\">\n                                    <a>{{item.title}}</a>\n                                </li>\n                                <li ng-if=\"$ctrl.jurisdiccion.length > 1\" class=\"dropdown\">\n                                    <a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">Jurisdicci&oacute;n <b class=\"caret\"></b></a>\n                                    <ul class=\"dropdown-menu multi-column columns-3\">\n                                      <div class=\"row\">\n                                          <ul class=\"multi-column-dropdown\">\n                                            <div class=\"col-sm-4\" ng-repeat=\"item in $ctrl.jurisdiccion\">\n                                              <li><a ng-click=\"$ctrl.changeJurisdiccion(item.idJurisdiccion)\">\n                                              {{item.abreviatura}}\n                                              <i ng-if=\"$ctrl.currentJurisdiccion(item.idJurisdiccion)\" class=\"glyphicon glyphicon-eye-open\"></i>\n                                              </a>\n                                              </li>\n                                            </div>\n                                          </ul>\n                                      </div>\n                                    </ul>\n                                </li>\n                              </ul>\n                              <ul class=\"nav navbar-nav navbar-right\">\n                                <li><a ng-click=\"$ctrl.logout()\">Salir</a></li>\n                              </ul>\n                              <form class=\"navbar-form navbar-right\" role=\"search\">\n                                <div class=\"form-group\">\n                                  <input ng-model=\"$ctrl.searchTextModel\" class=\"form-control\" placeholder=\"Buscar en la Jurisdicci\u00F3n\" type=\"text\">\n                                </div>\n                                <button ng-click=\"$ctrl.applySearch()\" type=\"submit\" class=\"btn btn-default\">Buscar</button>\n                              </form>\n                            </div>\n                        </div>\n                    </div>\n                 </nav>\n                 <jurisdiccionheader></jurisdiccionheader>\n               </div>",
 	        controller: MenuController
 	    };
 	})(Menu || (Menu = {}));
@@ -65464,20 +66269,21 @@
 
 
 /***/ },
-/* 58 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(59);
+	/* WEBPACK VAR INJECTION */(function($) {var template = __webpack_require__(67);
 	var Notification;
 	(function (Notification) {
 	    var NotificationController = (function () {
-	        /*@ngInject*/
 	        function NotificationController() {
-	            console.log(this.gotoform);
-	            console.log(this.gotoestrategico);
-	            console.log(this.gotooperativo);
 	        }
-	        ;
+	        /*@ngInject*/
+	        // constructor() {
+	        //   console.log(this.gotoform);
+	        //   console.log(this.gotoestrategico);
+	        //   console.log(this.gotooperativo);
+	        // };
 	        NotificationController.prototype.goToCurrentForm = function () {
 	            $(document.getElementsByTagName('notification')).hide();
 	            var form = document.getElementsByTagName('formproject');
@@ -65520,19 +66326,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
-/* 59 */
+/* 67 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/notification/notification.html';
-	var html = "<!--success / warning / danger-->\n<div class=\"alert alert-{{notificationCtrl.type}}\" id=\"alert\">\n    <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n    <!--ok-sign / remove-sign / exclamation-sign-->\n    <i class=\"glyphicon glyphicon-{{notificationCtrl.icon}}\" aria-hidden=\"true\"></i>\n    <strong>{{notificationCtrl.title}} - </strong>{{notificationCtrl.text}} \n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotoform\" ng-click=\"notificationCtrl.goToCurrentForm()\">{{notificationCtrl.textlink}}</a>\n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotoestrategico\" ng-click=\"notificationCtrl.goToCurrentEstrategico()\">{{notificationCtrl.textlink}}</a>\n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotooperativo\" ng-click=\"notificationCtrl.goToCurrentOperativo()\">{{notificationCtrl.textlink}}</a>\n</div>\n";
+	var html = "<!--success / warning / danger-->\n<div class=\"alert alert-{{notificationCtrl.type}} alert-block\" id=\"alert\">\n    <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n    <!--ok-sign / remove-sign / exclamation-sign-->\n    <i class=\"glyphicon glyphicon-{{notificationCtrl.icon}}\" aria-hidden=\"true\"></i>\n    <strong>{{notificationCtrl.title}} - </strong>{{notificationCtrl.text}}\n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotoform\" ng-click=\"notificationCtrl.goToCurrentForm()\">{{notificationCtrl.textlink}}</a>\n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotoestrategico\" ng-click=\"notificationCtrl.goToCurrentEstrategico()\">{{notificationCtrl.textlink}}</a>\n    <a style=\"cursor: pointer;\" ng-if=\"notificationCtrl.gotooperativo\" ng-click=\"notificationCtrl.goToCurrentOperativo()\">{{notificationCtrl.textlink}}</a>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
 /***/ },
-/* 60 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var template = __webpack_require__(61);
+	var template = __webpack_require__(69);
 	var Home;
 	(function (Home) {
 	    var HeaderController = (function () {
@@ -65558,7 +66364,7 @@
 
 
 /***/ },
-/* 61 */
+/* 69 */
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/jurisdiccion-header.html';
@@ -65567,7 +66373,7 @@
 	module.exports = path;
 
 /***/ },
-/* 62 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
@@ -65577,7 +66383,7 @@
 	        /*@ngInject*/
 	        function VersionController($http) {
 	            this.$http = $http;
-	            this.versionFrontend = ("0.0.9");
+	            this.versionFrontend = ("0.0.12");
 	        }
 	        return VersionController;
 	    })();
@@ -65589,31 +66395,6 @@
 	})(Version || (Version = {}));
 	module.exports = Version;
 
-
-/***/ },
-/* 63 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(jQuery) {/*!
-	 * Bootstrap v3.3.7 (http://getbootstrap.com)
-	 * Copyright 2011-2016 Twitter, Inc.
-	 * Licensed under the MIT license
-	 */
-	if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(a){"use strict";var b=a.fn.jquery.split(" ")[0].split(".");if(b[0]<2&&b[1]<9||1==b[0]&&9==b[1]&&b[2]<1||b[0]>3)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4")}(jQuery),+function(a){"use strict";function b(){var a=document.createElement("bootstrap"),b={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var c in b)if(void 0!==a.style[c])return{end:b[c]};return!1}a.fn.emulateTransitionEnd=function(b){var c=!1,d=this;a(this).one("bsTransitionEnd",function(){c=!0});var e=function(){c||a(d).trigger(a.support.transition.end)};return setTimeout(e,b),this},a(function(){a.support.transition=b(),a.support.transition&&(a.event.special.bsTransitionEnd={bindType:a.support.transition.end,delegateType:a.support.transition.end,handle:function(b){if(a(b.target).is(this))return b.handleObj.handler.apply(this,arguments)}})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var c=a(this),e=c.data("bs.alert");e||c.data("bs.alert",e=new d(this)),"string"==typeof b&&e[b].call(c)})}var c='[data-dismiss="alert"]',d=function(b){a(b).on("click",c,this.close)};d.VERSION="3.3.7",d.TRANSITION_DURATION=150,d.prototype.close=function(b){function c(){g.detach().trigger("closed.bs.alert").remove()}var e=a(this),f=e.attr("data-target");f||(f=e.attr("href"),f=f&&f.replace(/.*(?=#[^\s]*$)/,""));var g=a("#"===f?[]:f);b&&b.preventDefault(),g.length||(g=e.closest(".alert")),g.trigger(b=a.Event("close.bs.alert")),b.isDefaultPrevented()||(g.removeClass("in"),a.support.transition&&g.hasClass("fade")?g.one("bsTransitionEnd",c).emulateTransitionEnd(d.TRANSITION_DURATION):c())};var e=a.fn.alert;a.fn.alert=b,a.fn.alert.Constructor=d,a.fn.alert.noConflict=function(){return a.fn.alert=e,this},a(document).on("click.bs.alert.data-api",c,d.prototype.close)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.button"),f="object"==typeof b&&b;e||d.data("bs.button",e=new c(this,f)),"toggle"==b?e.toggle():b&&e.setState(b)})}var c=function(b,d){this.$element=a(b),this.options=a.extend({},c.DEFAULTS,d),this.isLoading=!1};c.VERSION="3.3.7",c.DEFAULTS={loadingText:"loading..."},c.prototype.setState=function(b){var c="disabled",d=this.$element,e=d.is("input")?"val":"html",f=d.data();b+="Text",null==f.resetText&&d.data("resetText",d[e]()),setTimeout(a.proxy(function(){d[e](null==f[b]?this.options[b]:f[b]),"loadingText"==b?(this.isLoading=!0,d.addClass(c).attr(c,c).prop(c,!0)):this.isLoading&&(this.isLoading=!1,d.removeClass(c).removeAttr(c).prop(c,!1))},this),0)},c.prototype.toggle=function(){var a=!0,b=this.$element.closest('[data-toggle="buttons"]');if(b.length){var c=this.$element.find("input");"radio"==c.prop("type")?(c.prop("checked")&&(a=!1),b.find(".active").removeClass("active"),this.$element.addClass("active")):"checkbox"==c.prop("type")&&(c.prop("checked")!==this.$element.hasClass("active")&&(a=!1),this.$element.toggleClass("active")),c.prop("checked",this.$element.hasClass("active")),a&&c.trigger("change")}else this.$element.attr("aria-pressed",!this.$element.hasClass("active")),this.$element.toggleClass("active")};var d=a.fn.button;a.fn.button=b,a.fn.button.Constructor=c,a.fn.button.noConflict=function(){return a.fn.button=d,this},a(document).on("click.bs.button.data-api",'[data-toggle^="button"]',function(c){var d=a(c.target).closest(".btn");b.call(d,"toggle"),a(c.target).is('input[type="radio"], input[type="checkbox"]')||(c.preventDefault(),d.is("input,button")?d.trigger("focus"):d.find("input:visible,button:visible").first().trigger("focus"))}).on("focus.bs.button.data-api blur.bs.button.data-api",'[data-toggle^="button"]',function(b){a(b.target).closest(".btn").toggleClass("focus",/^focus(in)?$/.test(b.type))})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.carousel"),f=a.extend({},c.DEFAULTS,d.data(),"object"==typeof b&&b),g="string"==typeof b?b:f.slide;e||d.data("bs.carousel",e=new c(this,f)),"number"==typeof b?e.to(b):g?e[g]():f.interval&&e.pause().cycle()})}var c=function(b,c){this.$element=a(b),this.$indicators=this.$element.find(".carousel-indicators"),this.options=c,this.paused=null,this.sliding=null,this.interval=null,this.$active=null,this.$items=null,this.options.keyboard&&this.$element.on("keydown.bs.carousel",a.proxy(this.keydown,this)),"hover"==this.options.pause&&!("ontouchstart"in document.documentElement)&&this.$element.on("mouseenter.bs.carousel",a.proxy(this.pause,this)).on("mouseleave.bs.carousel",a.proxy(this.cycle,this))};c.VERSION="3.3.7",c.TRANSITION_DURATION=600,c.DEFAULTS={interval:5e3,pause:"hover",wrap:!0,keyboard:!0},c.prototype.keydown=function(a){if(!/input|textarea/i.test(a.target.tagName)){switch(a.which){case 37:this.prev();break;case 39:this.next();break;default:return}a.preventDefault()}},c.prototype.cycle=function(b){return b||(this.paused=!1),this.interval&&clearInterval(this.interval),this.options.interval&&!this.paused&&(this.interval=setInterval(a.proxy(this.next,this),this.options.interval)),this},c.prototype.getItemIndex=function(a){return this.$items=a.parent().children(".item"),this.$items.index(a||this.$active)},c.prototype.getItemForDirection=function(a,b){var c=this.getItemIndex(b),d="prev"==a&&0===c||"next"==a&&c==this.$items.length-1;if(d&&!this.options.wrap)return b;var e="prev"==a?-1:1,f=(c+e)%this.$items.length;return this.$items.eq(f)},c.prototype.to=function(a){var b=this,c=this.getItemIndex(this.$active=this.$element.find(".item.active"));if(!(a>this.$items.length-1||a<0))return this.sliding?this.$element.one("slid.bs.carousel",function(){b.to(a)}):c==a?this.pause().cycle():this.slide(a>c?"next":"prev",this.$items.eq(a))},c.prototype.pause=function(b){return b||(this.paused=!0),this.$element.find(".next, .prev").length&&a.support.transition&&(this.$element.trigger(a.support.transition.end),this.cycle(!0)),this.interval=clearInterval(this.interval),this},c.prototype.next=function(){if(!this.sliding)return this.slide("next")},c.prototype.prev=function(){if(!this.sliding)return this.slide("prev")},c.prototype.slide=function(b,d){var e=this.$element.find(".item.active"),f=d||this.getItemForDirection(b,e),g=this.interval,h="next"==b?"left":"right",i=this;if(f.hasClass("active"))return this.sliding=!1;var j=f[0],k=a.Event("slide.bs.carousel",{relatedTarget:j,direction:h});if(this.$element.trigger(k),!k.isDefaultPrevented()){if(this.sliding=!0,g&&this.pause(),this.$indicators.length){this.$indicators.find(".active").removeClass("active");var l=a(this.$indicators.children()[this.getItemIndex(f)]);l&&l.addClass("active")}var m=a.Event("slid.bs.carousel",{relatedTarget:j,direction:h});return a.support.transition&&this.$element.hasClass("slide")?(f.addClass(b),f[0].offsetWidth,e.addClass(h),f.addClass(h),e.one("bsTransitionEnd",function(){f.removeClass([b,h].join(" ")).addClass("active"),e.removeClass(["active",h].join(" ")),i.sliding=!1,setTimeout(function(){i.$element.trigger(m)},0)}).emulateTransitionEnd(c.TRANSITION_DURATION)):(e.removeClass("active"),f.addClass("active"),this.sliding=!1,this.$element.trigger(m)),g&&this.cycle(),this}};var d=a.fn.carousel;a.fn.carousel=b,a.fn.carousel.Constructor=c,a.fn.carousel.noConflict=function(){return a.fn.carousel=d,this};var e=function(c){var d,e=a(this),f=a(e.attr("data-target")||(d=e.attr("href"))&&d.replace(/.*(?=#[^\s]+$)/,""));if(f.hasClass("carousel")){var g=a.extend({},f.data(),e.data()),h=e.attr("data-slide-to");h&&(g.interval=!1),b.call(f,g),h&&f.data("bs.carousel").to(h),c.preventDefault()}};a(document).on("click.bs.carousel.data-api","[data-slide]",e).on("click.bs.carousel.data-api","[data-slide-to]",e),a(window).on("load",function(){a('[data-ride="carousel"]').each(function(){var c=a(this);b.call(c,c.data())})})}(jQuery),+function(a){"use strict";function b(b){var c,d=b.attr("data-target")||(c=b.attr("href"))&&c.replace(/.*(?=#[^\s]+$)/,"");return a(d)}function c(b){return this.each(function(){var c=a(this),e=c.data("bs.collapse"),f=a.extend({},d.DEFAULTS,c.data(),"object"==typeof b&&b);!e&&f.toggle&&/show|hide/.test(b)&&(f.toggle=!1),e||c.data("bs.collapse",e=new d(this,f)),"string"==typeof b&&e[b]()})}var d=function(b,c){this.$element=a(b),this.options=a.extend({},d.DEFAULTS,c),this.$trigger=a('[data-toggle="collapse"][href="#'+b.id+'"],[data-toggle="collapse"][data-target="#'+b.id+'"]'),this.transitioning=null,this.options.parent?this.$parent=this.getParent():this.addAriaAndCollapsedClass(this.$element,this.$trigger),this.options.toggle&&this.toggle()};d.VERSION="3.3.7",d.TRANSITION_DURATION=350,d.DEFAULTS={toggle:!0},d.prototype.dimension=function(){var a=this.$element.hasClass("width");return a?"width":"height"},d.prototype.show=function(){if(!this.transitioning&&!this.$element.hasClass("in")){var b,e=this.$parent&&this.$parent.children(".panel").children(".in, .collapsing");if(!(e&&e.length&&(b=e.data("bs.collapse"),b&&b.transitioning))){var f=a.Event("show.bs.collapse");if(this.$element.trigger(f),!f.isDefaultPrevented()){e&&e.length&&(c.call(e,"hide"),b||e.data("bs.collapse",null));var g=this.dimension();this.$element.removeClass("collapse").addClass("collapsing")[g](0).attr("aria-expanded",!0),this.$trigger.removeClass("collapsed").attr("aria-expanded",!0),this.transitioning=1;var h=function(){this.$element.removeClass("collapsing").addClass("collapse in")[g](""),this.transitioning=0,this.$element.trigger("shown.bs.collapse")};if(!a.support.transition)return h.call(this);var i=a.camelCase(["scroll",g].join("-"));this.$element.one("bsTransitionEnd",a.proxy(h,this)).emulateTransitionEnd(d.TRANSITION_DURATION)[g](this.$element[0][i])}}}},d.prototype.hide=function(){if(!this.transitioning&&this.$element.hasClass("in")){var b=a.Event("hide.bs.collapse");if(this.$element.trigger(b),!b.isDefaultPrevented()){var c=this.dimension();this.$element[c](this.$element[c]())[0].offsetHeight,this.$element.addClass("collapsing").removeClass("collapse in").attr("aria-expanded",!1),this.$trigger.addClass("collapsed").attr("aria-expanded",!1),this.transitioning=1;var e=function(){this.transitioning=0,this.$element.removeClass("collapsing").addClass("collapse").trigger("hidden.bs.collapse")};return a.support.transition?void this.$element[c](0).one("bsTransitionEnd",a.proxy(e,this)).emulateTransitionEnd(d.TRANSITION_DURATION):e.call(this)}}},d.prototype.toggle=function(){this[this.$element.hasClass("in")?"hide":"show"]()},d.prototype.getParent=function(){return a(this.options.parent).find('[data-toggle="collapse"][data-parent="'+this.options.parent+'"]').each(a.proxy(function(c,d){var e=a(d);this.addAriaAndCollapsedClass(b(e),e)},this)).end()},d.prototype.addAriaAndCollapsedClass=function(a,b){var c=a.hasClass("in");a.attr("aria-expanded",c),b.toggleClass("collapsed",!c).attr("aria-expanded",c)};var e=a.fn.collapse;a.fn.collapse=c,a.fn.collapse.Constructor=d,a.fn.collapse.noConflict=function(){return a.fn.collapse=e,this},a(document).on("click.bs.collapse.data-api",'[data-toggle="collapse"]',function(d){var e=a(this);e.attr("data-target")||d.preventDefault();var f=b(e),g=f.data("bs.collapse"),h=g?"toggle":e.data();c.call(f,h)})}(jQuery),+function(a){"use strict";function b(b){var c=b.attr("data-target");c||(c=b.attr("href"),c=c&&/#[A-Za-z]/.test(c)&&c.replace(/.*(?=#[^\s]*$)/,""));var d=c&&a(c);return d&&d.length?d:b.parent()}function c(c){c&&3===c.which||(a(e).remove(),a(f).each(function(){var d=a(this),e=b(d),f={relatedTarget:this};e.hasClass("open")&&(c&&"click"==c.type&&/input|textarea/i.test(c.target.tagName)&&a.contains(e[0],c.target)||(e.trigger(c=a.Event("hide.bs.dropdown",f)),c.isDefaultPrevented()||(d.attr("aria-expanded","false"),e.removeClass("open").trigger(a.Event("hidden.bs.dropdown",f)))))}))}function d(b){return this.each(function(){var c=a(this),d=c.data("bs.dropdown");d||c.data("bs.dropdown",d=new g(this)),"string"==typeof b&&d[b].call(c)})}var e=".dropdown-backdrop",f='[data-toggle="dropdown"]',g=function(b){a(b).on("click.bs.dropdown",this.toggle)};g.VERSION="3.3.7",g.prototype.toggle=function(d){var e=a(this);if(!e.is(".disabled, :disabled")){var f=b(e),g=f.hasClass("open");if(c(),!g){"ontouchstart"in document.documentElement&&!f.closest(".navbar-nav").length&&a(document.createElement("div")).addClass("dropdown-backdrop").insertAfter(a(this)).on("click",c);var h={relatedTarget:this};if(f.trigger(d=a.Event("show.bs.dropdown",h)),d.isDefaultPrevented())return;e.trigger("focus").attr("aria-expanded","true"),f.toggleClass("open").trigger(a.Event("shown.bs.dropdown",h))}return!1}},g.prototype.keydown=function(c){if(/(38|40|27|32)/.test(c.which)&&!/input|textarea/i.test(c.target.tagName)){var d=a(this);if(c.preventDefault(),c.stopPropagation(),!d.is(".disabled, :disabled")){var e=b(d),g=e.hasClass("open");if(!g&&27!=c.which||g&&27==c.which)return 27==c.which&&e.find(f).trigger("focus"),d.trigger("click");var h=" li:not(.disabled):visible a",i=e.find(".dropdown-menu"+h);if(i.length){var j=i.index(c.target);38==c.which&&j>0&&j--,40==c.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger("focus")}}}};var h=a.fn.dropdown;a.fn.dropdown=d,a.fn.dropdown.Constructor=g,a.fn.dropdown.noConflict=function(){return a.fn.dropdown=h,this},a(document).on("click.bs.dropdown.data-api",c).on("click.bs.dropdown.data-api",".dropdown form",function(a){a.stopPropagation()}).on("click.bs.dropdown.data-api",f,g.prototype.toggle).on("keydown.bs.dropdown.data-api",f,g.prototype.keydown).on("keydown.bs.dropdown.data-api",".dropdown-menu",g.prototype.keydown)}(jQuery),+function(a){"use strict";function b(b,d){return this.each(function(){var e=a(this),f=e.data("bs.modal"),g=a.extend({},c.DEFAULTS,e.data(),"object"==typeof b&&b);f||e.data("bs.modal",f=new c(this,g)),"string"==typeof b?f[b](d):g.show&&f.show(d)})}var c=function(b,c){this.options=c,this.$body=a(document.body),this.$element=a(b),this.$dialog=this.$element.find(".modal-dialog"),this.$backdrop=null,this.isShown=null,this.originalBodyPad=null,this.scrollbarWidth=0,this.ignoreBackdropClick=!1,this.options.remote&&this.$element.find(".modal-content").load(this.options.remote,a.proxy(function(){this.$element.trigger("loaded.bs.modal")},this))};c.VERSION="3.3.7",c.TRANSITION_DURATION=300,c.BACKDROP_TRANSITION_DURATION=150,c.DEFAULTS={backdrop:!0,keyboard:!0,show:!0},c.prototype.toggle=function(a){return this.isShown?this.hide():this.show(a)},c.prototype.show=function(b){var d=this,e=a.Event("show.bs.modal",{relatedTarget:b});this.$element.trigger(e),this.isShown||e.isDefaultPrevented()||(this.isShown=!0,this.checkScrollbar(),this.setScrollbar(),this.$body.addClass("modal-open"),this.escape(),this.resize(),this.$element.on("click.dismiss.bs.modal",'[data-dismiss="modal"]',a.proxy(this.hide,this)),this.$dialog.on("mousedown.dismiss.bs.modal",function(){d.$element.one("mouseup.dismiss.bs.modal",function(b){a(b.target).is(d.$element)&&(d.ignoreBackdropClick=!0)})}),this.backdrop(function(){var e=a.support.transition&&d.$element.hasClass("fade");d.$element.parent().length||d.$element.appendTo(d.$body),d.$element.show().scrollTop(0),d.adjustDialog(),e&&d.$element[0].offsetWidth,d.$element.addClass("in"),d.enforceFocus();var f=a.Event("shown.bs.modal",{relatedTarget:b});e?d.$dialog.one("bsTransitionEnd",function(){d.$element.trigger("focus").trigger(f)}).emulateTransitionEnd(c.TRANSITION_DURATION):d.$element.trigger("focus").trigger(f)}))},c.prototype.hide=function(b){b&&b.preventDefault(),b=a.Event("hide.bs.modal"),this.$element.trigger(b),this.isShown&&!b.isDefaultPrevented()&&(this.isShown=!1,this.escape(),this.resize(),a(document).off("focusin.bs.modal"),this.$element.removeClass("in").off("click.dismiss.bs.modal").off("mouseup.dismiss.bs.modal"),this.$dialog.off("mousedown.dismiss.bs.modal"),a.support.transition&&this.$element.hasClass("fade")?this.$element.one("bsTransitionEnd",a.proxy(this.hideModal,this)).emulateTransitionEnd(c.TRANSITION_DURATION):this.hideModal())},c.prototype.enforceFocus=function(){a(document).off("focusin.bs.modal").on("focusin.bs.modal",a.proxy(function(a){document===a.target||this.$element[0]===a.target||this.$element.has(a.target).length||this.$element.trigger("focus")},this))},c.prototype.escape=function(){this.isShown&&this.options.keyboard?this.$element.on("keydown.dismiss.bs.modal",a.proxy(function(a){27==a.which&&this.hide()},this)):this.isShown||this.$element.off("keydown.dismiss.bs.modal")},c.prototype.resize=function(){this.isShown?a(window).on("resize.bs.modal",a.proxy(this.handleUpdate,this)):a(window).off("resize.bs.modal")},c.prototype.hideModal=function(){var a=this;this.$element.hide(),this.backdrop(function(){a.$body.removeClass("modal-open"),a.resetAdjustments(),a.resetScrollbar(),a.$element.trigger("hidden.bs.modal")})},c.prototype.removeBackdrop=function(){this.$backdrop&&this.$backdrop.remove(),this.$backdrop=null},c.prototype.backdrop=function(b){var d=this,e=this.$element.hasClass("fade")?"fade":"";if(this.isShown&&this.options.backdrop){var f=a.support.transition&&e;if(this.$backdrop=a(document.createElement("div")).addClass("modal-backdrop "+e).appendTo(this.$body),this.$element.on("click.dismiss.bs.modal",a.proxy(function(a){return this.ignoreBackdropClick?void(this.ignoreBackdropClick=!1):void(a.target===a.currentTarget&&("static"==this.options.backdrop?this.$element[0].focus():this.hide()))},this)),f&&this.$backdrop[0].offsetWidth,this.$backdrop.addClass("in"),!b)return;f?this.$backdrop.one("bsTransitionEnd",b).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):b()}else if(!this.isShown&&this.$backdrop){this.$backdrop.removeClass("in");var g=function(){d.removeBackdrop(),b&&b()};a.support.transition&&this.$element.hasClass("fade")?this.$backdrop.one("bsTransitionEnd",g).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):g()}else b&&b()},c.prototype.handleUpdate=function(){this.adjustDialog()},c.prototype.adjustDialog=function(){var a=this.$element[0].scrollHeight>document.documentElement.clientHeight;this.$element.css({paddingLeft:!this.bodyIsOverflowing&&a?this.scrollbarWidth:"",paddingRight:this.bodyIsOverflowing&&!a?this.scrollbarWidth:""})},c.prototype.resetAdjustments=function(){this.$element.css({paddingLeft:"",paddingRight:""})},c.prototype.checkScrollbar=function(){var a=window.innerWidth;if(!a){var b=document.documentElement.getBoundingClientRect();a=b.right-Math.abs(b.left)}this.bodyIsOverflowing=document.body.clientWidth<a,this.scrollbarWidth=this.measureScrollbar()},c.prototype.setScrollbar=function(){var a=parseInt(this.$body.css("padding-right")||0,10);this.originalBodyPad=document.body.style.paddingRight||"",this.bodyIsOverflowing&&this.$body.css("padding-right",a+this.scrollbarWidth)},c.prototype.resetScrollbar=function(){this.$body.css("padding-right",this.originalBodyPad)},c.prototype.measureScrollbar=function(){var a=document.createElement("div");a.className="modal-scrollbar-measure",this.$body.append(a);var b=a.offsetWidth-a.clientWidth;return this.$body[0].removeChild(a),b};var d=a.fn.modal;a.fn.modal=b,a.fn.modal.Constructor=c,a.fn.modal.noConflict=function(){return a.fn.modal=d,this},a(document).on("click.bs.modal.data-api",'[data-toggle="modal"]',function(c){var d=a(this),e=d.attr("href"),f=a(d.attr("data-target")||e&&e.replace(/.*(?=#[^\s]+$)/,"")),g=f.data("bs.modal")?"toggle":a.extend({remote:!/#/.test(e)&&e},f.data(),d.data());d.is("a")&&c.preventDefault(),f.one("show.bs.modal",function(a){a.isDefaultPrevented()||f.one("hidden.bs.modal",function(){d.is(":visible")&&d.trigger("focus")})}),b.call(f,g,this)})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tooltip"),f="object"==typeof b&&b;!e&&/destroy|hide/.test(b)||(e||d.data("bs.tooltip",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.type=null,this.options=null,this.enabled=null,this.timeout=null,this.hoverState=null,this.$element=null,this.inState=null,this.init("tooltip",a,b)};c.VERSION="3.3.7",c.TRANSITION_DURATION=150,c.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1,viewport:{selector:"body",padding:0}},c.prototype.init=function(b,c,d){if(this.enabled=!0,this.type=b,this.$element=a(c),this.options=this.getOptions(d),this.$viewport=this.options.viewport&&a(a.isFunction(this.options.viewport)?this.options.viewport.call(this,this.$element):this.options.viewport.selector||this.options.viewport),this.inState={click:!1,hover:!1,focus:!1},this.$element[0]instanceof document.constructor&&!this.options.selector)throw new Error("`selector` option must be specified when initializing "+this.type+" on the window.document object!");for(var e=this.options.trigger.split(" "),f=e.length;f--;){var g=e[f];if("click"==g)this.$element.on("click."+this.type,this.options.selector,a.proxy(this.toggle,this));else if("manual"!=g){var h="hover"==g?"mouseenter":"focusin",i="hover"==g?"mouseleave":"focusout";this.$element.on(h+"."+this.type,this.options.selector,a.proxy(this.enter,this)),this.$element.on(i+"."+this.type,this.options.selector,a.proxy(this.leave,this))}}this.options.selector?this._options=a.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.getOptions=function(b){return b=a.extend({},this.getDefaults(),this.$element.data(),b),b.delay&&"number"==typeof b.delay&&(b.delay={show:b.delay,hide:b.delay}),b},c.prototype.getDelegateOptions=function(){var b={},c=this.getDefaults();return this._options&&a.each(this._options,function(a,d){c[a]!=d&&(b[a]=d)}),b},c.prototype.enter=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusin"==b.type?"focus":"hover"]=!0),c.tip().hasClass("in")||"in"==c.hoverState?void(c.hoverState="in"):(clearTimeout(c.timeout),c.hoverState="in",c.options.delay&&c.options.delay.show?void(c.timeout=setTimeout(function(){"in"==c.hoverState&&c.show()},c.options.delay.show)):c.show())},c.prototype.isInStateTrue=function(){for(var a in this.inState)if(this.inState[a])return!0;return!1},c.prototype.leave=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);if(c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusout"==b.type?"focus":"hover"]=!1),!c.isInStateTrue())return clearTimeout(c.timeout),c.hoverState="out",c.options.delay&&c.options.delay.hide?void(c.timeout=setTimeout(function(){"out"==c.hoverState&&c.hide()},c.options.delay.hide)):c.hide()},c.prototype.show=function(){var b=a.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){this.$element.trigger(b);var d=a.contains(this.$element[0].ownerDocument.documentElement,this.$element[0]);if(b.isDefaultPrevented()||!d)return;var e=this,f=this.tip(),g=this.getUID(this.type);this.setContent(),f.attr("id",g),this.$element.attr("aria-describedby",g),this.options.animation&&f.addClass("fade");var h="function"==typeof this.options.placement?this.options.placement.call(this,f[0],this.$element[0]):this.options.placement,i=/\s?auto?\s?/i,j=i.test(h);j&&(h=h.replace(i,"")||"top"),f.detach().css({top:0,left:0,display:"block"}).addClass(h).data("bs."+this.type,this),this.options.container?f.appendTo(this.options.container):f.insertAfter(this.$element),this.$element.trigger("inserted.bs."+this.type);var k=this.getPosition(),l=f[0].offsetWidth,m=f[0].offsetHeight;if(j){var n=h,o=this.getPosition(this.$viewport);h="bottom"==h&&k.bottom+m>o.bottom?"top":"top"==h&&k.top-m<o.top?"bottom":"right"==h&&k.right+l>o.width?"left":"left"==h&&k.left-l<o.left?"right":h,f.removeClass(n).addClass(h)}var p=this.getCalculatedOffset(h,k,l,m);this.applyPlacement(p,h);var q=function(){var a=e.hoverState;e.$element.trigger("shown.bs."+e.type),e.hoverState=null,"out"==a&&e.leave(e)};a.support.transition&&this.$tip.hasClass("fade")?f.one("bsTransitionEnd",q).emulateTransitionEnd(c.TRANSITION_DURATION):q()}},c.prototype.applyPlacement=function(b,c){var d=this.tip(),e=d[0].offsetWidth,f=d[0].offsetHeight,g=parseInt(d.css("margin-top"),10),h=parseInt(d.css("margin-left"),10);isNaN(g)&&(g=0),isNaN(h)&&(h=0),b.top+=g,b.left+=h,a.offset.setOffset(d[0],a.extend({using:function(a){d.css({top:Math.round(a.top),left:Math.round(a.left)})}},b),0),d.addClass("in");var i=d[0].offsetWidth,j=d[0].offsetHeight;"top"==c&&j!=f&&(b.top=b.top+f-j);var k=this.getViewportAdjustedDelta(c,b,i,j);k.left?b.left+=k.left:b.top+=k.top;var l=/top|bottom/.test(c),m=l?2*k.left-e+i:2*k.top-f+j,n=l?"offsetWidth":"offsetHeight";d.offset(b),this.replaceArrow(m,d[0][n],l)},c.prototype.replaceArrow=function(a,b,c){this.arrow().css(c?"left":"top",50*(1-a/b)+"%").css(c?"top":"left","")},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle();a.find(".tooltip-inner")[this.options.html?"html":"text"](b),a.removeClass("fade in top bottom left right")},c.prototype.hide=function(b){function d(){"in"!=e.hoverState&&f.detach(),e.$element&&e.$element.removeAttr("aria-describedby").trigger("hidden.bs."+e.type),b&&b()}var e=this,f=a(this.$tip),g=a.Event("hide.bs."+this.type);if(this.$element.trigger(g),!g.isDefaultPrevented())return f.removeClass("in"),a.support.transition&&f.hasClass("fade")?f.one("bsTransitionEnd",d).emulateTransitionEnd(c.TRANSITION_DURATION):d(),this.hoverState=null,this},c.prototype.fixTitle=function(){var a=this.$element;(a.attr("title")||"string"!=typeof a.attr("data-original-title"))&&a.attr("data-original-title",a.attr("title")||"").attr("title","")},c.prototype.hasContent=function(){return this.getTitle()},c.prototype.getPosition=function(b){b=b||this.$element;var c=b[0],d="BODY"==c.tagName,e=c.getBoundingClientRect();null==e.width&&(e=a.extend({},e,{width:e.right-e.left,height:e.bottom-e.top}));var f=window.SVGElement&&c instanceof window.SVGElement,g=d?{top:0,left:0}:f?null:b.offset(),h={scroll:d?document.documentElement.scrollTop||document.body.scrollTop:b.scrollTop()},i=d?{width:a(window).width(),height:a(window).height()}:null;return a.extend({},e,h,i,g)},c.prototype.getCalculatedOffset=function(a,b,c,d){return"bottom"==a?{top:b.top+b.height,left:b.left+b.width/2-c/2}:"top"==a?{top:b.top-d,left:b.left+b.width/2-c/2}:"left"==a?{top:b.top+b.height/2-d/2,left:b.left-c}:{top:b.top+b.height/2-d/2,left:b.left+b.width}},c.prototype.getViewportAdjustedDelta=function(a,b,c,d){var e={top:0,left:0};if(!this.$viewport)return e;var f=this.options.viewport&&this.options.viewport.padding||0,g=this.getPosition(this.$viewport);if(/right|left/.test(a)){var h=b.top-f-g.scroll,i=b.top+f-g.scroll+d;h<g.top?e.top=g.top-h:i>g.top+g.height&&(e.top=g.top+g.height-i)}else{var j=b.left-f,k=b.left+f+c;j<g.left?e.left=g.left-j:k>g.right&&(e.left=g.left+g.width-k)}return e},c.prototype.getTitle=function(){var a,b=this.$element,c=this.options;return a=b.attr("data-original-title")||("function"==typeof c.title?c.title.call(b[0]):c.title)},c.prototype.getUID=function(a){do a+=~~(1e6*Math.random());while(document.getElementById(a));return a},c.prototype.tip=function(){if(!this.$tip&&(this.$tip=a(this.options.template),1!=this.$tip.length))throw new Error(this.type+" `template` option must consist of exactly 1 top-level element!");return this.$tip},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},c.prototype.enable=function(){this.enabled=!0},c.prototype.disable=function(){this.enabled=!1},c.prototype.toggleEnabled=function(){this.enabled=!this.enabled},c.prototype.toggle=function(b){var c=this;b&&(c=a(b.currentTarget).data("bs."+this.type),c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c))),b?(c.inState.click=!c.inState.click,c.isInStateTrue()?c.enter(c):c.leave(c)):c.tip().hasClass("in")?c.leave(c):c.enter(c)},c.prototype.destroy=function(){var a=this;clearTimeout(this.timeout),this.hide(function(){a.$element.off("."+a.type).removeData("bs."+a.type),a.$tip&&a.$tip.detach(),a.$tip=null,a.$arrow=null,a.$viewport=null,a.$element=null})};var d=a.fn.tooltip;a.fn.tooltip=b,a.fn.tooltip.Constructor=c,a.fn.tooltip.noConflict=function(){return a.fn.tooltip=d,this}}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.popover"),f="object"==typeof b&&b;!e&&/destroy|hide/.test(b)||(e||d.data("bs.popover",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.init("popover",a,b)};if(!a.fn.tooltip)throw new Error("Popover requires tooltip.js");c.VERSION="3.3.7",c.DEFAULTS=a.extend({},a.fn.tooltip.Constructor.DEFAULTS,{placement:"right",trigger:"click",content:"",template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}),c.prototype=a.extend({},a.fn.tooltip.Constructor.prototype),c.prototype.constructor=c,c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle(),c=this.getContent();a.find(".popover-title")[this.options.html?"html":"text"](b),a.find(".popover-content").children().detach().end()[this.options.html?"string"==typeof c?"html":"append":"text"](c),a.removeClass("fade top bottom left right in"),a.find(".popover-title").html()||a.find(".popover-title").hide()},c.prototype.hasContent=function(){return this.getTitle()||this.getContent()},c.prototype.getContent=function(){var a=this.$element,b=this.options;return a.attr("data-content")||("function"==typeof b.content?b.content.call(a[0]):b.content)},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".arrow")};var d=a.fn.popover;a.fn.popover=b,a.fn.popover.Constructor=c,a.fn.popover.noConflict=function(){return a.fn.popover=d,this}}(jQuery),+function(a){"use strict";function b(c,d){this.$body=a(document.body),this.$scrollElement=a(a(c).is(document.body)?window:c),this.options=a.extend({},b.DEFAULTS,d),this.selector=(this.options.target||"")+" .nav li > a",this.offsets=[],this.targets=[],this.activeTarget=null,this.scrollHeight=0,this.$scrollElement.on("scroll.bs.scrollspy",a.proxy(this.process,this)),this.refresh(),this.process()}function c(c){return this.each(function(){var d=a(this),e=d.data("bs.scrollspy"),f="object"==typeof c&&c;e||d.data("bs.scrollspy",e=new b(this,f)),"string"==typeof c&&e[c]()})}b.VERSION="3.3.7",b.DEFAULTS={offset:10},b.prototype.getScrollHeight=function(){return this.$scrollElement[0].scrollHeight||Math.max(this.$body[0].scrollHeight,document.documentElement.scrollHeight)},b.prototype.refresh=function(){var b=this,c="offset",d=0;this.offsets=[],this.targets=[],this.scrollHeight=this.getScrollHeight(),a.isWindow(this.$scrollElement[0])||(c="position",d=this.$scrollElement.scrollTop()),this.$body.find(this.selector).map(function(){var b=a(this),e=b.data("target")||b.attr("href"),f=/^#./.test(e)&&a(e);return f&&f.length&&f.is(":visible")&&[[f[c]().top+d,e]]||null}).sort(function(a,b){return a[0]-b[0]}).each(function(){b.offsets.push(this[0]),b.targets.push(this[1])})},b.prototype.process=function(){var a,b=this.$scrollElement.scrollTop()+this.options.offset,c=this.getScrollHeight(),d=this.options.offset+c-this.$scrollElement.height(),e=this.offsets,f=this.targets,g=this.activeTarget;if(this.scrollHeight!=c&&this.refresh(),b>=d)return g!=(a=f[f.length-1])&&this.activate(a);if(g&&b<e[0])return this.activeTarget=null,this.clear();for(a=e.length;a--;)g!=f[a]&&b>=e[a]&&(void 0===e[a+1]||b<e[a+1])&&this.activate(f[a])},b.prototype.activate=function(b){
-	this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+this.selector+'[href="'+b+'"]',d=a(c).parents("li").addClass("active");d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.7",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.7",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return e<c&&"top";if("bottom"==this.affixed)return null!=c?!(e+this.unpin<=f.top)&&"bottom":!(e+g<=a-d)&&"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&e<=c?"top":null!=d&&i+j>=a-d&&"bottom"},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
 /* 71 */
@@ -65628,8 +66409,25 @@
 /* 75 */,
 /* 76 */,
 /* 77 */,
-/* 78 */,
-/* 79 */,
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(jQuery) {/*!
+	 * Bootstrap v3.3.7 (http://getbootstrap.com)
+	 * Copyright 2011-2016 Twitter, Inc.
+	 * Licensed under the MIT license
+	 */
+	if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires jQuery");+function(a){"use strict";var b=a.fn.jquery.split(" ")[0].split(".");if(b[0]<2&&b[1]<9||1==b[0]&&9==b[1]&&b[2]<1||b[0]>3)throw new Error("Bootstrap's JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4")}(jQuery),+function(a){"use strict";function b(){var a=document.createElement("bootstrap"),b={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"};for(var c in b)if(void 0!==a.style[c])return{end:b[c]};return!1}a.fn.emulateTransitionEnd=function(b){var c=!1,d=this;a(this).one("bsTransitionEnd",function(){c=!0});var e=function(){c||a(d).trigger(a.support.transition.end)};return setTimeout(e,b),this},a(function(){a.support.transition=b(),a.support.transition&&(a.event.special.bsTransitionEnd={bindType:a.support.transition.end,delegateType:a.support.transition.end,handle:function(b){if(a(b.target).is(this))return b.handleObj.handler.apply(this,arguments)}})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var c=a(this),e=c.data("bs.alert");e||c.data("bs.alert",e=new d(this)),"string"==typeof b&&e[b].call(c)})}var c='[data-dismiss="alert"]',d=function(b){a(b).on("click",c,this.close)};d.VERSION="3.3.7",d.TRANSITION_DURATION=150,d.prototype.close=function(b){function c(){g.detach().trigger("closed.bs.alert").remove()}var e=a(this),f=e.attr("data-target");f||(f=e.attr("href"),f=f&&f.replace(/.*(?=#[^\s]*$)/,""));var g=a("#"===f?[]:f);b&&b.preventDefault(),g.length||(g=e.closest(".alert")),g.trigger(b=a.Event("close.bs.alert")),b.isDefaultPrevented()||(g.removeClass("in"),a.support.transition&&g.hasClass("fade")?g.one("bsTransitionEnd",c).emulateTransitionEnd(d.TRANSITION_DURATION):c())};var e=a.fn.alert;a.fn.alert=b,a.fn.alert.Constructor=d,a.fn.alert.noConflict=function(){return a.fn.alert=e,this},a(document).on("click.bs.alert.data-api",c,d.prototype.close)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.button"),f="object"==typeof b&&b;e||d.data("bs.button",e=new c(this,f)),"toggle"==b?e.toggle():b&&e.setState(b)})}var c=function(b,d){this.$element=a(b),this.options=a.extend({},c.DEFAULTS,d),this.isLoading=!1};c.VERSION="3.3.7",c.DEFAULTS={loadingText:"loading..."},c.prototype.setState=function(b){var c="disabled",d=this.$element,e=d.is("input")?"val":"html",f=d.data();b+="Text",null==f.resetText&&d.data("resetText",d[e]()),setTimeout(a.proxy(function(){d[e](null==f[b]?this.options[b]:f[b]),"loadingText"==b?(this.isLoading=!0,d.addClass(c).attr(c,c).prop(c,!0)):this.isLoading&&(this.isLoading=!1,d.removeClass(c).removeAttr(c).prop(c,!1))},this),0)},c.prototype.toggle=function(){var a=!0,b=this.$element.closest('[data-toggle="buttons"]');if(b.length){var c=this.$element.find("input");"radio"==c.prop("type")?(c.prop("checked")&&(a=!1),b.find(".active").removeClass("active"),this.$element.addClass("active")):"checkbox"==c.prop("type")&&(c.prop("checked")!==this.$element.hasClass("active")&&(a=!1),this.$element.toggleClass("active")),c.prop("checked",this.$element.hasClass("active")),a&&c.trigger("change")}else this.$element.attr("aria-pressed",!this.$element.hasClass("active")),this.$element.toggleClass("active")};var d=a.fn.button;a.fn.button=b,a.fn.button.Constructor=c,a.fn.button.noConflict=function(){return a.fn.button=d,this},a(document).on("click.bs.button.data-api",'[data-toggle^="button"]',function(c){var d=a(c.target).closest(".btn");b.call(d,"toggle"),a(c.target).is('input[type="radio"], input[type="checkbox"]')||(c.preventDefault(),d.is("input,button")?d.trigger("focus"):d.find("input:visible,button:visible").first().trigger("focus"))}).on("focus.bs.button.data-api blur.bs.button.data-api",'[data-toggle^="button"]',function(b){a(b.target).closest(".btn").toggleClass("focus",/^focus(in)?$/.test(b.type))})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.carousel"),f=a.extend({},c.DEFAULTS,d.data(),"object"==typeof b&&b),g="string"==typeof b?b:f.slide;e||d.data("bs.carousel",e=new c(this,f)),"number"==typeof b?e.to(b):g?e[g]():f.interval&&e.pause().cycle()})}var c=function(b,c){this.$element=a(b),this.$indicators=this.$element.find(".carousel-indicators"),this.options=c,this.paused=null,this.sliding=null,this.interval=null,this.$active=null,this.$items=null,this.options.keyboard&&this.$element.on("keydown.bs.carousel",a.proxy(this.keydown,this)),"hover"==this.options.pause&&!("ontouchstart"in document.documentElement)&&this.$element.on("mouseenter.bs.carousel",a.proxy(this.pause,this)).on("mouseleave.bs.carousel",a.proxy(this.cycle,this))};c.VERSION="3.3.7",c.TRANSITION_DURATION=600,c.DEFAULTS={interval:5e3,pause:"hover",wrap:!0,keyboard:!0},c.prototype.keydown=function(a){if(!/input|textarea/i.test(a.target.tagName)){switch(a.which){case 37:this.prev();break;case 39:this.next();break;default:return}a.preventDefault()}},c.prototype.cycle=function(b){return b||(this.paused=!1),this.interval&&clearInterval(this.interval),this.options.interval&&!this.paused&&(this.interval=setInterval(a.proxy(this.next,this),this.options.interval)),this},c.prototype.getItemIndex=function(a){return this.$items=a.parent().children(".item"),this.$items.index(a||this.$active)},c.prototype.getItemForDirection=function(a,b){var c=this.getItemIndex(b),d="prev"==a&&0===c||"next"==a&&c==this.$items.length-1;if(d&&!this.options.wrap)return b;var e="prev"==a?-1:1,f=(c+e)%this.$items.length;return this.$items.eq(f)},c.prototype.to=function(a){var b=this,c=this.getItemIndex(this.$active=this.$element.find(".item.active"));if(!(a>this.$items.length-1||a<0))return this.sliding?this.$element.one("slid.bs.carousel",function(){b.to(a)}):c==a?this.pause().cycle():this.slide(a>c?"next":"prev",this.$items.eq(a))},c.prototype.pause=function(b){return b||(this.paused=!0),this.$element.find(".next, .prev").length&&a.support.transition&&(this.$element.trigger(a.support.transition.end),this.cycle(!0)),this.interval=clearInterval(this.interval),this},c.prototype.next=function(){if(!this.sliding)return this.slide("next")},c.prototype.prev=function(){if(!this.sliding)return this.slide("prev")},c.prototype.slide=function(b,d){var e=this.$element.find(".item.active"),f=d||this.getItemForDirection(b,e),g=this.interval,h="next"==b?"left":"right",i=this;if(f.hasClass("active"))return this.sliding=!1;var j=f[0],k=a.Event("slide.bs.carousel",{relatedTarget:j,direction:h});if(this.$element.trigger(k),!k.isDefaultPrevented()){if(this.sliding=!0,g&&this.pause(),this.$indicators.length){this.$indicators.find(".active").removeClass("active");var l=a(this.$indicators.children()[this.getItemIndex(f)]);l&&l.addClass("active")}var m=a.Event("slid.bs.carousel",{relatedTarget:j,direction:h});return a.support.transition&&this.$element.hasClass("slide")?(f.addClass(b),f[0].offsetWidth,e.addClass(h),f.addClass(h),e.one("bsTransitionEnd",function(){f.removeClass([b,h].join(" ")).addClass("active"),e.removeClass(["active",h].join(" ")),i.sliding=!1,setTimeout(function(){i.$element.trigger(m)},0)}).emulateTransitionEnd(c.TRANSITION_DURATION)):(e.removeClass("active"),f.addClass("active"),this.sliding=!1,this.$element.trigger(m)),g&&this.cycle(),this}};var d=a.fn.carousel;a.fn.carousel=b,a.fn.carousel.Constructor=c,a.fn.carousel.noConflict=function(){return a.fn.carousel=d,this};var e=function(c){var d,e=a(this),f=a(e.attr("data-target")||(d=e.attr("href"))&&d.replace(/.*(?=#[^\s]+$)/,""));if(f.hasClass("carousel")){var g=a.extend({},f.data(),e.data()),h=e.attr("data-slide-to");h&&(g.interval=!1),b.call(f,g),h&&f.data("bs.carousel").to(h),c.preventDefault()}};a(document).on("click.bs.carousel.data-api","[data-slide]",e).on("click.bs.carousel.data-api","[data-slide-to]",e),a(window).on("load",function(){a('[data-ride="carousel"]').each(function(){var c=a(this);b.call(c,c.data())})})}(jQuery),+function(a){"use strict";function b(b){var c,d=b.attr("data-target")||(c=b.attr("href"))&&c.replace(/.*(?=#[^\s]+$)/,"");return a(d)}function c(b){return this.each(function(){var c=a(this),e=c.data("bs.collapse"),f=a.extend({},d.DEFAULTS,c.data(),"object"==typeof b&&b);!e&&f.toggle&&/show|hide/.test(b)&&(f.toggle=!1),e||c.data("bs.collapse",e=new d(this,f)),"string"==typeof b&&e[b]()})}var d=function(b,c){this.$element=a(b),this.options=a.extend({},d.DEFAULTS,c),this.$trigger=a('[data-toggle="collapse"][href="#'+b.id+'"],[data-toggle="collapse"][data-target="#'+b.id+'"]'),this.transitioning=null,this.options.parent?this.$parent=this.getParent():this.addAriaAndCollapsedClass(this.$element,this.$trigger),this.options.toggle&&this.toggle()};d.VERSION="3.3.7",d.TRANSITION_DURATION=350,d.DEFAULTS={toggle:!0},d.prototype.dimension=function(){var a=this.$element.hasClass("width");return a?"width":"height"},d.prototype.show=function(){if(!this.transitioning&&!this.$element.hasClass("in")){var b,e=this.$parent&&this.$parent.children(".panel").children(".in, .collapsing");if(!(e&&e.length&&(b=e.data("bs.collapse"),b&&b.transitioning))){var f=a.Event("show.bs.collapse");if(this.$element.trigger(f),!f.isDefaultPrevented()){e&&e.length&&(c.call(e,"hide"),b||e.data("bs.collapse",null));var g=this.dimension();this.$element.removeClass("collapse").addClass("collapsing")[g](0).attr("aria-expanded",!0),this.$trigger.removeClass("collapsed").attr("aria-expanded",!0),this.transitioning=1;var h=function(){this.$element.removeClass("collapsing").addClass("collapse in")[g](""),this.transitioning=0,this.$element.trigger("shown.bs.collapse")};if(!a.support.transition)return h.call(this);var i=a.camelCase(["scroll",g].join("-"));this.$element.one("bsTransitionEnd",a.proxy(h,this)).emulateTransitionEnd(d.TRANSITION_DURATION)[g](this.$element[0][i])}}}},d.prototype.hide=function(){if(!this.transitioning&&this.$element.hasClass("in")){var b=a.Event("hide.bs.collapse");if(this.$element.trigger(b),!b.isDefaultPrevented()){var c=this.dimension();this.$element[c](this.$element[c]())[0].offsetHeight,this.$element.addClass("collapsing").removeClass("collapse in").attr("aria-expanded",!1),this.$trigger.addClass("collapsed").attr("aria-expanded",!1),this.transitioning=1;var e=function(){this.transitioning=0,this.$element.removeClass("collapsing").addClass("collapse").trigger("hidden.bs.collapse")};return a.support.transition?void this.$element[c](0).one("bsTransitionEnd",a.proxy(e,this)).emulateTransitionEnd(d.TRANSITION_DURATION):e.call(this)}}},d.prototype.toggle=function(){this[this.$element.hasClass("in")?"hide":"show"]()},d.prototype.getParent=function(){return a(this.options.parent).find('[data-toggle="collapse"][data-parent="'+this.options.parent+'"]').each(a.proxy(function(c,d){var e=a(d);this.addAriaAndCollapsedClass(b(e),e)},this)).end()},d.prototype.addAriaAndCollapsedClass=function(a,b){var c=a.hasClass("in");a.attr("aria-expanded",c),b.toggleClass("collapsed",!c).attr("aria-expanded",c)};var e=a.fn.collapse;a.fn.collapse=c,a.fn.collapse.Constructor=d,a.fn.collapse.noConflict=function(){return a.fn.collapse=e,this},a(document).on("click.bs.collapse.data-api",'[data-toggle="collapse"]',function(d){var e=a(this);e.attr("data-target")||d.preventDefault();var f=b(e),g=f.data("bs.collapse"),h=g?"toggle":e.data();c.call(f,h)})}(jQuery),+function(a){"use strict";function b(b){var c=b.attr("data-target");c||(c=b.attr("href"),c=c&&/#[A-Za-z]/.test(c)&&c.replace(/.*(?=#[^\s]*$)/,""));var d=c&&a(c);return d&&d.length?d:b.parent()}function c(c){c&&3===c.which||(a(e).remove(),a(f).each(function(){var d=a(this),e=b(d),f={relatedTarget:this};e.hasClass("open")&&(c&&"click"==c.type&&/input|textarea/i.test(c.target.tagName)&&a.contains(e[0],c.target)||(e.trigger(c=a.Event("hide.bs.dropdown",f)),c.isDefaultPrevented()||(d.attr("aria-expanded","false"),e.removeClass("open").trigger(a.Event("hidden.bs.dropdown",f)))))}))}function d(b){return this.each(function(){var c=a(this),d=c.data("bs.dropdown");d||c.data("bs.dropdown",d=new g(this)),"string"==typeof b&&d[b].call(c)})}var e=".dropdown-backdrop",f='[data-toggle="dropdown"]',g=function(b){a(b).on("click.bs.dropdown",this.toggle)};g.VERSION="3.3.7",g.prototype.toggle=function(d){var e=a(this);if(!e.is(".disabled, :disabled")){var f=b(e),g=f.hasClass("open");if(c(),!g){"ontouchstart"in document.documentElement&&!f.closest(".navbar-nav").length&&a(document.createElement("div")).addClass("dropdown-backdrop").insertAfter(a(this)).on("click",c);var h={relatedTarget:this};if(f.trigger(d=a.Event("show.bs.dropdown",h)),d.isDefaultPrevented())return;e.trigger("focus").attr("aria-expanded","true"),f.toggleClass("open").trigger(a.Event("shown.bs.dropdown",h))}return!1}},g.prototype.keydown=function(c){if(/(38|40|27|32)/.test(c.which)&&!/input|textarea/i.test(c.target.tagName)){var d=a(this);if(c.preventDefault(),c.stopPropagation(),!d.is(".disabled, :disabled")){var e=b(d),g=e.hasClass("open");if(!g&&27!=c.which||g&&27==c.which)return 27==c.which&&e.find(f).trigger("focus"),d.trigger("click");var h=" li:not(.disabled):visible a",i=e.find(".dropdown-menu"+h);if(i.length){var j=i.index(c.target);38==c.which&&j>0&&j--,40==c.which&&j<i.length-1&&j++,~j||(j=0),i.eq(j).trigger("focus")}}}};var h=a.fn.dropdown;a.fn.dropdown=d,a.fn.dropdown.Constructor=g,a.fn.dropdown.noConflict=function(){return a.fn.dropdown=h,this},a(document).on("click.bs.dropdown.data-api",c).on("click.bs.dropdown.data-api",".dropdown form",function(a){a.stopPropagation()}).on("click.bs.dropdown.data-api",f,g.prototype.toggle).on("keydown.bs.dropdown.data-api",f,g.prototype.keydown).on("keydown.bs.dropdown.data-api",".dropdown-menu",g.prototype.keydown)}(jQuery),+function(a){"use strict";function b(b,d){return this.each(function(){var e=a(this),f=e.data("bs.modal"),g=a.extend({},c.DEFAULTS,e.data(),"object"==typeof b&&b);f||e.data("bs.modal",f=new c(this,g)),"string"==typeof b?f[b](d):g.show&&f.show(d)})}var c=function(b,c){this.options=c,this.$body=a(document.body),this.$element=a(b),this.$dialog=this.$element.find(".modal-dialog"),this.$backdrop=null,this.isShown=null,this.originalBodyPad=null,this.scrollbarWidth=0,this.ignoreBackdropClick=!1,this.options.remote&&this.$element.find(".modal-content").load(this.options.remote,a.proxy(function(){this.$element.trigger("loaded.bs.modal")},this))};c.VERSION="3.3.7",c.TRANSITION_DURATION=300,c.BACKDROP_TRANSITION_DURATION=150,c.DEFAULTS={backdrop:!0,keyboard:!0,show:!0},c.prototype.toggle=function(a){return this.isShown?this.hide():this.show(a)},c.prototype.show=function(b){var d=this,e=a.Event("show.bs.modal",{relatedTarget:b});this.$element.trigger(e),this.isShown||e.isDefaultPrevented()||(this.isShown=!0,this.checkScrollbar(),this.setScrollbar(),this.$body.addClass("modal-open"),this.escape(),this.resize(),this.$element.on("click.dismiss.bs.modal",'[data-dismiss="modal"]',a.proxy(this.hide,this)),this.$dialog.on("mousedown.dismiss.bs.modal",function(){d.$element.one("mouseup.dismiss.bs.modal",function(b){a(b.target).is(d.$element)&&(d.ignoreBackdropClick=!0)})}),this.backdrop(function(){var e=a.support.transition&&d.$element.hasClass("fade");d.$element.parent().length||d.$element.appendTo(d.$body),d.$element.show().scrollTop(0),d.adjustDialog(),e&&d.$element[0].offsetWidth,d.$element.addClass("in"),d.enforceFocus();var f=a.Event("shown.bs.modal",{relatedTarget:b});e?d.$dialog.one("bsTransitionEnd",function(){d.$element.trigger("focus").trigger(f)}).emulateTransitionEnd(c.TRANSITION_DURATION):d.$element.trigger("focus").trigger(f)}))},c.prototype.hide=function(b){b&&b.preventDefault(),b=a.Event("hide.bs.modal"),this.$element.trigger(b),this.isShown&&!b.isDefaultPrevented()&&(this.isShown=!1,this.escape(),this.resize(),a(document).off("focusin.bs.modal"),this.$element.removeClass("in").off("click.dismiss.bs.modal").off("mouseup.dismiss.bs.modal"),this.$dialog.off("mousedown.dismiss.bs.modal"),a.support.transition&&this.$element.hasClass("fade")?this.$element.one("bsTransitionEnd",a.proxy(this.hideModal,this)).emulateTransitionEnd(c.TRANSITION_DURATION):this.hideModal())},c.prototype.enforceFocus=function(){a(document).off("focusin.bs.modal").on("focusin.bs.modal",a.proxy(function(a){document===a.target||this.$element[0]===a.target||this.$element.has(a.target).length||this.$element.trigger("focus")},this))},c.prototype.escape=function(){this.isShown&&this.options.keyboard?this.$element.on("keydown.dismiss.bs.modal",a.proxy(function(a){27==a.which&&this.hide()},this)):this.isShown||this.$element.off("keydown.dismiss.bs.modal")},c.prototype.resize=function(){this.isShown?a(window).on("resize.bs.modal",a.proxy(this.handleUpdate,this)):a(window).off("resize.bs.modal")},c.prototype.hideModal=function(){var a=this;this.$element.hide(),this.backdrop(function(){a.$body.removeClass("modal-open"),a.resetAdjustments(),a.resetScrollbar(),a.$element.trigger("hidden.bs.modal")})},c.prototype.removeBackdrop=function(){this.$backdrop&&this.$backdrop.remove(),this.$backdrop=null},c.prototype.backdrop=function(b){var d=this,e=this.$element.hasClass("fade")?"fade":"";if(this.isShown&&this.options.backdrop){var f=a.support.transition&&e;if(this.$backdrop=a(document.createElement("div")).addClass("modal-backdrop "+e).appendTo(this.$body),this.$element.on("click.dismiss.bs.modal",a.proxy(function(a){return this.ignoreBackdropClick?void(this.ignoreBackdropClick=!1):void(a.target===a.currentTarget&&("static"==this.options.backdrop?this.$element[0].focus():this.hide()))},this)),f&&this.$backdrop[0].offsetWidth,this.$backdrop.addClass("in"),!b)return;f?this.$backdrop.one("bsTransitionEnd",b).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):b()}else if(!this.isShown&&this.$backdrop){this.$backdrop.removeClass("in");var g=function(){d.removeBackdrop(),b&&b()};a.support.transition&&this.$element.hasClass("fade")?this.$backdrop.one("bsTransitionEnd",g).emulateTransitionEnd(c.BACKDROP_TRANSITION_DURATION):g()}else b&&b()},c.prototype.handleUpdate=function(){this.adjustDialog()},c.prototype.adjustDialog=function(){var a=this.$element[0].scrollHeight>document.documentElement.clientHeight;this.$element.css({paddingLeft:!this.bodyIsOverflowing&&a?this.scrollbarWidth:"",paddingRight:this.bodyIsOverflowing&&!a?this.scrollbarWidth:""})},c.prototype.resetAdjustments=function(){this.$element.css({paddingLeft:"",paddingRight:""})},c.prototype.checkScrollbar=function(){var a=window.innerWidth;if(!a){var b=document.documentElement.getBoundingClientRect();a=b.right-Math.abs(b.left)}this.bodyIsOverflowing=document.body.clientWidth<a,this.scrollbarWidth=this.measureScrollbar()},c.prototype.setScrollbar=function(){var a=parseInt(this.$body.css("padding-right")||0,10);this.originalBodyPad=document.body.style.paddingRight||"",this.bodyIsOverflowing&&this.$body.css("padding-right",a+this.scrollbarWidth)},c.prototype.resetScrollbar=function(){this.$body.css("padding-right",this.originalBodyPad)},c.prototype.measureScrollbar=function(){var a=document.createElement("div");a.className="modal-scrollbar-measure",this.$body.append(a);var b=a.offsetWidth-a.clientWidth;return this.$body[0].removeChild(a),b};var d=a.fn.modal;a.fn.modal=b,a.fn.modal.Constructor=c,a.fn.modal.noConflict=function(){return a.fn.modal=d,this},a(document).on("click.bs.modal.data-api",'[data-toggle="modal"]',function(c){var d=a(this),e=d.attr("href"),f=a(d.attr("data-target")||e&&e.replace(/.*(?=#[^\s]+$)/,"")),g=f.data("bs.modal")?"toggle":a.extend({remote:!/#/.test(e)&&e},f.data(),d.data());d.is("a")&&c.preventDefault(),f.one("show.bs.modal",function(a){a.isDefaultPrevented()||f.one("hidden.bs.modal",function(){d.is(":visible")&&d.trigger("focus")})}),b.call(f,g,this)})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tooltip"),f="object"==typeof b&&b;!e&&/destroy|hide/.test(b)||(e||d.data("bs.tooltip",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.type=null,this.options=null,this.enabled=null,this.timeout=null,this.hoverState=null,this.$element=null,this.inState=null,this.init("tooltip",a,b)};c.VERSION="3.3.7",c.TRANSITION_DURATION=150,c.DEFAULTS={animation:!0,placement:"top",selector:!1,template:'<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',trigger:"hover focus",title:"",delay:0,html:!1,container:!1,viewport:{selector:"body",padding:0}},c.prototype.init=function(b,c,d){if(this.enabled=!0,this.type=b,this.$element=a(c),this.options=this.getOptions(d),this.$viewport=this.options.viewport&&a(a.isFunction(this.options.viewport)?this.options.viewport.call(this,this.$element):this.options.viewport.selector||this.options.viewport),this.inState={click:!1,hover:!1,focus:!1},this.$element[0]instanceof document.constructor&&!this.options.selector)throw new Error("`selector` option must be specified when initializing "+this.type+" on the window.document object!");for(var e=this.options.trigger.split(" "),f=e.length;f--;){var g=e[f];if("click"==g)this.$element.on("click."+this.type,this.options.selector,a.proxy(this.toggle,this));else if("manual"!=g){var h="hover"==g?"mouseenter":"focusin",i="hover"==g?"mouseleave":"focusout";this.$element.on(h+"."+this.type,this.options.selector,a.proxy(this.enter,this)),this.$element.on(i+"."+this.type,this.options.selector,a.proxy(this.leave,this))}}this.options.selector?this._options=a.extend({},this.options,{trigger:"manual",selector:""}):this.fixTitle()},c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.getOptions=function(b){return b=a.extend({},this.getDefaults(),this.$element.data(),b),b.delay&&"number"==typeof b.delay&&(b.delay={show:b.delay,hide:b.delay}),b},c.prototype.getDelegateOptions=function(){var b={},c=this.getDefaults();return this._options&&a.each(this._options,function(a,d){c[a]!=d&&(b[a]=d)}),b},c.prototype.enter=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);return c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusin"==b.type?"focus":"hover"]=!0),c.tip().hasClass("in")||"in"==c.hoverState?void(c.hoverState="in"):(clearTimeout(c.timeout),c.hoverState="in",c.options.delay&&c.options.delay.show?void(c.timeout=setTimeout(function(){"in"==c.hoverState&&c.show()},c.options.delay.show)):c.show())},c.prototype.isInStateTrue=function(){for(var a in this.inState)if(this.inState[a])return!0;return!1},c.prototype.leave=function(b){var c=b instanceof this.constructor?b:a(b.currentTarget).data("bs."+this.type);if(c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c)),b instanceof a.Event&&(c.inState["focusout"==b.type?"focus":"hover"]=!1),!c.isInStateTrue())return clearTimeout(c.timeout),c.hoverState="out",c.options.delay&&c.options.delay.hide?void(c.timeout=setTimeout(function(){"out"==c.hoverState&&c.hide()},c.options.delay.hide)):c.hide()},c.prototype.show=function(){var b=a.Event("show.bs."+this.type);if(this.hasContent()&&this.enabled){this.$element.trigger(b);var d=a.contains(this.$element[0].ownerDocument.documentElement,this.$element[0]);if(b.isDefaultPrevented()||!d)return;var e=this,f=this.tip(),g=this.getUID(this.type);this.setContent(),f.attr("id",g),this.$element.attr("aria-describedby",g),this.options.animation&&f.addClass("fade");var h="function"==typeof this.options.placement?this.options.placement.call(this,f[0],this.$element[0]):this.options.placement,i=/\s?auto?\s?/i,j=i.test(h);j&&(h=h.replace(i,"")||"top"),f.detach().css({top:0,left:0,display:"block"}).addClass(h).data("bs."+this.type,this),this.options.container?f.appendTo(this.options.container):f.insertAfter(this.$element),this.$element.trigger("inserted.bs."+this.type);var k=this.getPosition(),l=f[0].offsetWidth,m=f[0].offsetHeight;if(j){var n=h,o=this.getPosition(this.$viewport);h="bottom"==h&&k.bottom+m>o.bottom?"top":"top"==h&&k.top-m<o.top?"bottom":"right"==h&&k.right+l>o.width?"left":"left"==h&&k.left-l<o.left?"right":h,f.removeClass(n).addClass(h)}var p=this.getCalculatedOffset(h,k,l,m);this.applyPlacement(p,h);var q=function(){var a=e.hoverState;e.$element.trigger("shown.bs."+e.type),e.hoverState=null,"out"==a&&e.leave(e)};a.support.transition&&this.$tip.hasClass("fade")?f.one("bsTransitionEnd",q).emulateTransitionEnd(c.TRANSITION_DURATION):q()}},c.prototype.applyPlacement=function(b,c){var d=this.tip(),e=d[0].offsetWidth,f=d[0].offsetHeight,g=parseInt(d.css("margin-top"),10),h=parseInt(d.css("margin-left"),10);isNaN(g)&&(g=0),isNaN(h)&&(h=0),b.top+=g,b.left+=h,a.offset.setOffset(d[0],a.extend({using:function(a){d.css({top:Math.round(a.top),left:Math.round(a.left)})}},b),0),d.addClass("in");var i=d[0].offsetWidth,j=d[0].offsetHeight;"top"==c&&j!=f&&(b.top=b.top+f-j);var k=this.getViewportAdjustedDelta(c,b,i,j);k.left?b.left+=k.left:b.top+=k.top;var l=/top|bottom/.test(c),m=l?2*k.left-e+i:2*k.top-f+j,n=l?"offsetWidth":"offsetHeight";d.offset(b),this.replaceArrow(m,d[0][n],l)},c.prototype.replaceArrow=function(a,b,c){this.arrow().css(c?"left":"top",50*(1-a/b)+"%").css(c?"top":"left","")},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle();a.find(".tooltip-inner")[this.options.html?"html":"text"](b),a.removeClass("fade in top bottom left right")},c.prototype.hide=function(b){function d(){"in"!=e.hoverState&&f.detach(),e.$element&&e.$element.removeAttr("aria-describedby").trigger("hidden.bs."+e.type),b&&b()}var e=this,f=a(this.$tip),g=a.Event("hide.bs."+this.type);if(this.$element.trigger(g),!g.isDefaultPrevented())return f.removeClass("in"),a.support.transition&&f.hasClass("fade")?f.one("bsTransitionEnd",d).emulateTransitionEnd(c.TRANSITION_DURATION):d(),this.hoverState=null,this},c.prototype.fixTitle=function(){var a=this.$element;(a.attr("title")||"string"!=typeof a.attr("data-original-title"))&&a.attr("data-original-title",a.attr("title")||"").attr("title","")},c.prototype.hasContent=function(){return this.getTitle()},c.prototype.getPosition=function(b){b=b||this.$element;var c=b[0],d="BODY"==c.tagName,e=c.getBoundingClientRect();null==e.width&&(e=a.extend({},e,{width:e.right-e.left,height:e.bottom-e.top}));var f=window.SVGElement&&c instanceof window.SVGElement,g=d?{top:0,left:0}:f?null:b.offset(),h={scroll:d?document.documentElement.scrollTop||document.body.scrollTop:b.scrollTop()},i=d?{width:a(window).width(),height:a(window).height()}:null;return a.extend({},e,h,i,g)},c.prototype.getCalculatedOffset=function(a,b,c,d){return"bottom"==a?{top:b.top+b.height,left:b.left+b.width/2-c/2}:"top"==a?{top:b.top-d,left:b.left+b.width/2-c/2}:"left"==a?{top:b.top+b.height/2-d/2,left:b.left-c}:{top:b.top+b.height/2-d/2,left:b.left+b.width}},c.prototype.getViewportAdjustedDelta=function(a,b,c,d){var e={top:0,left:0};if(!this.$viewport)return e;var f=this.options.viewport&&this.options.viewport.padding||0,g=this.getPosition(this.$viewport);if(/right|left/.test(a)){var h=b.top-f-g.scroll,i=b.top+f-g.scroll+d;h<g.top?e.top=g.top-h:i>g.top+g.height&&(e.top=g.top+g.height-i)}else{var j=b.left-f,k=b.left+f+c;j<g.left?e.left=g.left-j:k>g.right&&(e.left=g.left+g.width-k)}return e},c.prototype.getTitle=function(){var a,b=this.$element,c=this.options;return a=b.attr("data-original-title")||("function"==typeof c.title?c.title.call(b[0]):c.title)},c.prototype.getUID=function(a){do a+=~~(1e6*Math.random());while(document.getElementById(a));return a},c.prototype.tip=function(){if(!this.$tip&&(this.$tip=a(this.options.template),1!=this.$tip.length))throw new Error(this.type+" `template` option must consist of exactly 1 top-level element!");return this.$tip},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".tooltip-arrow")},c.prototype.enable=function(){this.enabled=!0},c.prototype.disable=function(){this.enabled=!1},c.prototype.toggleEnabled=function(){this.enabled=!this.enabled},c.prototype.toggle=function(b){var c=this;b&&(c=a(b.currentTarget).data("bs."+this.type),c||(c=new this.constructor(b.currentTarget,this.getDelegateOptions()),a(b.currentTarget).data("bs."+this.type,c))),b?(c.inState.click=!c.inState.click,c.isInStateTrue()?c.enter(c):c.leave(c)):c.tip().hasClass("in")?c.leave(c):c.enter(c)},c.prototype.destroy=function(){var a=this;clearTimeout(this.timeout),this.hide(function(){a.$element.off("."+a.type).removeData("bs."+a.type),a.$tip&&a.$tip.detach(),a.$tip=null,a.$arrow=null,a.$viewport=null,a.$element=null})};var d=a.fn.tooltip;a.fn.tooltip=b,a.fn.tooltip.Constructor=c,a.fn.tooltip.noConflict=function(){return a.fn.tooltip=d,this}}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.popover"),f="object"==typeof b&&b;!e&&/destroy|hide/.test(b)||(e||d.data("bs.popover",e=new c(this,f)),"string"==typeof b&&e[b]())})}var c=function(a,b){this.init("popover",a,b)};if(!a.fn.tooltip)throw new Error("Popover requires tooltip.js");c.VERSION="3.3.7",c.DEFAULTS=a.extend({},a.fn.tooltip.Constructor.DEFAULTS,{placement:"right",trigger:"click",content:"",template:'<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'}),c.prototype=a.extend({},a.fn.tooltip.Constructor.prototype),c.prototype.constructor=c,c.prototype.getDefaults=function(){return c.DEFAULTS},c.prototype.setContent=function(){var a=this.tip(),b=this.getTitle(),c=this.getContent();a.find(".popover-title")[this.options.html?"html":"text"](b),a.find(".popover-content").children().detach().end()[this.options.html?"string"==typeof c?"html":"append":"text"](c),a.removeClass("fade top bottom left right in"),a.find(".popover-title").html()||a.find(".popover-title").hide()},c.prototype.hasContent=function(){return this.getTitle()||this.getContent()},c.prototype.getContent=function(){var a=this.$element,b=this.options;return a.attr("data-content")||("function"==typeof b.content?b.content.call(a[0]):b.content)},c.prototype.arrow=function(){return this.$arrow=this.$arrow||this.tip().find(".arrow")};var d=a.fn.popover;a.fn.popover=b,a.fn.popover.Constructor=c,a.fn.popover.noConflict=function(){return a.fn.popover=d,this}}(jQuery),+function(a){"use strict";function b(c,d){this.$body=a(document.body),this.$scrollElement=a(a(c).is(document.body)?window:c),this.options=a.extend({},b.DEFAULTS,d),this.selector=(this.options.target||"")+" .nav li > a",this.offsets=[],this.targets=[],this.activeTarget=null,this.scrollHeight=0,this.$scrollElement.on("scroll.bs.scrollspy",a.proxy(this.process,this)),this.refresh(),this.process()}function c(c){return this.each(function(){var d=a(this),e=d.data("bs.scrollspy"),f="object"==typeof c&&c;e||d.data("bs.scrollspy",e=new b(this,f)),"string"==typeof c&&e[c]()})}b.VERSION="3.3.7",b.DEFAULTS={offset:10},b.prototype.getScrollHeight=function(){return this.$scrollElement[0].scrollHeight||Math.max(this.$body[0].scrollHeight,document.documentElement.scrollHeight)},b.prototype.refresh=function(){var b=this,c="offset",d=0;this.offsets=[],this.targets=[],this.scrollHeight=this.getScrollHeight(),a.isWindow(this.$scrollElement[0])||(c="position",d=this.$scrollElement.scrollTop()),this.$body.find(this.selector).map(function(){var b=a(this),e=b.data("target")||b.attr("href"),f=/^#./.test(e)&&a(e);return f&&f.length&&f.is(":visible")&&[[f[c]().top+d,e]]||null}).sort(function(a,b){return a[0]-b[0]}).each(function(){b.offsets.push(this[0]),b.targets.push(this[1])})},b.prototype.process=function(){var a,b=this.$scrollElement.scrollTop()+this.options.offset,c=this.getScrollHeight(),d=this.options.offset+c-this.$scrollElement.height(),e=this.offsets,f=this.targets,g=this.activeTarget;if(this.scrollHeight!=c&&this.refresh(),b>=d)return g!=(a=f[f.length-1])&&this.activate(a);if(g&&b<e[0])return this.activeTarget=null,this.clear();for(a=e.length;a--;)g!=f[a]&&b>=e[a]&&(void 0===e[a+1]||b<e[a+1])&&this.activate(f[a])},b.prototype.activate=function(b){
+	this.activeTarget=b,this.clear();var c=this.selector+'[data-target="'+b+'"],'+this.selector+'[href="'+b+'"]',d=a(c).parents("li").addClass("active");d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.7",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.7",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return e<c&&"top";if("bottom"==this.affixed)return null!=c?!(e+this.unpin<=f.top)&&"bottom":!(e+g<=a-d)&&"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&e<=c?"top":null!=d&&i+j>=a-d&&"bottom"},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
+
+/***/ },
+/* 79 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
 /* 80 */,
 /* 81 */,
 /* 82 */,
@@ -65651,7 +66449,15 @@
 /* 98 */,
 /* 99 */,
 /* 100 */,
-/* 101 */
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */
 /***/ function(module, exports) {
 
 	/*
@@ -65671,7 +66477,7 @@
 
 
 /***/ },
-/* 102 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -67807,14 +68613,14 @@
 
 
 /***/ },
-/* 103 */
+/* 111 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 104 */,
-/* 105 */
+/* 112 */,
+/* 113 */
 /***/ function(module, exports) {
 
 	/*!
@@ -69023,14 +69829,14 @@
 	}());
 
 /***/ },
-/* 106 */
+/* 114 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 107 */,
-/* 108 */
+/* 115 */,
+/* 116 */
 /***/ function(module, exports) {
 
 	/**
@@ -69205,7 +70011,7 @@
 
 
 /***/ },
-/* 109 */
+/* 117 */
 /***/ function(module, exports) {
 
 	/* 
@@ -70322,14 +71128,14 @@
 
 
 /***/ },
-/* 110 */
+/* 118 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 111 */,
-/* 112 */
+/* 119 */,
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! jQuery-Impromptu - v6.2.2 - 2015-11-14
@@ -70338,14 +71144,14 @@
 	!function(a,b){ true?!(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(20)], __WEBPACK_AMD_DEFINE_FACTORY__ = (b), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):b(a.jQuery)}(this,function(a){"use strict";var b=function(a,c){var d=this;return d.id=b.count++,b.lifo.push(d),a&&d.open(a,c),d};b.defaults={prefix:"jqi",classes:{box:"",fade:"",prompt:"",form:"",close:"",title:"",message:"",buttons:"",button:"",defaultButton:""},title:"",closeText:"&times;",buttons:{Ok:!0},buttonTimeout:1e3,loaded:function(a){},submit:function(a,b,c,d){},close:function(a,b,c,d){},statechanging:function(a,b,c){},statechanged:function(a,b){},opacity:.6,zIndex:999,overlayspeed:"slow",promptspeed:"fast",show:"fadeIn",hide:"fadeOut",focus:0,defaultButton:0,useiframe:!1,top:"15%",position:{container:null,x:null,y:null,arrow:null,width:null},persistent:!0,timeout:0,states:{},initialState:0,state:{name:null,title:"",html:"",buttons:{Ok:!0},focus:0,defaultButton:0,position:{container:null,x:null,y:null,arrow:null,width:null},submit:function(a,b,c,d){return!0}}},b.setDefaults=function(c){b.defaults=a.extend({},b.defaults,c)},b.setStateDefaults=function(c){b.defaults.state=a.extend({},b.defaults.state,c)},b.count=0,b.lifo=[],b.getLast=function(){var a=b.lifo.length;return a>0?b.lifo[a-1]:!1},b.removeFromStack=function(a){for(var c=b.lifo.length-1;c>=0;c--)if(b.lifo[c].id===a)return b.lifo.splice(c,1)[0]},b.prototype={id:null,open:function(c,d){var e=this;e.options=a.extend({},b.defaults,d),e.timeout&&clearTimeout(e.timeout),e.timeout=!1;var f=e.options,g=a(document.body),h=a(window),i='<div class="'+f.prefix+"box "+f.classes.box+'">';i+=f.useiframe&&a("object, applet").length>0?'<iframe src="javascript:false;" class="'+f.prefix+"fade "+f.classes.fade+'"></iframe>':'<div class="'+f.prefix+"fade "+f.classes.fade+'"></div>',i+='<div class="'+f.prefix+" "+f.classes.prompt+'"><form action="#" class="'+f.prefix+"form "+f.classes.form+'"><div class="'+f.prefix+"close "+f.classes.close+'">'+f.closeText+'</div><div class="'+f.prefix+'states"></div></form></div></div>',e.jqib=a(i).appendTo(g),e.jqi=e.jqib.children("."+f.prefix),e.jqif=e.jqib.children("."+f.prefix+"fade"),c.constructor===String&&(c={state0:{title:f.title,html:c,buttons:f.buttons,position:f.position,focus:f.focus,defaultButton:f.defaultButton,submit:f.submit}}),e.options.states={};var j,k;for(j in c)k=a.extend({},b.defaults.state,{name:j},c[j]),e.addState(k.name,k),""===e.currentStateName&&(e.currentStateName=k.name);e.jqi.on("click","."+f.prefix+"buttons button",function(b){var c=a(this),d=c.parents("."+f.prefix+"state"),g=d.data("jqi-name"),h=e.options.states[g],i=d.children("."+f.prefix+"message"),j=h.buttons[c.text()]||h.buttons[c.html()],k={};if(e.options.buttonTimeout>0&&(e.disableStateButtons(g),setTimeout(function(){e.enableStateButtons(g)},e.options.buttonTimeout)),void 0===j)for(var l in h.buttons)(h.buttons[l].title===c.text()||h.buttons[l].title===c.html())&&(j=h.buttons[l].value);a.each(e.jqi.children("form").serializeArray(),function(a,b){void 0===k[b.name]?k[b.name]=b.value:typeof k[b.name]===Array||"object"==typeof k[b.name]?k[b.name].push(b.value):k[b.name]=[k[b.name],b.value]});var m=new a.Event("impromptu:submit");m.stateName=h.name,m.state=d,d.trigger(m,[j,i,k]),m.isDefaultPrevented()||e.close(!0,j,i,k)});var l=function(){if(f.persistent){var b=f.top.toString().indexOf("%")>=0?h.height()*(parseInt(f.top,10)/100):parseInt(f.top,10),c=parseInt(e.jqi.css("top").replace("px",""),10)-b;a("html,body").animate({scrollTop:c},"fast",function(){var a=0;e.jqib.addClass(f.prefix+"warning");var b=setInterval(function(){e.jqib.toggleClass(f.prefix+"warning"),a++>1&&(clearInterval(b),e.jqib.removeClass(f.prefix+"warning"))},100)})}else e.close(!0)},m=function(b){var c=window.event?event.keyCode:b.keyCode;if(27===c&&l(),13===c){var d=e.getCurrentState().find("."+f.prefix+"defaultbutton"),g=a(b.target);g.is("textarea,."+f.prefix+"button")===!1&&d.length>0&&(b.preventDefault(),d.click())}if(9===c){var h=a("input,select,textarea,button",e.getCurrentState()),i=!b.shiftKey&&b.target===h[h.length-1],j=b.shiftKey&&b.target===h[0];if(i||j)return setTimeout(function(){if(h){var a=h[j===!0?h.length-1:0];a&&a.focus()}},10),!1}};return e.position(),e.style(),e._windowResize=function(a){e.position(a)},h.resize({animate:!1},e._windowResize),e.jqif.click(l),e.jqi.find("."+f.prefix+"close").click(function(){e.close()}),e.jqi.find("."+f.prefix+"form").submit(function(){return!1}),e.jqib.on("keydown",m).on("impromptu:loaded",f.loaded).on("impromptu:close",f.close).on("impromptu:statechanging",f.statechanging).on("impromptu:statechanged",f.statechanged),e.jqif[f.show](f.overlayspeed),e.jqi[f.show](f.promptspeed,function(){e.goToState(isNaN(f.initialState)?f.initialState:e.jqi.find("."+f.prefix+"states ."+f.prefix+"state").eq(f.initialState).data("jqi-name")),e.jqib.trigger("impromptu:loaded")}),f.timeout>0&&(e.timeout=setTimeout(function(){e.close(!0)},f.timeout)),e},close:function(c,d,e,f){var g=this;return b.removeFromStack(g.id),g.timeout&&(clearTimeout(g.timeout),g.timeout=!1),g.jqib&&g.jqib[g.options.hide]("fast",function(){g.jqib.trigger("impromptu:close",[d,e,f]),g.jqib.remove(),a(window).off("resize",g._windowResize),"function"==typeof c&&c()}),g.currentStateName="",g},addState:function(c,d,e){var f,g,h,i,j,k=this,l="",m=null,n="",o="",p=k.options,q=a.isFunction(d.position)?d.position():d.position,r=k.jqi.find("."+p.prefix+"states"),s=[],t=0;if(d=a.extend({},b.defaults.state,{name:c},d),a.isPlainObject(q)&&null!==q.arrow&&(n='<div class="'+p.prefix+"arrow "+p.prefix+"arrow"+q.arrow+'"></div>'),d.title&&""!==d.title&&(o='<div class="lead '+p.prefix+"title "+p.classes.title+'">'+d.title+"</div>"),f=d.html,"function"==typeof d.html&&(f="Error: html function must return text"),l+='<div class="'+p.prefix+'state" data-jqi-name="'+c+'">'+n+o+'<div class="'+p.prefix+"message "+p.classes.message+'">'+f+'</div><div class="'+p.prefix+"buttons"+(a.isEmptyObject(d.buttons)?"hide ":" ")+p.classes.buttons+'">',a.isArray(d.buttons))s=d.buttons;else if(a.isPlainObject(d.buttons))for(h in d.buttons)d.buttons.hasOwnProperty(h)&&s.push({title:h,value:d.buttons[h]});for(t=0,j=s.length;j>t;t++)i=s[t],g=d.focus===t||isNaN(d.focus)&&d.defaultButton===t?p.prefix+"defaultbutton "+p.classes.defaultButton:"",l+='<button class="'+p.classes.button+" "+p.prefix+"button "+g,"undefined"!=typeof i.classes&&(l+=" "+(a.isArray(i.classes)?i.classes.join(" "):i.classes)+" "),l+='" name="'+p.prefix+"_"+c+"_button"+i.title.replace(/[^a-z0-9]+/gi,"")+'" value="'+i.value+'">'+i.title+"</button>";return l+="</div></div>",m=a(l).css({display:"none"}),m.on("impromptu:submit",d.submit),void 0!==e?k.getState(e).after(m):r.append(m),k.options.states[c]=d,m},removeState:function(a,b){var c=this,d=c.getState(a),e=function(){d.remove()};return 0===d.length?!1:("none"!==d.css("display")?void 0!==b&&c.getState(b).length>0?c.goToState(b,!1,e):d.next().length>0?c.nextState(e):d.prev().length>0?c.prevState(e):c.close():d.slideUp("slow",e),!0)},getApi:function(){return this},getBox:function(){return this.jqib},getPrompt:function(){return this.jqi},getState:function(a){return this.jqi.find('[data-jqi-name="'+a+'"]')},getCurrentState:function(){return this.getState(this.getCurrentStateName())},getCurrentStateName:function(){return this.currentStateName},disableStateButtons:function(b,c,d){var e=this;a.isArray(b)&&(c=b,b=null),e.getState(b||e.getCurrentStateName()).find("."+e.options.prefix+"button").each(function(b,e){(void 0===c||-1!==a.inArray(e.value,c))&&(e.disabled=!d)})},enableStateButtons:function(a,b){this.disableStateButtons(a,b,!0)},position:function(b){var c=this,d=a.fx.off,e=c.getCurrentState(),f=c.options.states[e.data("jqi-name")],g=f?a.isFunction(f.position)?f.position():f.position:void 0,h=a(window),i=document.body.scrollHeight,j=a(window).height(),k=(a(document).height(),i>j?i:j),l=parseInt(h.scrollTop(),10),m=l+(c.options.top.toString().indexOf("%")>=0?j*(parseInt(c.options.top,10)/100):parseInt(c.options.top,10));if(void 0!==b&&b.data.animate===!1&&(a.fx.off=!0),c.jqib.css({position:"absolute",height:k,width:"100%",top:0,left:0,right:0,bottom:0}),c.jqif.css({position:"fixed",height:k,width:"100%",top:0,left:0,right:0,bottom:0}),g&&g.container){var n=a(g.container).offset(),o=!1;a.isPlainObject(n)&&void 0!==n.top&&(m=n.top+g.y-(c.options.top.toString().indexOf("%")>=0?j*(parseInt(c.options.top,10)/100):parseInt(c.options.top,10)),c.jqi.css({position:"absolute"}),c.jqi.animate({top:n.top+g.y,left:n.left+g.x,marginLeft:0,width:void 0!==g.width?g.width:null},function(){!o&&n.top+g.y+c.jqi.outerHeight(!0)>l+j&&(a("html,body").animate({scrollTop:m},"slow","swing",function(){}),o=!0)}),(l>m||m>l+j)&&(a("html,body").animate({scrollTop:m},"slow","swing",function(){}),o=!0))}else g&&g.width?(c.jqi.css({position:"absolute",left:"50%"}),c.jqi.animate({top:g.y||m,left:g.x||"50%",marginLeft:g.width/2*-1,width:g.width})):c.jqi.css({position:"absolute",top:m,left:"50%",marginLeft:c.jqi.outerWidth(!1)/2*-1});void 0!==b&&b.data.animate===!1&&(a.fx.off=d)},style:function(){var a=this;a.jqif.css({zIndex:a.options.zIndex,display:"none",opacity:a.options.opacity}),a.jqi.css({zIndex:a.options.zIndex+1,display:"none"}),a.jqib.css({zIndex:a.options.zIndex})},goToState:function(b,c,d){var e=this,f=(e.jqi,e.options),g=e.getState(b),h=f.states[g.data("jqi-name")],i=new a.Event("impromptu:statechanging"),j=e.options;if(void 0!==h){if("function"==typeof h.html){var k=h.html;g.find("."+j.prefix+"message ").html(k())}"function"==typeof c&&(d=c,c=!1),e.jqib.trigger(i,[e.getCurrentStateName(),b]),!i.isDefaultPrevented()&&g.length>0&&(e.jqi.find("."+j.prefix+"parentstate").removeClass(j.prefix+"parentstate"),c?(e.jqi.find("."+j.prefix+"substate").not(g).slideUp(f.promptspeed).removeClass("."+j.prefix+"substate").find("."+j.prefix+"arrow").hide(),e.jqi.find("."+j.prefix+"state:visible").addClass(j.prefix+"parentstate"),g.addClass(j.prefix+"substate")):e.jqi.find("."+j.prefix+"state").not(g).slideUp(f.promptspeed).find("."+j.prefix+"arrow").hide(),e.currentStateName=h.name,g.slideDown(f.promptspeed,function(){var c=a(this);e.enableStateButtons(),"string"==typeof h.focus?c.find(h.focus).eq(0).focus():c.find("."+j.prefix+"defaultbutton").focus(),c.find("."+j.prefix+"arrow").show(f.promptspeed),"function"==typeof d&&e.jqib.on("impromptu:statechanged",d),e.jqib.trigger("impromptu:statechanged",[b]),"function"==typeof d&&e.jqib.off("impromptu:statechanged",d)}),c||e.position())}return g},nextState:function(a){var b=this,c=b.getCurrentState().next();return c.length>0&&b.goToState(c.data("jqi-name"),a),c},prevState:function(a){var b=this,c=b.getCurrentState().prev();return c.length>0&&b.goToState(c.data("jqi-name"),a),c}},a.prompt=function(a,c){var d=new b(a,c);return d.jqi},a.each(b,function(b,c){a.prompt[b]=c}),a.each(b.prototype,function(c,d){a.prompt[c]=function(){var a=b.getLast();return a&&"function"==typeof a[c]?a[c].apply(a,arguments):void 0}}),a.fn.prompt=function(b){void 0===b&&(b={}),void 0===b.withDataAndEvents&&(b.withDataAndEvents=!1),a.prompt(a(this).clone(b.withDataAndEvents).html(),b)},window.Impromptu=b});
 
 /***/ },
-/* 113 */
+/* 121 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 114 */,
-/* 115 */
+/* 122 */,
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(jQuery) {/***************************************************************************************************
@@ -70359,14 +71165,14 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(20)))
 
 /***/ },
-/* 116 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["$"] = __webpack_require__(20);
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 117 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["jQuery"] = __webpack_require__(20);

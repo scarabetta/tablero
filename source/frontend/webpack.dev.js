@@ -16,7 +16,16 @@ config.devServer = {
     hot: true,
     inline: true,
     progress: true,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    proxy: {
+        '/back/*': {
+            target: 'http://10.30.10.104:8080/proyectosBA-DS/',
+            rewrite: function(req) {
+                req.url = req.url.replace(/^\/back/, '');
+            },
+            secure: false
+        }
+    }
 };
 
 module.exports = config;

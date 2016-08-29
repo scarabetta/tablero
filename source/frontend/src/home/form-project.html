@@ -1,5 +1,5 @@
 <li id="projectFormID">
-    <div class="col-md-12 contentFormProyect">
+    <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
        <div class="col-md-3 col-sm-2 col-xs-12 pull-right" id="moveprojectid">
             <!-- <div class="dropdown content-actionForm">
                 <button disabled class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -14,7 +14,7 @@
                     <li><a href="#">Rechazar</a></li>
                 </ul>
             </div> -->
-            <div class="contentProgress content-actionForm">
+            <!-- <div class="contentProgress content-actionForm">
                 <div class="titleProgress">Progreso de creación</div>
                 <div class="row">
                     <div class="c100 p{{formCtrl.percentForm}} centerProgress green">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="dataProgress">{{formCtrl.countForm}}</div>
-            </div>
+            </div> -->
             <div class="dropdown content-actionForm contentButtonRight">
                 <button class="btn btn-default fullButtonRight" type="button" id="dropdownMenu1" data-toggle="modal" data-target="#moverModal" aria-haspopup="true" aria-expanded="true" ng-click="formCtrl.moveProject()">
                     <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
@@ -35,7 +35,7 @@
                 </button>
             </div>
             <div ng-if="formCtrl.currentProject.idProyecto" class="dropdown content-actionForm contentButtonRight">
-                <button class="btn btn-default fullButtonRight" type="button" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">
+                <button class="btn btn-default fullButtonRight" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">
                     <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                     <span>Eliminar</span>
                 </button>
@@ -73,7 +73,7 @@
                 <div class="form-group col-md-3">
                     <div></div>
                     <label for="meta">Meta</label>
-                    <input type="number" class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta">
+                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="20">
                 </div>
                 <div class="form-group col-md-9">
                     <label for="unit">Unidad de la meta</label>
@@ -83,7 +83,7 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label for="unit">Cantidad de población afectada</label>
-                    <input type="number" class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada">
+                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="20">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="type">Segmento de la población afectada</label>
@@ -134,7 +134,7 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="responsable">Ubicación geográfica</label>
-                    <select class="form-control" ng-change="formCtrl.clearValuesUbicacion()" ng-model="formCtrl.currentProject.tipoUbicacionGeografica">
+                    <select class="form-control" ng-change="formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)" ng-model="formCtrl.currentProject.tipoUbicacionGeografica">
                         <option>Comunas</option>
                         <option>Dirección</option>
                         <option>Sin Definir</option>
@@ -173,14 +173,27 @@
             <div class="row">
                 <div class="form-group col-md-3">
                     <label for="responsable">Fecha de inicio</label>
-                    <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required>
+                    <!-- <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required> -->
+                    <p class="input-group">
+                      <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
                 </div>
                 <div class="form-group col-md-3">
                     <label for="responsable">Fecha de fin</label>
-                    <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required>
+                    <!-- <input type="date" class="form-control" id="responsable" placeholder="" min="formCtrl.currentProject.fechaInicio" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required> -->
+                    <p class="input-group">
+                      <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerFin.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required />
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
+                      </span>
+                    </p>
                 </div>
+                <span class="errorForm">{{formCtrl.validDate}}</span>
             </div>
-            <div ng-show="formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin">
+            <div ng-show="formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''">
               <div class="row">
                 <div class="col-md-12">
                   <label for="responsable">Presupuesto desglosado año por año:</label>
@@ -193,7 +206,7 @@
                 </div>
                 <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
                 <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
-                  <input type="number" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
+                  <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
                 </div>
                 <div class="col-md-6 col-sm-12 col-xs-12 contentLine">
                     <hr class="line-inner-proyect">
@@ -214,7 +227,7 @@
             <br>
             <div class="row">
                 <div class="form-group col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Información adicional 
+                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Información adicional
                 </div>
             </div>
             <div class="form-group">
@@ -308,9 +321,10 @@
             </div>
 
             <br />
-            <button ng-disabled="!formCtrl.allInputs" type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></i> Guardar y Presentar</button>
-            <button type="submit" ng-click="setAsPresented()" class="btn btn-default" id="draftButton"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Borrador</button>
-            <button type="button" class="btn btn-link" ng-click="formCtrl.cancel()">Cancel</button>
+            <button ng-show="formCtrl.currentProject.estado === 'Presentado'" type="button" ng-disabled="!formCtrl.allInputs" ng-click="formCtrl.presentProject()" class="btn btn-success"><i class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></i> Guardar</button>
+            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success"><i class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></i> Guardar y Presentar</button>
+            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" type="submit" class="btn btn-default" id="draftButton"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Borrador</button>
+            <button type="button" class="btn btn-link" ng-click="formCtrl.cancel()">Cancelar</button>
             <br />
             <p>* Para presentar un proyecto, todos los campos obligatorios deben estar completos.</p>
         </form>

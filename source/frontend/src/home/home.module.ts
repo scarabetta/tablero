@@ -7,6 +7,7 @@ import {formStrategicObjectiveComponent} from "./form.strategic.objective.compon
 import {moveProjectComponent} from "./form-project/move.project.component.ts";
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
+import {alertComponent} from "../alert/alertmodal.ts";
 import {usigAutocompleteDirective} from './autocomplete.directive.ts';
 
 module Home {
@@ -18,6 +19,7 @@ module Home {
         .component('formoperativeobjective', formOperativeObjectiveComponent)
         .component('formstrategicobjective', formStrategicObjectiveComponent)
         .component('moveproject', moveProjectComponent)
+        .component('alertmodal', alertComponent)
         .service('services', GeneralServices)
         .service('search', Search)
         .directive("usigautocomplete", usigAutocompleteDirective)

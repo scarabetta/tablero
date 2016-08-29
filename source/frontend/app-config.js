@@ -1,7 +1,6 @@
 module.exports = {
     production: {
-      authBaseUrl: 'http://10.30.10.104:8080/proyectosBA-DS/',
-      apiBaseUrl:'http://10.30.10.104:8080/proyectosBA-DS/api/',
+      authBaseUrl: '/back/',
       captcha: {
         public: '6LdYMSUTAAAAAL83hBB-pGf9sCWB9S7S42STwgfK'
       }
@@ -21,7 +20,7 @@ module.exports = {
         }
     },
     devasi: {
-      authBaseUrl: '/back/'
+      authBaseUrl: '/back/',
         captcha: {
           public: '6LdYMSUTAAAAAL83hBB-pGf9sCWB9S7S42STwgfK'
         }

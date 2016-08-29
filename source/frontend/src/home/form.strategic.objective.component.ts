@@ -47,17 +47,56 @@ module Home {
       angular.element(formDiv).remove();
     }
 
-    deleteStrategicObjective(id) {
+    deleteStrategicObjectiveById(id) {
         if (this.currentStrategicObjective.objetivosOperativos.length > 0) {
-            var referralDivFactory = this.$compile(' <div class="alert alert-warning"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Alerta!</strong> No puede borrar el Objetivo Estratégico si posee Objetivos Operativos.</div> ' ); // tslint:disable-line
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById(id);
-            angular.element(containerDiv).append(referralDiv);
+          var notificationData = {
+            "type" : "warning",
+            "icon" : "exclamation-sign",
+            "title" : "Alerta",
+            "text" : "No puede borrar el Objetivo Estratégico si posee Proyectos.",
+            "action": "gotoestrategico",
+            "valueAction" : true,
+            "textlink": "Ir al formulario"
+          };
+          this.addNotification(notificationData);
         } else {
          this.services.deleteStrategicObjective(id).then((data) => {
              this.$state.reload();
          });
         }
+    }
+
+    deleteStrategicObjective(id) {
+      var dataAlert = {
+        title: "Aviso",
+        text: "Se va a eliminar el Objetivo Estratégico. ¿Continuar?",
+        callback: 'deleteStrategicObjectiveById',
+        id: id
+      };
+      this.addAlert(dataAlert);
+    }
+
+    addNotification(data) {
+      var referralDivFactory = this.$compile(' <notification type="' +data.type+ '" icon="' +data.icon+ '" title="' +data.title+ '" text="' +data.text+ '" '+data.action+'="' +data.valueAction+ '" textlink="' +data.textlink+ '"></notification> '); // tslint:disable-line
+      var referralDiv = referralDivFactory(this.$scope);
+      var containerDiv = document.getElementById('notifications');
+      angular.element(containerDiv).append(referralDiv);
+      this.goToTop();
+    }
+
+    goToTop() {
+      (<any>$('html,body')).animate({
+      scrollTop: 0},
+      500);
+    }
+
+    addAlert(data) {
+      var formDiv = document.getElementsByTagName('alertmodal');
+      angular.element(formDiv).remove();
+      var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+      var referralDiv = referralDivFactory(this.$scope);
+      var containerDiv = document.getElementById('grupo-level-3-3');
+      angular.element(containerDiv).append(referralDiv);
     }
 
     addIndicador() {

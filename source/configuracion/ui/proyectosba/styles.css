@@ -645,7 +645,6 @@ input[type=file] {
 .line {
     font-size: 11px !important;
     color: #d04848 !important;
-    top: 8px !important;
 }
 
 .add-line {
@@ -678,6 +677,7 @@ input[type=file] {
 
 .alert {
     margin-bottom: 5px;
+    width: 100% !important;
 }
 
 .incomplete {
@@ -1050,12 +1050,142 @@ tags-input .tags {
     background-color: #ffefde;
 }
 
+
+.contentFormProyect .btn-success{
+    margin: 0 15px 0 0;
+}
+.btn-success i {
+  color:#fff;
+  font-size: 12px;
+}
+.btn-default i {
+  color:#666;
+  font-size: 12px;
+}
+.colum-action{
+  width: 80px;
+      text-align: center;
+}
+.colum-action .line {
+  top:0;
+}
+th{
+      text-transform: uppercase;
+    color: #6c6c6c;
+    font-size: 12px;
+}
+.table {
+    margin-bottom: 0;
+}
+.colum-action .glyphicon-edit{
+	padding-top:2px;
+}
+.colum-action .glyphicon-remove{
+	padding-top:5px;
+}
+.switch label {
+	margin: 0 auto;
+}
+.alert-success{
+float: left;
+}
+.alert-text{
+  width: 75%;
+  float: left;
+}
+.alert-success button{
+  float: right;
+}
+.text-newProyect{
+  margin-bottom: 8px;
+  opacity: .5;
+}
+.contet-report{
+  margin-right: 15px;
+  min-width: 205px;
+  text-align: center;
+  float: left;
+  background: #e4e4e4;
+  padding: 15px;
+  border-radius: 4px;
+  color: #6b6b6b;
+  border: 1px solid #d4d4d4;
+}
+.contet-report strong{
+    font-size: 45px;
+}
+.contet-report p{
+    margin-bottom: 0;
+}
+.priorizacion button{
+  margin-right: 15px;
+}
+.priorizacion .title{
+  margin: 0 0 10px 0;
+}
+
+
+/*Estilos toogle*/
+input.cmn-toggle-round + label {
+  padding: 2px;
+  width: 49px;
+  height: 22px;
+  background-color: #dddddd;
+  border-radius: 60px;
+}
+input.cmn-toggle-round + label:before,
+input.cmn-toggle-round + label:after {
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  content: "";
+}
+input.cmn-toggle-round + label:before {
+  right: 1px;
+  background-color: #f1f1f1;
+  border-radius: 60px;
+  transition: background 0.4s;
+}
+input.cmn-toggle-round + label:after {
+  width: 20px;
+  background-color: #fff;
+  border-radius: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: margin 0.4s;
+}
+input.cmn-toggle-round:checked + label:before {
+  background-color: #8ce196;
+}
+input.cmn-toggle-round:checked + label:after {
+  margin-left: 27px;
+}
+.cmn-toggle {
+  position: absolute;
+  margin-left: -9999px;
+  visibility: hidden;
+}
+.cmn-toggle + label {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
 .whiteColor {
     color: #fff !important;
 }
 
 .yellowBarModel {
     background-color: #FFB702 !important;
+}
+
+.errorForm {
+  line-height: 85px;
+  color: #a94442;
+  font-size: 12px;
 }
 .rect-auto,
 .c100.p51 .slice,

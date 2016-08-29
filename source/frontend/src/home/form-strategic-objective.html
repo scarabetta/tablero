@@ -3,14 +3,14 @@
     <div class="col-md-2 col-sm-2 col-xs-12 pull-right" ng-show="formCtrl.idobjetivoestrategico">
     <div id="{{formCtrl.currentStrategicObjective.idObjetivoJurisdiccional}}"></div>
         <div class="dropdown content-actionForm">
-            <button class="btn btn-default" type="button" ng-click="formCtrl.deleteStrategicObjective(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteStrategicObjective(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)">
                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                 <span class="" style="font-size: 11px;">Eliminar</span>
             </button>
         </div>
     </div>
      <div class="col-md-9 col-sm-12 col-xs-12">
-        <form role="form">
+        <form role="form" ng-submit="formCtrl.saveStrategicObjective()">
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="name">Nombre de Objetivo Estrat&eacute;gico</label>
@@ -29,7 +29,7 @@
                 <div class="form-group col-md-6 col-sm-5 col-xs-11 add-line">
                     <input type="text" class="form-control" ng-model="indicador.descripcion" placeholder="Forma de medici&oacute;n">
                 </div>
-                <i class="glyphicon glyphicon-remove line" aria-hidden="true"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i> 
+                <i class="glyphicon glyphicon-remove line" aria-hidden="true"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i>
                 <div class="col-md-11 col-sm-8 col-xs-11">
                     <hr class="line-inner-proyect">
                 </div>
@@ -42,7 +42,7 @@
                   <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.addIndicador()">Agregar nuevo indicador</button>
               </div>
             </div>
-            <button type="submit" class="btn btn-success" ng-click="formCtrl.saveStrategicObjective()"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Estrat&eacute;gico</button>
+            <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Estrat&eacute;gico</button>
             <button type="button" class="btn btn-link" ng-click="formCtrl.cancelStrategicObjective()">Cancelar y descartar cambios</button>
         </form>
     </div>

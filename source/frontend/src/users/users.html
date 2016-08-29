@@ -1,0 +1,57 @@
+<div class="pageContanerCustom">
+  <div class="item page">
+    <div class="row">
+      <div class="col-md-12" id="alertmodalcomponent">
+        <div class="row">
+          <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12">
+            <button type="button" class="btn btn-default" ng-click="usersCtrl.addUser()"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Nuevo</button>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-8 col-xs-12">
+            <div class="form-group has-button contentSearch searchPage">
+              <input type="text" class="form-control input-md" id="buttonInput2" placeholder="Buscar" ng-model="usersCtrl.userFilter">
+              <button class="btn">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <hr>
+            <div id="newuser">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Mail</th>
+            <th class="colum-action">Estado</th>
+            <th class="colum-action">Editar</th>
+            <th class="colum-action">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in usersCtrl.usuarios | filter: usersCtrl.userFilter" id="user-{{user.idUsuario}}">
+            <td class="thirdLabel">{{user.nombre}}</td>
+            <td class="thirdLabel">{{user.apellido}}</td>
+            <td>{{user.email}}</td>
+            <td>
+              <div class="switch">
+                <input id="cmn-toggle-{{user.idUsuario}}" class="cmn-toggle cmn-toggle-round" type="checkbox" ng-change="usersCtrl.toggleUserState(user)"  ng-model="user.activo">
+                <label for="cmn-toggle-{{user.idUsuario}}"></label>
+              </div>
+            </td>
+            <td class="colum-action"><i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="usersCtrl.editUser(user.idUsuario)"></i>
+            </td>
+            <td class="colum-action"><i class="glyphicon glyphicon-remove line" aria-hidden="true" data-toggle="modal" data-target="#alertModalId" data-original-title="Eliminar" ng-click="usersCtrl.deleteUser(user.idUsuario)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

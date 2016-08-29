@@ -1,6 +1,7 @@
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
+import {Usuario} from "../models/jurisdiccion.ts";
 
 module Menu {
 
@@ -17,10 +18,12 @@ module Menu {
         private idjurisdiccionKey = 'idJurisdiccionStorage';
         private isWaitingJurisdicciones: boolean;
         private searchTextModel: string;
+        private currentUserKey = 'currentUser';
         /*@ngInject*/
         constructor(private $state: ng.ui.IStateService, private services:GeneralServices, private search:Search, private localStorageService:angular.local.storage.ILocalStorageService) {
             this.items = [
-                {"state": "home", "title": "Alta de proyectos", "controllerAs": "homeCtrl"}
+                {"state": "home.tree", "title": "Alta de proyectos", "controllerAs": "homeCtrl"},
+                {"state": "users", "title": "Usuarios", "controllerAs": "usersCtrl"}
             ];
             this.isWaitingJurisdicciones = false;
         }
@@ -31,7 +34,6 @@ module Menu {
               this.isWaitingJurisdicciones = true;
               this.services.jurisdicciones().then((data) => {
                 if (data) {
-                  console.log('Obtuve data');
                   this.jurisdiccion = data;
                   this.setIdJurisdiccion();
                   this.isWaitingJurisdicciones = false;
@@ -42,6 +44,25 @@ module Menu {
           } else {
             return false;
           }
+        }
+
+        showUsers(item) {
+          if (item.state === 'users') {
+            var userData = this.localStorageService.get(this.currentUserKey);
+            var user = <Usuario>userData;
+            var retVal = false;
+            if (user) {
+              user.roles.forEach((rol) => {
+                rol.permisosEntidad.forEach((permiso) => {
+                  if (permiso.nombre === "Gestion de usuarios" && permiso.gestion) {
+                    retVal = true;
+                  }
+                });
+              });
+            }
+            return retVal;
+          }
+          return true;
         }
 
         setIdJurisdiccion() {
@@ -77,7 +98,7 @@ module Menu {
                         <div class="row">
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                               <ul class="nav navbar-nav">
-                                <li ui-sref="{{item.state}}" ng-repeat="item in $ctrl.items" ng-class="{active: $ctrl.$state.current.controllerAs==item.controllerAs}">
+                                <li ui-sref="{{item.state}}" ng-repeat="item in $ctrl.items" ng-class="{active: $ctrl.$state.current.controllerAs==item.controllerAs}" ng-show="$ctrl.showUsers(item)">
                                     <a>{{item.title}}</a>
                                 </li>
                                 <li ng-if="$ctrl.jurisdiccion.length > 1" class="dropdown">

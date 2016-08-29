@@ -134,7 +134,7 @@ module Home {
                 }
               });
             }
-            this.importURL = config.apiBaseUrl + 'importar/proyecto';
+            this.importURL = config.authBaseUrl + 'api/importar/proyecto';
             this.pisarProyectos = false;
 
         }
@@ -171,7 +171,7 @@ module Home {
           if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
             var referralDivFactory = this.$compile( " <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> " );
             var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById(idStrategicObjective);
+            var containerDiv = document.getElementById("es-" + idStrategicObjective);
             angular.element(containerDiv).append(referralDiv);
           } else {
             var notificationData = {
@@ -213,7 +213,7 @@ module Home {
           if (!angular.element(document.getElementsByTagName('formoperativeobjective')).length) {
             var referralDivFactory = this.$compile( " <formoperativeobjective idoperativeobjective='" + idOperativeObjective + "'></formoperativeobjective> " );
             var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById(idOperativeObjective);
+            var containerDiv = document.getElementById("op-" + idOperativeObjective);
             angular.element(containerDiv).append(referralDiv);
           } else {
             var notificationData = {
@@ -233,7 +233,7 @@ module Home {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile( " <formproject idproject='" + idProject + "'></formproject> " );
             var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById(idProject);
+            var containerDiv = document.getElementById("proyecto-" + idProject);
             angular.element(containerDiv).append(referralDiv);
           } else {
             var notificationData = {
@@ -253,7 +253,7 @@ module Home {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
               var referralDivFactory = this.$compile(" <formproject idobjetivo='" + idObjetivo + "'></formproject> ");
               var referralDiv = referralDivFactory(this.$scope);
-              var containerDiv = document.getElementById(idObjetivo);
+              var containerDiv = document.getElementById("op-" + idObjetivo);
               angular.element(containerDiv).append(referralDiv);
           } else {
             var notificationData = {
@@ -288,6 +288,8 @@ module Home {
         }
 
         addNotification(data) {
+          var formDiv = document.getElementsByTagName('alertmodal');
+          angular.element(formDiv).remove();
           var referralDivFactory = this.$compile(' <notification type="' +data.type+ '" icon="' +data.icon+ '" title="' +data.title+ '" text="' +data.text+ '" '+data.action+'="' +data.valueAction+ '" textlink="' +data.textlink+ '"></notification> '); // tslint:disable-line
           var referralDiv = referralDivFactory(this.$scope);
           var containerDiv = document.getElementById('notifications');

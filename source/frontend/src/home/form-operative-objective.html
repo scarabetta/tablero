@@ -14,21 +14,21 @@
         </div> -->
         <div id="{{formCtrl.currentOperativeObjective.idObjetivoOperativo}}"></div>
         <div class="dropdown content-actionForm" ng-show="formCtrl.currentOperativeObjective.idObjetivoOperativo">
-            <button class="btn btn-default" type="button" ng-click="formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)">
+            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)">
                 <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                 <span class="" style="font-size: 11px;">Eliminar</span>
             </button>
         </div>
     </div>
     <div class="col-md-10 col-sm-10 col-xs-12">
-        <form role="form">
+        <form role="form" ng-submit="formCtrl.saveOperativeObjective()">
             <div class="row">
                 <div class="form-group col-md-12">
                     <label for="name">Nombre de Objetivo Operativo</label>
-                    <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentOperativeObjective.nombre">
+                    <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentOperativeObjective.nombre" required>
                 </div>
             </div>
-            <button type="submit" class="btn btn-success" ng-click="formCtrl.saveOperativeObjective()"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Operativo</button>
+            <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Objetivo Operativo</button>
             <button type="button" class="btn btn-link" ng-click="formCtrl.cancelOperativeObjective()">Cancelar y descartar cambios</button>
         </form>
     </div>

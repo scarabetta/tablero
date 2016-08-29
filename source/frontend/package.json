@@ -1,6 +1,6 @@
 {
   "name": "proyectosBA",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "repository": "ssh://git@gitlab.hexacta.com:proyectosBA/front-end.git",
   "main": "src/app.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build-rel": "webpack  --env=devrel --config webpack.prod.js/",
     "citest": "karma start jenkins.karma.conf.js",
     "dev": "webpack-dev-server --hot --progress --colors --content-base build --env=development --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
-    "devasi": "webpack-dev-server --hot --progress --colors --content-base build --env=devasi --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
+    "devasi": "webpack-dev-server --hot --progress --colors --content-base build --env=devasi --inline --history-api-fallback --output-public-path / --config webpack.dev.js  --port 8081",
     "devrel": "webpack-dev-server --hot --progress --colors --content-base build --env=devrel --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
     "dev-json": "json-server db.json | webpack-dev-server --hot --progress --colors --content-base build --env=jsonserver --inline --history-api-fallback --output-public-path / --config webpack.dev.js",
     "test": "karma start",

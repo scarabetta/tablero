@@ -14,11 +14,11 @@ module Notification {
       private textlink: string;// tslint:disable-line
 
       /*@ngInject*/
-      constructor() {
-        console.log(this.gotoform);
-        console.log(this.gotoestrategico);
-        console.log(this.gotooperativo);
-      };
+      // constructor() {
+      //   console.log(this.gotoform);
+      //   console.log(this.gotoestrategico);
+      //   console.log(this.gotooperativo);
+      // };
 
       goToCurrentForm() {
         (<any>$(document.getElementsByTagName('notification'))).hide();
