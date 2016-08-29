@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import ar.gob.buenosaires.domain.Comuna;
 import ar.gob.buenosaires.domain.EjeDeGobierno;
+import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.Jurisdiccion;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
@@ -42,16 +43,16 @@ public class ImportadorProyectoBuilder {
 
 	private ObjetivoOperativo objetivoOperativo;
 
-	private List<Comuna> comunas = new ArrayList<Comuna>();
+	private List<Comuna> comunas = new ArrayList<>();
 
-	private List<EjeDeGobierno> ejeDeGobiernos = new ArrayList<EjeDeGobierno>();
+	private List<EjeDeGobierno> ejeDeGobiernos = new ArrayList<>();
 
 	// fatory de servicios
 	private IServiceFactory serviceFactory;
 
-	private List<PoblacionMeta> poblacionMetas = new ArrayList<PoblacionMeta>();
+	private List<PoblacionMeta> poblacionMetas = new ArrayList<>();
 
-	private List<PresupuestoPorAnio> presupuestoPorAnio = new ArrayList<PresupuestoPorAnio>();
+	private List<PresupuestoPorAnio> presupuestoPorAnio = new ArrayList<>();
 
 	private String codigoObjJuri;
 
@@ -62,21 +63,21 @@ public class ImportadorProyectoBuilder {
 	private String nombreObjOper;
 
 	public ImportadorProyectoBuilder(IServiceFactory service) {
-		this.serviceFactory = service;
+		serviceFactory = service;
 	}
 
 	public ImportadorProyectoBuilder cargarProyecto(String nombreProyecto) {
-		this.proyectoTransient = new Proyecto();
-		this.proyectoTransient.setNombre(nombreProyecto);
-		this.proyectoTransient.setEstado("Borrador");
+		proyectoTransient = new Proyecto();
+		proyectoTransient.setNombre(nombreProyecto);
+		proyectoTransient.setEstado(EstadoProyecto.COMPLETO.getName());
 
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarObjetivoJurisdiccional(String nombreObjetivoJurisdiccional,
 			String codigoObjetivoJurisdiccional) {
-		this.codigoObjJuri = codigoObjetivoJurisdiccional;
-		this.nombreObjJuri = nombreObjetivoJurisdiccional;
+		codigoObjJuri = codigoObjetivoJurisdiccional;
+		nombreObjJuri = nombreObjetivoJurisdiccional;
 
 		return this;
 
@@ -84,15 +85,15 @@ public class ImportadorProyectoBuilder {
 
 	public ImportadorProyectoBuilder cargarObjetivoOperativo(String nombreObjetivoOperativo,
 			String codigoObjetivoOperativo) {
-		this.codigoObjOper = codigoObjetivoOperativo;
-		this.nombreObjOper = nombreObjetivoOperativo;
+		codigoObjOper = codigoObjetivoOperativo;
+		nombreObjOper = nombreObjetivoOperativo;
 
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarPoblacionMeta(String segmento) {
 		try {
-			List<PoblacionMeta> poblacionMetas = this.serviceFactory.getPoblacionMetaService().getPoblacionesMeta();
+			List<PoblacionMeta> poblacionMetas = serviceFactory.getPoblacionMetaService().getPoblacionesMeta();
 			for (Iterator<PoblacionMeta> iterator = poblacionMetas.iterator(); iterator.hasNext();) {
 				PoblacionMeta poblacionMeta = iterator.next();
 				if (poblacionMeta.getNombre().equalsIgnoreCase(segmento)) {
@@ -108,85 +109,89 @@ public class ImportadorProyectoBuilder {
 
 	// Metodos para la carga de proyecto
 	public ImportadorProyectoBuilder cargarProyectoDescripcion(String descripcion) {
-		this.proyectoTransient.setDescripcion(descripcion);
+		proyectoTransient.setDescripcion(descripcion);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoLider(String nombreLider) {
-		this.proyectoTransient.setLiderProyecto(nombreLider);
+		proyectoTransient.setLiderProyecto(nombreLider);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoPoblacionAfectada(Double poblacionAfectada) {
-		this.proyectoTransient.setPoblacionAfectada(poblacionAfectada.intValue());
+		if (!StringUtils.isEmpty(poblacionAfectada.toString()) && poblacionAfectada != 0) {
+			proyectoTransient.setPoblacionAfectada(poblacionAfectada.intValue());
+		}
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoArea(String area) {
-		this.proyectoTransient.setArea(area);
+		proyectoTransient.setArea(area);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoUnidadMeta(String unidadMeta) {
-		this.proyectoTransient.setUnidadMeta(unidadMeta);
+		proyectoTransient.setUnidadMeta(unidadMeta);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoMeta(Double meta) {
-		this.proyectoTransient.setMeta(new BigDecimal(meta).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		if (!StringUtils.isEmpty(meta.toString()) && meta != 0) {
+			proyectoTransient.setMeta(new BigDecimal(meta).setScale(2, BigDecimal.ROUND_HALF_EVEN));
+		}
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoTipoUbucacion(String tipoUbicacion) {
-		this.proyectoTransient.setTipoUbicacionGeografica(tipoUbicacion);
+		proyectoTransient.setTipoUbicacionGeografica(tipoUbicacion);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoDireccion(String direccion) {
-		this.proyectoTransient.setDireccion(direccion);
+		proyectoTransient.setDireccion(direccion);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoFechaInicio(Date fechaInicio) {
-		this.proyectoTransient.setFechaInicio(fechaInicio);
+		proyectoTransient.setFechaInicio(fechaInicio);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoFechaFin(Date fechaFin) {
-		this.proyectoTransient.setFechaFin(fechaFin);
+		proyectoTransient.setFechaFin(fechaFin);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoTipoProyecto(String tipoProyecto) {
-		this.proyectoTransient.setTipoProyecto(tipoProyecto);
+		proyectoTransient.setTipoProyecto(tipoProyecto);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoImplicaCambioLegislativo(String implicaCambioLegislativo) {
 		if (!StringUtils.isEmpty(implicaCambioLegislativo)) {
-			this.proyectoTransient.setCambioLegislativo(getBooleanFromString(implicaCambioLegislativo));
+			proyectoTransient.setCambioLegislativo(getBooleanFromString(implicaCambioLegislativo));
 		} else {
-			this.proyectoTransient.setCambioLegislativo(null);
+			proyectoTransient.setCambioLegislativo(null);
 		}
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoPrioridadJurisdiccional(String prioridadJurisdiccional) {
-		this.proyectoTransient.setPrioridadJurisdiccional(prioridadJurisdiccional);
+		proyectoTransient.setPrioridadJurisdiccional(prioridadJurisdiccional);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoCorresponsable(String corresponsable) {
-		this.proyectoTransient.setOrganismosCorresponsables(corresponsable);
+		proyectoTransient.setOrganismosCorresponsables(corresponsable);
 		return this;
 	}
 
 	public ImportadorProyectoBuilder cargarPresupuestoPorAnio(Double anio, Double importe) {
-		if (!StringUtils.isEmpty(anio)) {
+		if (!StringUtils.isEmpty(anio.toString()) && anio != 0) {
 			PresupuestoPorAnio presu = new PresupuestoPorAnio();
 			presu.setAnio(anio.intValue());
 			presu.setPresupuesto(importe);
-			this.presupuestoPorAnio.add(presu);
+			presupuestoPorAnio.add(presu);
 		}
 		return this;
 	}
@@ -194,7 +199,7 @@ public class ImportadorProyectoBuilder {
 	public ImportadorProyectoBuilder cargarComuna(String nombreComuna) {
 
 		try {
-			List<Comuna> comunas = this.serviceFactory.getComunaService().getComunas();
+			List<Comuna> comunas = serviceFactory.getComunaService().getComunas();
 			for (Iterator<Comuna> iterator = comunas.iterator(); iterator.hasNext();) {
 				Comuna comuna = iterator.next();
 				if (comuna.getNombre().equalsIgnoreCase(nombreComuna)) {
@@ -211,12 +216,12 @@ public class ImportadorProyectoBuilder {
 	public ImportadorProyectoBuilder cargarEjeDeGobierno(String nombreEjeDeGobierno) {
 		if (!StringUtils.isEmpty(nombreEjeDeGobierno)) {
 			EjeDeGobierno unEjeDeGobierno = null;
-			EjeDeGobiernoService ejeDeGobiernoService = this.serviceFactory.getEjeDeGobiernoService();
+			EjeDeGobiernoService ejeDeGobiernoService = serviceFactory.getEjeDeGobiernoService();
 
 			try {
 				unEjeDeGobierno = ejeDeGobiernoService.getEjeDeGobiernoByName(nombreEjeDeGobierno);
 				if (unEjeDeGobierno != null) {
-					this.ejeDeGobiernos.add(unEjeDeGobierno);
+					ejeDeGobiernos.add(unEjeDeGobierno);
 				}
 			} catch (ESBException | JMSException e) {
 				e.printStackTrace();
@@ -227,17 +232,17 @@ public class ImportadorProyectoBuilder {
 
 	/**
 	 * Construye el grafo desde la jurisdiccion y relaciona todos los objetos.
-	 * 
+	 *
 	 * @throws JMSException
 	 * @throws ESBException
 	 */
 	public Jurisdiccion build() throws ESBException, JMSException {
-		this.buildObjetivoJurisdiccional();
-		this.buildObjetivoOperativo();
-		this.crearYCargarProyecto();
-		this.serviceFactory.getProyectoService().updateProyecto(this.proyecto);
+		buildObjetivoJurisdiccional();
+		buildObjetivoOperativo();
+		crearYCargarProyecto();
+		serviceFactory.getProyectoService().updateProyecto(proyecto);
 
-		return this.getJurisdiccion();
+		return getJurisdiccion();
 	}
 
 	private boolean getBooleanFromString(String unString) {
@@ -245,27 +250,27 @@ public class ImportadorProyectoBuilder {
 	}
 
 	private void crearYCargarProyecto() {
-		ProyectoService proyectoService = this.serviceFactory.getProyectoService();
+		ProyectoService proyectoService = serviceFactory.getProyectoService();
 
 		try {
-			this.proyecto = proyectoService.getProyectoByName(this.proyectoTransient.getNombre());
+			proyecto = proyectoService.getProyectoByName(proyectoTransient.getNombre());
 		} catch (ESBException | JMSException e) {
 			e.printStackTrace();
 		}
 
-		if (this.proyecto == null) {
+		if (proyecto == null) {
 
 			try {
-				this.proyecto = this.proyectoTransient;
-				this.setearColleccionesAlProyecto(this.proyecto);
-				this.proyecto = proyectoService.createProyecto(this.proyecto);
+				proyecto = proyectoTransient;
+				setearColleccionesAlProyecto(proyecto);
+				proyecto = proyectoService.createProyecto(proyecto);
 			} catch (ESBException | JMSException e) {
 
 				e.printStackTrace();
 			}
 		} else {
-			this.setearColleccionesAlProyecto(this.proyecto);
-			this.actualizarEstadoAlProyecto();
+			setearColleccionesAlProyecto(proyecto);
+			actualizarEstadoAlProyecto();
 		}
 	}
 
@@ -297,20 +302,27 @@ public class ImportadorProyectoBuilder {
 			}
 		}
 
-		for (Iterator<PresupuestoPorAnio> iterator = this.presupuestoPorAnio.iterator(); iterator.hasNext();) {
+		for (Iterator<PresupuestoPorAnio> iterator = presupuestoPorAnio.iterator(); iterator.hasNext();) {
 			PresupuestoPorAnio presupuestoPorAnio = iterator.next();
 			if (!unProyecto.getPresupuestosPorAnio().stream().anyMatch(new Predicate<PresupuestoPorAnio>() {
 
 				@Override
 				public boolean test(PresupuestoPorAnio t) {
-					return presupuestoPorAnio.getIdPresupuestoPorAnio() == t.getIdPresupuestoPorAnio();
+					boolean noAgregar = true;
+					if (t.getAnio() == presupuestoPorAnio.getAnio()) {
+						t.setPresupuesto(presupuestoPorAnio.getPresupuesto());
+					} else {
+						noAgregar = false;
+					}
+					return noAgregar;
 				}
 			})) {
 				unProyecto.getPresupuestosPorAnio().add(presupuestoPorAnio);
+				presupuestoPorAnio.setProyecto(unProyecto);
 			}
 		}
 
-		for (Iterator<PoblacionMeta> iterator = this.poblacionMetas.iterator(); iterator.hasNext();) {
+		for (Iterator<PoblacionMeta> iterator = poblacionMetas.iterator(); iterator.hasNext();) {
 			PoblacionMeta poblacionMeta = iterator.next();
 			if (!unProyecto.getPoblacionesMeta().stream().anyMatch(new Predicate<PoblacionMeta>() {
 
@@ -325,43 +337,42 @@ public class ImportadorProyectoBuilder {
 
 		// Metemos los Ids a manopla, ya que la libreria que convierte los
 		// objetos a XML, rompe las relaciones.
-		unProyecto.setObjetivoOperativo(this.objetivoOperativo);
-		unProyecto.setIdJurisdiccion2(this.jurisdiccion.getIdJurisdiccion());
-		unProyecto.setIdObjetivoJurisdiccional2(this.objetivoJurisdiccional.getIdObjetivoJurisdiccional());
-		unProyecto.setIdObjetivoOperativo2(this.objetivoOperativo.getIdObjetivoOperativo());
+		unProyecto.setObjetivoOperativo(objetivoOperativo);
+		unProyecto.setIdJurisdiccion2(jurisdiccion.getIdJurisdiccion());
+		unProyecto.setIdObjetivoJurisdiccional2(objetivoJurisdiccional.getIdObjetivoJurisdiccional());
+		unProyecto.setIdObjetivoOperativo2(objetivoOperativo.getIdObjetivoOperativo());
 
 	}
 
 	private void actualizarEstadoAlProyecto() {
-		this.proyecto.setNombre(this.proyectoTransient.getNombre());
-		this.proyecto.setArea(this.proyectoTransient.getArea());
-		this.proyecto.setCambioLegislativo(this.proyectoTransient.getCambioLegislativo());
-		this.proyecto.setCodigo(this.proyectoTransient.getCodigo());
-		this.proyecto.setDescripcion(this.proyectoTransient.getDescripcion());
-		this.proyecto.setDireccion(this.proyectoTransient.getDireccion());
-		this.proyecto.setEstado(this.proyectoTransient.getEstado());
-		this.proyecto.setFechaInicio(this.proyectoTransient.getFechaInicio());
-		this.proyecto.setFechaFin(this.proyectoTransient.getFechaFin());
-		this.proyecto.setLiderProyecto(this.proyectoTransient.getLiderProyecto());
-		this.proyecto.setMeta(this.proyectoTransient.getMeta());
-		this.proyecto.setObjetivoOperativo(this.proyectoTransient.getObjetivoOperativo());
-		this.proyecto.setOrganismosCorresponsables(this.proyectoTransient.getOrganismosCorresponsables());
-		this.proyecto.setPoblacionAfectada(this.proyectoTransient.getPoblacionAfectada());
-		this.proyecto.setPoblacionesMeta(this.proyectoTransient.getPoblacionesMeta());
-		this.proyecto.setPresupuestosPorAnio(this.proyectoTransient.getPresupuestosPorAnio());
-		this.proyecto.setPrioridadJurisdiccional(this.proyectoTransient.getPrioridadJurisdiccional());
-		this.proyecto.setTipoProyecto(this.proyectoTransient.getTipoProyecto());
-		this.proyecto.setTipoUbicacionGeografica(this.proyectoTransient.getTipoUbicacionGeografica());
-		this.proyecto.setUnidadMeta(this.proyectoTransient.getUnidadMeta());
+		proyecto.setNombre(proyectoTransient.getNombre());
+		proyecto.setArea(proyectoTransient.getArea());
+		proyecto.setCambioLegislativo(proyectoTransient.getCambioLegislativo());
+		proyecto.setCodigo(proyectoTransient.getCodigo());
+		proyecto.setDescripcion(proyectoTransient.getDescripcion());
+		proyecto.setDireccion(proyectoTransient.getDireccion());
+		proyecto.setEstado(proyectoTransient.getEstado());
+		proyecto.setFechaInicio(proyectoTransient.getFechaInicio());
+		proyecto.setFechaFin(proyectoTransient.getFechaFin());
+		proyecto.setLiderProyecto(proyectoTransient.getLiderProyecto());
+		proyecto.setMeta(proyectoTransient.getMeta());
+		proyecto.setObjetivoOperativo(proyectoTransient.getObjetivoOperativo());
+		proyecto.setOrganismosCorresponsables(proyectoTransient.getOrganismosCorresponsables());
+		proyecto.setPoblacionAfectada(proyectoTransient.getPoblacionAfectada());
+		proyecto.setPoblacionesMeta(proyectoTransient.getPoblacionesMeta());
+		proyecto.setPrioridadJurisdiccional(proyectoTransient.getPrioridadJurisdiccional());
+		proyecto.setTipoProyecto(proyectoTransient.getTipoProyecto());
+		proyecto.setTipoUbicacionGeografica(proyectoTransient.getTipoUbicacionGeografica());
+		proyecto.setUnidadMeta(proyectoTransient.getUnidadMeta());
 
 	}
 
 	private String getProximoCodigoObjJurisdiccional() {
-		String codigoJurisdiccion = this.getJurisdiccion().getCodigo();
+		String codigoJurisdiccion = getJurisdiccion().getCodigo();
 		Integer codigoObjetivoJurisdiccional = 0;
 
-		if (!this.getJurisdiccion().getObjetivosJurisdiccionales().isEmpty()) {
-			codigoObjetivoJurisdiccional = this.getJurisdiccion().getObjetivosJurisdiccionales().parallelStream()
+		if (!getJurisdiccion().getObjetivosJurisdiccionales().isEmpty()) {
+			codigoObjetivoJurisdiccional = getJurisdiccion().getObjetivosJurisdiccionales().parallelStream()
 					.map(oj -> Integer.parseInt(oj.getCodigo().split("\\.")[1])).max(Integer::compare).get();
 		}
 		return codigoJurisdiccion.concat(".").concat(String.valueOf(codigoObjetivoJurisdiccional + 1));
@@ -386,39 +397,39 @@ public class ImportadorProyectoBuilder {
 	}
 
 	private void buildObjetivoJurisdiccional() throws ESBException, JMSException {
-		ObjetivoJurisdiccionalService objetivoJurisdiccionalService = this.serviceFactory
-				.getObjetivoJurisdiccionalService();
+		ObjetivoJurisdiccionalService objetivoJurisdiccionalService = serviceFactory.getObjetivoJurisdiccionalService();
 
-		this.objetivoJurisdiccional = objetivoJurisdiccionalService
-				.getObjetivoJurisdiccionalPorCodigo(this.codigoObjJuri);
-
-		if (this.objetivoJurisdiccional == null) {
-			this.objetivoJurisdiccional = new ObjetivoJurisdiccional();
-			this.objetivoJurisdiccional.setCodigo(this.getProximoCodigoObjJurisdiccional());
-			this.objetivoJurisdiccional.setJurisdiccion(this.jurisdiccion);
-			this.objetivoJurisdiccional.setNombre(this.nombreObjJuri);
-			this.objetivoJurisdiccional.getObjetivosOperativos().add(this.objetivoOperativo);
-			this.objetivoJurisdiccional.setIdJurisdiccionAux(this.jurisdiccion.getIdJurisdiccion());
-			this.objetivoJurisdiccional = objetivoJurisdiccionalService
-					.createObjetivoJurisdiccional(this.objetivoJurisdiccional);
-			this.getJurisdiccion().getObjetivosJurisdiccionales().add(this.objetivoJurisdiccional);
+		objetivoJurisdiccional = objetivoJurisdiccionalService.getObjetivoJurisdiccionalPorCodigo(codigoObjJuri);
+		if (objetivoJurisdiccional == null) {
+			objetivoJurisdiccional = objetivoJurisdiccionalService.getObjetivoJurisdiccionalPorNombre(nombreObjJuri);
+		}
+		if (objetivoJurisdiccional == null) {
+			objetivoJurisdiccional = new ObjetivoJurisdiccional();
+			objetivoJurisdiccional.setCodigo(getProximoCodigoObjJurisdiccional());
+			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);
+			objetivoJurisdiccional.setNombre(nombreObjJuri);
+			objetivoJurisdiccional.getObjetivosOperativos().add(objetivoOperativo);
+			objetivoJurisdiccional.setIdJurisdiccionAux(jurisdiccion.getIdJurisdiccion());
+			objetivoJurisdiccional = objetivoJurisdiccionalService.createObjetivoJurisdiccional(objetivoJurisdiccional);
+			getJurisdiccion().getObjetivosJurisdiccionales().add(objetivoJurisdiccional);
 
 		}
 	}
 
 	private void buildObjetivoOperativo() throws ESBException, JMSException {
-		ObjetivoOperativoService objetivoOperativoService = this.serviceFactory.getObjetivoOperativoService();
+		ObjetivoOperativoService objetivoOperativoService = serviceFactory.getObjetivoOperativoService();
 
-		this.objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorCodigo(this.codigoObjOper);
-
-		if (this.objetivoOperativo == null) {
-			this.objetivoOperativo = new ObjetivoOperativo();
-			this.objetivoOperativo.setCodigo(this.getProximoCodigoObjOperativo(this.objetivoJurisdiccional));
-			this.objetivoOperativo.setNombre(this.nombreObjOper);
-			this.objetivoOperativo
-					.setIdObjetivoJurisdiccionalAux(this.objetivoJurisdiccional.getIdObjetivoJurisdiccional());
-			this.objetivoOperativo = objetivoOperativoService.createObjetivoOperativo(this.objetivoOperativo);
-			this.objetivoJurisdiccional.getObjetivosOperativos().add(this.objetivoOperativo);
+		objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorCodigo(codigoObjOper);
+		if (objetivoOperativo == null) {
+			objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorNombre(nombreObjOper);
+		}
+		if (objetivoOperativo == null) {
+			objetivoOperativo = new ObjetivoOperativo();
+			objetivoOperativo.setCodigo(getProximoCodigoObjOperativo(objetivoJurisdiccional));
+			objetivoOperativo.setNombre(nombreObjOper);
+			objetivoOperativo.setIdObjetivoJurisdiccionalAux(objetivoJurisdiccional.getIdObjetivoJurisdiccional());
+			objetivoOperativo = objetivoOperativoService.createObjetivoOperativo(objetivoOperativo);
+			objetivoJurisdiccional.getObjetivosOperativos().add(objetivoOperativo);
 		}
 
 	}

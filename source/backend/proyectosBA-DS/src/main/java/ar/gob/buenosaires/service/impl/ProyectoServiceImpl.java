@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import ar.gob.buenosaires.domain.EstadoProyecto;
+import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
@@ -74,6 +76,27 @@ public class ProyectoServiceImpl implements ProyectoService {
 			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
 		return getProyectoFromResponse(responseProyectos);		 
+	}
+	
+	@Override
+	public Proyecto presentarProyecto(Proyecto proyecto) throws ESBException, JMSException {
+		/*TODO temporal hasta que arreglemos el bus. Sacarlo una vez que el Bus no nos rompa las relaciones.
+		* Sin esto falla el check que se fija si el proyecto esta completo
+		*/  
+		proyecto.setObjetivoOperativo(new ObjetivoOperativo());
+		
+		if (EstadoProyecto.COMPLETO.getName().equals(proyecto.getEstadoActualizado())) {
+			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
+			if (proyecto.getIdProyecto() == null) {				
+				return createProyecto(proyecto);
+			} else {
+				return updateProyecto(proyecto);
+			}
+			
+		} else {
+			throw new ESBException("El proyecto debe estar completo para poder ser presentado");
+		}
+
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package ar.gob.buenosaires.service.impl;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.jms.JMSException;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -41,62 +43,67 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 
 	@Override
 	public List<MensajeError> validarSolapaProyectos(Workbook solpaAImportar) {
-		this.getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
-		this.getSolapaProyecto().configurarSolapa();
-		this.getSolapaProyecto().validarSolapa();
+		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
+		getSolapaProyecto().configurarSolapa();
+		getSolapaProyecto().validarSolapa();
 
-		return this.getSolapaProyecto().getValidador().getProblemasSolapa();
+		return getSolapaProyecto().getValidador().getProblemasSolapa();
 	}
 
 	@Override
 	public Workbook importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos)
 			throws InvalidFormatException, IOException {
 
-		this.getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
-		this.getSolapaProyecto().configurarSolapa(pisarProyectos);
+		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
+		getSolapaProyecto().configurarSolapa(pisarProyectos);
 
-		List<MensajeError> problemasSolpa = this.getSolapaProyecto().validarSolapa();
-		ImportadorProyectoBuilder builder = null;
+		List<MensajeError> problemasSolpa = getSolapaProyecto().validarSolapa();
 
 		if (problemasSolpa.isEmpty()) {
+			ImportadorProyectoBuilder builder = null;
+			boolean laProximaEsUltimaFila = false;
+			Row unaFila = null;
 
-			for (int i = this.getSolapaProyecto().getNumeroFilaInicioImportacion(); i < this.getSolapaProyecto()
-					.getNumeroUltimaFila(); i++) {
-				Row unaFila = this.getSolapaProyecto().getFilaNumero(i);
+			for (int i = getSolapaProyecto().getNumeroFilaInicioImportacion(); i <= getSolapaProyecto()
+					.getNumeroUltimaFila() && !laProximaEsUltimaFila; i++) {
+				unaFila = getSolapaProyecto().getFilaNumero(i);
 				builder = new ImportadorProyectoBuilder(serviceFactory);
-				builder.setJurisdiccion(this.getSolapaProyecto().getJurisdiccion());
+				builder.setJurisdiccion(getSolapaProyecto().getJurisdiccion());
 
 				try {
-
-					if (this.getSolapaProyecto().validarEImportarFila(unaFila, builder)) {
+					if (getSolapaProyecto().validarEImportarFila(unaFila, builder)) {
 						builder.build();
 					}
 				} catch (ESBException | JMSException e) {
-					LOGGER.error("Hubo un error en la fila "
-							+ unaFila.getRowNum() + "\n" + e.getMessage());
+					LOGGER.error("Hubo un error en la fila " + unaFila.getRowNum() + "\n" + e.getMessage());
+					getSolapaProyecto().getValidador().agregarMensajeParaFila(unaFila.getRowNum(),
+							"Hubo un error inesperado en la fila " + unaFila.getRowNum() + " al ser gurdada en la base de datos.",
+							MensajeError.TIPO_ERROR);
 				}
+				laProximaEsUltimaFila = (getSolapaProyecto().getFilaNumero(i + 1) == null)
+						|| getSolapaProyecto().esUltimaFila(getSolapaProyecto().getFilaNumero(i + 1));
 
 			}
 		}
 
-		if (!this.getSolapaProyecto().getValidador().getProblemasSolapa().isEmpty()) {
+		if (!getSolapaProyecto().getValidador().getProblemasSolapa().isEmpty()) {
 			StringBuilder erroresSolapa = new StringBuilder();
-			for (Iterator<MensajeError> iterator = this.getSolapaProyecto().getValidador().getProblemasSolapa()
+			for (Iterator<MensajeError> iterator = getSolapaProyecto().getValidador().getProblemasSolapa()
 					.iterator(); iterator.hasNext();) {
 				MensajeError mensajeError = iterator.next();
 				erroresSolapa.append(mensajeError.getMensaje()).append("\n");
 			}
 
-			this.getSolapaProyecto().getSolapa().getRow(0).getCell(3, Row.CREATE_NULL_AS_BLANK)
-					.setCellValue(erroresSolapa.toString());
+			getSolapaProyecto().getSolapa().getRow(0).getCell(3, Row.CREATE_NULL_AS_BLANK)
+			.setCellValue(erroresSolapa.toString());
 
 			return solpaAImportar;
 		}
 
 		// Si hay errores, borro las filas que se importaron bien y deja las
 		// malas
-		if (!this.getSolapaProyecto().getValidador().getProblemasFilas().isEmpty()) {
-			return this.crearExcelErroresSiEsNecesario();
+		if (!getSolapaProyecto().getValidador().getProblemasFilas().isEmpty()) {
+			return crearExcelErroresSiEsNecesario();
 
 		} else {
 			return null;
@@ -105,31 +112,35 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 
 	}
 
+	@Override
 	public SolapaProyecto getSolapaProyecto() {
 		return solapaProyecto;
 	}
 
 	public XSSFWorkbook crearExcelErroresSiEsNecesario() throws InvalidFormatException, IOException {
+		XSSFWorkbook wb = null;
+		try {
+			FileInputStream fis = new FileInputStream(env.getProperty("download.template.proyecto.path"));
+			wb = new XSSFWorkbook(fis);
+			Sheet solapaProyectoTemplate = wb.getSheetAt(0);
+			int numeroFilaInicioImportacion = getSolapaProyecto().getNumeroFilaInicioImportacion();
+			int index = 0;
+			int numeroNuevaFila;
+			solapaProyectoTemplate.getRow(0).getCell(1).setCellValue("Primero seleccioná tu jurisdicción");
 
-		FileInputStream fis = new FileInputStream(env.getProperty("download.template.proyecto.path"));
-		XSSFWorkbook wb = new XSSFWorkbook(fis);
-		Sheet solapaProyectoTemplate = wb.getSheetAt(0);
-		int numeroFilaInicioImportacion = this.getSolapaProyecto().getNumeroFilaInicioImportacion();
-		int index = 0;
-		int numeroNuevaFila;
-		solapaProyectoTemplate.getRow(0).getCell(1)
-				.setCellValue(this.getSolapaProyecto().getJurisdiccion().getNombre());
+			for (Integer numeroFilaConError : getSolapaProyecto().getValidador().getProblemasFilas().keySet()) {
+				numeroNuevaFila = numeroFilaInicioImportacion + index;
+				getSolapaProyecto().copiarFilas(getSolapaProyecto().getFilaNumero(numeroFilaConError),
+						solapaProyectoTemplate.createRow(numeroNuevaFila));
 
-		for (Integer numeroFilaConError : this.getSolapaProyecto().getValidador().getProblemasFilas().keySet()) {
-			numeroNuevaFila = numeroFilaInicioImportacion + index;
-			this.getSolapaProyecto().copiarFilas(this.getSolapaProyecto().getFilaNumero(numeroFilaConError),
-					solapaProyectoTemplate.createRow(numeroNuevaFila));
+				index++;
 
-			index++;
-
+			}
+			fis.close();
+		} catch (FileNotFoundException | FormulaParseException | IllegalStateException e) {
+			LOGGER.debug("Hubo un problema leyendo el archivo template : \n" + e.getMessage());
+			e.printStackTrace();
 		}
-		fis.close();
-
 		return wb;
 
 	}

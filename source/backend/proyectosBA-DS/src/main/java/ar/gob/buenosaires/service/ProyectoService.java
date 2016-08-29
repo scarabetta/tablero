@@ -21,7 +21,8 @@ public interface ProyectoService {
 
 	Proyecto updateProyecto(Proyecto proyecto) throws ESBException, JMSException;
 	
-	void deleteProyecto(String id) throws ESBException, JMSException;		
+	void deleteProyecto(String id) throws ESBException, JMSException;
 
+	Proyecto presentarProyecto(Proyecto proyecto) throws ESBException, JMSException;		
 }
 

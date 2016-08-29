@@ -4,20 +4,20 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>proyectosBA-BE</artifactId>
-	<version>0.0.1-RELEASE</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Proyectos BA - Back end</name>
 
 	<parent>
 		<groupId>ar.gob.buenosaires.backend</groupId>
 		<artifactId>proyectosBA</artifactId>
-		<version>0.0.1-RELEASE</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<utility.version>0.0.1-RELEASE</utility.version>
+		<utility.version>0.0.1-SNAPSHOT</utility.version>
 		<mariadb.version>1.4.4</mariadb.version>
 		<spring-boot-starter.version>1.3.3.RELEASE</spring-boot-starter.version>
 		<!-- Test -->

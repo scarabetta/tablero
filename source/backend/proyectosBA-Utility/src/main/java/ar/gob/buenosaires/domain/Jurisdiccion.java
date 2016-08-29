@@ -11,12 +11,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -52,6 +56,13 @@ public class Jurisdiccion implements Serializable {
 	@XmlElement(name = "objetivosJurisdiccionales")
 	@JsonManagedReference
     private List<ObjetivoJurisdiccional> objetivosJurisdiccionales = new ArrayList<>();
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuario_por_jurisdiccion", joinColumns = {
+			@JoinColumn(name = "usuario_idusuario") }, 
+			inverseJoinColumns = { @JoinColumn(name = "jurisdiccion_idjurisdiccion") })
+	@XmlTransient
+	private List<Usuario> usuarios;
 
 	public Long getIdJurisdiccion() {
 		return idJurisdiccion;
@@ -99,6 +110,14 @@ public class Jurisdiccion implements Serializable {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+
+	public List<Usuario> getUsuarios() {
+		return usuarios;
+	}
+
+	public void setUsuarios(List<Usuario> usuarios) {
+		this.usuarios = usuarios;
 	}	
 
 }

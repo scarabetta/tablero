@@ -1,11 +1,15 @@
 package ar.gob.buenosaires.service;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.jms.JMSException;
 
+import com.nimbusds.jose.JOSEException;
+
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 
 public interface UsuarioService {
 
@@ -20,5 +24,7 @@ public interface UsuarioService {
 	void deleteUsuario(String id) throws ESBException, JMSException;
 
 	Usuario getUsuarioPorId(Long id) throws ESBException, JMSException;
+	
+	Usuario getUsuarioPorToken(String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException;
 
 }

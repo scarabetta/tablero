@@ -2,6 +2,7 @@ package ar.gob.buenosaires.domain;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 @Entity
 @Table(name = "usuario")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idUsuario", "nombre", "email", "descripcion", "roles" })
+@XmlType(propOrder = { "idUsuario", "nombre", "apellido", "email", "descripcion", "roles", "jurisdicciones", "activo" })
 @XmlRootElement(name = "Usuario")
 public class Usuario implements Serializable {
 
@@ -36,24 +37,36 @@ public class Usuario implements Serializable {
 	@Column(name = "nombre")
 	private String nombre;
 
+	@Column(name = "apellido")
+	private String apellido;
+
 	@Column(name = "email")
 	private String email;
 
 	@Column(name = "descripcion")
 	private String descripcion;
 
+	@Column(name = "activo")
+	private Boolean activo;
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "rol_por_usuario", joinColumns = {
-			@JoinColumn(name = "usuario_idusuario") }, 
-			inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
+			@JoinColumn(name = "usuario_idusuario") }, inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
 	@XmlElement(name = "roles")
-	public List<Rol> roles;
+	private List<Rol> roles;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "usuario_por_jurisdiccion", joinColumns = {
+			@JoinColumn(name = "usuario_idusuario") }, inverseJoinColumns = {
+					@JoinColumn(name = "jurisdiccion_idjurisdiccion") })
+	@XmlElement(name = "jurisdicciones")
+	private List<Jurisdiccion> jurisdicciones;
 
 	public Long getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(Long idUsuario) {
+	public void setIdUsuario(final Long idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 
@@ -61,7 +74,7 @@ public class Usuario implements Serializable {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+	public void setNombre(final String nombre) {
 		this.nombre = nombre;
 	}
 
@@ -69,7 +82,7 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
@@ -77,7 +90,7 @@ public class Usuario implements Serializable {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
+	public void setDescripcion(final String descripcion) {
 		this.descripcion = descripcion;
 	}
 
@@ -85,7 +98,41 @@ public class Usuario implements Serializable {
 		return roles;
 	}
 
-	public void setRoles(List<Rol> roles) {
+	public void setRoles(final List<Rol> roles) {
 		this.roles = roles;
+	}
+
+	public List<Jurisdiccion> getJurisdicciones() {
+		return jurisdicciones;
+	}
+
+	public void setJurisdicciones(final List<Jurisdiccion> jurisdicciones) {
+		this.jurisdicciones = jurisdicciones;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public Boolean getActivo() {
+		return activo;
+	}
+
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+
+	public boolean tienePerfilSecretaria(){
+		return getRoles() != null && getRoles().parallelStream().anyMatch(new Predicate<Rol>() {
+
+			@Override
+			public boolean test(final Rol t) {
+				return "Secretaría".equalsIgnoreCase(t.getNombre());
+			}
+		});
 	}
 }

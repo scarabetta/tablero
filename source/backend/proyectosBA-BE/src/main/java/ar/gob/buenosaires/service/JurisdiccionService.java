@@ -20,4 +20,6 @@ public interface JurisdiccionService {
 	Jurisdiccion updateJurisdiccion (Jurisdiccion jurisdiccion);
 	
 	void deleteJurisdiccion (Long id) throws ESBException;
+
+	void presentarProyectosCompletos(Long id) throws ESBException;
 }

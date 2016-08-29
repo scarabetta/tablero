@@ -16,6 +16,8 @@ import org.mockito.Spy;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ar.gob.buenosaires.dao.jpa.indicadorEstrategico.IndicadorEstrategicoJpaDao;
+import ar.gob.buenosaires.dao.jpa.indicadorEstrategico.IndicadorEstrategicoRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionJpaDao;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalJpaDao;
@@ -32,6 +34,9 @@ public class ObjetivoJurisdiccionalServiceImplTest {
 
 	@Mock
 	ObjetivoJurisdiccionalJpaDao jpaDao;
+	
+	@Mock
+	IndicadorEstrategicoJpaDao jpaDaoIndicadorEstrategico;
 
 	@Mock
 	JurisdiccionJpaDao jpaDaoJurisdiccion;
@@ -43,6 +48,10 @@ public class ObjetivoJurisdiccionalServiceImplTest {
 	@InjectMocks
 	@Spy
 	JurisdiccionRepositoryImpl repositorioJurisdiccion;
+	
+	@InjectMocks
+	@Spy
+	IndicadorEstrategicoRepositoryImpl repositorioIndicadorEstrategico;
 
 	@InjectMocks
 	ObjetivoJurisdiccionalServiceImpl service;
@@ -56,6 +65,9 @@ public class ObjetivoJurisdiccionalServiceImplTest {
 
 		repositorioJurisdiccion.setJurisdiccionJpaDao(jpaDaoJurisdiccion);
 		service.setRepositorioJurisdiccion(repositorioJurisdiccion);
+		
+		repositorioIndicadorEstrategico.setIndicadorEstrategicoJpaDao(jpaDaoIndicadorEstrategico);
+		service.setRepositorioIndicadorEstrategico(repositorioIndicadorEstrategico);
 	}
 
 	private ObjetivoJurisdiccional createFakeObjetivoJurisdiccional() {

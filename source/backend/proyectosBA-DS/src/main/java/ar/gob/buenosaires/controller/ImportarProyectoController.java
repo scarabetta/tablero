@@ -2,9 +2,7 @@ package ar.gob.buenosaires.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ar.gob.buenosaires.importador.MensajeError;
 import ar.gob.buenosaires.service.ImportarProyectoService;
-import ar.gob.buenosaires.service.impl.ImportarProyectoServiceImpl;
 
 /**
  * @author Mauro Gonzalez
@@ -37,7 +34,7 @@ import ar.gob.buenosaires.service.impl.ImportarProyectoServiceImpl;
 @RestController
 @RequestMapping("/api/importar")
 public class ImportarProyectoController {
-	
+
 	private final static Logger LOGGER = LoggerFactory.getLogger(ImportarProyectoController.class);
 
 	@Autowired
@@ -50,7 +47,7 @@ public class ImportarProyectoController {
 	public List<String> previewImportarProyecto(final MultipartFile archivoAImportar) {
 
 		ByteArrayInputStream bis;
-		List<String> listaDeErrore = new ArrayList<String>();
+		List<String> listaDeErrore = new ArrayList<>();
 		try {
 			bis = new ByteArrayInputStream(archivoAImportar.getBytes());
 			XSSFWorkbook workbook = new XSSFWorkbook(bis);
@@ -102,6 +99,7 @@ public class ImportarProyectoController {
 
 				response.setContentType("application/vnd.ms-excel");
 				response.setHeader("content-disposition", "attachment; filename=errores_de_importacion.xlsx");
+				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 
 				IOUtils.copy(is, response.getOutputStream());
 				response.flushBuffer();
@@ -120,8 +118,10 @@ public class ImportarProyectoController {
 				response.getWriter().println("Hubo un problema en el servicio de importación. Intente nuevamente.");
 			} catch (IOException e1) {
 				LOGGER.debug(e1.getMessage());
+				e.printStackTrace();
 			}
 			LOGGER.debug(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 }

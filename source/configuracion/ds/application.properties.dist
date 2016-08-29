@@ -16,7 +16,7 @@ security.cors.origins=*
 logging.level.org.springframework.security=INFO
 
 #ESB
-esb.producer.timeout=8000
+esb.producer.timeout=10000
 esb.producer.replyToDestination=esb.response.queue
 esb.producer.destination=esb.request.queue
 esb.jmsTemplate.topic=false

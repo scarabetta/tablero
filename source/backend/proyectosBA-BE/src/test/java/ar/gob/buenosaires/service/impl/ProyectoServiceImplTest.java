@@ -25,6 +25,10 @@ import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.geocoder.adapter.impl.GeoCoderAdapterImpl;
+import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
+import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
+import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
 
 public class ProyectoServiceImplTest {
 
@@ -51,9 +55,15 @@ public class ProyectoServiceImplTest {
 	@Spy
 	PresupuestoPorAnioRepositoryImpl repositorioPresupuestoPorAnio;
 	
-
 	@InjectMocks
 	ProyectoServiceImpl service;
+
+	@InjectMocks
+	GeoCoderServiceImpl geoCoderService;
+	
+	@InjectMocks
+	@Spy
+	GeoCoderAdapterImpl geoCoderAdapter;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -61,12 +71,15 @@ public class ProyectoServiceImplTest {
 		repositorio.setProyectoJpaDao(jpaDao);
 		service = new ProyectoServiceImpl();
 		service.setProyectoRepository(repositorio);
+		geoCoderService = new GeoCoderServiceImpl();
+		geoCoderService.setGeoCoderAdapter(new GeoCoderAdapterImpl());
 
 		repositorioObjetivoOperativo.setObjetivoOperativoJpaDao(jpaDaoObjetivoOperativo);
 		repositorioPresupuestoPorAnio.setPresupuestoPorAnioJpaDao(presupuestoPorAnioJpaDao);
 		
 		service.setRepositorioObjetivoOperativo(repositorioObjetivoOperativo);
 		service.setRepositorioPresupuestoPorAnio(repositorioPresupuestoPorAnio);
+		service.setGeoCoderService(geoCoderService);
 	}
 
 	private Proyecto createFakeProyecto() {
@@ -81,6 +94,11 @@ public class ProyectoServiceImplTest {
 		fakeObjetivoOperativo.setNombre(FAKE_NOMBRE);
 		return fakeObjetivoOperativo;
 	}
+	private GeoCoderResponse createFakeGeoCoderResponse() {
+		GeoCoderResponse response = new GeoCoderResponse();
+		response.setDireccionesNormalizadas(new ArrayList<DireccionNormalizada>());
+		return response;
+	}
 
 	@Test
 	public void createProyecto() throws ESBException {
@@ -90,6 +108,8 @@ public class ProyectoServiceImplTest {
 
 		when(repositorioObjetivoOperativo.getObjetivoOperativoJpaDao().findOne(anyLong())).thenReturn(
 				createFakeObjetivoOperativo());
+		
+		when(geoCoderAdapter.normalizarYGeoCodificar(anyString())).thenReturn(createFakeGeoCoderResponse());
 
 		Proyecto response = service.createProyecto(fakeProyecto);
 		assertThat(response).isNotNull();

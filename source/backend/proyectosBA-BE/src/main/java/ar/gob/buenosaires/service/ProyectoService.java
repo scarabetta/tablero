@@ -12,12 +12,12 @@ public interface ProyectoService {
 	Proyecto getProyectoPorNombre(String nombre);
 
 	Proyecto getProyectoPorId(Long id);
-	
+
 	Proyecto getProyectoPorCodigo(String codigo);
-	
+
 	Proyecto createProyecto(Proyecto proyecto) throws ESBException;
-	
-	Proyecto updateProyecto (Proyecto proyecto) throws ESBException;
-	
-	void deleteProyecto (Long id) throws ESBException;
+
+	Proyecto updateProyecto(Proyecto proyecto) throws ESBException;
+
+	void deleteProyecto(Long id) throws ESBException;
 }

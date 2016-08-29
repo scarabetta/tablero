@@ -21,7 +21,9 @@ public interface JurisdiccionService {
 
 	void updateJurisdicciones(Jurisdiccion jurisdiccion) throws ESBException, JMSException;
 	
-	void deleteJurisdiccion(String id) throws ESBException, JMSException;		
+	void deleteJurisdiccion(String id) throws ESBException, JMSException;
+
+	void presentarProyectosCompletos(String id) throws ESBException, JMSException;		
 
 }
 

@@ -38,8 +38,8 @@ public class JurisdiccionHandler extends AbstractBaseEventHandler {
 			service.updateJurisdiccion(request.getJurisdiccion());
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteJurisdiccion(request.getId());
-		} else {
-
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR_TODOS)) {
+			service.presentarProyectosCompletos(request.getId());
 		}
 		logResponseMessage(event, JurisdiccionService.class);
 	}

@@ -87,6 +87,15 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		getLogger().debug("Mensaje creado para borrar una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE);		
 	}
+	
+	@Override
+	public void presentarProyectosCompletos(String id) throws ESBException, JMSException {
+		JurisdiccionReqMsg reqMsg = new JurisdiccionReqMsg();
+		reqMsg.setId(Long.parseLong(id));
+
+		getLogger().debug("Mensaje creado para presentar todos los proyectos completos de una Jurisdiccion : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_PRESENTAR_TODOS);		
+	}
 
 	public static Logger getLogger() {
 		return LOGGER;

@@ -24,6 +24,7 @@ public interface ESBEvent {
     public static final String ACTION_REQUEST = "REQUEST";
     public static final String ACTION_UPDATE = "UPDATE";
     public static final String ACTION_DELETE = "DELETE";
+    public static final String ACTION_PRESENTAR_TODOS = "PRESENTAR_TODOS";
     public static final String ORIGIN_TAG = "Origin";
     public static final String DEFAULT_ORIGIN = "UNKNOWN";
     public static final String COMPANYCODE_TAG = "CompanyCode";

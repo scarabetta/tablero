@@ -1,5 +1,6 @@
 package ar.gob.buenosaires.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.fest.util.VisibleForTesting;
@@ -9,7 +10,12 @@ import org.springframework.stereotype.Service;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionJpaDao;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepository;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepositoryImpl;
+import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
+import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
+import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.Jurisdiccion;
+import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
+import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.JurisdiccionService;
@@ -19,6 +25,10 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 
 	@Autowired
 	private JurisdiccionRepository repositorio;
+	
+	@Autowired
+	private ProyectoRepository repositorioProyecto;
+
 
 	@Override
 	public List<Jurisdiccion> getJurisdicciones() {
@@ -59,6 +69,32 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 			throw new ESBException("No se encontro Jurisdiccion con id: " + id);
 		}
 	}
+	
+	@Override
+	public void presentarProyectosCompletos(Long id) throws ESBException {
+		Jurisdiccion jurisdiccion = getJurisdiccionDAO().findOne(id);
+		List<Long> proyectosCompletos = new ArrayList<Long>();
+		if (jurisdiccion != null) {
+			getProyectosCompletos(jurisdiccion, proyectosCompletos);
+			if (!proyectosCompletos.isEmpty()) {
+				repositorioProyecto.getProyectoJpaDao().updateProyectosCompletos(proyectosCompletos);
+			}
+		} else {
+			throw new ESBException("No se encontro Jurisdiccion con id: " + id);
+		}
+	}
+	
+	private void getProyectosCompletos(Jurisdiccion jurisdiccion, List<Long> proyectosCompletos) {
+		for(ObjetivoJurisdiccional oj: jurisdiccion.getObjetivosJurisdiccionales()) {
+			for(ObjetivoOperativo op : oj.getObjetivosOperativos()) {
+				for(Proyecto proy: op.getProyectos()) {
+					if(EstadoProyecto.COMPLETO.getName().equals(proy.getEstado())) {
+						proyectosCompletos.add(proy.getIdProyecto());
+					}
+				}
+			}
+		}
+	}
 
 	public JurisdiccionJpaDao getJurisdiccionDAO() {
 		return repositorio.getJurisdiccionJpaDao();
@@ -67,5 +103,10 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 	@VisibleForTesting
 	public void setJurisdiccionRepository(JurisdiccionRepositoryImpl repo) {
 		this.repositorio = repo;
+	}
+	
+	@VisibleForTesting
+	public void setProyectoRepository(ProyectoRepositoryImpl repo) {
+		this.repositorioProyecto = repo;
 	}
 }
