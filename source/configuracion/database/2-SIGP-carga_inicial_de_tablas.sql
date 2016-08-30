@@ -1035,7 +1035,7 @@ INSERT INTO `indicador_estrategico` (`idIndicadorEstrategico`, `idObjetivoJurisd
 	(60, 25, 'Total de familias  amparadas', 'Sumatoria de familias amparadas'),
 	(61, 25, 'Cantidad de llamadas al 0800-MUJER', 'Sumatoria de llamadas al 0800-6668537 (MUJER)'),
 	(62, 30, '75% de proyectos que en la planificación realiza algún encuentro/instancia de participación vecinal', 'Proyectos analizados con algún tipo de participación ciudadana/total de proyectos'),
-	(63, NULL, 'Viviendas paralizadas', '(Viviendas paralizadas/ Total de Viviendas a construir en 2016) *100'),
+	(63, 33, 'Viviendas paralizadas', '(Viviendas paralizadas/ Total de Viviendas a construir en 2016) *100'),
 	(64, 33, 'Porcentaje de regularización dominial de complejos. 11% (del universo total). Viviendas a regularizar (no incluye las viviendas que poseen algún tipo de restricción judicial)', '(Viviendas regularizadas con dominio/total de viviendas)*100'),
 	(65, 34, 'Intervalo real - Linea A', 'Sumatoria de minutos transcurridos entre llegada de una formación y otra/ total de formaciones'),
 	(66, 34, 'Intervalo real - Linea B', 'Sumatoria de minutos transcurridos entre llegada de una formación y otra/ total de formaciones'),
