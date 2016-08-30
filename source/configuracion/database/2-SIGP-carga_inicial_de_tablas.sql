@@ -11,8 +11,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for proyectos_ba_generated
-CREATE DATABASE IF NOT EXISTS `proyectos_ba_generated` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `proyectos_ba_generated`;
+-- CREATE DATABASE IF NOT EXISTS `proyectos_ba_generated` /*!40100 DEFAULT CHARACTER SET latin1 */;
+-- USE `proyectos_ba_generated`;
 
 -- Dumping data for table proyectos_ba_generated.archivos_proyecto: ~0 rows (approximately)
 /*!40000 ALTER TABLE `archivos_proyecto` DISABLE KEYS */;
