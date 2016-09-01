@@ -252,7 +252,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `email` varchar(50) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   `activo` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`idUsuario`)
+  PRIMARY KEY (`idUsuario`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
