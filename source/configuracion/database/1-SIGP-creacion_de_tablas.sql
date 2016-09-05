@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   PRIMARY KEY (`idProyecto`),
   KEY `FK_idObjetivoOperativo_proyecto` (`idObjetivoOperativo`),
   CONSTRAINT `FK_idObjetivoOperativo_proyecto` FOREIGN KEY (`idObjetivoOperativo`) REFERENCES `objetivo_operativo` (`idObjetivoOperativo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 
