@@ -14,7 +14,6 @@
 -- CREATE DATABASE IF NOT EXISTS `proyectos_ba_generated` /*!40100 DEFAULT CHARACTER SET latin1 */;
 -- USE `proyectos_ba_generated`;
 
-
 -- Dumping structure for table proyectos_ba_generated.jurisdiccion
 CREATE TABLE IF NOT EXISTS `jurisdiccion` (
   `idJurisdiccion` int(11) NOT NULL AUTO_INCREMENT,
@@ -57,7 +56,6 @@ CREATE TABLE IF NOT EXISTS `objetivo_operativo` (
 
 -- Data exporting was unselected.
 
-
 -- Dumping structure for table proyectos_ba_generated.proyecto
 CREATE TABLE IF NOT EXISTS `proyecto` (
   `idProyecto` int(10) NOT NULL AUTO_INCREMENT,
@@ -91,7 +89,6 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
-
 
 -- Dumping structure for table proyectos_ba_generated.archivos_proyecto
 CREATE TABLE IF NOT EXISTS `archivos_proyecto` (
@@ -211,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `presupuesto_por_anio` (
   `idProyecto` int(11) DEFAULT NULL,
   `anio` smallint(6) NOT NULL,
   `presupuesto` double DEFAULT NULL,
-  `otrasFuentes` decimal(10,2) DEFAULT NULL,
+  `otrasFuentes` double DEFAULT NULL,
   PRIMARY KEY (`idPresupuestoPoranio`),
   KEY `FK_idProyecto_presupuestoPorAnio` (`idProyecto`),
   CONSTRAINT `FK_idProyecto_presupuestoPorAnio` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`)
@@ -239,6 +236,17 @@ CREATE TABLE IF NOT EXISTS `rol_por_usuario` (
   KEY `usuario_fk` (`usuario_idUsuario`),
   CONSTRAINT `rol_fk` FOREIGN KEY (`rol_idRol`) REFERENCES `rol` (`idRol`),
   CONSTRAINT `usuario_fk` FOREIGN KEY (`usuario_idUsuario`) REFERENCES `usuario` (`idUsuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table proyectos_ba_generated.tema_transversal
+CREATE TABLE IF NOT EXISTS `tema_transversal` (
+  `idTemaTransversal` int(11) NOT NULL AUTO_INCREMENT,
+  `temaTransversal` varchar(512) NOT NULL,
+  `estado` varchar(50) NOT NULL,
+  PRIMARY KEY (`idTemaTransversal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
