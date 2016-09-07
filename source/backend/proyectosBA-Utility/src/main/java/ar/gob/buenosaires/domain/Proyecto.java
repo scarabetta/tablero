@@ -77,7 +77,7 @@ public class Proyecto implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyectoPresupuestoPorAnio", fetch = FetchType.LAZY)
 	@XmlElement(name = "presupuestosPorAnio")
-	@JsonManagedReference
+	@JsonManagedReference(value = "proy-presu")
 	private List<PresupuestoPorAnio> presupuestosPorAnio;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyectoDelArchivo", fetch = FetchType.LAZY)

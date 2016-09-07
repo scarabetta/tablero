@@ -36,13 +36,13 @@ public class PresupuestoPorAnio implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto")
-	@JsonBackReference
+	@JsonBackReference(value = "proy-presu")
 	@XmlTransient
 	private Proyecto proyectoPresupuestoPorAnio;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
-	@JsonBackReference
+	@JsonBackReference(value = "exp-presu")
 	@XmlTransient
 	private ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio;
 

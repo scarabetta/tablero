@@ -104,7 +104,7 @@ public class ExportacionProyectoView implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "exportacionProyectoViewPresupuestoPorAnio", fetch = FetchType.LAZY)
 	@XmlElement(name = "presupuestosPorAnio")
-	@JsonManagedReference
+	@JsonManagedReference(value = "exp-presu")
 	private List<PresupuestoPorAnio> presupuestosPorAnio = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
