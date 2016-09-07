@@ -106,15 +106,16 @@ public class ProyectoServiceImpl implements ProyectoService {
 	
 	@Override
 	public Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action) throws ESBException, JMSException {
-
+		
+		//TODO pasar a ENUM
 		switch (action) {
-		case "cancelar":
+		case "Cancelar":
 			return cancelarProyecto(proyecto);
-		case "verificar":
+		case "Verificar":
 			return verificarProyecto(proyecto);
-		case "deshacerCancelacion":
+		case "DeshacerCancelacion":
 			return deshacerCancelacion(proyecto);
-		case "presentar":
+		case "Presentar":
 			return presentarProyecto(proyecto);
 		default:
 			return null;
