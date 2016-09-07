@@ -19,7 +19,7 @@ config.devServer = {
     host: '0.0.0.0',
     proxy: {
         '/back/*': {
-            target: 'http://10.30.10.104:8080/proyectosBA-DS/',
+            target: 'http://10.30.10.211:8080/proyectosBA-DS/',
             rewrite: function(req) {
                 req.url = req.url.replace(/^\/back/, '');
             },

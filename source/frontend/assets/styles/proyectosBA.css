@@ -4,8 +4,8 @@ body {
     background-color: #e8e8e8;
 }
 
-#main-nav .form-control::-webkit-input-placeholder {
-    color: #e8e8e8;
+.navbar .form-control::-webkit-input-placeholder {
+    color: #e8e8e8!important;
 }
 
 .jumbotron {
@@ -13,11 +13,11 @@ body {
 }
 
 .jumbotron h1 {
-    font-size: 45px;
+    font-size: 35px !important;
 }
 
 .jumbotron p {
-    font-size: 16px;
+    font-size: 14px !important;
 }
 
 .jumbotron-main .navbar-default .dropdown-menu li a:focus {
@@ -25,7 +25,7 @@ body {
 }
 
 .notPadding {
-    padding: 0;
+    padding: 0!important;
 }
 
 .jumbotron-main .btn {
@@ -46,12 +46,11 @@ body {
     font-size: 12px;
     font-family: "Gotham", Helvetica, Arial, sans-serif;
     letter-spacing: -0.5px;
-    margin: 10px 0 10px 0;
 }
 
 .title-jurisdiccion {
     color: #fff;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 800;
 }
 
@@ -69,12 +68,11 @@ body {
 }
 
 .navbar-form .form-control {
-    width: 260px !important;
-    background-color: rgba(255, 255, 255, 0.25) !important;
-    border: 1px solid #717171 !important;
-    color: #e8e8e8 !important;
+    width: 260px!important;
+    border: 1px solid rgb(156, 156, 156);
+    color: rgb(255, 255, 255);
+    background-color: rgba(185, 185, 185, 0.74902);
 }
-
 .user .dropdown-menu {
     width: auto;
     min-width: 100%!important;
@@ -83,7 +81,6 @@ body {
 .main-container {
     background: #f5f5f5;
     padding-top: 0;
-    padding-bottom: 0 !important;
 }
 
 .section-img {
@@ -116,7 +113,7 @@ button {
 
 .nameYear {
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     color: #fff;
 }
 
@@ -136,24 +133,28 @@ hr {
 
 .firstLabel {
     /*font-size: 24px;*/
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .secondLabel {
     /*font-size: 18px;*/
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .thirdLabel {
     font-size: 14px;
     font-weight: bold;
-    margin: 10px 0;
 }
 
 .content-level-1 li {
     list-style: none;
-}
 
+}
+.listProject {
+    clear: left;
+    width: 100%;
+    float: left;
+}
 .content-level-1 ul {
     padding-left: 10px;
 }
@@ -162,6 +163,7 @@ hr {
 .secondLabel i {
     font-size: 12px;
     color: #000;
+    cursor: pointer;
 }
 
 .glyphicon-chevron-down {
@@ -169,11 +171,11 @@ hr {
     transform: rotate(0deg);
 }
 
-.collapsed .glyphicon-chevron-down {
+.collapsed.glyphicon-chevron-down {
     transform: rotate(-90deg);
 }
 
-.contentFormProyect {
+/*.contentFormProyect {
     background: #ededed;
     border: 1px solid #ddd;
     width: 100%;
@@ -181,7 +183,7 @@ hr {
     float: left;
     margin-bottom: 15px;
     margin-top: 15px;
-}
+}*/
 
 .contentFormProyect.sectionForm {
     margin-top: 0;
@@ -205,12 +207,20 @@ hr {
     color: #3f90d8!important
 }
 
+.contentTotal i {
+    left: 12px;
+}
+.contentTotal .input {
+    margin-left: 13px;
+}
 .totalPresupuesto {
     text-align: right;
     padding-top: 7px;
     font-size: 14px;
 }
-
+.contentTotal.totalPresupuesto {
+    padding-right: 0!important;
+}
 label {
     text-transform: uppercase;
     color: #6c6c6c;
@@ -315,14 +325,14 @@ input[type=file] {
 }
 
 .line-inner-proyect {
-    margin-top: 0px;
-    margin-bottom: 5px;
+    margin:5px 0;
     border-top: 1px dashed #ccc;
 }
 
 .date {
     font-size: 12px;
     color: #000;
+    padding-top: 5px;
 }
 
 .end-date {
@@ -349,14 +359,11 @@ input[type=file] {
 .contentDate,
 .box-date {
     float: right;
-    width: 250px;
-    padding-right: 15px;
-    padding-top: 7px;
+    width: 285px;
 }
-
 .contentDate .title,
 .box-date .date {
-    width: 75px;
+    width: 95px;
 }
 
 .contentDate .title {
@@ -395,10 +402,9 @@ input[type=file] {
 .default-content {
     background: #f1f1f1;
     color: #000;
-    padding-bottom: 10px;
+    padding: 10px 15px;
     border-bottom: 1px solid #d6d6d6;
 }
-
 .checkbox label,
 .radio label {
     min-height: 20px;
@@ -415,7 +421,7 @@ input[type=file] {
 
 .title-import-excel {
     font-size: 20px;
-    margin: 15px 0 0 0;
+    margin: 15px 0 8px 0;
 }
 
 .title-help {
@@ -450,7 +456,7 @@ input[type=file] {
     margin-left: 15px;
 }
 
-.menuExcel img {
+.menuExcel img, .alert-info img {
     width: 20px!important;
 }
 
@@ -479,9 +485,8 @@ input[type=file] {
 }
 
 .content-actionForm {
-    float: right;
-    clear: right;
     margin-bottom: 20px;
+    margin: 0 auto;
 }
 
 .content-actionForm .btn {
@@ -648,7 +653,7 @@ input[type=file] {
 }
 
 .add-line {
-    margin-bottom: 5px !important;
+    margin-bottom: 10px !important;
 }
 
 .action-collapse {
@@ -828,87 +833,6 @@ input[type=file] {
     font-size: 12px;
 }
 
-
-/*MEDIA QUERY*/
-
-@media (max-width: 1024px) {
-    .alert-success button {
-        float: left;
-        margin-top: 5px;
-    }
-}
-
-@media (max-width: 990px) {
-    .alert-warning {
-        float: left;
-        width: 100%;
-        margin-bottom: 15px;
-    }
-    .default-page,
-    .default-content {
-        float: left;
-        width: 100%;
-    }
-    .content-first-btn,
-    .content-first-btn .btn-default {
-        float: left;
-    }
-    hr {
-        float: left;
-        width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    .title-total,
-    .totalPresupuesto {
-        text-align: left;
-    }
-    .content-actionForm {
-        float: left;
-        clear: none;
-        margin-right: 15px;
-    }
-    .inputPresupuesto-monto {
-        padding-right: 0;
-    }
-    .option {
-        clear: left;
-        float: left;
-        width: 100%;
-        margin-bottom: 10px!important;
-    }
-    .radio,
-    .checkbox {
-        margin: 0;
-    }
-    .content-button button {
-        float: left;
-        margin: 15px 0;
-    }
-    .contentDate {
-        display: none;
-    }
-    .titleMobile {
-        font-size: 12px;
-        color: #afafaf;
-        display: block;
-    }
-    .btn-item {
-        text-align: left;
-    }
-    .dropdown-menu.multi-column {
-        min-width: 240px !important;
-        overflow-x: hidden;
-    }
-    .glyphicon-usd {
-        left: 15px;
-    }
-    /*.contentFormProyect .add-line{
-    float: right;
-  }*/
-}
-
 #header .bac-header {
     background-image: url(https://gcba.github.io/BAstrap/bastrap3/bac-header.svg);
 }
@@ -944,9 +868,9 @@ main.ng-enter-active {
     opacity: 1;
 }
 
-.textObjOp {
+/*.textObjOp {
     margin-top: 10px;
-}
+}*/
 
 .pageContanerCustom {
     width: 70vw;
@@ -1003,13 +927,6 @@ tags-input .tags {
 .usig_acv div.footer {
     display: none;
 }
-
-.agrupador {
-    font-size: 22px !important;
-    padding-top: 20px;
-    padding-bottom: 5px;
-}
-
 .agrupador i {
     font-size: 24px !important;
 }
@@ -1022,7 +939,8 @@ tags-input .tags {
 }
 
 .centerProgress {
-    margin-left: 28% !important;
+    margin: 0 auto!important;
+    float: none!important;
 }
 
 .dataProgress {
@@ -1030,6 +948,7 @@ tags-input .tags {
     font-size: 16px;
     font-weight: bold;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .contentButtonRight {
@@ -1041,16 +960,51 @@ tags-input .tags {
 }
 
 .completoClass {
-    color: #456225;
-    background-color: #f0f6df;
+    color: #059561;
+    background-color: #fff;
+    border: 2px solid #059561;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
 }
 
 .incompletoClass {
-    color: #844c26;
-    background-color: #ffefde;
+    color: #d70707;
+    background-color: #fff;
+    border: 2px solid #d70707;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
 }
-
-
+.presentadoClass{
+    color: #fff;
+    background-color: #00a59d;
+    border: 2px solid #00a59d;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
+}
+.verificadoClass{
+    color: #fff;
+    background-color: #9bc12b;
+    border: 2px solid #9bc12b;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
+}
+.canceladoClass{
+    color: #fff;
+    background-color: #a3a3a3;
+    border: 2px solid #a3a3a3;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    padding: 2px 0;
+}
 .contentFormProyect .btn-success{
     margin: 0 15px 0 0;
 }
@@ -1187,3 +1141,297 @@ input.cmn-toggle-round:checked + label:after {
   color: #a94442;
   font-size: 12px;
 }
+
+.contentEje input[type=checkbox] {
+display:none;
+}
+.contentEje input[type=checkbox] + label {
+  height: 160px;
+  width: 118px;
+  display: inline-block;
+  padding: 0 0 0 0px;
+  text-align: center;
+  padding-top: 124px;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+  text-transform: capitalize;
+}
+.contentEje input[type=checkbox]:checked + label {
+  height: 160px;
+  width: 118px;
+  display:inline-block;
+  padding: 0 0 0 0px;
+  padding-top: 124px;
+  font-family: "OpenSans", Helvetica, Arial, sans-serif;
+  text-transform: capitalize;
+}
+.eje-0 input[type=checkbox] + label{
+  background: url("../imgEjes/disfrute-bn.png") no-repeat;
+}
+.eje-0 input[type=checkbox]:checked + label {
+  background: url("../imgEjes/disfrute.png") no-repeat;
+}
+.eje-1 input[type=checkbox] + label{
+  background: url("../imgEjes/escalaHumana-bn.png") no-repeat;
+}
+.eje-1 input[type=checkbox]:checked + label {
+  background: url("../imgEjes/escalaHumana.png") no-repeat;
+}
+.eje-2 input[type=checkbox] + label{
+  background: url("../imgEjes/integracion-bn.png") no-repeat;
+}
+.eje-2 input[type=checkbox]:checked + label {
+  background: url("../imgEjes/integracion.png") no-repeat;
+}
+.eje-3 input[type=checkbox] + label{
+  background: url("../imgEjes/creatividad-bn.png") no-repeat;
+}
+.eje-3 input[type=checkbox]:checked + label {
+  background: url("../imgEjes/creatividad.png") no-repeat;
+}
+.eje-0, .eje-1, .eje-2, .eje-3{
+  float: left;
+  margin: 0 15px;
+}
+
+.jumbotron .containerTop {
+  padding-top: 0px !important;
+  padding-bottom: 45px !important;
+  width: 80vw;
+  margin: auto;
+}
+.title-jurisdiccion i{
+    font-size: 12px !important;
+}
+#dropdownExcel .dropdown-menu {
+    margin-left: 25px;
+}
+.container.contentApp{
+    width: 80vw!important;
+}
+.pageContanerCustom {
+    width: 80vw!important;
+}
+.principalBtn .btn-default{
+    margin-right:15px;
+}
+.objOContent{
+    margin-top: 8px;
+}
+.projectContent{
+    margin-top: 8px;
+    width: 100%;
+    float: left;
+}
+.columnRight{
+    float: left;
+    width: 100%;
+    max-width: 500px;
+    padding-top: 5px;
+}
+.suggestion-list{
+    overflow-y: scroll;
+}.titleOjEestrategico{
+    margin-bottom: 5px;
+}
+.listProject .description {
+    margin: 5px 0;
+}
+.obj-estrategico .indicador-remove{
+    top: 6px;
+}
+.obj-estrategico .line-inner-proyect {
+    margin: 0 0 5px 0;
+}
+.agrupador{
+    background: #f5f5f5;
+    padding: 15px;
+    font-size: 22px !important;
+    float: none!important;
+    border-radius: 6px;
+}
+
+.agrupador .btn-default i, .agrupador .glyphicon-usd{
+    color: #666;
+    font-size: 12px!important;
+}
+.contentFormProyect/*#alertmodalcomponent*/ {
+    background: #fff;
+    border: 2px solid #999999;
+    padding: 15px 0!important;
+    margin-bottom: 15px;
+    float: left;
+    width: 100%;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.contentNewProyect {
+    background: #999999;
+    border: 2px solid #999999;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 15px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+.titlePresupuesto{
+    font-size: 14px;
+    margin-bottom: 0;
+}
+#moverModal .titleMenu{
+    font-size: 12px;
+    color: #000;
+    font-weight: bold;
+}
+#moverModal .titleMenu{
+    font-size: 13px;
+    color: #000;
+    font-weight: bold;
+}
+#moverModal .titleOjEestrategico {
+    margin-bottom: 5px;
+    font-size: 10px;
+    margin-top: 5px;
+}
+#moverModal .titleOjoperativo {
+    padding: 0 15px;
+    margin-bottom: 0;
+}
+#moverModal li a {
+    font-size: 13px;
+}
+#moverModal .itemObj{
+    background: #000;
+    width: 6px;
+    height: 6px;
+    float: left;
+    border-radius: 15px;
+    margin-top: 6px;
+    margin-right: 4px;
+}
+.contentButtonRight button{
+    float: right;
+}
+.selectedObj{
+    background: #ffd300;
+}
+.contentNewProyect .alert-info{
+    margin: 0 0 15px 0;
+}
+.btnRemove{
+    color: #d04848!important;
+    margin-left: 15px!important;
+}
+
+.contentButtonRight .btn-success{
+    margin-right: 0;
+}
+.contentButtonRight .btn{
+    margin: 5px 0;
+}
+.error-date{
+    width: 100%;
+    position: absolute;
+    left: 15px;
+    bottom: -15px;
+}
+#projectFormID{
+    margin-top: 15px;
+}
+.agrupador .glyphicon-remove {
+    font-size: 13px!important;
+}
+.dropEstado{
+    width: 100%;
+    top: 40px!important;
+}
+#archivoAImportar{
+    margin-left:10px;
+    width:100%;
+}
+/*MEDIA QUERY*/
+
+@media (max-width: 1024px) {
+    .alert-success button {
+        float: left;
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 990px) {
+    .alert-warning {
+        float: left;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .default-page,
+    .default-content {
+        float: left;
+        width: 100%;
+    }
+    .content-first-btn,
+    .content-first-btn .btn-default {
+        float: left;
+    }
+    hr {
+        float: left;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-total,
+    .totalPresupuesto {
+        text-align: left;
+    }
+    .content-actionForm {
+        float: left;
+        clear: none;
+        margin-right: 15px;
+    }
+    .inputPresupuesto-monto {
+        padding-right: 0;
+    }
+    .option {
+        clear: left;
+        float: left;
+        width: 100%;
+        margin-bottom: 10px!important;
+    }
+    .radio, .checkbox {
+    position: relative;
+    display: block;
+    margin-top: 0;
+    margin-bottom:0;
+    }
+    .content-button button {
+        float: left;
+        margin: 15px 0;
+    }
+    .contentDate {
+        display: none;
+    }
+    .titleMobile {
+        font-size: 12px;
+        color: #afafaf;
+        display: block;
+    }
+    .btn-item {
+        text-align: left;
+    }
+    .dropdown-menu.multi-column {
+        min-width: 240px !important;
+        overflow-x: hidden;
+    }
+    .glyphicon-usd {
+        left: 15px;
+    }
+    /*.contentFormProyect .add-line{
+    float: right;
+  }*/
+}
+@media screen and (min-width: 768px) {
+  .jumbotron h1, .jumbotron .h1 {
+      font-size: 35px !important;
+  }
+}
+

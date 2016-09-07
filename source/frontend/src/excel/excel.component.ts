@@ -1,0 +1,42 @@
+import {GeneralServices} from "../services/services.ts";
+const template = require('./excel.html');
+
+module App {
+
+  export class ExcelController {
+
+    /*@ngInject*/
+    constructor(private services:GeneralServices) {}
+
+    saveData = (function () {
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      return function (data, fileName) {
+          var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+          var url = window.URL.createObjectURL(blob);
+          a.href = url;
+          (<any>a).download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+      };
+    }());
+
+    downloadExcel() {
+       this.services.downloadExcelMAestro().then((data) => {
+          this.saveData(data, 'PGI_ExcelMaestro.xlsx');
+       });
+    }
+
+  }
+
+  export let excelComponent = {
+      bindings: {
+          showimport: '<'
+      },
+      templateUrl: template,
+      controller: ExcelController,
+      controllerAs: 'excelCtrl',
+  };
+}
+
+export = App;

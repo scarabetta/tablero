@@ -5,7 +5,7 @@ const template = require('./form-operative-objective.html');
 module Home {
 
   export class FormOperativeObjectiveComponentController {
-
+    private title: string;
     private idobjetivoestrategico: number;
     private idoperativeobjective: number;
     private currentOperativeObjective: ObjetivoOperativo;
@@ -15,9 +15,12 @@ module Home {
       private $compile: ng.ICompileService, private $scope:ng.IScope) {
 
       if (this.idoperativeobjective) {
+        this.title = "Modificar objetivo operativo";
         services.getOperativeObjective(this.idoperativeobjective).then((data) => {
           this.currentOperativeObjective = data;
         });
+      } else {
+       this.title = "Nuevo objetivo operativo";
       }
     }
 

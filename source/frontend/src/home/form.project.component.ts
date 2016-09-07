@@ -13,12 +13,15 @@ const template = require('./form-project.html');
 module Home {
 
     export class FormProjectComponentController {
-
+      private title: string;
       private currentProject:Proyecto;
       private poblacionesMeta:PoblacionMeta[];
+      private poblacionesMetaPlaceholder = 'Comunas';
       private ejesDeGobierno:EjeDeGobierno[];
+      private totalBudgetOtherSources: number;
       private totalBudget: number;
       private comunas:Comuna[];
+      private comunasPlaceholder = 'Comunas';
       private idobjetivo: number;
       private idproject: number;
       private allInputs: boolean;
@@ -27,8 +30,12 @@ module Home {
       private countForm: string;
       private percentForm: number;
       private validDate: string;
-      private dirNoValidate: string;
-      private noDir:boolean;
+      private areaNombre:string;
+      private area: any;
+      private moveOptions: any;
+      private actionMove:string;
+      private changingStateFlag:boolean;
+      private validators = new Array<any>();
       private datePickerInicio = {
         status: false
       };
@@ -36,18 +43,10 @@ module Home {
         status: false
       };
 
-      /* tslint:disable */
-      private configDropDown = {
-          selectAll       : "Seleccionar todas",
-          selectNone      : "Remover todas",
-          search          : "Buscar comunas...",
-          nothingSelected : "No se ha seleccionado ninguna"
-      };
-      /* tslint:enable */
-
       /*@ngInject*/
       constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService, private $scope:ng.IScope,
         private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService) {
+          // (<any>$(".pull-right")).pin({containerSelector: ".contentFormProyect"});
           services.poblacionMeta().then((data) => this.poblacionesMeta = data);
           services.ejesDeGobierno().then((data) => this.ejesDeGobierno = data);
           var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
@@ -84,70 +83,162 @@ module Home {
           delete this.currentProject.idProyecto;
 
           if (this.idproject) {
+            this.title = 'Modificar Proyecto';
             services.getProject(this.idproject).then((data) => {
-              if (data.comunas.length === 0) {
-                this.noDir = false;
-                this.dirNoValidate = 'comunas';
-              } else if (data.direccion === "") {
-                this.noDir = false;
-                this.dirNoValidate = 'direccion';
-              } else {
-                this.dirNoValidate = '';
-                this.noDir = true;
-              }
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
               this.currentProject = data;
+              this.actionMove = data.estado;
+              this.initValidators();
+              if (data.area) {
+                this.areaNombre = data.area.nombre;
+              }
               services.comunas().then((data) => {
-                this.setTickedProperty(data, false);
                 this.comunas = data;
-                if (this.currentProject.comunas.length > 0) {
-                  this.currentProject.comunas.forEach((entry) => {
-                    this.comunas.forEach((entryComuna) => {
-                      if (entry.idComuna === entryComuna.idComuna) {
-                        this.setSingleTickedTrue(entryComuna);
-                      }
-                    });
-                  });
-                }
                 this.getTotalBudget();
+                this.getTotalBudgetOtherSources();
+              });
+              this.changingStateFlag = false;
+              services.getMoveOptions(this.idproject).then((data) => {
+                console.log(data);
+                this.moveOptions = data;
               });
             });
           } else {
+            this.title = 'Nuevo Proyecto';
+            this.initValidators();
               services.comunas().then((data) => {
-                this.setTickedProperty(data, false);
                 this.comunas = data;
               });
               this.currentProject.idObjetivoOperativo2 = this.idobjetivo;
               this.allInputs = false;
+              this.changingStateFlag = false;
           }
 
-          /* MARTIN HIZO ESTE CODIGO :)  POR FAVOR REFACTORIZAR, git no digas que fui yo que fue martin */
 
           $scope.$watch('formCtrl.currentProject', (newVal, oldVal) => {
-              var errors = 0;
-              for (var e in this.currentProject) {
-                if ((e !== 'idObjetivoJurisdiccional2' && e !== 'coordenadaX' && e !== 'coordenadaY' && e !== 'idJurisdiccion2' && e !== 'organismosCorresponsables' && e !== 'codigo' && e !== 'archivos') && (this.currentProject[e] === null || this.currentProject[e] === "" || this.currentProject[e] === undefined || this.currentProject[e].length === 0)) {// tslint:disable-line
-                  if (e !== this.dirNoValidate) {
-                    if (e === "dirección" || e === "Comunas" && !this.noDir) {
-                      errors++;
-                    }
-                  }
-                }
+            var emptyCount = 0;
+            this.validators.forEach((validator) => {
+              if (!validator()) {
+                emptyCount++;
               }
-              if (errors === 0) {
-                  this.allInputs = true;
-                  this.countForm = "Has ingresado todos los campos.";
-              } else {
+            });
+            if (emptyCount === 0) {
+                this.allInputs = true;
+                this.countForm = "Has ingresado todos los campos.";
+                this.percentForm = Math.round(((this.validators.length - 2) - emptyCount) * (100 / (this.validators.length - 2)));
+            } else {
                 this.allInputs = false;
-                this.percentForm = Math.round((18 - errors) * (100 / 18));
-                this.countForm = "Te quedan " + errors + " datos por ingresar";
-              }
+                this.percentForm = Math.round(((this.validators.length - 2) - emptyCount) * (100 / (this.validators.length - 2)));
+                this.countForm = "Te quedan " + emptyCount + " datos por ingresar";
+            }
           }, true);
+
+          $scope.$watch(() => {
+            return (this.currentProject.comunas && this.currentProject.comunas.length) ? this.currentProject.comunas.length : 0;
+          }, (value) => {
+            this.comunasPlaceholder = value > 0 ? '' : 'Comunas';
+          });
+
+          $scope.$watch(() => {
+            return (this.currentProject.poblacionesMeta && this.currentProject.poblacionesMeta.length) ? this.currentProject.poblacionesMeta.length : 0;
+          }, (value) => {
+            this.poblacionesMetaPlaceholder = value > 0 ? '' : 'Ej. Jubilados, Estudiantes';
+          });
+
       };
+
+      cleanCheckEjes() {
+        console.log(this.currentProject.ejesDeGobierno);
+        if ((<any>$("#no-selection")).prop("checked")) {
+          this.currentProject.ejesDeGobierno = [];
+        } else {
+          (<any>$(this)).prop("checked", !(<any>$(this)).prop("checked"));
+        }
+      }
+
+      setState(state) {
+        this.changingStateFlag = true;
+        this.actionMove = state;
+      }
+
+      checkNoSelection() {
+        console.log(this.currentProject.ejesDeGobierno);
+        if (this.currentProject.ejesDeGobierno.length > 0) {
+          (<any>$("#no-selection")).prop("checked", false);
+        } else {
+          (<any>$("#no-selection")).prop("checked", true);
+        }
+      }
+
+      isEmpty(array) {
+        return array.length === 0;
+      }
+
+      isFalsy(field) {
+        return field === undefined || field === null || this.isEmpty(field);
+      }
+
+      createValidatorRequired(obj, property) {
+        var scope = this;
+        return function(){
+          return !scope.isFalsy(obj[property]);
+        };
+      }
+
+      createValidatorComposeRequired(obj, property, requiredProperty, requiredValue) {
+        var scope = this;
+        return function(){
+          return (obj[requiredProperty] === requiredValue) === !scope.isFalsy(obj[property]);
+        };
+      }
+
+      onChangeArea() {
+        var scope = this;
+        this.jurisdiccion.areas.forEach(function(entry) {
+          if (entry.nombre === this.areaNombre) {
+            scope.area = entry;
+          }
+        }, this);
+        this.currentProject.area = this.area;
+      }
+
+      initValidators() {
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'nombre'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'descripcion'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'meta'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'unidadMeta'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'poblacionAfectada'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'liderProyecto'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'area'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'cambioLegislativo'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'fechaInicio'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'fechaFin'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'prioridadJurisdiccional'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'presupuestosPorAnio'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'ejesDeGobierno'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'poblacionesMeta'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'tipoUbicacionGeografica'));
+          this.validators.push(this.createValidatorComposeRequired(this.currentProject, 'direccion', 'tipoUbicacionGeografica', 'Dirección'));
+          this.validators.push(this.createValidatorComposeRequired(this.currentProject, 'comunas', 'tipoUbicacionGeografica', 'Comunas'));
+      }
 
       presentProject() {
         var scope = this;
+        if (this.changingStateFlag) {
+          this.services.changeState(this.actionMove, this.currentProject).then((data) => {
+            console.log(data);
+            scope.$state.reload().then(function() {
+                var notificationData = {
+                  "type" : "success",
+                  "icon" : "ok-sign",
+                  "title" : "Ok",
+                  "text" : "El proyecto se guardó con éxito." // tslint:disable-line
+                };
+                scope.addNotification(notificationData);
+            });
+          });
+        } else {
           this.services.presentProject(this.currentProject).then((data) => {
               scope.$state.reload().then(function() {
                   var notificationData = {
@@ -159,14 +250,20 @@ module Home {
                   scope.addNotification(notificationData);
               });
           });
+        }
+
       }
 
       saveProject() {
         var scope = this;
+        console.log(this.currentProject);
         if (this.idproject) {
-          this.services.updateProject(this.currentProject).then((data) => {
-              this.$state.reload();
-           });
+          this.services.changeState(this.actionMove, this.currentProject).then((data) => {
+            console.log(data);
+            this.services.updateProject(this.currentProject).then((data) => {
+                this.$state.reload();
+             });
+          });
         } else {
             this.services.saveProject(this.currentProject).then((data) => {
               if (data.idProyecto) {
@@ -209,17 +306,6 @@ module Home {
         });
       }
 
-
-      setSingleTickedTrue(elem) {
-        elem["ticked"] = true;
-      }
-
-      setTickedProperty(array, val) {
-          array.forEach((entry) => {
-              entry["ticked"] = val;
-          });
-      }
-
       openPickerInicio() {
            this.datePickerInicio.status = true;
        }
@@ -232,18 +318,6 @@ module Home {
         if (this.currentProject.comunas) {
           this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
         }
-        if (type === "Dirección") {
-          this.dirNoValidate = 'comunas';
-          this.noDir = false;
-          this.setTickedProperty(this.comunas, false);
-        } else if (type === "Comunas") {
-          this.currentProject.direccion = "";
-          this.dirNoValidate = 'direccion';
-          this.noDir = false;
-        } else {
-          this.dirNoValidate = "";
-          this.noDir = true;
-        }
       }
 
       loadTags($query) {
@@ -251,6 +325,12 @@ module Home {
             return tag.nombre.toLowerCase().indexOf($query.toLowerCase()) !== -1;
           });
       };
+
+      loadComunas($query) {
+        return this.comunas.filter(function(tag) {
+          return tag.nombre.toLowerCase().indexOf($query.toLowerCase()) !== -1;
+        });
+      }
 
       loadYears() {
         this.validDate = "";
@@ -263,10 +343,12 @@ module Home {
           } else {
             this.currentProject.presupuestosPorAnio = [];
             this.totalBudget = 0;
+            this.totalBudgetOtherSources = 0;
             for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
               var p : Presupuesto = {
                 'anio': y,
                 'presupuesto': 0,
+                'otrasFuentes': 0
               };
               this.currentProject.presupuestosPorAnio.push(p);
             }
@@ -284,6 +366,18 @@ module Home {
           });
         }
         return this.totalBudget;
+      }
+
+      getTotalBudgetOtherSources() {
+        this.totalBudgetOtherSources = 0;
+        this.validDate = "";
+        var pj = this.currentProject;
+        if (pj && pj.presupuestosPorAnio && pj.presupuestosPorAnio.length > 0) {
+          this.currentProject.presupuestosPorAnio.forEach((p) => {
+            this.totalBudgetOtherSources += Number(p.otrasFuentes);
+          });
+        }
+        return this.totalBudgetOtherSources;
       }
 
       moveProject() {

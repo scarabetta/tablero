@@ -1,0 +1,12 @@
+<div class="dropdown menuExcel" id="dropdownExcel">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <img src="../../assets/icono-xls.png">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <!-- <li><a href="#">Descargar Excel con todos los proyectos</a></li> -->
+        <li><a ng-click="excelCtrl.downloadExcel()">Descargar Excel maestro</a></li>
+        <li role="separator" class="divider" ng-show="excelCtrl.showimport"></li>
+        <li><a ui-sref="home.upload" ng-show="excelCtrl.showimport">Importar proyectos de Excel</a></li>
+    </ul>
+</div>

@@ -6,8 +6,8 @@ module.exports = {
       }
     },
     development: {
-        authBaseUrl: 'http://10.140.150.154:8090/proyectosBA-DS/',
-        apiBaseUrl:'http://10.140.150.154:8090/proyectosBA-DS/api/',
+        authBaseUrl: 'http://10.30.10.211:8080/proyectosBA-DS/',
+        apiBaseUrl:'http://10.30.10.211:8080/proyectosBA-DS/api/',
         captcha: {
           public: '6LdYMSUTAAAAAL83hBB-pGf9sCWB9S7S42STwgfK'
         }
@@ -26,8 +26,7 @@ module.exports = {
         }
     },
     devrel: {
-      authBaseUrl: 'http://pbarel.hexacta.com:8080/proyectosBA-DS/',
-      apiBaseUrl:'http://pbarel.hexacta.com:8080/proyectosBA-DS/api/',
+      authBaseUrl: '/back/',
         captcha: {
           public: '6LdYMSUTAAAAAL83hBB-pGf9sCWB9S7S42STwgfK'
         }

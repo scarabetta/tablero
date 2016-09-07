@@ -40,7 +40,7 @@ module Users {
       addAlert(data) {
         var formDiv = document.getElementsByTagName('alertmodal');
         angular.element(formDiv).remove();
-        var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
+        var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='usersCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
         var referralDiv = referralDivFactory(this.$scope);
         var containerDiv = document.getElementById('alertmodalcomponent');
         angular.element(containerDiv).append(referralDiv);

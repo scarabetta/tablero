@@ -14,7 +14,7 @@ module Users {
                 controllerAs: 'usersCtrl',
                 parent: 'root',
                 data: {
-                  requireLogin: false
+                  requireLogin: true
                 }
             });
     }

@@ -23,7 +23,9 @@ module Menu {
         constructor(private $state: ng.ui.IStateService, private services:GeneralServices, private search:Search, private localStorageService:angular.local.storage.ILocalStorageService) {
             this.items = [
                 {"state": "home.tree", "title": "Alta de proyectos", "controllerAs": "homeCtrl"},
-                {"state": "users", "title": "Usuarios", "controllerAs": "usersCtrl"}
+                {"state": "users", "title": "Usuarios", "controllerAs": "usersCtrl"},
+                {"state": "priorization", "title": "Priorización", "controllerAs": "priorizationCtrl"},
+                {"state": "cross", "title": "Temas Transversales", "controllerAs": "crossTopicsCtrl"}
             ];
             this.isWaitingJurisdicciones = false;
         }
@@ -94,7 +96,7 @@ module Menu {
     export let menuComponent =  {
        template: `<div class="jumbotron jumbotron-misc jumbotron-main" ng-if="$ctrl.isLoginView()">
                    <nav  class="navbar navbar-default" role="navigation">
-                    <div class="container">
+                    <div class="container contentApp">
                         <div class="row">
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                               <ul class="nav navbar-nav">
@@ -106,7 +108,7 @@ module Menu {
                                     <ul class="dropdown-menu multi-column columns-3">
                                       <div class="row">
                                           <ul class="multi-column-dropdown">
-                                            <div class="col-sm-4" ng-repeat="item in $ctrl.jurisdiccion">
+                                            <div class="col-sm-6" ng-repeat="item in $ctrl.jurisdiccion | orderBy:'abreviatura'">
                                               <li><a ng-click="$ctrl.changeJurisdiccion(item.idJurisdiccion)">
                                               {{item.abreviatura}}
                                               <i ng-if="$ctrl.currentJurisdiccion(item.idJurisdiccion)" class="glyphicon glyphicon-eye-open"></i>

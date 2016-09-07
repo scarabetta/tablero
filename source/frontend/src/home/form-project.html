@@ -1,4 +1,5 @@
 <li id="projectFormID">
+<div class="contentNewProyect">{{formCtrl.title}}</div>
     <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
        <div class="col-md-3 col-sm-2 col-xs-12 pull-right" id="moveprojectid">
             <!-- <div class="dropdown content-actionForm">
@@ -14,7 +15,7 @@
                     <li><a href="#">Rechazar</a></li>
                 </ul>
             </div> -->
-            <!-- <div class="contentProgress content-actionForm">
+            <div class="contentProgress content-actionForm">
                 <div class="titleProgress">Progreso de creación</div>
                 <div class="row">
                     <div class="c100 p{{formCtrl.percentForm}} centerProgress green">
@@ -26,18 +27,35 @@
                     </div>
                 </div>
                 <div class="dataProgress">{{formCtrl.countForm}}</div>
-            </div> -->
+            </div><div class="dropdown content-actionForm contentButtonRight">
+                <button class="btn btn-default dropdown-toggle fullButtonRight" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Estado: {{formCtrl.actionMove}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropEstado" aria-labelledby="dropdownMenu1">
+                    <li ng-repeat="status in formCtrl.moveOptions"><a ng-click="formCtrl.setState(status)">{{status}}</a></li>
+                    <!-- <li><a href="#">Pre aprobar</a></li>
+                    <li><a href="#">Cancelar</a></li>
+                    <li><a href="#">Rechazar</a></li> -->
+                </ul>
+              </div>
             <div class="dropdown content-actionForm contentButtonRight">
                 <button class="btn btn-default fullButtonRight" type="button" id="dropdownMenu1" data-toggle="modal" data-target="#moverModal" aria-haspopup="true" aria-expanded="true" ng-click="formCtrl.moveProject()">
-                    <i class="glyphicon glyphicon-th-list" aria-hidden="true"></i>
-                    <span>Mover a ...</span>
+                    Mover a ...
                     <!-- <span class="caret"></span> -->
                 </button>
             </div>
+            <div class="col-md-12">
+                <hr class="line-inner-proyect">
+            </div>
+            <div class="dropdown content-actionForm contentButtonRight">
+                 <button ng-show="formCtrl.currentProject.estado != 'Presentado'" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg fullButtonRight">Guardar y Presentar</button>
+                 <button ng-show="formCtrl.currentProject.estado != 'Presentado'" type="submit" class="btn btn-default fullButtonRight" id="draftButton">Guardar Borrador</button>
+                <button type="button" class="btn btn-default right fullButtonRight" ng-click="formCtrl.cancel()">Cancelar cambios</button>
+            </div>
             <div ng-if="formCtrl.currentProject.idProyecto" class="dropdown content-actionForm contentButtonRight">
-                <button class="btn btn-default fullButtonRight" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">
-                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                    <span>Eliminar</span>
+                <button class="btn btn-default fullButtonRight btnRemove" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">
+                    Eliminar
                 </button>
             </div>
         </div>
@@ -45,292 +63,307 @@
 
     <div class="col-md-9 col-sm-10 col-xs-12">
         <form role="form" ng-submit="formCtrl.saveProject()">
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
+                <div class="col-md-12 agrupador">
                     <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Información inicial
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentProject.nombre" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="descrption">Descripción del proyecto</label>
+                            <textarea class="form-control" rows="3" ng-model="formCtrl.currentProject.descripcion"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <div></div>
+                            <label for="meta">Meta 2017</label>
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="20">
+                        </div>
+                        <div class="form-group col-md-9">
+                            <label for="unit">Unidad de la meta</label>
+                            <input type="text" class="form-control" id="unit" placeholder="Ingresar unidad" ng-model="formCtrl.currentProject.unidadMeta">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="name">Nombre</label>
-                    <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentProject.nombre" required>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-12">
-                    <label for="descrption">Descripción del proyecto</label>
-                    <textarea class="form-control" rows="3" ng-model="formCtrl.currentProject.descripcion"></textarea>
-                </div>
-            </div>
-            <hr>
             <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
+                <div class="col-md-12 agrupador">
+                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Fechas y presupuesto
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <label for="responsable">Fecha de inicio</label>
+                            <!-- <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required> -->
+                            <p class="input-group">
+                              <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="responsable">Fecha de fin</label>
+                            <!-- <input type="date" class="form-control" id="responsable" placeholder="" min="formCtrl.currentProject.fechaInicio" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required> -->
+                            <p class="input-group">
+                              <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerFin.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required />
+                              <span class="input-group-btn">
+                                  <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                        </div>
+                        <span class="errorForm error-date">{{formCtrl.validDate}}</span>
+                    </div>
+                    <div ng-show="formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <label class="titlePresupuesto" for="responsable">Presupuesto desglosado año por año:</label>
+                          <p class="reference">Ingresá montos para calcular el total</p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-2 col-sm-3 col-xs-12 add-line">
+                          <label>Año</label>
+                        </div>
+                        <div class="col-md-4 col-sm-5 col-xs-11 add-line">
+                          <label style="padding-left: 24px;">Fondo solicitado GCBA</label>
+                        </div>
+                        <div class="col-md-4 col-sm-5 col-xs-11 add-line">
+                          <label style="padding-left: 24px;">Fondo de otras fuentes</label>
+                        </div>
+                      </div>
+                      <div class="row" ng-repeat="p in formCtrl.currentProject.presupuestosPorAnio">
+                        <div class="form-group col-md-2 col-sm-3 col-xs-12 add-line">
+                          <input type="number" class="form-control" id="year" ng-value="year" ng-model="p.anio" disabled="true">
+                        </div>
+                        <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                        <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
+                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
+                        </div>
+                        <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                        <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
+                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudgetOtherSources()" ng-model="p.otrasFuentes">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-2 col-sm-3 totalPresupuesto">
+                          <label>SUBTOTAL</label>
+                        </div>
+                        <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                        <div class="form-group col-md-4 col-sm-5">
+                          <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudget">
+                        </div>
+                        <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                        <div class="form-group col-md-4 col-sm-5">
+                          <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudgetOtherSources">
+                        </div>
+                      </div>
+                      <div class="row contentTotal">
+                        <div class="form-group col-md-offset-4 col-md-2 col-sm-3 col-sm-offset-5 totalPresupuesto">
+                          <label>TOTAL</label>
+                        </div>
+                        <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                        <div class="form-group col-md-4 col-sm-5 input">
+                          <input type="number" class="form-control" id="meta" disabled="disabled" ng-value="formCtrl.totalBudget + formCtrl.totalBudgetOtherSources">
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+            <br>
+                <div class="col-md-12 agrupador">
                     <i class="glyphicon glyphicon-user" aria-hidden="true"></i>&nbsp;&nbsp;Población
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="unit">Cantidad de población impactada</label>
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="20">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="type">Segmento de la población impactada</label>
+                            <!-- <input type="text" class="form-control" id="type" placeholder="Ej. Jubilados, Estudiantes"> -->
+                            <tags-input ng-model="formCtrl.currentProject.poblacionesMeta"
+                                        display-property="nombre"
+                                        key-property="nombre"
+                                        add-from-autocomplete-only="true"
+                                        placeholder="{{formCtrl.poblacionesMetaPlaceholder}}"
+                                        replace-spaces-with-dashes="false">
+                                <auto-complete source="formCtrl.loadTags($query)"
+                                               min-length="0"
+                                               max-results-to-show="1000"
+                                               load-on-focus="true"
+                                               load-on-empty="true">
+                                </auto-complete>
+                            </tags-input>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <div></div>
-                    <label for="meta">Meta</label>
-                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="20">
-                </div>
-                <div class="form-group col-md-9">
-                    <label for="unit">Unidad de la meta</label>
-                    <input type="text" class="form-control" id="unit" placeholder="Ingresar unidad" ng-model="formCtrl.currentProject.unidadMeta">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="unit">Cantidad de población afectada</label>
-                    <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="20">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="type">Segmento de la población afectada</label>
-                    <!-- <input type="text" class="form-control" id="type" placeholder="Ej. Jubilados, Estudiantes"> -->
-                    <tags-input ng-model="formCtrl.currentProject.poblacionesMeta"
-                                display-property="nombre"
-                                key-property="nombre"
-                                add-from-autocomplete-only="true"
-                                placeholder="Ej. Jubilados, Estudiantes">
-                        <auto-complete source="formCtrl.loadTags($query)"
-                                       min-length="0"
-                                       load-on-focus="true"
-                                       load-on-empty="true">
-                        </auto-complete>
-                    </tags-input>
-                </div>
-            </div>
-            <hr>
             <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i>&nbsp;&nbsp;Responsables
+                <div class="col-md-12 agrupador">
+                    <i class="glyphicon glyphicon-lock" aria-hidden="true"></i>&nbsp;&nbsp;Responsables
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="responsable">Responsable</label>
+                            <input type="text" class="form-control" id="responsable" placeholder="Ingresar l&iacute;der de proyecto" ng-model="formCtrl.currentProject.liderProyecto">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="responsable">Area</label>
+                            <select class="form-control" ng-model="formCtrl.areaNombre" ng-change="formCtrl.onChangeArea()">
+                                <option ng-repeat="item in formCtrl.jurisdiccion.areas"  ng-selected="{{item.nombre == formCtrl.nombre}}" value="{{item.nombre}}">{{item.nombre}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                          <label for="responsable">Organismos corresponsables</label> <span class="opcional">(Opcional)</span>
+                          <input type="text" class="form-control" id="responsable" placeholder="Ingresar otros organismos de Ciudad, Nación, Provincia" ng-model="formCtrl.currentProject.organismosCorresponsables">
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="responsable">Responsable</label>
-                    <input type="text" class="form-control" id="responsable" placeholder="Ingresar l&iacute;der de proyecto" ng-model="formCtrl.currentProject.liderProyecto">
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="responsable">Area</label>
-                    <input type="text" class="form-control" id="responsable" placeholder="Ingresar &aacute;rea" ng-model="formCtrl.currentProject.area">
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="responsable">Organismos corresponsables</label>
-                  <input type="text" class="form-control" id="responsable" placeholder="Ingresar m&aacute;ximo nivel jer&aacute;rquico" ng-model="formCtrl.currentProject.organismosCorresponsables">
-                </div>
-            </div>
-            <hr>
             <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;Ubicación
+                <div class="col-md-12 agrupador">
+                    <i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;Tipo de ubicación
+                    <p class="reference">Seleccioná el tipo de ubicación que mejor describa al proyecto.
+Si el proyecto impacta en una ubicación específica, seleccioná "Dirección".
+Si impacta en varias direcciones, seleccioná "Comunas".
+Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lugar, seleccioná la opción correspondiente a cada caso.</p>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="responsable">Ubicación geográfica</label>
+                            <select class="form-control" ng-change="formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)" ng-model="formCtrl.currentProject.tipoUbicacionGeografica">
+                                <option>Comunas</option>
+                                <option>Dirección</option>
+                                <option>Sin Definir</option>
+                                <option>No Corresponde</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-8" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'">
+                            <label for="responsable">Dirección</label>
+                            <!-- <input type="text" class="form-control" id="direccion" placeholder="Ingresar dirección" ng-model="formCtrl.currentProject.direccion"> -->
+                            <usigautocomplete></usigautocomplete>
+                        </div>
+                        <div class="form-group col-md-8" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'">
+                            <label for="responsable">Comunas</label>
+                            <tags-input ng-model="formCtrl.currentProject.comunas"
+                                        display-property="nombre"
+                                        key-property="nombre"
+                                        add-from-autocomplete-only="true"
+                                        placeholder="{{formCtrl.comunasPlaceholder}}"
+                                        replace-spaces-with-dashes="false">
+                                <auto-complete source="formCtrl.loadComunas($query)"
+                                               min-length="0"
+                                               max-results-to-show="1000"
+                                               load-on-focus="true"
+                                               load-on-empty="true">
+                                </auto-complete>
+                            </tags-input>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="responsable">Ubicación geográfica</label>
-                    <select class="form-control" ng-change="formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)" ng-model="formCtrl.currentProject.tipoUbicacionGeografica">
-                        <option>Comunas</option>
-                        <option>Dirección</option>
-                        <option>Sin Definir</option>
-                        <option>No Corresponde</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-9" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'">
-                    <label for="responsable">Dirección</label>
-                    <!-- <input type="text" class="form-control" id="direccion" placeholder="Ingresar dirección" ng-model="formCtrl.currentProject.direccion"> -->
-                    <usigautocomplete></usigautocomplete>
-                </div>
-                <div class="form-group col-md-9" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'">
-                    <label for="responsable">Comunas</label>
-                    <!-- <select class="form-control" ng-model="formCtrl.currentProject.comunas">
-                        <option ng-repeat="comuna in formCtrl.comunas">{{comuna.nombre}}</option>
-                    </select> -->
-                    <div style="clear:both;"></div>
-                    <isteven-multi-select
-                        input-model="formCtrl.comunas"
-                        output-model="formCtrl.currentProject.comunas"
-                        button-label="nombre"
-                        item-label="nombre"
-                        tick-property="ticked"
-                        translation="formCtrl.configDropDown"
-                        helper-elements="all none">
-                    </isteven-multi-select>
-                </div>
-            </div>
-            <hr>
             <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Fechas y presupuestos
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-3">
-                    <label for="responsable">Fecha de inicio</label>
-                    <!-- <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required> -->
-                    <p class="input-group">
-                      <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
-                      <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
-                      </span>
-                    </p>
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="responsable">Fecha de fin</label>
-                    <!-- <input type="date" class="form-control" id="responsable" placeholder="" min="formCtrl.currentProject.fechaInicio" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required> -->
-                    <p class="input-group">
-                      <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerFin.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required />
-                      <span class="input-group-btn">
-                          <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
-                      </span>
-                    </p>
-                </div>
-                <span class="errorForm">{{formCtrl.validDate}}</span>
-            </div>
-            <div ng-show="formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''">
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="responsable">Presupuesto desglosado año por año:</label>
-                  <p class="reference">Ingresá montos para calcular el total</p>
-                </div>
-              </div>
-              <div class="row" ng-repeat="p in formCtrl.currentProject.presupuestosPorAnio">
-                <div class="form-group col-md-2 col-sm-3 col-xs-12 add-line">
-                  <input type="number" class="form-control" id="year" ng-value="year" ng-model="p.anio" disabled="true">
-                </div>
-                <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
-                  <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
-                </div>
-                <div class="col-md-6 col-sm-12 col-xs-12 contentLine">
-                    <hr class="line-inner-proyect">
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group col-md-2 col-sm-3 totalPresupuesto">
-                  Total
-                </div>
-                <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                <div class="form-group col-md-4 col-sm-5">
-                  <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudget">
-                </div>
-              </div>
-
-            </div>
-            <hr>
-            <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
+                <div class="col-md-12 agrupador">
                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Información adicional
+                    <div class="form-group">
+                        <label for="unit">Tipo de Proyecto</label>
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label class="option">
+                                <input type="radio" name="optionsTipo" id="optionsRadios1" value="Nuevo" checked ng-model="formCtrl.currentProject.tipoProyecto">
+                                Nuevo
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="optionsTipo" id="optionsRadios2" value="Ampliación" ng-model="formCtrl.currentProject.tipoProyecto">
+                                Ampliaci&oacute;n
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="unit">Eje de Gobierno</label>
+                      <p class="reference">Seleccioná los ejes de gobierno de la Ciudad haciendo clic en la imagen </p>
+                        <div class="row">
+                          <div class="contentEje eje-{{$index}}" ng-repeat="eje in formCtrl.ejesDeGobierno">
+                              <input type='checkbox' class="ejeCheckbox" name='eje-{{$index}}' value='eje-{{$index}}' ng-click="formCtrl.checkNoSelection()" id="eje-{{$index}}" checklist-model="formCtrl.currentProject.ejesDeGobierno" checklist-value="eje"/>
+                              <label for="eje-{{$index}}"> {{eje.nombre}} <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></label>
+                          </div>
+                        </div>
+                        <div class="checkbox">
+                            <label class="option" for="no-selection"><input ng-click="formCtrl.cleanCheckEjes()" type="checkbox" id="no-selection" name="noSelection" checked> No corresponde</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit">Implica cambio legislativo</label>
+                        <div class="radio" ng-init="formCtrl.currentProject.cambioLegislativo">
+                            <label class="option">
+                                <input type="radio" name="optionslegislativo" id="optionsRadios3" data-ng-value="false" ng-model="formCtrl.currentProject.cambioLegislativo">
+                                No
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="optionslegislativo" id="optionsRadios4" data-ng-value="true" ng-model="formCtrl.currentProject.cambioLegislativo">
+                                S&iacute;
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit">Prioridad Jurisdiccional</label>
+                        <div class="radio" ng-init="formCtrl.currentProject.prioridadJurisdiccional">
+                            <label class="option">
+                                <input type="radio" name="optionsPrioridad" id="optionsRadios1" value="1.Alta" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
+                                1. Alta
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="optionsPrioridad" id="optionsRadios2" value="2.Media" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
+                                2. Media
+                            </label>
+                            <label class="option">
+                                <input type="radio" name="optionsPrioridad" id="optionsRadios2" value="3.Baja" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
+                                3. Baja
+                            </label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="unit">Tipo de Proyecto</label>
-                <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
-                    <label class="option">
-                        <input type="radio" name="optionsTipo" id="optionsRadios1" value="Nuevo" checked ng-model="formCtrl.currentProject.tipoProyecto">
-                        Nuevo
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="optionsTipo" id="optionsRadios2" value="Ampliación" ng-model="formCtrl.currentProject.tipoProyecto">
-                        Ampliaci&oacute;n
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="unit">Eje de Gobierno</label>
-                <div class="checkbox" ng-repeat="eje in formCtrl.ejesDeGobierno">
-                    <label class="option">
-                        <input type="checkbox" data-checklist-model="formCtrl.currentProject.ejesDeGobierno" data-checklist-value="eje"> {{$index+1}}. {{eje.nombre}}
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="unit">Implica cambio legislativo</label>
-                <div class="radio" ng-init="formCtrl.currentProject.cambioLegislativo">
-                    <label class="option">
-                        <input type="radio" name="optionslegislativo" id="optionsRadios3" data-ng-value="false" ng-model="formCtrl.currentProject.cambioLegislativo">
-                        No
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="optionslegislativo" id="optionsRadios4" data-ng-value="true" ng-model="formCtrl.currentProject.cambioLegislativo">
-                        S&iacute;
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="unit">Prioridad Jurisdiccional</label>
-                <div class="radio" ng-init="formCtrl.currentProject.prioridadJurisdiccional">
-                    <label class="option">
-                        <input type="radio" name="optionsPrioridad" id="optionsRadios1" value="1.Alta" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
-                        1. Alta
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="optionsPrioridad" id="optionsRadios2" value="2.Media" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
-                        2. Media
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="optionsPrioridad" id="optionsRadios2" value="3.Baja" ng-model="formCtrl.currentProject.prioridadJurisdiccional">
-                        3. Baja
-                    </label>
-                </div>
-            </div>
-            <hr>
             <br>
-            <div class="row">
-                <div class="form-group col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-paperclip" aria-hidden="true"></i>&nbsp;&nbsp;Archivos adjuntos
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <label for="exampleInputFile">Adjuntar archivo <span class="opcional">(Opcional)</span></label>
-                    <p class="reference">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>
-                </div>
+                <div class="col-md-12 agrupador">
+                    <i class="glyphicon glyphicon-paperclip" aria-hidden="true"></i>&nbsp;&nbsp;Archivos adjuntos <span class="opcional">(Opcional)</span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="reference">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>
+                        </div>
 
-<!--                 <div class="col-md-12 attach">
-                    <span>Nombre del archivo.jpg</span>
-                    <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
+        <!--                 <div class="col-md-12 attach">
+                            <span>Nombre del archivo.jpg</span>
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <hr class="line-inner-proyect">
+                        </div>
+                        <div class="col-md-12 attach">
+                            <span>Nombre del archivo.jpg</span>
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <hr class="line-inner-proyect">
+                        </div>
+                        <div class="col-md-12 attach">
+                            <span>Nombre del archivo.jpg</span>
+                            <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <hr class="line-inner-proyect">
+                        </div> -->
+                        <div class="col-md-12">
+                            <button disabled type="button" class="btn btn-default btn-presupuesto"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar nuevo archivo</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6 col-sm-12 col-xs-12">
-                    <hr class="line-inner-proyect">
-                </div>
-                <div class="col-md-12 attach">
-                    <span>Nombre del archivo.jpg</span>
-                    <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
-                </div>
-                <div class="col-md-6 col-sm-12 col-xs-12">
-                    <hr class="line-inner-proyect">
-                </div>
-                <div class="col-md-12 attach">
-                    <span>Nombre del archivo.jpg</span>
-                    <i class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
-                </div>
-                <div class="col-md-6 col-sm-12 col-xs-12">
-                    <hr class="line-inner-proyect">
-                </div> -->
-                <div class="col-md-12">
-                    <button disabled type="button" class="btn btn-default btn-presupuesto"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar nuevo archivo</button>
-                </div>
+            <br />
+            <div class="alert alert-info">
+                Para guardar y presentar completar todos los campos que no son opcionales
             </div>
-
-            <br />
-            <button ng-show="formCtrl.currentProject.estado === 'Presentado'" type="button" ng-disabled="!formCtrl.allInputs" ng-click="formCtrl.presentProject()" class="btn btn-success"><i class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></i> Guardar</button>
-            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success"><i class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></i> Guardar y Presentar</button>
-            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" type="submit" class="btn btn-default" id="draftButton"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar Borrador</button>
-            <button type="button" class="btn btn-link" ng-click="formCtrl.cancel()">Cancelar</button>
-            <br />
-            <p>* Para presentar un proyecto, todos los campos obligatorios deben estar completos.</p>
+            <button ng-show="formCtrl.currentProject.estado === 'Presentado'" type="button" ng-disabled="!formCtrl.allInputs" ng-click="formCtrl.presentProject()" class="btn btn-success">Guardar</button>
+            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg">Guardar y Presentar</button>
+            <button ng-show="formCtrl.currentProject.estado != 'Presentado'" type="submit" class="btn btn-default" id="draftButton">Guardar Borrador</button>
+            <button type="button" class="btn btn-default right btnRemove" ng-click="formCtrl.cancel()">Eliminar</button>
+            <button type="button" class="btn btn-default right" ng-click="formCtrl.cancel()">Cancelar cambios</button>
         </form>
     </div>
 
 </li>
-<div class="col-md-12">
-    <hr>
-</div>
