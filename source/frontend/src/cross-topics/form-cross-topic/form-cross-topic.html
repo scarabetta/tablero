@@ -1,0 +1,14 @@
+<div class="contentFormProyect admin">
+  <div class="col-md-9 col-sm-12 col-xs-12">
+    <form role="form" ng-submit="formCtrl.submit()">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label for="name">Nuevo tema transversal</label>
+          <input type="text" class="form-control" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentCrossTopic.temaTransversal" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Guardar</button>
+      <button type="button" class="btn btn-link" ng-click="formCtrl.cancel()">Cancelar</button>
+    </form>
+  </div>
+</div>

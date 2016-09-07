@@ -10,7 +10,7 @@ export default function routing($urlRouterProvider:IUrlRouterProvider, $location
     /*@ngInject*/
     $urlRouterProvider.otherwise(function($injector, $location) {
         var $state = $injector.get("$state");
-        $state.go("login");
+        $state.go("home");
     });
     $stateProvider
         .state('root', {

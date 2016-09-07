@@ -38,7 +38,8 @@ module.exports = {
             "ng-tags-input.js" : __dirname + "/node_modules/ng-tags-input/build/ng-tags-input.js",
             "ng-tags-input.css" : __dirname + "/node_modules/ng-tags-input/build/ng-tags-input.css",
             "angular-animate.js" : __dirname + "/node_modules/angular-animate/angular-animate.min.js",
-            "angular-validator.min.js" : __dirname + "/assets/angular-validator.min.js"
+            "angular-validator.min.js" : __dirname + "/assets/angular-validator.min.js",
+            "pin.js" : __dirname + "/assets/jquery.pin.min.js"
         }
     },
 
@@ -57,7 +58,7 @@ module.exports = {
 
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'ProyectosBA',
+            title: 'Gobierno de la Ciudad de Buenos Aires',
             template: 'index.html',
             favicon: __dirname + "/assets/styles/bastrap3/favicon.ico"
         }),
@@ -70,7 +71,8 @@ module.exports = {
         new CopyWebpackPlugin([
             {from: "assets/usig-3.1/images", to: "images"},
             {from: "assets/usig-3.1/css", to: "css"},
-            {from: "assets/loader/images", to: "images"}
+            {from: "assets/loader/images", to: "images"},
+            {from: "assets/imgEjes", to: "images"}
         ]),
         new webpack.DefinePlugin({
             __VERSION__: JSON.stringify(require('./package').version)

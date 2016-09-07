@@ -1,6 +1,6 @@
 {
   "name": "proyectosBA",
-  "version": "0.0.12",
+  "version": "0.0.16",
   "repository": "ssh://git@gitlab.hexacta.com:proyectosBA/front-end.git",
   "main": "src/app.js",
   "scripts": {

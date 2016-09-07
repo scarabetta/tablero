@@ -6,14 +6,18 @@
         <h4 class="modal-title" id="myModalLabel">Mover proyecto</h4>
       </div>
       <div class="modal-body">
+        <div class="">Seleccioná el objetivo operativo que corresponda y guardá los cambios para mover el proyecto</div>
         <ul class="force-display" aria-labelledby="dropdownMenu1">
           <div ng-repeat="objJ in moveProjectCtrl.jurisdiccion.objetivosJurisdiccionales">
+           <div class="title titleOjEestrategico">Objetivo Estrat&eacute;gico</div>
             <li class="titleMenu">{{objJ.nombre}}</li>
             <div ng-repeat="objO in objJ.objetivosOperativos">
-              <li>
+            <div class="title titleOjEestrategico titleOjoperativo">Objetivo Operativo</div>
+              <li ng-class="{'selectedObj' : moveProjectCtrl.currentproject.idObjetivoOperativo2 === objO.idObjetivoOperativo}">
                 <a ng-click="moveProjectCtrl.changeOperativeObjective(objO.idObjetivoOperativo)" data-dismiss="modal">
-                  <i class="glyphicon glyphicon-chevron-right"
+                  <i class="glyphicon glyphicon-record"
                     ng-show="moveProjectCtrl.currentproject.idObjetivoOperativo2 === objO.idObjetivoOperativo"></i>
+                    <div ng-show="moveProjectCtrl.currentproject.idObjetivoOperativo2 != objO.idObjetivoOperativo" class="itemObj"></div>
                   {{objO.nombre}}
                 </a></li>
             </div>

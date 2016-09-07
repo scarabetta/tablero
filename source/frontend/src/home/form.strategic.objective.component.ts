@@ -8,6 +8,7 @@ module Home {
 
   export class FormStrategicObjectiveComponentController {
 
+    private title: string;
     private idjurisdiccion: number;
     private idobjetivoestrategico: number;
     private currentStrategicObjective: ObjetivoJurisdiccional;
@@ -17,10 +18,12 @@ module Home {
       private $state:ng.ui.IStateService, private $compile: ng.ICompileService, private $scope:ng.IScope) {
 
       if (this.idobjetivoestrategico) {
+        this.title = "Modificar objetivo estratégico";
         services.getStrategicObjective(this.idobjetivoestrategico).then((data) => {
           this.currentStrategicObjective = data;
         });
       } else {
+        this.title = "Nuevo objetivo estratégico";
         this.currentStrategicObjective = <ObjetivoJurisdiccional>{};
       }
     }
@@ -104,6 +107,7 @@ module Home {
         this.currentStrategicObjective.indicadoresEstrategicos = new Array<IndicadorEstrategico>();
       }
       this.currentStrategicObjective.indicadoresEstrategicos.push(<IndicadorEstrategico>{});
+      (<any>$('[data-toggle="popover"]')).popover();
     }
 
     removeIndicador(index) {

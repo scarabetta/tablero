@@ -33,7 +33,7 @@ module Login {
                 this.$state.go('home.tree');
               } else {
                 var notificationData = {
-                  "type" : "warning",
+                  "type" : "danger",
                   "icon" : "exclamation-sign",
                   "title" : "Error",
                   "text" : "El email y/o contraseña ingresados son incorrectos." // tslint:disable-line

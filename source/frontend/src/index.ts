@@ -14,6 +14,7 @@ import 'isteven-multi-select.css';
 import 'ng-onboarding.js';
 import 'ng-onboarding.css';
 import 'loader.js';
+import 'pin.js';
 require("expose?$!jquery");
 require("expose?jQuery!jquery");
 

@@ -161,12 +161,6 @@ module Home {
           };
         }());
 
-        downloadExcel() {
-           this.services.downloadExcelMAestro().then((data) => {
-              this.saveData(data, 'PGI_ExcelMaestro.xlsx');
-           });
-        }
-
         editStrategicObjective(idStrategicObjective) {
           if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
             var referralDivFactory = this.$compile( " <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> " );

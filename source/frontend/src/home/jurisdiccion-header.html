@@ -1,5 +1,7 @@
-<div class="container">
+<div class="containerTop">
     <h1 class="nameYear">{{$ctrl.jurisdiccion.nombre}}</h1>
-    <span class="title-jurisdiccion">Misi&oacute;n de la jurisdicci&oacute;n:</span>
-    <p class="mision">{{$ctrl.jurisdiccion.mision}}</p>
+    <span class="title-jurisdiccion collapsed" data-toggle="collapse" href="#mision">
+      <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver misión"></i> Misión de la jurisdicción
+    </span>
+    <p class="mision collapse" id="mision" aria-expanded="false">{{$ctrl.jurisdiccion.mision}}</p>
 </div>

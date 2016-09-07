@@ -1,0 +1,51 @@
+<div class="pageContanerCustom">
+  <div class="item page">
+    <div class="row">
+      <div class="col-md-12" id="alertmodalcomponent">
+        <div class="row">
+          <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12">
+            <button type="button" class="btn btn-default" ng-click="crossTopicsCtrl.addCrossTopic()"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Nuevo</button>
+          </div>
+          <div class="col-lg-3 col-md-4 col-sm-8 col-xs-12">
+            <div class="form-group has-button contentSearch searchPage">
+              <input type="text" class="form-control input-md" id="buttonInput2" placeholder="Buscar" ng-model="crossTopicsCtrl.crossTopicsFilter">
+              <button class="btn">
+              <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <hr>
+            <div id="newcrosstopic">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Tema transversal</th>
+            <th class="colum-action">Estado</th>
+            <th class="colum-action">Editar</th>
+            <th class="colum-action" >Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="crossTopic in crossTopicsCtrl.crossTopics | filter: crossTopicsCtrl.crossTopicsFilter" id="cross-topic-{{crossTopic.idTemaTransversal}}">
+            <td class="thirdLabel">{{crossTopic.temaTransversal}}</td>
+            <td>
+              <div class="switch">
+                <input id="cmn-toggle-{{crossTopic.idTemaTransversal}}" class="cmn-toggle cmn-toggle-round" type="checkbox" ng-change="crossTopicsCtrl.toggleCrossTopicState(crossTopic)"  ng-model="crossTopic.activo">
+                <label for="cmn-toggle-{{crossTopic.idTemaTransversal}}"></label>
+              </div>
+            </td>
+            <td class="colum-action"><i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)"></i></td>
+            <td class="colum-action"><i class="glyphicon glyphicon-remove line" aria-hidden="true" data-toggle="modal" data-target="#alertModalId" data-original-title="Eliminar" ng-click="crossTopicsCtrl.deleteCrossTopic(crossTopic.idTemaTransversal)"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

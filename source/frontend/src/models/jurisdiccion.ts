@@ -6,6 +6,7 @@ export interface Jurisdiccion {
     nombre: string;
     abreviatura: string;
     mision: string;
+    areas: Area[];
     objetivosJurisdiccionales: ObjetivoJurisdiccional[];
 }
 
@@ -36,7 +37,7 @@ export interface Proyecto {
   "unidadMeta": string;
   "poblacionAfectada": number;
   "liderProyecto": string;
-  "area": string;
+  "area": Area;
   "tipoUbicacionGeografica": string;
   "direccion": string;
   "cambioLegislativo": boolean;
@@ -61,6 +62,7 @@ export interface IndicadorEstrategico {
 export interface Presupuesto {
   "anio": number;
   "presupuesto": number;
+  "otrasFuentes": number;
 }
 
 export interface EjeDeGobierno {
@@ -105,6 +107,11 @@ export interface Rol {
   permisosEntidad: PermisoEntidad[];
 }
 
+export interface Area {
+  idArea: number;
+  nombre: string;
+}
+
 export interface PermisoEntidad {
   idPermisoEntidad: number;
   alta: boolean;
@@ -112,4 +119,10 @@ export interface PermisoEntidad {
   gestion: boolean;
   modificacion: boolean;
   nombre: string;
+}
+
+export interface TemaTransversal {
+  idTemaTransversal: number;
+  temaTransversal: string;
+  activo: boolean;
 }

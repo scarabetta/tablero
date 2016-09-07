@@ -11,6 +11,7 @@ import {ObjetivoOperativo} from "../models/jurisdiccion";
 import {ObjetivoJurisdiccional} from "../models/jurisdiccion";
 import {Usuario} from "../models/jurisdiccion";
 import {Rol} from "../models/jurisdiccion";
+import {TemaTransversal} from "../models/jurisdiccion";
 
 module Services {
 
@@ -130,6 +131,30 @@ module Services {
                 .catch((response) => console.log(response.data));
         }
 
+        getMoveOptions(idProject): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "proyecto/cambiarEstado/accionesPermitidas/" + idProject)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        changeState(state, project): ng.IPromise<any> {
+            return this.$http.post(this.apiBaseUrl + "proyecto/cambiarEstado/" + state, project)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getValuesPriorization(): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "exportar/resumenProyectos")
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        downloadExcelPriorization(): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "exportar/proyectos", {responseType:'arraybuffer'})
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
         getOperativeObjective(idOperativeObjective): ng.IPromise<any> {
             return this.$http.get<ObjetivoOperativo>(this.apiBaseUrl + "objetivoOperativo/" + idOperativeObjective)
                 .then((response) => response.data)
@@ -207,6 +232,45 @@ module Services {
           return this.$http.get<Rol>(this.apiBaseUrl + "rol/")
           .then((response) => response.data)
           .catch((response) => console.log(response.data));
+        }
+
+        getTemasTransversales(): ng.IPromise<any> {
+          return this.$http.get<TemaTransversal>(this.apiBaseUrl + "temaTransversal/")
+          .then((response) => response.data)
+          .catch((response) => console.log(response.data));
+        }
+
+        getTemaTransversal(id): ng.IPromise<any> {
+            return this.$http.get<TemaTransversal>(this.apiBaseUrl + "temaTransversal/" + id)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        saveTemaTransversal(temaTransversal): ng.IPromise<any> {
+            return this.$http.post(this.apiBaseUrl + "temaTransversal/", temaTransversal)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        updateTemaTransversal(temaTransversal): ng.IPromise<any> {
+            return this.$http.put(this.apiBaseUrl + "temaTransversal/", temaTransversal)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        deleteTemaTransversal(id): ng.IPromise<any> {
+            return this.$http.delete(this.apiBaseUrl + "temaTransversal/" + id)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        toggleCrossTopicState(crossTopic): ng.IPromise<any> {
+            return this.$http.put(this.apiBaseUrl + "temaTransversal/", crossTopic)
+                .then((response) => response.data)
+                .catch((response) => {
+                  crossTopic.activo = !crossTopic.activo;
+                  console.log(response.data);
+                });
         }
 
         serviceVersion(): ng.IPromise<any> {
