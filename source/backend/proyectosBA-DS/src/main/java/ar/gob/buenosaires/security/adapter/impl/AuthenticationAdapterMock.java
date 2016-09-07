@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
 import ar.gob.buenosaires.security.jwt.domain.Payload;
 
@@ -22,7 +23,7 @@ public class AuthenticationAdapterMock implements AuthenticationAdapter {
 
 	private static final String VALID_PASSWORD = "troquel";
 
-	private static final String VALID_EMAIL = "pwilczek@buenosaires.gob.ar";
+	private static final String VALID_EMAIL = "acampos@buenosaires.gob.ar";
 
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(AuthenticationAdapterMock.class);
@@ -55,12 +56,7 @@ public class AuthenticationAdapterMock implements AuthenticationAdapter {
 
 	@Override
 	public boolean validUser(Payload payload) {
-		if (VALID_EMAIL.equalsIgnoreCase(payload.getEmail())
-				&& VALID_PASSWORD.equalsIgnoreCase(payload.getPassword())) {
 			return true;
-		}
-
-		return false;
 	}
 
 	public Jaxb2Marshaller getMarshaller() {
@@ -91,5 +87,19 @@ public class AuthenticationAdapterMock implements AuthenticationAdapter {
 
 	public static Logger getLogger() {
 		return LOGGER;
+	}
+
+	@Override
+	public Usuario validMail(String email) {
+		Usuario usuario = null;
+		String[] parts = email.split("@");
+		String part1 = parts[1];
+		if (part1.equalsIgnoreCase("buenosaires.gob.ar")) {
+			usuario = new Usuario();
+			usuario.setNombre("Adrian Diego");
+			usuario.setApellido("Campos");
+			usuario.setEmail(email);
+		}
+		return usuario;
 	}
 }

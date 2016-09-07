@@ -85,7 +85,7 @@ public class ValidadorImportadorProyecto {
 		problemasSolapa = new ArrayList<>();
 		validarEsTemplate(solpaAValidar);
 		validarJurisdiccion(solpaAValidar.getSolapa());
-		validarPermisoDelUsuario();
+		//validarPermisoDelUsuario();
 		existeMuchasVecesElMismoProyecto(solpaAValidar);
 
 		return getProblemasSolapa();

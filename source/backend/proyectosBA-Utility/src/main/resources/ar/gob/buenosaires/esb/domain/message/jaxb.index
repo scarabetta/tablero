@@ -12,7 +12,13 @@ UsuarioReqMsg
 UsuarioRespMsg
 ComunaReqMsg
 ComunaRespMsg
+AreaReqMsg
+AreaRespMsg
 PoblacionMetaReqMsg
 PoblacionMetaRespMsg
 RolReqMsg
 RolRespMsg
+TemaTransversalReqMsg
+TemaTransversalRespMsg
+ExportacionProyectoViewReqMsg
+ExportacionProyectoViewRespMsg

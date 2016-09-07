@@ -47,8 +47,13 @@ public class UsuarioController {
 	}
 
 	@RequestMapping(path = "/email/{email}", method = RequestMethod.GET)
-	public @ResponseBody Usuario getCategoriaPorNombre(@PathVariable final String email) throws ESBException, JMSException {
+	public @ResponseBody Usuario getUsuarioPorMail(@PathVariable final String email) throws ESBException, JMSException {
 		return service.getUsuarioByEmail(email);
+	}
+	
+	@RequestMapping(path = "/validar/{email}", method = RequestMethod.GET)
+	public @ResponseBody Usuario validarUsuario(@PathVariable final String email) throws ESBException, JMSException {
+		return service.validarUsuario(email);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

@@ -1,17 +1,22 @@
 package ar.gob.buenosaires.security.service.impl;
 
+import javax.jms.JMSException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
 import ar.gob.buenosaires.security.jwt.JWToken;
 import ar.gob.buenosaires.security.jwt.JWTokenUtils;
 import ar.gob.buenosaires.security.jwt.domain.Payload;
 import ar.gob.buenosaires.security.service.AuthenticationService;
 import ar.gob.buenosaires.security.service.exception.LoginException;
+import ar.gob.buenosaires.service.UsuarioService;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -27,23 +32,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Autowired
 	AuthenticationAdapter authAdapter;
 	
+	@Autowired
+	UsuarioService usuarioService;
+	
 	@Override
-	public JWToken userLogin(Payload payload) throws LoginException {
+	public JWToken userLogin(Payload payload) throws LoginException, ESBException, JMSException {
 		JWToken token = null;
 
 		if (authAdapter.validUser(payload)) {
-			try {
-				token = JWTokenUtils.newInstanceHS256Bearer(payload.getEmail(), expirationTime, issuer);
-			} catch (Exception e) {
-				getLogger().info("Se ha producido un error al querer generar el token para el usuario: {}",
-						payload.getEmail());
-				e.printStackTrace();
+			if(usuarioEstaActivo(payload)){
+				try {
+					token = JWTokenUtils.newInstanceHS256Bearer(payload.getEmail(), expirationTime, issuer);
+				} catch (Exception e) {
+					getLogger().info("Se ha producido un error al querer generar el token para el usuario: {}",
+							payload.getEmail());
+					e.printStackTrace();
+				}
+			} else {
+				throw new LoginException("El usuario esta inactivo");
 			}
+			
 		} else {
 			throw new LoginException("El usuario y/o contraseña no son válidos");
 		}
 
 		return token;
+	}
+
+	private boolean usuarioEstaActivo(Payload payload) throws ESBException, JMSException, LoginException {
+		Usuario usuario = usuarioService.getUsuarioByEmail(payload.getEmail());
+		if(usuario != null) {
+			return usuario.getActivo();		
+			
+		}else {
+			throw new LoginException("El usuario no existe. Contactese con un administrador");
+		}
 	}
 
 	public static Logger getLogger() {

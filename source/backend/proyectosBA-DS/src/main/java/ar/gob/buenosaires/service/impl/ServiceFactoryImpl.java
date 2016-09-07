@@ -3,6 +3,7 @@ package ar.gob.buenosaires.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ar.gob.buenosaires.service.AreaService;
 import ar.gob.buenosaires.service.ComunaService;
 import ar.gob.buenosaires.service.EjeDeGobiernoService;
 import ar.gob.buenosaires.service.IServiceFactory;
@@ -19,7 +20,7 @@ public class ServiceFactoryImpl implements IServiceFactory {
 
 	@Autowired
 	private PoblacionMetaService poblacionMetaService;
-	
+
 	@Autowired
 	private ProyectoServiceImpl proyectoService;
 
@@ -43,6 +44,9 @@ public class ServiceFactoryImpl implements IServiceFactory {
 
 	@Autowired
 	private ComunaService comunaService;
+
+	@Autowired
+	private AreaService areaService;
 
 	@Override
 	public ProyectoService getProyectoService() {
@@ -87,6 +91,11 @@ public class ServiceFactoryImpl implements IServiceFactory {
 	@Override
 	public PoblacionMetaService getPoblacionMetaService() {
 		return poblacionMetaService;
+	}
+
+	@Override
+	public AreaService getAreaService() {
+		return areaService;
 	}
 
 }

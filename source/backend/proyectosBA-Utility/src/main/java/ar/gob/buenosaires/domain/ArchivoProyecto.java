@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @XmlRootElement(name = "ArchivoProyecto")
 public class ArchivoProyecto implements Serializable {
 
-	private static final long serialVersionUID = 8568616576961220696L;
+	private static final long serialVersionUID = -5700687342611622192L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   `fechaFin` date DEFAULT NULL,
   `prioridadJurisdiccional` varchar(50) DEFAULT NULL,
   `estado` varchar(50) DEFAULT NULL,
+  `verificado` tinyint(4) NOT NULL DEFAULT '0',
   `idObjetivoOperativo2` int(11) NOT NULL,
   `idJurisdiccion2` int(11) DEFAULT NULL,
   `idObjetivoJurisdiccional2` int(11) DEFAULT NULL,
@@ -245,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `rol_por_usuario` (
 CREATE TABLE IF NOT EXISTS `tema_transversal` (
   `idTemaTransversal` int(11) NOT NULL AUTO_INCREMENT,
   `temaTransversal` varchar(512) NOT NULL,
-  `estado` varchar(50) NOT NULL,
+  `activo` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`idTemaTransversal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

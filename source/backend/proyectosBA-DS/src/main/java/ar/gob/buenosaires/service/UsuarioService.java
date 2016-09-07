@@ -27,4 +27,6 @@ public interface UsuarioService {
 	
 	Usuario getUsuarioPorToken(String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException;
 
+	Usuario validarUsuario(String email);
+
 }

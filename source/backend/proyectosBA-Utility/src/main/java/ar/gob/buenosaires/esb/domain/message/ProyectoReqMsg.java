@@ -1,7 +1,11 @@
 package ar.gob.buenosaires.esb.domain.message;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -9,7 +13,7 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "proyecto", "codigo" })
+@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados" })
 @XmlRootElement(name = "ProyectoReqMsg")
 public class ProyectoReqMsg extends EsbBaseMsg {
 	
@@ -19,6 +23,9 @@ public class ProyectoReqMsg extends EsbBaseMsg {
     private String name;
     private Proyecto proyecto;
     private String codigo;
+    
+    @XmlElement(name = "estados")
+    private List<String> estados;
 
 	@Override
 	public String getEventType() {
@@ -55,5 +62,16 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}		
+	}
+
+	public List<String> getEstados() {
+		if(estados == null){
+			estados = new ArrayList<String>();
+		}
+		return estados;
+	}
+
+	public void setEstados(List<String> estados) {
+		this.estados = estados;
+	}
 }

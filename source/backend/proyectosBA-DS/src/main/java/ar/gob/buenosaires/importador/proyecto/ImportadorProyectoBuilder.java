@@ -126,7 +126,13 @@ public class ImportadorProyectoBuilder {
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoArea(String area) {
-		proyectoTransient.setArea(area);
+		try {
+			proyectoTransient.setArea(serviceFactory.getAreaService().getAreasByNameAndIdJurisdiccion(area,
+					this.jurisdiccion.getIdJurisdiccion()));
+
+		} catch (ESBException | JMSException e) {
+			e.printStackTrace();
+		}
 		return this;
 	}
 
@@ -186,11 +192,12 @@ public class ImportadorProyectoBuilder {
 		return this;
 	}
 
-	public ImportadorProyectoBuilder cargarPresupuestoPorAnio(Double anio, Double importe) {
+	public ImportadorProyectoBuilder cargarPresupuestoPorAnio(Double anio, Double importe, Double importeOtrasFuentes) {
 		if (!StringUtils.isEmpty(anio.toString()) && anio != 0) {
 			PresupuestoPorAnio presu = new PresupuestoPorAnio();
 			presu.setAnio(anio.intValue());
 			presu.setPresupuesto(importe);
+			presu.setOtrasFuentes(importeOtrasFuentes);
 			presupuestoPorAnio.add(presu);
 		}
 		return this;
@@ -311,6 +318,7 @@ public class ImportadorProyectoBuilder {
 					boolean noAgregar = true;
 					if (t.getAnio() == presupuestoPorAnio.getAnio()) {
 						t.setPresupuesto(presupuestoPorAnio.getPresupuesto());
+						t.setOtrasFuentes(presupuestoPorAnio.getOtrasFuentes());
 					} else {
 						noAgregar = false;
 					}

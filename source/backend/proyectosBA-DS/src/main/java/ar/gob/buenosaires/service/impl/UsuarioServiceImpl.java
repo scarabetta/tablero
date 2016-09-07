@@ -19,6 +19,7 @@ import ar.gob.buenosaires.esb.domain.message.UsuarioReqMsg;
 import ar.gob.buenosaires.esb.domain.message.UsuarioRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
+import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
 import ar.gob.buenosaires.security.jwt.JWToken;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.UsuarioService;
@@ -30,6 +31,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private EsbService esbService;
+	
+	@Autowired
+	AuthenticationAdapter authAdapter;
 
 	@Override
 	public Usuario getUsuarioByEmail(final String email) throws ESBException, JMSException {
@@ -49,24 +53,39 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario createUsuario(final Usuario usuario) throws ESBException, JMSException {
-		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
-		reqMsg.setUsuario(usuario);
-
-		getLogger().debug("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
-		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
-		final List<Usuario> usuarios = getUsuarioFromResponse(response);
-		return getFirstUsuarioFromTheList(usuarios);
+		
+		 if(authAdapter.validMail(usuario.getEmail()) != null){
+			 final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+			 reqMsg.setUsuario(usuario);
+			 
+			 getLogger().debug("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
+			 final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+			 final List<Usuario> usuarios = getUsuarioFromResponse(response);
+			 return getFirstUsuarioFromTheList(usuarios);			 		
+			 
+		 } else {
+			 throw new ESBException("No se encontró el usuario con mail: " + usuario.getEmail());
+		 }
 	}
 
 	@Override
 	public Usuario updateUsuario(final Usuario usuario) throws ESBException, JMSException {
-		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
-		reqMsg.setUsuario(usuario);
-
-		getLogger().debug("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
-		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
-		final List<Usuario> usuarios = getUsuarioFromResponse(response);
-		return getFirstUsuarioFromTheList(usuarios);
+		if(authAdapter.validMail(usuario.getEmail()) != null){
+			final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+			reqMsg.setUsuario(usuario);
+	
+			getLogger().debug("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
+			final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+			final List<Usuario> usuarios = getUsuarioFromResponse(response);
+			return getFirstUsuarioFromTheList(usuarios);
+		} else {
+			 throw new ESBException("No se encontró el usuario con mail: " + usuario.getEmail());
+		 }
+	}
+	
+	@Override
+	public Usuario validarUsuario(String email) {
+		return authAdapter.validMail(email);
 	}
 
 	@Override

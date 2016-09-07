@@ -18,5 +18,7 @@ public interface IServiceFactory {
 
 	ComunaService getComunaService();
 	
+	AreaService getAreaService();
+	
 	PoblacionMetaService getPoblacionMetaService();
 }

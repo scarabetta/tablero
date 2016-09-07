@@ -18,11 +18,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -36,10 +38,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		"poblacionAfectada", "liderProyecto", "area", "tipoUbicacionGeografica", "direccion", "cambioLegislativo",
 		"fechaInicio", "fechaFin", "prioridadJurisdiccional", "estado", "ejesDeGobierno", "poblacionesMeta", "comunas",
 		"codigo", "idJurisdiccion2", "idObjetivoJurisdiccional2", "idObjetivoOperativo2", "organismosCorresponsables",
-		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos" })
+		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado" })
 
 @XmlRootElement(name = "Proyecto")
 public class Proyecto implements Serializable {
+
+	private static final String TIPO_UBICACION_DIRECCION = "Dirección";
+
+	private static final String TIPO_UBICACION_COMUNAS = "Comunas";
 
 	private static final String DOUBLE_VACIO = "0.00";
 
@@ -58,6 +64,11 @@ public class Proyecto implements Serializable {
 
 	@Column(name = "descripcion", nullable = true)
 	private String descripcion;
+	
+	@OneToOne
+	@JoinColumn(name = "idarea")
+	@XmlElement(name = "area")
+	private Area area;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idobjetivooperativo")
@@ -89,8 +100,8 @@ public class Proyecto implements Serializable {
 	@Column(name = "liderproyecto", nullable = true)
 	private String liderProyecto;
 
-	@Column(name = "area", nullable = true)
-	private String area;
+//	@Column(name = "area", nullable = true)
+//	private String area;
 
 	@Column(name = "tipoubicaciongeografica", nullable = true)
 	private String tipoUbicacionGeografica;
@@ -124,6 +135,10 @@ public class Proyecto implements Serializable {
 
 	@Column(name = "estado", nullable = false)
 	private String estado;
+	
+	@JsonIgnore
+	@Column(name = "verificado", nullable = true, columnDefinition = "TINYINT(1)")
+	private Boolean verificado = false;
 
 	@Column(name = "coordenadax", nullable = true)
 	private String coordenadaX;
@@ -213,11 +228,11 @@ public class Proyecto implements Serializable {
 		this.liderProyecto = liderProyecto;
 	}
 
-	public String getArea() {
+	public Area getArea() {
 		return area;
 	}
 
-	public void setArea(final String area) {
+	public void setArea(final Area area) {
 		this.area = area;
 	}
 
@@ -283,6 +298,14 @@ public class Proyecto implements Serializable {
 
 	public void setEstado(final String estado) {
 		this.estado = estado;
+	}
+
+	public Boolean getVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(Boolean verificado) {
+		this.verificado = verificado;
 	}
 
 	public ObjetivoOperativo getObjetivoOperativo() {
@@ -387,14 +410,20 @@ public class Proyecto implements Serializable {
 
 	@JsonIgnore
 	public String getEstadoActualizado() {
-		final Object[] propiedades = getPropiedadesAValidar();
-		
-		//Si ya esta presentado no le cambiamos el estado
-		if(EstadoProyecto.PRESENTADO.getName().equals(estado)) { 			
-			return estado;
-		} else {
+		final Object[] propiedades = getPropiedadesAValidar();		
+
+		if (necesitaCalcularEstado()) {
 			return obtenerEstado(propiedades);
+		} else {
+			return estado;
 		}
+	}
+	
+	private boolean necesitaCalcularEstado() {
+		// Solo debemos calcular el estado si esta incompleto, completo o vacio
+		return ! EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)  && ! EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado) &&
+				! EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado);
+		
 	}
 
 	private String obtenerEstado(final Object[] propiedades) {
@@ -405,12 +434,25 @@ public class Proyecto implements Serializable {
 				return EstadoProyecto.INCOMPLETO.getName();
 			}
 		}
+		return validarUbicacion();
+	}
+	
+	private String validarUbicacion() {
+		if (TIPO_UBICACION_COMUNAS.equalsIgnoreCase(tipoUbicacionGeografica)) {
+			if (comunas == null || comunas.isEmpty() ){
+				return EstadoProyecto.INCOMPLETO.getName();
+			}
+		} else if (TIPO_UBICACION_DIRECCION.equalsIgnoreCase(tipoUbicacionGeografica)) {
+			if (direccion == null || direccion.isEmpty()){
+				return EstadoProyecto.INCOMPLETO.getName();
+			}
+		}
 		return EstadoProyecto.COMPLETO.getName();
 	}
 
 	private Object[] getPropiedadesAValidar() {
 		return new Object[] { nombre, descripcion, objetivoOperativo, tipoProyecto, meta, unidadMeta, poblacionAfectada,
-				liderProyecto, area, tipoUbicacionGeografica, cambioLegislativo, fechaInicio, fechaFin,
+				liderProyecto, area, cambioLegislativo, fechaInicio, fechaFin, tipoUbicacionGeografica,
 				prioridadJurisdiccional, estado, ejesDeGobierno, poblacionesMeta, idObjetivoOperativo2,
 				presupuestosPorAnio };
 	}

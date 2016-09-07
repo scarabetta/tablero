@@ -20,4 +20,12 @@ public interface ProyectoService {
 	Proyecto updateProyecto(Proyecto proyecto) throws ESBException;
 
 	void deleteProyecto(Long id) throws ESBException;
+
+	List<Proyecto> getProyectosPorEstado(String string);
+
+	void cancelarPriorizacionDeProyectosVerificados();
+
+	void cancelarPriorizacionDeProyectosNoVerificados();
+
+	void iniciarPriorizacionDeProyectos();
 }

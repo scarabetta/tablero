@@ -129,7 +129,7 @@ public class JurisdiccionController {
 		service.deleteJurisdiccion(id);
 	}
 	
-	@RequestMapping(path = "/presentarCompletos/{id}", method = RequestMethod.POST) //TODO ver con socas si es metodo correspondiente
+	@RequestMapping(path = "/presentarCompletos/{id}", method = RequestMethod.POST)
 	public @ResponseBody void presentarProyectosCompletos(@PathVariable final String id) throws ESBException, JMSException {
 		service.presentarProyectosCompletos(id);
 	}

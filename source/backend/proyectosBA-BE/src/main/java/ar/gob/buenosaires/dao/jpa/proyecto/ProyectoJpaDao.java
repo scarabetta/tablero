@@ -20,5 +20,21 @@ public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
 	@Transactional
 	@Query("UPDATE Proyecto p SET p.estado = \'Presentado\' WHERE p.idProyecto in (:proyectosId)")
 	void updateProyectosCompletos(@Param("proyectosId") List<Long> proyectosId);
-		
+
+	List<Proyecto> findByEstado(String estado);
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Proyecto p SET p.estado = \'Presentado\' WHERE p.estado = \'En Priorizacion\' AND p.verificado = 0")
+	void cancelarPriorizacionNoVerificado();
+	
+	@Modifying
+	@Transactional
+	@Query("UPDATE Proyecto p SET p.estado = \'Verificado\' WHERE p.estado = \'En Priorizacion\' AND p.verificado = 1")
+	void cancelarPriorizacionVerificado();
+
+	@Modifying
+	@Transactional
+	@Query("UPDATE Proyecto p SET p.estado = \'En Priorizacion\' WHERE p.estado = \'Verificado\' OR p.estado = \'Presentado\'")
+	void iniciarPriorizacionDeProyectos();
 }

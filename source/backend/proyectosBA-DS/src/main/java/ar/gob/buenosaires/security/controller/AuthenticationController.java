@@ -1,5 +1,7 @@
 package ar.gob.buenosaires.security.controller;
 
+import javax.jms.JMSException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.nimbusds.jose.JOSEException;
 
+import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.JWToken;
 import ar.gob.buenosaires.security.jwt.domain.Payload;
 import ar.gob.buenosaires.security.jwt.jsonview.configuration.JWTokenAuthViewConfiguration;
@@ -25,7 +28,7 @@ public class AuthenticationController {
 	
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	@JsonView(JWTokenAuthViewConfiguration.class)
-	public @ResponseBody JWToken authentication(@RequestBody Payload payload) throws JOSEException, LoginException {
+	public @ResponseBody JWToken authentication(@RequestBody Payload payload) throws JOSEException, LoginException, ESBException, JMSException {
 		return authenticationService.userLogin(payload);
 	}
 	

@@ -22,29 +22,38 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "presupuesto_por_anio")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idPresupuestoPorAnio", "anio", "presupuesto" })
+@XmlType(propOrder = { "idPresupuestoPorAnio", "anio", "presupuesto", "otrasFuentes" })
 
 @XmlRootElement(name = "PresupuestoPorAnio")
 public class PresupuestoPorAnio implements Serializable {
-	
+
 	private static final long serialVersionUID = -1770846664731989725L;
 
-	@Id 	
+	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "idpresupuestoporanio", nullable = false)
 	private Long idPresupuestoPorAnio;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idproyecto")
+	@JoinColumn(name = "idproyecto")
 	@JsonBackReference
 	@XmlTransient
 	private Proyecto proyectoPresupuestoPorAnio;
-		
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
+	@JsonBackReference
+	@XmlTransient
+	private ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio;
+
 	@Column(name = "anio")
 	private int anio;
 
 	@Column(name = "presupuesto")
 	private Double presupuesto;
+
+	@Column(name = "otrasfuentes")
+	private Double otrasFuentes;
 
 	public Long getIdPresupuestoPorAnio() {
 		return idPresupuestoPorAnio;
@@ -76,5 +85,27 @@ public class PresupuestoPorAnio implements Serializable {
 
 	public void setPresupuesto(Double presupuesto) {
 		this.presupuesto = presupuesto;
-	}	
+	}
+
+	public Double getOtrasFuentes() {
+		return otrasFuentes;
+	}
+
+	public void setOtrasFuentes(Double otrasFuentes) {
+		this.otrasFuentes = otrasFuentes;
+	}
+
+	/**
+	 * @return the exportacionProyectoViewPresupuestoPorAnio
+	 */
+	public ExportacionProyectoView getExportacionProyectoViewPresupuestoPorAnio() {
+		return exportacionProyectoViewPresupuestoPorAnio;
+	}
+
+	/**
+	 * @param exportacionProyectoViewPresupuestoPorAnio the exportacionProyectoViewPresupuestoPorAnio to set
+	 */
+	public void setExportacionProyectoViewPresupuestoPorAnio(ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio) {
+		this.exportacionProyectoViewPresupuestoPorAnio = exportacionProyectoViewPresupuestoPorAnio;
+	}
 }
