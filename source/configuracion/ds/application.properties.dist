@@ -30,3 +30,10 @@ download.template.proyecto.path = /etc/pba/ds/${download.template.proyecto.file}
 
 #Path download archivos adjuntos
 download.archivos.proyecto.path = /var/pba/adjuntos/idJurisdiccion/idProyecto/
+
+# definir las propiedades para el Json de configuracion clave valor separadas por ";" ej: nombre;esteban;apellido;pepe
+configs.key.value=
+
+
+#Path para el archivo template para la exportacion
+exportacion.archivos.proyecto.path = /etc/pba/ds/template_exportacion_priorizacion.xlsx

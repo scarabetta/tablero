@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,12 @@ public class SolapaProyecto {
 
 	@Autowired
 	Environment env;
+	
+	@Value("${proyecto.num.celda.oj}")
+	int celdaCodigoOJ;
+	
+	@Value("${proyecto.num.celda.oop}")
+	int celdaCodigoOOp;
 
 	private int numeroFilaInicioImportacion;
 
@@ -101,62 +108,66 @@ public class SolapaProyecto {
 			String codigoOOp = "";
 
 			try {
-				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK).getCellType()
-						&& Cell.CELL_TYPE_STRING == unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK)
-						.getCachedFormulaResultType()) {
-					codigoOJ = unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK).getCellType()
+						&& Cell.CELL_TYPE_STRING == unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK)
+								.getCachedFormulaResultType()) {
+					codigoOJ = unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
 				}
 
-				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(38, Row.CREATE_NULL_AS_BLANK).getCellType()
-						&& Cell.CELL_TYPE_STRING == unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK)
-						.getCachedFormulaResultType()) {
-					codigoOOp = unaFila.getCell(38, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK).getCellType()
+						&& Cell.CELL_TYPE_STRING == unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK)
+								.getCachedFormulaResultType()) {
+					codigoOOp = unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
 				}
 				builder.cargarProyecto(nombreProyecto)
-				.cargarObjetivoJurisdiccional(unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-						codigoOJ)
-				.cargarObjetivoOperativo(unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-						codigoOOp)
+						.cargarObjetivoJurisdiccional(unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
+								codigoOJ)
+						.cargarObjetivoOperativo(unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
+								codigoOOp)
 
-				.cargarProyectoDescripcion(unaFila.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoMeta(unaFila.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-				.cargarProyectoUnidadMeta(unaFila.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoPoblacionAfectada(
-						unaFila.getCell(6, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-				.cargarPoblacionMeta(unaFila.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarPoblacionMeta(unaFila.getCell(8, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarPoblacionMeta(unaFila.getCell(9, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarPoblacionMeta(unaFila.getCell(10, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoLider(unaFila.getCell(11, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoArea(unaFila.getCell(12, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoCorresponsable(
-						unaFila.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoTipoUbucacion(unaFila.getCell(14, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoDireccion(unaFila.getCell(15, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarComuna(unaFila.getCell(16, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarComuna(unaFila.getCell(17, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarComuna(unaFila.getCell(18, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarComuna(unaFila.getCell(19, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoFechaInicio(unaFila.getCell(20, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
-				.cargarProyectoFechaFin(unaFila.getCell(21, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
+						.cargarProyectoDescripcion(unaFila.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoMeta(unaFila.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarProyectoUnidadMeta(unaFila.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoPoblacionAfectada(
+								unaFila.getCell(6, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarPoblacionMeta(unaFila.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarPoblacionMeta(unaFila.getCell(8, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarPoblacionMeta(unaFila.getCell(9, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarPoblacionMeta(unaFila.getCell(10, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoLider(unaFila.getCell(11, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoArea(unaFila.getCell(12, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoCorresponsable(
+								unaFila.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoTipoUbucacion(unaFila.getCell(14, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoDireccion(unaFila.getCell(15, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarComuna(unaFila.getCell(16, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarComuna(unaFila.getCell(17, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarComuna(unaFila.getCell(18, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarComuna(unaFila.getCell(19, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoFechaInicio(unaFila.getCell(20, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
+						.cargarProyectoFechaFin(unaFila.getCell(21, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
 
-				.cargarPresupuestoPorAnio(unaFila.getCell(22, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-						unaFila.getCell(23, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-				.cargarPresupuestoPorAnio(unaFila.getCell(24, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-						unaFila.getCell(25, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-				.cargarPresupuestoPorAnio(unaFila.getCell(26, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-						unaFila.getCell(27, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-				.cargarPresupuestoPorAnio(unaFila.getCell(28, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-						unaFila.getCell(29, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarPresupuestoPorAnio(unaFila.getCell(22, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(23, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(24, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarPresupuestoPorAnio(unaFila.getCell(25, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(26, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(27, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarPresupuestoPorAnio(unaFila.getCell(28, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(29, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(30, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+						.cargarPresupuestoPorAnio(unaFila.getCell(31, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(32, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+								unaFila.getCell(33, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
 
-				.cargarProyectoTipoProyecto(unaFila.getCell(31, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarEjeDeGobierno(unaFila.getCell(32, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarEjeDeGobierno(unaFila.getCell(33, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarEjeDeGobierno(unaFila.getCell(34, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoImplicaCambioLegislativo(
-						unaFila.getCell(35, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-				.cargarProyectoPrioridadJurisdiccional(
-						unaFila.getCell(36, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+						.cargarProyectoTipoProyecto(unaFila.getCell(35, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarEjeDeGobierno(unaFila.getCell(36, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarEjeDeGobierno(unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarEjeDeGobierno(unaFila.getCell(38, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoImplicaCambioLegislativo(
+								unaFila.getCell(39, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+						.cargarProyectoPrioridadJurisdiccional(
+								unaFila.getCell(40, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 			} catch (IllegalStateException | NumberFormatException e) {
 				SolapaProyecto.getLogger().error("Hubo un error de formato o estado ilegal en la fila "
 						+ unaFila.getRowNum() + "\n" + e.getMessage());
@@ -193,7 +204,7 @@ public class SolapaProyecto {
 
 	public boolean esUltimaFila(Row unaFila) {
 		boolean todoEnBlanco = true;
-		for (int i = 0; i < 37 && todoEnBlanco; i++) {
+		for (int i = 0; i < Integer.parseInt(env.getProperty("proyecto.total.celdas")) && todoEnBlanco; i++) {
 			todoEnBlanco = todoEnBlanco
 					&& ((unaFila.getCell(i, Row.CREATE_NULL_AS_BLANK).getCellType() == Cell.CELL_TYPE_BLANK)
 							|| unaFila.getCell(i, Row.CREATE_NULL_AS_BLANK).getCellType() == Cell.CELL_TYPE_FORMULA);
@@ -247,9 +258,9 @@ public class SolapaProyecto {
 		XSSFCell newCell;
 		CellStyle cellStyleCloner = filaDestino.getSheet().getWorkbook().createCellStyle();
 		List<Integer> celdasDate = Arrays.asList(20, 21);
-		List<Integer> celdasCodigoObjetivos = Arrays.asList(37, 38);
-		List<Integer> celdasMoneda = Arrays.asList(23, 25, 27, 29, 30);
-		List<Integer> celdasPresupuestoAnios = Arrays.asList(22, 24, 26, 28);
+		List<Integer> celdasCodigoObjetivos = Arrays.asList(celdaCodigoOJ, celdaCodigoOOp);
+		List<Integer> celdasMoneda = Arrays.asList(23, 24, 26, 27, 29, 30, 32, 33);
+		List<Integer> celdasPresupuestoAnios = Arrays.asList(22, 25, 28, 31);
 		List<Integer> numeroCeldaNumericas = Arrays.asList(4, 6);
 
 		// Loop through source columns to add to new row
@@ -302,16 +313,16 @@ public class SolapaProyecto {
 					newCell.setCellStyle(cellStyleAccountingCloner);
 					if (oldCell.getCachedFormulaResultType() != Cell.CELL_TYPE_ERROR) {
 						String rowNum = String.valueOf(newCell.getRowIndex() + 1);
-						String xColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 7)
+						String xColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 11)
 								.concat(rowNum);
-						String zColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 5)
+						String aaColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 8)
 								.concat(rowNum);
-						String abColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 3)
+						String adColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 5)
 								.concat(rowNum);
-						String adColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 1)
+						String agColumn = CellReference.convertNumToColString(oldCell.getColumnIndex() - 2)
 								.concat(rowNum);
-						newCell.setCellFormula("Proyectos!" + adColumn + "+Proyectos!" + abColumn + "+Proyectos!"
-								+ zColumn + "+Proyectos!" + xColumn);
+						newCell.setCellFormula("Proyectos!" + agColumn + "+Proyectos!" + adColumn + "+Proyectos!"
+								+ aaColumn + "+Proyectos!" + xColumn);
 					} else {
 						newCell.setCellErrorValue(FormulaError.VALUE);
 					}

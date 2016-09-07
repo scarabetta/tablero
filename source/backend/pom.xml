@@ -5,7 +5,7 @@
 	
 	<groupId>ar.gob.buenosaires.backend</groupId>
 	<artifactId>proyectosBA</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-RELEASE</version>
 	<packaging>pom</packaging>
 	
 	<name>Proyectos BA</name>

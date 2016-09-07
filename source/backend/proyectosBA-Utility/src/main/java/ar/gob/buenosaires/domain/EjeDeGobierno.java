@@ -16,31 +16,33 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ar.gob.buenosaires.exportador.IExportableAExcel;
+
 @Entity
 @Table(name = "eje_de_gobierno")
 @XmlType(propOrder = { "idEjeDeGobierno", "nombre", "descripcion", "ejemplos", "proyectosEjeDeGobierno" })
-public class EjeDeGobierno implements Serializable {
+public class EjeDeGobierno implements Serializable, IExportableAExcel  {
 
 	private static final long serialVersionUID = -3297460062606797267L;
-	
-	@Id 	
+
+	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "idejedegobierno", nullable = false)
-	private Long idEjeDeGobierno;		
+	private Long idEjeDeGobierno;
 
 	@Column(name = "nombre", nullable = false)
 	private String nombre;
-	
+
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
-	
+
 	@Column(name = "ejemplos", nullable = false)
 	private String ejemplos;
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "eje_de_gobierno_por_proyecto", 
-		joinColumns = { @JoinColumn(name = "id_proyecto") }, 
-	    inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
+	@JoinTable(name = "eje_de_gobierno_por_proyecto",
+	joinColumns = { @JoinColumn(name = "id_proyecto") },
+	inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
 	@XmlElement(name = "proyectosEjeDeGobierno")
 	private List<Proyecto> proyectosEjeDeGobierno;
 
@@ -76,12 +78,9 @@ public class EjeDeGobierno implements Serializable {
 		this.ejemplos = ejemplos;
 	}
 
-//	public List<Proyecto> getProyectos() {
-//		return proyectosEjeDeGobierno;
-//	}
-//
-//	public void setProyectos(List<Proyecto> proyectos) {
-//		this.proyectosEjeDeGobierno = proyectos;
-//	}
+	@Override
+	public String getNombreParaExportacion() {
+		return "EG:" + getNombre();
+	}
 
 }

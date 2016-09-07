@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "jurisdiccion")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idJurisdiccion", "nombre", "abreviatura", "mision", "objetivosJurisdiccionales", "codigo" })
+@XmlType(propOrder = { "idJurisdiccion", "nombre", "abreviatura", "mision", "objetivosJurisdiccionales", "areas", "codigo" })
 
 @XmlRootElement(name = "Jurisdiccion")
 public class Jurisdiccion implements Serializable {
@@ -51,6 +51,11 @@ public class Jurisdiccion implements Serializable {
 	
 	@Column(name = "codigo")
 	private String codigo;
+	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "jurisdiccion",fetch = FetchType.LAZY)
+	@XmlElement(name = "areas")
+	@JsonManagedReference
+    private List<Area> areas = new ArrayList<>();
 
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "jurisdiccion",fetch = FetchType.LAZY)
 	@XmlElement(name = "objetivosJurisdiccionales")
@@ -118,6 +123,14 @@ public class Jurisdiccion implements Serializable {
 
 	public void setUsuarios(List<Usuario> usuarios) {
 		this.usuarios = usuarios;
+	}
+
+	public List<Area> getAreas() {
+		return areas;
+	}
+
+	public void setAreas(List<Area> areas) {
+		this.areas = areas;
 	}	
 
 }

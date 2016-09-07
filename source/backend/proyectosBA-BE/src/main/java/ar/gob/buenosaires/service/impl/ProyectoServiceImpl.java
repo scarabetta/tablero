@@ -166,4 +166,24 @@ public class ProyectoServiceImpl implements ProyectoService {
 	public void setGeoCoderService(final GeoCoderServiceImpl geoCoderServiceImpl) {
 		geoCoderService = geoCoderServiceImpl;
 	}
+
+	@Override
+	public List<Proyecto> getProyectosPorEstado(String estado) {
+		return getProyectoDAO().findByEstado(estado);
+	}
+
+	@Override
+	public void cancelarPriorizacionDeProyectosNoVerificados() {
+		getProyectoDAO().cancelarPriorizacionNoVerificado();
+	}
+
+	@Override
+	public void cancelarPriorizacionDeProyectosVerificados() {
+		getProyectoDAO().cancelarPriorizacionVerificado();
+	}
+
+	@Override
+	public void iniciarPriorizacionDeProyectos() {
+		getProyectoDAO().iniciarPriorizacionDeProyectos();
+	}
 }

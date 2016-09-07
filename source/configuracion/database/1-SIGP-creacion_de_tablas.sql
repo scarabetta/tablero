@@ -11,9 +11,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for proyectos_ba_generated
-CREATE DATABASE IF NOT EXISTS `proyectos_ba_generated` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `proyectos_ba_generated`;
-
+-- CREATE DATABASE IF NOT EXISTS `proyectos_ba_generated` /*!40100 DEFAULT CHARACTER SET latin1 */;
+-- USE `proyectos_ba_generated`;
 
 -- Dumping structure for table proyectos_ba_generated.jurisdiccion
 CREATE TABLE IF NOT EXISTS `jurisdiccion` (
@@ -57,7 +56,6 @@ CREATE TABLE IF NOT EXISTS `objetivo_operativo` (
 
 -- Data exporting was unselected.
 
-
 -- Dumping structure for table proyectos_ba_generated.proyecto
 CREATE TABLE IF NOT EXISTS `proyecto` (
   `idProyecto` int(10) NOT NULL AUTO_INCREMENT,
@@ -79,6 +77,7 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   `fechaFin` date DEFAULT NULL,
   `prioridadJurisdiccional` varchar(50) DEFAULT NULL,
   `estado` varchar(50) DEFAULT NULL,
+  `verificado` tinyint(4) NOT NULL DEFAULT '0',
   `idObjetivoOperativo2` int(11) NOT NULL,
   `idJurisdiccion2` int(11) DEFAULT NULL,
   `idObjetivoJurisdiccional2` int(11) DEFAULT NULL,
@@ -88,10 +87,9 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   PRIMARY KEY (`idProyecto`),
   KEY `FK_idObjetivoOperativo_proyecto` (`idObjetivoOperativo`),
   CONSTRAINT `FK_idObjetivoOperativo_proyecto` FOREIGN KEY (`idObjetivoOperativo`) REFERENCES `objetivo_operativo` (`idObjetivoOperativo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
-
 
 -- Dumping structure for table proyectos_ba_generated.archivos_proyecto
 CREATE TABLE IF NOT EXISTS `archivos_proyecto` (
@@ -211,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `presupuesto_por_anio` (
   `idProyecto` int(11) DEFAULT NULL,
   `anio` smallint(6) NOT NULL,
   `presupuesto` double DEFAULT NULL,
-  `otrasFuentes` decimal(10,2) DEFAULT NULL,
+  `otrasFuentes` double DEFAULT NULL,
   PRIMARY KEY (`idPresupuestoPoranio`),
   KEY `FK_idProyecto_presupuestoPorAnio` (`idProyecto`),
   CONSTRAINT `FK_idProyecto_presupuestoPorAnio` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`)
@@ -244,6 +242,17 @@ CREATE TABLE IF NOT EXISTS `rol_por_usuario` (
 -- Data exporting was unselected.
 
 
+-- Dumping structure for table proyectos_ba_generated.tema_transversal
+CREATE TABLE IF NOT EXISTS `tema_transversal` (
+  `idTemaTransversal` int(11) NOT NULL AUTO_INCREMENT,
+  `temaTransversal` varchar(512) NOT NULL,
+  `activo` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`idTemaTransversal`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table proyectos_ba_generated.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (
   `idUsuario` int(11) NOT NULL AUTO_INCREMENT,
@@ -252,7 +261,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `email` varchar(50) NOT NULL,
   `descripcion` varchar(100) DEFAULT NULL,
   `activo` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`idUsuario`)
+  PRIMARY KEY (`idUsuario`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.

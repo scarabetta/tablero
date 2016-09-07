@@ -13,7 +13,7 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "proyectos" })
+@XmlType(propOrder = { "id", "name", "proyectos", "accionesPermitidas" })
 @XmlRootElement(name = "ProyectoRespMsg")
 
 public class ProyectoRespMsg extends EsbBaseMsg {
@@ -24,6 +24,8 @@ public class ProyectoRespMsg extends EsbBaseMsg {
     private String name;
     @XmlElement(name = "proyectos")
     private List<Proyecto> proyectos = new ArrayList<>();
+    @XmlElement(name = "accionesPermitidas")
+    private List<String> accionesPermitidas = new ArrayList<>();
 
 	@Override
 	public String getEventType() {
@@ -53,4 +55,12 @@ public class ProyectoRespMsg extends EsbBaseMsg {
 	public void setProyectos(List<Proyecto> proyectos) {
 		this.proyectos = proyectos;
 	}
+
+	public List<String> getAccionesPermitidas() {
+		return accionesPermitidas;
+	}
+
+	public void setAccionesPermitidas(List<String> accionesPermitidas) {
+		this.accionesPermitidas = accionesPermitidas;
+	}		
 }

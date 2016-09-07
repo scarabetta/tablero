@@ -22,6 +22,7 @@ import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioJpaDao;
 import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoJpaDao;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
+import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
@@ -190,5 +191,19 @@ public class ProyectoServiceImplTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getNombre()).isNotNull();
 		assertThat(response.getNombre()).isEqualTo(FAKE_NOMBRE);
+	}
+	
+	@Test
+	public void getProyectoPorEstado() {
+		List<Proyecto> fakeProyectos = new ArrayList<Proyecto>();
+		Proyecto fakeProyecto = new Proyecto();
+		fakeProyecto.setIdProyecto(new Long(1));
+		fakeProyectos.add(fakeProyecto);
+
+		when(repositorio.getProyectoJpaDao().findByEstado(anyString())).thenReturn(fakeProyectos);
+
+		List<Proyecto> response = service.getProyectosPorEstado(EstadoProyecto.VERIFICADO.getName());
+		assertThat(response).isNotNull();
+		assertThat(response).isNotEmpty();
 	}
 }

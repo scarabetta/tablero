@@ -14,8 +14,11 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
+import ar.gob.buenosaires.security.adapter.domain.request.BuscarPorMailRequest;
 import ar.gob.buenosaires.security.adapter.domain.request.ValidarRequest;
+import ar.gob.buenosaires.security.adapter.domain.response.BuscarPorEmailResponse;
 import ar.gob.buenosaires.security.adapter.domain.response.ValidarResponse;
 import ar.gob.buenosaires.security.jwt.domain.Payload;
 
@@ -67,6 +70,29 @@ public class AuthenticationAdapterImpl implements AuthenticationAdapter {
 		
 		return VALID_USER.equalsIgnoreCase(response.getRta());
 	}
+	
+	@Override
+	public Usuario validMail(String email) {
+		Usuario usuario = null;
+		BuscarPorMailRequest validarMailRequest = new BuscarPorMailRequest();		
+		validarMailRequest.setEmail(email);
+		
+		StreamSource source = new StreamSource(new StringReader(marshall(validarMailRequest, getMarshaller())));
+		StringWriter result = new StringWriter();
+		WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
+		webServiceTemplate.sendSourceAndReceiveToResult(endpointURL, source, new StreamResult(result));
+		
+		BuscarPorEmailResponse response = (BuscarPorEmailResponse) unmarshall(result.getBuffer().toString(), getUnMarshaller());
+		
+		if(response.getRta().getApellido() != null) {
+			usuario = new Usuario();
+			usuario.setNombre(response.getRta().getNombre());
+			usuario.setApellido(response.getRta().getApellido());
+			usuario.setEmail(email);
+		}
+		return usuario;
+		
+	}
 
 	public Jaxb2Marshaller getMarshaller() {
 		if(marshaller == null){
@@ -97,4 +123,5 @@ public class AuthenticationAdapterImpl implements AuthenticationAdapter {
 	public static Logger getLogger() {
 		return LOGGER;
 	}
+
 }
