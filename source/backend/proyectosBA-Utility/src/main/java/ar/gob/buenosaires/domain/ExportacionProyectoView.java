@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -502,6 +503,7 @@ public class ExportacionProyectoView implements Serializable {
 		this.areaNombre = areaNombre;
 	}
 
+	@JsonIgnore
 	public Double getPresupuestoPrimerAnio() {
 		Calendar dateAsCalendar = Calendar.getInstance();
 		dateAsCalendar.setTime(getFechaInicio());
@@ -518,6 +520,7 @@ public class ExportacionProyectoView implements Serializable {
 		return importeAñoFechaInicio;
 	}
 
+	@JsonIgnore
 	public Double getPresupuestoTotal() {
 		Double total = new Double(0);
 		if (getPresupuestosPorAnio() != null && !getPresupuestosPorAnio().isEmpty()) {

@@ -3,18 +3,16 @@ package ar.gob.buenosaires.esb.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
-import ar.gob.buenosaires.esb.domain.message.ObjetivoJurisdiccionalRespMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoOperativoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoOperativoRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ObjetivoOperativoService;
 
 public class ObjetivoOperativoHandler extends AbstractBaseEventHandler {
@@ -28,41 +26,28 @@ public class ObjetivoOperativoHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ObjetivoOperativoService.class);
+		final ObjetivoOperativoReqMsg request = (ObjetivoOperativoReqMsg) JMSUtil.crearObjeto(event.getXml(), ObjetivoOperativoReqMsg.class); 
+
 		final ObjetivoOperativoRespMsg response = new ObjetivoOperativoRespMsg();
-		final ObjetivoOperativoReqMsg request = (ObjetivoOperativoReqMsg) event.getObj(); 
+		event.setObj(response);
+		List<ObjetivoOperativo> objetivosOperativos = new ArrayList<ObjetivoOperativo>();
+		response.setObjetivosOperativos(objetivosOperativos);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
-			retrieveObjetivosOperativos(event, response, request);
+			retrieveObjetivosOperativos(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
-			createObjetivoOperativo(event, response, request);
+			objetivosOperativos.add(service.createObjetivoOperativo(request.getObjetivoOperativo()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
-			updateObjetivoOperativo(event, response, request);
+			objetivosOperativos.add(service.updateObjetivoOperativo(request.getObjetivoOperativo()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteObjetivoOperativo(request.getId());
 		} else {
-
+			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Objetivo Operativo");
 		}
 		logResponseMessage(event, ObjetivoOperativoService.class);
 	}
 	
-	private void createObjetivoOperativo(ESBEvent event,
-			final ObjetivoOperativoRespMsg response, final ObjetivoOperativoReqMsg request) throws ESBException {		
-		List<ObjetivoOperativo> objetivosOperativos = new ArrayList<ObjetivoOperativo>();
-		objetivosOperativos.add(service.createObjetivoOperativo(request.getObjetivoOperativo()));
-		
-		addObjetivosOperativosToResponse(event, response, objetivosOperativos);
-	}
-	
-	private void updateObjetivoOperativo(ESBEvent event,
-			final ObjetivoOperativoRespMsg response, final ObjetivoOperativoReqMsg request) throws ESBException {		
-		List<ObjetivoOperativo> objetivosOperativos = new ArrayList<ObjetivoOperativo>();
-		objetivosOperativos.add(service.updateObjetivoOperativo(request.getObjetivoOperativo()));
-		
-		addObjetivosOperativosToResponse(event, response, objetivosOperativos);
-	}
-
-	private void retrieveObjetivosOperativos(ESBEvent event,
-			final ObjetivoOperativoRespMsg response, final ObjetivoOperativoReqMsg request) {
+	private void retrieveObjetivosOperativos(final ObjetivoOperativoRespMsg response, final ObjetivoOperativoReqMsg request) {
 		List<ObjetivoOperativo> objetivosOperativos = new ArrayList<ObjetivoOperativo>();
 
 		if (request.getId() != null) {
@@ -75,13 +60,6 @@ public class ObjetivoOperativoHandler extends AbstractBaseEventHandler {
 			objetivosOperativos = service.getObjetivosOperativos();
 		}
 		response.setObjetivosOperativos(objetivosOperativos);
-		event.setObj(response);
-	}
-	
-	private void addObjetivosOperativosToResponse(ESBEvent event, final ObjetivoOperativoRespMsg response, 
-			List<ObjetivoOperativo> objetivosOperativos) {
-		response.setObjetivosOperativos(objetivosOperativos);
-		event.setObj(response);
 	}
 
 	@Override

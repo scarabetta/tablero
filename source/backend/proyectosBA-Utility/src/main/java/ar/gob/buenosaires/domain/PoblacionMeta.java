@@ -18,13 +18,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "poblacion_meta")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idPoblacionMeta", "nombre", "proyectosPoblacionMeta" })
-public class PoblacionMeta implements Serializable, IExportableAExcel  {
+@XmlType(propOrder = { "idPoblacionMeta", "nombre", "proyectos" })
+public class PoblacionMeta implements Serializable, IExportableAExcel {
 
 	private static final long serialVersionUID = 6065646101212243564L;
 
@@ -37,11 +39,11 @@ public class PoblacionMeta implements Serializable, IExportableAExcel  {
 	private String nombre;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "poblacion_meta_por_proyecto",
-	joinColumns = { @JoinColumn(name = "idproyecto") },
-	inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
-	@XmlElement(name = "proyectosPoblacionMeta")
-	private List<Proyecto> proyectosPoblacionMeta;
+	@JoinTable(name = "poblacion_meta_por_proyecto", 
+		joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
+	@XmlElement(name = "proyectos")
+	private List<Proyecto> proyectos;
 
 	public Long getIdPoblacionMeta() {
 		return idPoblacionMeta;
@@ -59,9 +61,17 @@ public class PoblacionMeta implements Serializable, IExportableAExcel  {
 		this.nombre = nombre;
 	}
 
-	@Override
-	public String getNombreParaExportacion() {
-		return "SPI:" + getNombre();
+	public List<Proyecto> getProyectos() {
+		return proyectos;
 	}
 
+	public void setProyectos(List<Proyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
+
+	@JsonIgnore
+    @Override
+	public String getNombreParaExportacion() {
+		return "SPI:" + getNombre();
+	}		
 }

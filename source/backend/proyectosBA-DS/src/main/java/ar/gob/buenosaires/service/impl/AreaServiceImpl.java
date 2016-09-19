@@ -67,7 +67,7 @@ public class AreaServiceImpl implements AreaService {
 
 	private List<Area> getAreasFromReqMsg(AreaReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener una Area : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, AreaRespMsg.class);
 
 		List<Area> areas = null;
 		if (response.getEventType().equalsIgnoreCase(AreaRespMsg.AREA_TYPE)) {

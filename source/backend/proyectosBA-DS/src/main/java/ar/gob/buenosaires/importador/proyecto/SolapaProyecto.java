@@ -46,10 +46,10 @@ public class SolapaProyecto {
 
 	@Autowired
 	Environment env;
-	
+
 	@Value("${proyecto.num.celda.oj}")
 	int celdaCodigoOJ;
-	
+
 	@Value("${proyecto.num.celda.oop}")
 	int celdaCodigoOOp;
 
@@ -99,75 +99,71 @@ public class SolapaProyecto {
 
 	public boolean validarEImportarFila(Row unaFila, ImportadorProyectoBuilder builder) {
 		boolean filaValida = validarFila(unaFila);
-		String nombreProyecto = unaFila.getCell(0, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
+		String nombreProyecto = SolapaProyecto.getCellStringValue(unaFila.getCell(0).getCellType(),
+				unaFila.getCell(0, Row.CREATE_NULL_AS_BLANK));
+
 		boolean esProyectoExistenteYActualizableONuevo = !StringUtils.isEmpty(nombreProyecto)
 				&& esProyectoExistenteYActualizableONuevo(nombreProyecto);
 
 		if (filaValida && esProyectoExistenteYActualizableONuevo) {
-			String codigoOJ = "";
-			String codigoOOp = "";
+			Cell celdaOj = unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK);
+			Cell celdaOop = unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK);
+			String codigoOJ = SolapaProyecto.getCellStringValue(celdaOj.getCellType(), celdaOj);
+			String codigoOOp = SolapaProyecto.getCellStringValue(celdaOop.getCellType(), celdaOop);
 
 			try {
-				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK).getCellType()
-						&& Cell.CELL_TYPE_STRING == unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK)
-								.getCachedFormulaResultType()) {
-					codigoOJ = unaFila.getCell(celdaCodigoOJ, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-				}
 
-				if (Cell.CELL_TYPE_FORMULA == unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK).getCellType()
-						&& Cell.CELL_TYPE_STRING == unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK)
-								.getCachedFormulaResultType()) {
-					codigoOOp = unaFila.getCell(celdaCodigoOOp, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-				}
 				builder.cargarProyecto(nombreProyecto)
-						.cargarObjetivoJurisdiccional(unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-								codigoOJ)
-						.cargarObjetivoOperativo(unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-								codigoOOp)
+				.cargarObjetivoJurisdiccional(unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
+						codigoOJ)
+				.cargarObjetivoOperativo(unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
+						codigoOOp)
 
-						.cargarProyectoDescripcion(unaFila.getCell(3, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoMeta(unaFila.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-						.cargarProyectoUnidadMeta(unaFila.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoPoblacionAfectada(
-								unaFila.getCell(6, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-						.cargarPoblacionMeta(unaFila.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarPoblacionMeta(unaFila.getCell(8, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarPoblacionMeta(unaFila.getCell(9, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarPoblacionMeta(unaFila.getCell(10, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoLider(unaFila.getCell(11, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoArea(unaFila.getCell(12, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoCorresponsable(
-								unaFila.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoTipoUbucacion(unaFila.getCell(14, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoDireccion(unaFila.getCell(15, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarComuna(unaFila.getCell(16, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarComuna(unaFila.getCell(17, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarComuna(unaFila.getCell(18, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarComuna(unaFila.getCell(19, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoFechaInicio(unaFila.getCell(20, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
-						.cargarProyectoFechaFin(unaFila.getCell(21, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
+				.cargarProyectoDescripcion(SolapaProyecto.getCellStringValue(
+						unaFila.getCell(3, Row.CREATE_NULL_AS_BLANK).getCellType(),
+						unaFila.getCell(3, Row.CREATE_NULL_AS_BLANK)))
+				.cargarProyectoMeta(unaFila.getCell(4, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarProyectoUnidadMeta(unaFila.getCell(5, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoPoblacionAfectada(
+						unaFila.getCell(6, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarPoblacionMeta(unaFila.getCell(7, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarPoblacionMeta(unaFila.getCell(8, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarPoblacionMeta(unaFila.getCell(9, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarPoblacionMeta(unaFila.getCell(10, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoLider(unaFila.getCell(11, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoArea(unaFila.getCell(12, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoCorresponsable(
+						unaFila.getCell(13, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoTipoUbucacion(unaFila.getCell(14, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoDireccion(unaFila.getCell(15, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarComuna(unaFila.getCell(16, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarComuna(unaFila.getCell(17, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarComuna(unaFila.getCell(18, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarComuna(unaFila.getCell(19, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoFechaInicio(unaFila.getCell(20, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
+				.cargarProyectoFechaFin(unaFila.getCell(21, Row.CREATE_NULL_AS_BLANK).getDateCellValue())
 
-						.cargarPresupuestoPorAnio(unaFila.getCell(22, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(23, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(24, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-						.cargarPresupuestoPorAnio(unaFila.getCell(25, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(26, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(27, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-						.cargarPresupuestoPorAnio(unaFila.getCell(28, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(29, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(30, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
-						.cargarPresupuestoPorAnio(unaFila.getCell(31, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(32, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
-								unaFila.getCell(33, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarPresupuestoPorAnio(unaFila.getCell(22, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(23, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(24, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarPresupuestoPorAnio(unaFila.getCell(25, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(26, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(27, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarPresupuestoPorAnio(unaFila.getCell(28, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(29, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(30, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
+				.cargarPresupuestoPorAnio(unaFila.getCell(31, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(32, Row.CREATE_NULL_AS_BLANK).getNumericCellValue(),
+						unaFila.getCell(33, Row.CREATE_NULL_AS_BLANK).getNumericCellValue())
 
-						.cargarProyectoTipoProyecto(unaFila.getCell(35, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarEjeDeGobierno(unaFila.getCell(36, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarEjeDeGobierno(unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarEjeDeGobierno(unaFila.getCell(38, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoImplicaCambioLegislativo(
-								unaFila.getCell(39, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
-						.cargarProyectoPrioridadJurisdiccional(
-								unaFila.getCell(40, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
+				.cargarProyectoTipoProyecto(unaFila.getCell(35, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarEjeDeGobierno(unaFila.getCell(36, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarEjeDeGobierno(unaFila.getCell(37, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarEjeDeGobierno(unaFila.getCell(38, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoImplicaCambioLegislativo(
+						unaFila.getCell(39, Row.CREATE_NULL_AS_BLANK).getStringCellValue())
+				.cargarProyectoPrioridadJurisdiccional(
+						unaFila.getCell(40, Row.CREATE_NULL_AS_BLANK).getStringCellValue());
 			} catch (IllegalStateException | NumberFormatException e) {
 				SolapaProyecto.getLogger().error("Hubo un error de formato o estado ilegal en la fila "
 						+ unaFila.getRowNum() + "\n" + e.getMessage());
@@ -370,7 +366,7 @@ public class SolapaProyecto {
 	}
 
 	private boolean esProyectoExistenteYActualizableONuevo(String nombreProyecto) {
-		boolean esProyectoExistenteYActualizable = true;
+		boolean esProyectoExistenteYActualizable = pisarProyectos;
 		try {
 			Proyecto pr = proyectoService.getProyectoByName(nombreProyecto);
 			esProyectoExistenteYActualizable = (pr == null || (pr != null && pisarProyectos));
@@ -379,6 +375,31 @@ public class SolapaProyecto {
 			e.printStackTrace();
 		}
 		return esProyectoExistenteYActualizable;
+	}
+
+	public static String getCellStringValue(int cellType, Cell celda) {
+		String returnValue = "";
+
+		switch (cellType) {
+		case Cell.CELL_TYPE_BLANK:
+		case Cell.CELL_TYPE_STRING:
+			returnValue = celda.getStringCellValue();
+			break;
+		case Cell.CELL_TYPE_BOOLEAN:
+			returnValue = celda.getBooleanCellValue() ? "Si" : "No";
+			break;
+		case Cell.CELL_TYPE_ERROR:
+			returnValue = ((XSSFCell) celda).getErrorCellString();
+			break;
+		case Cell.CELL_TYPE_FORMULA:
+			returnValue = getCellStringValue(celda.getCachedFormulaResultType(), celda);
+			break;
+		case Cell.CELL_TYPE_NUMERIC:
+			returnValue = String.valueOf(celda.getNumericCellValue());
+			break;
+		}
+
+		return returnValue;
 	}
 
 }

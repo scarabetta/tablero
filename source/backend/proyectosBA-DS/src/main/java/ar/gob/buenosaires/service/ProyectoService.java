@@ -19,6 +19,16 @@ public interface ProyectoService {
 
 	Proyecto getProyectoByName(String nombre) throws ESBException, JMSException;
 
+	/**
+	 * Se filtran por los estados \'Completo\', \'Incompleto\', \'Presentado\')
+	 * el SQL es:<br>
+	 *
+	 * <p>@Query("SELECT p FROM Proyecto p JOIN p.objetivoOperativo op"
+			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
+			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre and p.estado in (\'Completo\', \'Incompleto\', \'Presentado\')")</p>
+	 * */
+	Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion) throws ESBException, JMSException;
+
 	Proyecto createProyecto(Proyecto proyecto) throws ESBException, JMSException;
 
 	Proyecto updateProyecto(Proyecto proyecto) throws ESBException, JMSException;

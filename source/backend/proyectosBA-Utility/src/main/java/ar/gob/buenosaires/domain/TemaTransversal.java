@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
@@ -59,6 +61,7 @@ public class TemaTransversal implements Serializable, IExportableAExcel {
 		this.activo = activo;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getNombreParaExportacion() {
 		return "TT:" + getTemaTransversal();

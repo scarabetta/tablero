@@ -11,11 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.gob.buenosaires.domain.Proyecto;
 
 public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
-	
+
 	Proyecto findByNombre(String nombre);
-	
+
 	Proyecto findByCodigo(String codigo);
-	
+
 	@Modifying
 	@Transactional
 	@Query("UPDATE Proyecto p SET p.estado = \'Presentado\' WHERE p.idProyecto in (:proyectosId)")
@@ -27,7 +27,7 @@ public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
 	@Transactional
 	@Query("UPDATE Proyecto p SET p.estado = \'Presentado\' WHERE p.estado = \'En Priorizacion\' AND p.verificado = 0")
 	void cancelarPriorizacionNoVerificado();
-	
+
 	@Modifying
 	@Transactional
 	@Query("UPDATE Proyecto p SET p.estado = \'Verificado\' WHERE p.estado = \'En Priorizacion\' AND p.verificado = 1")
@@ -35,6 +35,11 @@ public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
 
 	@Modifying
 	@Transactional
-	@Query("UPDATE Proyecto p SET p.estado = \'En Priorizacion\' WHERE p.estado = \'Verificado\' OR p.estado = \'Presentado\'")
+	@Query("UPDATE Proyecto p SET p.estado = \'En Priorización\' WHERE p.estado = \'Verificado\' OR p.estado = \'Presentado\'")
 	void iniciarPriorizacionDeProyectos();
+
+	@Query("SELECT p FROM Proyecto p JOIN p.objetivoOperativo op"
+			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
+			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre and p.estado in (\'Completo\', \'Incompleto\', \'Presentado\')")
+	Proyecto findByNombreAndIdJurisdiccion(@Param("nombre") String nombre, @Param("idJurisdiccion") Long idJurisdiccion);
 }

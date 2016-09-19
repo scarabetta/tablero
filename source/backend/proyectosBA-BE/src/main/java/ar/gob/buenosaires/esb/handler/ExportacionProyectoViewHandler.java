@@ -12,6 +12,7 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ExportacionProyectoViewReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ExportacionProyectoViewRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ExportacionProyectoViewService;
 
 public class ExportacionProyectoViewHandler extends AbstractBaseEventHandler {
@@ -25,13 +26,17 @@ public class ExportacionProyectoViewHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ExportacionProyectoViewService.class);
+		final ExportacionProyectoViewReqMsg exportacionProyectoViewRequest = (ExportacionProyectoViewReqMsg) JMSUtil
+				.crearObjeto(event.getXml(), ExportacionProyectoViewReqMsg.class);
+
 		final ExportacionProyectoViewRespMsg exportacionProyectoViewResponse = new ExportacionProyectoViewRespMsg();
-		final ExportacionProyectoViewReqMsg exportacionProyectoViewRequest = (ExportacionProyectoViewReqMsg) event
-				.getObj();
+		event.setObj(exportacionProyectoViewResponse);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveExportacionProyectoViews(event, exportacionProyectoViewResponse,
 					exportacionProyectoViewRequest);
+		} else {
+			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Exportacion Proyecto");
 		}
 		logResponseMessage(event, ExportacionProyectoViewService.class);
 	}

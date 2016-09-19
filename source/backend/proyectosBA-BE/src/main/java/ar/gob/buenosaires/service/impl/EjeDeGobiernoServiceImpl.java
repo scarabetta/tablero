@@ -33,20 +33,20 @@ public class EjeDeGobiernoServiceImpl implements EjeDeGobiernoService {
 		return getEjeDeGobiernoDAO().findOne(id);
 	}
 	
-//	@Override
-//	public void createEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
-//		getEjeDeGobiernoDAO().save(ejeDeGobierno);
-//	}
-//	
-//	@Override
-//	public void updateEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
-//		getEjeDeGobiernoDAO().save(ejeDeGobierno);
-//	}
-//	
-//	@Override
-//	public void deleteEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
-//		getEjeDeGobiernoDAO().delete(ejeDeGobierno);
-//	}
+	@Override
+	public EjeDeGobierno createEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
+		return getEjeDeGobiernoDAO().save(ejeDeGobierno);
+	}
+	
+	@Override
+	public EjeDeGobierno updateEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
+		return getEjeDeGobiernoDAO().save(ejeDeGobierno);
+	}
+	
+	@Override
+	public void deleteEjeDeGobierno(EjeDeGobierno ejeDeGobierno) {
+		getEjeDeGobiernoDAO().delete(ejeDeGobierno);
+	}
 
 	public EjeDeGobiernoJpaDao getEjeDeGobiernoDAO() {
 		return repositorio.getEjeDeGobiernoJpaDao();

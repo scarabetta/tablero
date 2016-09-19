@@ -11,7 +11,6 @@ import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepository;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalJpaDao;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalRepository;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalRepositoryImpl;
-import ar.gob.buenosaires.domain.IndicadorEstrategico;
 import ar.gob.buenosaires.domain.Jurisdiccion;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.esb.exception.ESBException;
@@ -19,7 +18,8 @@ import ar.gob.buenosaires.service.ObjetivoJurisdiccionalService;
 
 @Service
 public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccionalService {
-	//TODO refactorizar esta clase cuando este implementado el bus que no nos rompe las relaciones
+
+	private static final String WILDCARD = "%";
 	
 	@Autowired
 	private ObjetivoJurisdiccionalRepository repositorio;
@@ -53,15 +53,14 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 	@Override
 	public ObjetivoJurisdiccional createObjetivoJurisdiccional(ObjetivoJurisdiccional objetivoJurisdiccional) throws ESBException {
 		Jurisdiccion jurisdiccion = repositorioJurisdiccion.getJurisdiccionJpaDao().findOne(objetivoJurisdiccional.getIdJurisdiccionAux());
-		if (jurisdiccion != null) {						
-			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);			
+		if (jurisdiccion != null) {
+			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);
 			objetivoJurisdiccional.setCodigo(getProximoCodigoObjJurisdiccional(jurisdiccion));
-			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);			
-			updateIndicadoresEstrategicos(objJuri);									
+			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);		
 			return objJuri;
 		} else { 
 			throw new ESBException("La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
-		}			
+		}		
 	}	
 	
 	@Override
@@ -69,28 +68,11 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		Jurisdiccion jurisdiccion = repositorioJurisdiccion.getJurisdiccionJpaDao().findOne(objetivoJurisdiccional.getIdJurisdiccionAux());
 		if (jurisdiccion != null) {						
 			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);			
-			deleteIndicadoresEstrategicosAnteriores(objetivoJurisdiccional);			
 			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);
-			updateIndicadoresEstrategicos(objJuri);
 			return objJuri;
 		} else { 
 			throw new ESBException("La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
 		}	
-	}
-	
-	private void updateIndicadoresEstrategicos(ObjetivoJurisdiccional objJuri) {
-		for (IndicadorEstrategico indi: objJuri.getIndicadoresEstrategicos()){
-			indi.setObjetivoJurisdiccional(objJuri);
-			repositorioIndicadorEstrategico.getIndicadorEstrategicoJpaDao().save(indi);				
-		}
-	}
-
-	private void deleteIndicadoresEstrategicosAnteriores(ObjetivoJurisdiccional objetivoJurisdiccional) {
-		List<IndicadorEstrategico> indicadoresEstrategicos = repositorioIndicadorEstrategico.getIndicadorEstrategicoJpaDao()
-				.findByObjetivoJurisdiccional(objetivoJurisdiccional);
-		for (IndicadorEstrategico indicador : indicadoresEstrategicos) {
-			repositorioIndicadorEstrategico.getIndicadorEstrategicoJpaDao().delete(indicador);
-		}		
 	}
 	
 	@Override

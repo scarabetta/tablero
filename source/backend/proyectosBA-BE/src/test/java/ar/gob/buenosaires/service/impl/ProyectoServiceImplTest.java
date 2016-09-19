@@ -30,6 +30,8 @@ import ar.gob.buenosaires.geocoder.adapter.impl.GeoCoderAdapterImpl;
 import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
 import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
+import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasJpaDao;
+import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepositoryImpl;
 
 public class ProyectoServiceImplTest {
 
@@ -44,6 +46,9 @@ public class ProyectoServiceImplTest {
 	@Mock
 	PresupuestoPorAnioJpaDao presupuestoPorAnioJpaDao;
 
+	@Mock
+	 OtrasEtiquetasJpaDao OtrasEtiquetasJpaDao;
+
 	@InjectMocks
 	@Spy
 	ProyectoRepositoryImpl repositorio;
@@ -55,6 +60,10 @@ public class ProyectoServiceImplTest {
 	@InjectMocks
 	@Spy
 	PresupuestoPorAnioRepositoryImpl repositorioPresupuestoPorAnio;
+
+	@InjectMocks
+	@Spy
+	OtrasEtiquetasRepositoryImpl repositorioOtrasEtiquetas;
 	
 	@InjectMocks
 	ProyectoServiceImpl service;
@@ -77,9 +86,11 @@ public class ProyectoServiceImplTest {
 
 		repositorioObjetivoOperativo.setObjetivoOperativoJpaDao(jpaDaoObjetivoOperativo);
 		repositorioPresupuestoPorAnio.setPresupuestoPorAnioJpaDao(presupuestoPorAnioJpaDao);
+		repositorioOtrasEtiquetas.setOtrasEtiquetasJpaDao(OtrasEtiquetasJpaDao);
 		
 		service.setRepositorioObjetivoOperativo(repositorioObjetivoOperativo);
 		service.setRepositorioPresupuestoPorAnio(repositorioPresupuestoPorAnio);
+		service.setRepositorioOtrasEtiquetas(repositorioOtrasEtiquetas);
 		service.setGeoCoderService(geoCoderService);
 	}
 

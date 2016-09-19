@@ -74,6 +74,10 @@ public class ObjetivoJurisdiccionalServiceImplTest {
 		ObjetivoJurisdiccional fakeObjetivoJurisdiccional = new ObjetivoJurisdiccional();
 		fakeObjetivoJurisdiccional.setNombre(FAKE_NOMBRE);
 		fakeObjetivoJurisdiccional.setIdJurisdiccionAux(new Long(1));
+		Jurisdiccion fakeJurisdiccion = new Jurisdiccion();
+		fakeJurisdiccion.setIdJurisdiccion(new Long(1));
+		fakeJurisdiccion.setCodigo("AGC");
+		fakeObjetivoJurisdiccional.setJurisdiccion(fakeJurisdiccion);
 		return fakeObjetivoJurisdiccional;
 	}
 

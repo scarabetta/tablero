@@ -20,7 +20,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -28,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "jurisdiccion")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idJurisdiccion", "nombre", "abreviatura", "mision", "objetivosJurisdiccionales", "areas", "codigo" })
+@XmlType(propOrder = { "idJurisdiccion", "nombre", "abreviatura", "mision", "objetivosJurisdiccionales", "areas", "codigo", "usuarios" })
 
 @XmlRootElement(name = "Jurisdiccion")
 public class Jurisdiccion implements Serializable {
@@ -63,11 +62,11 @@ public class Jurisdiccion implements Serializable {
     private List<ObjetivoJurisdiccional> objetivosJurisdiccionales = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "usuario_por_jurisdiccion", joinColumns = {
-			@JoinColumn(name = "usuario_idusuario") }, 
+	@JoinTable(name = "usuario_por_jurisdiccion", 
+			joinColumns = { @JoinColumn(name = "usuario_idusuario") }, 
 			inverseJoinColumns = { @JoinColumn(name = "jurisdiccion_idjurisdiccion") })
-	@XmlTransient
-	private List<Usuario> usuarios;
+	@XmlElement(name = "usuarios")	
+	private List<Usuario> usuarios = new ArrayList<Usuario>();
 
 	public Long getIdJurisdiccion() {
 		return idJurisdiccion;
@@ -102,6 +101,9 @@ public class Jurisdiccion implements Serializable {
 	}
 
 	public List<ObjetivoJurisdiccional> getObjetivosJurisdiccionales() {
+		if(objetivosJurisdiccionales == null){
+			objetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
+		}
 		return objetivosJurisdiccionales;
 	}
 	
@@ -118,6 +120,9 @@ public class Jurisdiccion implements Serializable {
 	}
 
 	public List<Usuario> getUsuarios() {
+		if(usuarios == null){
+			usuarios = new ArrayList<Usuario>();
+		}
 		return usuarios;
 	}
 

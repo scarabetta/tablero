@@ -3,7 +3,6 @@ package ar.gob.buenosaires.esb.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.EjeDeGobiernoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.EjeDeGobiernoRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.EjeDeGobiernoService;
 
 public class EjeDeGobiernoHandler extends AbstractBaseEventHandler {
@@ -27,38 +27,38 @@ public class EjeDeGobiernoHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, EjeDeGobiernoService.class);
+		final EjeDeGobiernoReqMsg request = (EjeDeGobiernoReqMsg) JMSUtil.crearObjeto(event.getXml(), EjeDeGobiernoReqMsg.class); 
+
 		final EjeDeGobiernoRespMsg response = new EjeDeGobiernoRespMsg();
-		final EjeDeGobiernoReqMsg request = (EjeDeGobiernoReqMsg) event.getObj(); 
+		event.setObj(response);
+		List<EjeDeGobierno> ejesDeGob = new ArrayList<EjeDeGobierno>();
+		response.setEjesDeGobierno(ejesDeGob);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
-			retrieveEjesDeGobierno(event, response, request);
-//		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
-//			service.createEjeDeGobierno(request.getEjeDeGobierno());
-//		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
-//			service.updateEjeDeGobierno(request.getEjeDeGobierno());
-//		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
-//			service.deleteEjeDeGobierno(request.getEjeDeGobierno());
+			retrieveEjesDeGobierno(response, request);
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
+			ejesDeGob.add(service.createEjeDeGobierno(request.getEjeDeGobierno()));
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
+			ejesDeGob.add(service.updateEjeDeGobierno(request.getEjeDeGobierno()));
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
+			service.deleteEjeDeGobierno(request.getEjeDeGobierno());
 		} else {
-
+			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Ejes de Gobierno.");
 		}
 		logResponseMessage(event, EjeDeGobiernoService.class);
 	}
 
-	private void retrieveEjesDeGobierno(ESBEvent event,
-			final EjeDeGobiernoRespMsg response, final EjeDeGobiernoReqMsg request) {
+	private void retrieveEjesDeGobierno(final EjeDeGobiernoRespMsg response, final EjeDeGobiernoReqMsg request) {
 		List<EjeDeGobierno> ejesDeGobierno = new ArrayList<EjeDeGobierno>();
 
 		if (request.getId() != null) {
 			ejesDeGobierno.add(service.getEjeDeGobiernoPorId(request.getId()));
-		} else if (StringUtils.isNotBlank(request.getName())) {
+		} else if (request.getName() != null) {
 			ejesDeGobierno.add(service.getEjeDeGobiernoPorNombre(request.getName()));
-		} else if (StringUtils.isNotBlank(request.getCodigo())) {
-//			ejesDeGobierno.add(service.getEjeDeGobiernoPorCodigo(request.getCodigo()));
 		} else {
 			ejesDeGobierno = service.getEjesDeGobierno();
 		}
 		response.setEjesDeGobierno(ejesDeGobierno);
-		event.setObj(response);
 	}
 
 	@Override

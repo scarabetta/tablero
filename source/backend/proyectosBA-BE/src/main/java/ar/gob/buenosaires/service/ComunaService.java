@@ -8,15 +8,13 @@ public interface ComunaService {
 
 	List<Comuna> getComunas();
 
-//	Comuna getComunaPorNombre(String nombre);
-//
-//	Comuna getComunaPorId(Long id);
-//	
-//	Comuna getComunaPorCodigo(String codigo);
-//	
-//	void createComuna(Comuna comuna);
-//	
-//	void updateComuna (Comuna comuna);
-//	
-//	void deleteComuna (Comuna comuna);
+	Comuna getComunaPorNombre(String nombre);
+
+	Comuna getComunaPorId(Long id);
+	
+	Comuna createComuna(Comuna comuna);
+	
+	Comuna updateComuna (Comuna comuna);
+	
+	void deleteComuna (Comuna comuna);
 }

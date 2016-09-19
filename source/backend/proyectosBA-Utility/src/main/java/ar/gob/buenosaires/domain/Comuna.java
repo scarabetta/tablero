@@ -18,12 +18,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "comuna")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idComuna", "abreviatura", "nombre", "proyectosComuna" })
+@XmlType(propOrder = { "idComuna", "abreviatura", "nombre", "proyectos" })
 public class Comuna implements Serializable, IExportableAExcel {
 
 	private static final long serialVersionUID = 6040466436345783676L;
@@ -40,10 +42,11 @@ public class Comuna implements Serializable, IExportableAExcel {
 	private String nombre;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "comuna_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
-			@JoinColumn(name = "idcomuna") })
-	@XmlElement(name = "proyectosComuna")
-	private List<Proyecto> proyectosComuna;
+	@JoinTable(name = "comuna_por_proyecto", 
+		joinColumns = { @JoinColumn(name = "idproyecto") }, 
+	    inverseJoinColumns = { @JoinColumn(name = "idcomuna") })
+	@XmlElement(name = "proyectos")	
+	private List<Proyecto> proyectos;
 
 	public Long getIdComuna() {
 		return idComuna;
@@ -69,6 +72,15 @@ public class Comuna implements Serializable, IExportableAExcel {
 		this.nombre = nombre;
 	}
 
+	public List<Proyecto> getProyectos() {
+		return proyectos;
+	}
+
+	public void setProyectos(List<Proyecto> proyectosComuna) {
+		this.proyectos = proyectosComuna;
+	}
+	
+	@JsonIgnore
 	@Override
 	public String getNombreParaExportacion() {
 		return "COM:" + getNombre();

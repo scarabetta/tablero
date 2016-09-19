@@ -63,6 +63,9 @@ public class ObjetivoOperativoServiceImplTest {
 		ObjetivoOperativo fakeObjetivoOperativo = new ObjetivoOperativo();
 		fakeObjetivoOperativo.setNombre(FAKE_NOMBRE);
 		fakeObjetivoOperativo.setIdObjetivoJurisdiccionalAux(new Long(1));
+		ObjetivoJurisdiccional fakeOJ = new ObjetivoJurisdiccional();
+		fakeOJ.setCodigo("AGC.1");
+		fakeObjetivoOperativo.setObjetivoJurisdiccional(fakeOJ);
 		return fakeObjetivoOperativo;
 	}
 

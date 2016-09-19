@@ -69,7 +69,6 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   `unidadMeta` varchar(512) DEFAULT NULL,
   `poblacionAfectada` bigint(20) DEFAULT NULL,
   `liderProyecto` varchar(512) DEFAULT NULL,
-  `area` varchar(512) DEFAULT NULL,
   `tipoUbicacionGeografica` varchar(50) DEFAULT NULL,
   `direccion` varchar(512) DEFAULT NULL,
   `cambioLegislativo` tinyint(4) DEFAULT NULL,
@@ -84,9 +83,12 @@ CREATE TABLE IF NOT EXISTS `proyecto` (
   `organismosCorresponsables` varchar(512) DEFAULT NULL,
   `coordenadaX` varchar(50) DEFAULT NULL,
   `coordenadaY` varchar(50) DEFAULT NULL,
+  `prioridad_jefatura` VARCHAR(5) NULL DEFAULT NULL,
+  `total_presu_aprobado` DOUBLE NULL DEFAULT NULL,
   PRIMARY KEY (`idProyecto`),
   KEY `FK_idObjetivoOperativo_proyecto` (`idObjetivoOperativo`),
-  CONSTRAINT `FK_idObjetivoOperativo_proyecto` FOREIGN KEY (`idObjetivoOperativo`) REFERENCES `objetivo_operativo` (`idObjetivoOperativo`)
+  CONSTRAINT `FK_idObjetivoOperativo_proyecto` FOREIGN KEY (`idObjetivoOperativo`) REFERENCES `objetivo_operativo` (`idObjetivoOperativo`),
+  CONSTRAINT `FK_idArea_proyecto` FOREIGN KEY (`idArea`) REFERENCES `area` (`idArea`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -252,6 +254,64 @@ CREATE TABLE IF NOT EXISTS `tema_transversal` (
 
 -- Data exporting was unselected.
 
+-- Dumping structure for table proyectos_ba_generated.tema_transversal_por_proyecto
+CREATE TABLE IF NOT EXISTS `tema_transversal_por_proyecto` (
+  `idProyecto` int(11) NOT NULL,
+  `idTemaTransversal` int(11) NOT NULL,
+  PRIMARY KEY (`idProyecto`,`idTemaTransversal`),
+  KEY `FK_temaTransversal` (`idTemaTransversal`),
+  CONSTRAINT `FK_temaTransversal` FOREIGN KEY (`idTemaTransversal`) REFERENCES `tema_transversal` (`idTemaTransversal`),
+  CONSTRAINT `FK_temaTrasnversal_proyecto` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+-- Dumping structure for table proyectos_ba_generated.compromiso_publico
+CREATE TABLE IF NOT EXISTS `compromiso_publico` (
+  `idCompromisoPublico` int(11) NOT NULL AUTO_INCREMENT,
+  `compromisoPublico` varchar(50) NOT NULL,
+  `activo` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`idCompromisoPublico`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table proyectos_ba_generated.compromiso_publico_por_proyecto
+CREATE TABLE IF NOT EXISTS `compromiso_publico_por_proyecto` (
+  `idProyecto` int(11) NOT NULL,
+  `idCompromisoPublico` int(11) NOT NULL,
+  PRIMARY KEY (`idProyecto`,`idCompromisoPublico`),
+  KEY `FK_compromisoPublico` (`idCompromisoPublico`),
+  CONSTRAINT `FK_compromisoPublico` FOREIGN KEY (`idCompromisoPublico`) REFERENCES `compromiso_publico` (`idCompromisoPublico`),
+  CONSTRAINT `FK_compromisoPublico_proyecto` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table proyectos_ba_generated.otras_etiquetas
+CREATE TABLE IF NOT EXISTS `otras_etiquetas` (
+  `idEtiqueta` int(11) NOT NULL AUTO_INCREMENT,
+  `etiqueta` varchar(512) NOT NULL,
+  PRIMARY KEY (`idEtiqueta`),
+  UNIQUE KEY `etiqueta` (`etiqueta`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table proyectos_ba_generated.otras_etiquetas_por_proyecto
+CREATE TABLE IF NOT EXISTS `otras_etiquetas_por_proyecto` (
+  `idEtiqueta` int(11) NOT NULL,
+  `idProyecto` int(11) NOT NULL,
+  PRIMARY KEY (`idEtiqueta`,`idProyecto`),
+  KEY `fk_etiqueta_proyecto` (`idProyecto`),
+  CONSTRAINT `FK_etiquetas` FOREIGN KEY (`idEtiqueta`) REFERENCES `otras_etiquetas` (`idEtiqueta`),
+  CONSTRAINT `fk_etiqueta_proyecto` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
 
 -- Dumping structure for table proyectos_ba_generated.usuario
 CREATE TABLE IF NOT EXISTS `usuario` (

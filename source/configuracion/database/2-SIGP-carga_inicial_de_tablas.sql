@@ -20,7 +20,7 @@ INSERT INTO `jurisdiccion` (`idJurisdiccion`, `nombre`, `abreviatura`, `mision`,
 	(3, 'Corporación Buenos Aires Sur', 'Corp. BsAs Sur', '', 'CBAS'),
 	(4, 'Ministerio de Ambiente y Espacio Público', 'MAYEP', 'Entender en la ejecución y planificación de políticas tendientes a la recuperación del espacio público, así como en aquellas obras de regeneración urbana y puesta en valor integral a implementarse en las distintas áreas de la Ciudad de Buenos Aires. Diseñar y ejecutar las políticas de Mantenimiento Integral del Espacio Público en pos de la conservación y remodelación de la Ciudad de Buenos Aires. Promover políticas de calidad en pos de un adecuado uso del espacio, así como entender en la ejecución y planificación de políticas que tiendan a su recuperación. Implementar programas y proyectos de Higiene Urbana relacionados con la recuperación, reutilización, reciclado, tratamiento y disposición final de los residuos sólidos urbanos. Volver a la CABA una ciudad más sustentable y resiliente. Contribuyendo a su vez en un adecuado control de las poblaciones que la componen. Así como agilizando y eficientizando los procesos de comunicación hacia el organismo. ', 'MAYEPGC'),
 	(5, 'Ministerio de Desarrollo Urbano y Transporte', 'MDU', '', 'MDUYTGC'),
-	(6, 'Ministerio de Desarrollo Urbano y Transporte (IVC)', 'MDU (IVC)', '', 'MDUYTGC.IVC'),
+	(6, 'Instituto de Vivienda de la Ciudad de Buenos Aires', 'Inst Viv.', '', 'MDUYTGC.IVC'),
 	(7, 'Ministerio de Desarrollo Urbano y Transporte (SBASE)', 'MDU (SBASE)', '', 'MDUYTGC.SBASE'),
 	(8, 'Ministerio de Desarrollo Urbano y Transporte (STRANS)', 'MDU (STRANS)', '', 'MDUYTGC.STRANS'),
 	(9, 'Ministerio de Cultura', 'Min. Cul.', 'Repensar y promover la Cultura en la Ciudad con la mirada puesta en el Siglo XXI', 'MCGC'),
@@ -37,7 +37,6 @@ INSERT INTO `jurisdiccion` (`idJurisdiccion`, `nombre`, `abreviatura`, `mision`,
 	(20, 'Secretaría de Descentralización', 'Sec. Desc.', 'Consolidar la presencia del Estado a través de Comunas abiertas, democráticas y participativas. Los pilares serán la cercanía y calidez en la atención al vecino y garantizar la constancia en la prosecución de los objetivos preestablecidos.', 'SECDES'),
 	(21, 'Secretaría General y Relaciones Internacionales', 'Sec. Gral. Y Rel. Int.', 'Contribuir al logro del mejor gobierno de la historia de la Ciudad', 'SGYRI'),
 	(22, 'Secretaría de Integración Social y Urbana - Villa 31', 'Sec. Int. Soc Y Urb.', 'Diseñar estrategias, planes, políticas y proyectos vinculados a la integración urbana, social y económica Retiro – Puerto y de las Villas 31 y 31bis, coordinando pautas y acciones comunes con los actores comunitarios y otros organismos de orden municipal y nacional en el ejercicio del proyecto de urbanización y de inclusión socioeconómica; generando herramientas para que sus habitantes puedan desarrollar sus proyectos de vida', 'SECISYU'),
-	(23, 'Secretaría de Medios', 'Sec. Med.', '', 'SECM'),
 	(24, 'Secretaría de Planificación, Evaluación y Coordinación de Gestión', 'Sec. Plan. Ev. Y Cont. Gest.', '', 'SECPECG'),
 	(25, 'Sindicatura General de la Ciudad de Buenos Aires', 'Sind. Gral.', 'Acompañar la gestión de gobierno, asegurando un Sistema de Control Interno que genere y consolide todas las medidas de gobierno para gestionar anticipadamente los riesgos  de la administración y aumentar las probabilidades de alcanzar los objetivos y metas establecidas por el Jefe de Gobierno en los aspectos normativos y transparencia de la gestión.', 'SGCBA'),
 	(26, 'Subsecretaría de Comunicación', 'Subs. Comun.', 'Cominicación directa y personalizada con el vecino.', 'SSCOMUNIC'),
@@ -48,7 +47,7 @@ INSERT INTO `jurisdiccion` (`idJurisdiccion`, `nombre`, `abreviatura`, `mision`,
 	(31, 'Ente Autarquico Teatro Colón', 'T. Colón', 'La misión del Teatro Colón es brindar una programación con un alto nivel de excelencia y calidad artística. El Teatro debe llevar a cabo este encargo velando por el interés cultural, artístico y social de su programa; permitiendo una profunda integración con la sociedad toda.', 'EATC');
 /*!40000 ALTER TABLE `jurisdiccion` ENABLE KEYS */;
 
--- Dumping data for table proyectos_ba_generated.objetivo_jurisdiccional: ~124 rows (approximately)
+-- Dumping data for table proyectos_ba_generated.objetivo_jurisdiccional: ~122 rows (approximately)
 DELETE FROM `objetivo_jurisdiccional`;
 /*!40000 ALTER TABLE `objetivo_jurisdiccional` DISABLE KEYS */;
 INSERT INTO `objetivo_jurisdiccional` (`idObjetivoJurisdiccional`, `idJurisdiccion`, `codigo`, `nombre`, `idJurisdiccionAux`) VALUES
@@ -176,7 +175,7 @@ INSERT INTO `objetivo_jurisdiccional` (`idObjetivoJurisdiccional`, `idJurisdicci
 	(122, 30, 'SSSYP.4', 'Fortalecer los procesos operativos y de gestión, transversales y verticales, para generar eficiencias en la gestión interna y en el servicio al Ciudadano.', 30);
 /*!40000 ALTER TABLE `objetivo_jurisdiccional` ENABLE KEYS */;
 
--- Dumping data for table proyectos_ba_generated.objetivo_operativo: ~370 rows (approximately)
+-- Dumping data for table proyectos_ba_generated.objetivo_operativo: ~369 rows (approximately)
 DELETE FROM `objetivo_operativo`;
 /*!40000 ALTER TABLE `objetivo_operativo` DISABLE KEYS */;
 INSERT INTO `objetivo_operativo` (`idObjetivoOperativo`, `idObjetivoJurisdiccional`, `codigo`, `nombre`, `idObjetivoJurisdiccionalAux`) VALUES
@@ -891,12 +890,6 @@ INSERT INTO `area` (`idArea`, `idJurisdiccion`, `nombre`) VALUES
 	(329, 22, 'Dirección General de Obras e Infraestructura'),
 	(330, 22, 'Dirección General de Gestión Comunitaria'),
 	(331, 22, 'Dirección General de Innovación Social y Planeamiento Participativo'),
-	(332, 23, 'Subsecretaría de Medios y Prensa'),
-	(333, 23, 'Subsecretaría de Comunicación Social'),
-	(334, 23, 'Coordinación de Prensa'),
-	(335, 23, 'Planeamiento de Medios'),
-	(336, 23, 'Señal de Cable y Ciudad Abierta'),
-	(337, 23, 'LS1 Radio de la Ciudad y FM 2x4'),
 	(338, 24, 'Coordinación de Gestión'),
 	(339, 24, 'Evaluación del Gasto'),
 	(340, 24, 'Planificación Estratégica'),
@@ -1504,7 +1497,6 @@ INSERT INTO `usuario` (`idUsuario`, `nombre`, `apellido`, `email`, `descripcion`
 	(218, NULL, NULL, 'afourcade@buenosaires.gob.ar', NULL, 1),
 	(219, NULL, NULL, 'fcalvi@buenosaires.gob.ar', NULL, 1),
 	(220, NULL, NULL, 'ocattaneo@buenosaires.gob.ar', NULL, 1),
-	(221, NULL, NULL, 'mnachon@buenosaires.gob.ar', NULL, 1),
 	(222, NULL, NULL, 'apalmisciano@buenosaires.gob.ar', NULL, 1),
 	(223, NULL, NULL, 'nserra@buenosaires.gob.ar', NULL, 1),
 	(224, NULL, NULL, 'fcarrera@buenosaires.gob.ar', NULL, 1),
@@ -1583,7 +1575,7 @@ INSERT INTO `usuario` (`idUsuario`, `nombre`, `apellido`, `email`, `descripcion`
 	(297, NULL, NULL, 'slucerotorres@buenosaires.gob.ar', NULL, 1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
--- Dumping data for table proyectos_ba_generated.rol_por_usuario: ~198 rows (approximately)
+-- Dumping data for table proyectos_ba_generated.rol_por_usuario: ~199 rows (approximately)
 DELETE FROM `rol_por_usuario`;
 /*!40000 ALTER TABLE `rol_por_usuario` DISABLE KEYS */;
 INSERT INTO `rol_por_usuario` (`rol_idRol`, `usuario_idUsuario`) VALUES
@@ -1707,7 +1699,6 @@ INSERT INTO `rol_por_usuario` (`rol_idRol`, `usuario_idUsuario`) VALUES
 	(2, 180),
 	(2, 181),
 	(2, 182),
-	(2, 221),
 	(2, 222),
 	(2, 223),
 	(2, 224),
@@ -1815,7 +1806,10 @@ INSERT INTO `permiso_entidad` (`idPermisoEntidad`, `alta`, `idRol`, `baja`, `mod
 	(15, 0, 1, 0, 0, 'Puede importar proyectos', 1),
 	(16, 0, 1, 0, 0, 'Puede mover proyectos', 1),
 	(17, 0, 1, 0, 0, 'Gestion de usuarios', 1),
-	(18, 0, 1, 0, 0, 'Consulta de usuarios', 0);
+	(18, 0, 1, 0, 0, 'Consulta de usuarios', 0),
+	(19, 0, 1, 0, 0, 'Gestion de Temas Transversales', 1),
+	(20, 0, 1, 0, 0, 'Consulta de Temas Transversales', 0),
+	(21, 0, 1, 0, 0, 'Gestion de priorizacion', 1);
 /*!40000 ALTER TABLE `permiso_entidad` ENABLE KEYS */;
 /*!40000 ALTER TABLE `usuario_por_jurisdiccion` DISABLE KEYS */;
 INSERT INTO `usuario_por_jurisdiccion` (`jurisdiccion_idJurisdiccion`, `usuario_idUsuario`) VALUES

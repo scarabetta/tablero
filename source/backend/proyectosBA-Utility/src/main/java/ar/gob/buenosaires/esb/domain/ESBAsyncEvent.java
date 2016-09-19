@@ -26,6 +26,7 @@ public class ESBAsyncEvent implements ESBEvent {
     protected String requestStatus;
     protected String statusDescription;
     protected Destination replyToDestination;
+    protected String xml;
     
     protected Map<String, Object> properties;
 
@@ -52,21 +53,11 @@ public class ESBAsyncEvent implements ESBEvent {
         this.exceptions = arrayList;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.hal.esb.IEsbAsyncEvent#setObj(java.lang.Object)
-     */
     @Override
     public void setObj(final Object t) {
         this.inputObject = t;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.hal.esb.IEsbAsyncEvent#getObj(java.lang.Object)
-     */
     @Override
     public Object getObj() {
         return inputObject;
@@ -224,4 +215,14 @@ public class ESBAsyncEvent implements ESBEvent {
     public void addProperty(String key, String value) {
         properties.put(key, value);
     }
+
+	@Override
+	public void setXml(String xml) {
+		this.xml = xml;
+	}
+
+	@Override
+	public String getXml() {
+		return xml;
+	}
 }

@@ -59,7 +59,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			 reqMsg.setUsuario(usuario);
 			 
 			 getLogger().debug("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
-			 final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+			 final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, UsuarioRespMsg.class);
 			 final List<Usuario> usuarios = getUsuarioFromResponse(response);
 			 return getFirstUsuarioFromTheList(usuarios);			 		
 			 
@@ -75,7 +75,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			reqMsg.setUsuario(usuario);
 	
 			getLogger().debug("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
-			final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+			final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, UsuarioRespMsg.class);
 			final List<Usuario> usuarios = getUsuarioFromResponse(response);
 			return getFirstUsuarioFromTheList(usuarios);
 		} else {
@@ -94,7 +94,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar un Usuario : {}", reqMsg.toString());
-		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE);
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, UsuarioRespMsg.class);
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	private List<Usuario> getUsuarioFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener un Usuario : {}", reqMsg.toString());
-		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE);
+		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, UsuarioRespMsg.class);
 
 		final List<Usuario> ususarios = getUsuarioFromResponse(response);
 		return ususarios;

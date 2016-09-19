@@ -22,35 +22,30 @@ public class ComunaServiceImpl implements ComunaService {
 		return getComunaDAO().findAll();
 	}
 
-//	@Override
-//	public Comuna getComunaPorNombre(String nombre) {
-//		return getComunaDAO().findByNombre(nombre);
-//	}
-//
-//	@Override
-//	public Comuna getComunaPorId(Long id) {
-//		return getComunaDAO().findOne(id);
-//	}
-//	
-//	@Override
-//	public Comuna getComunaPorCodigo(String codigo) {
-//		return getComunaDAO().findByCodigo(codigo);
-//	}
-//	
-//	@Override
-//	public void createComuna(Comuna comuna) {
-//		getComunaDAO().save(comuna);
-//	}
-//	
-//	@Override
-//	public void updateComuna(Comuna comuna) {
-//		getComunaDAO().save(comuna);
-//	}
-//	
-//	@Override
-//	public void deleteComuna(Comuna comuna) {
-//		getComunaDAO().delete(comuna);
-//	}
+	@Override
+	public Comuna getComunaPorNombre(String nombre) {
+		return getComunaDAO().findByNombre(nombre);
+	}
+
+	@Override
+	public Comuna getComunaPorId(Long id) {
+		return getComunaDAO().findOne(id);
+	}
+	
+	@Override
+	public Comuna createComuna(Comuna comuna) {
+		return getComunaDAO().save(comuna);
+	}
+	
+	@Override
+	public Comuna updateComuna(Comuna comuna) {
+		return getComunaDAO().save(comuna);
+	}
+	
+	@Override
+	public void deleteComuna(Comuna comuna) {
+		getComunaDAO().delete(comuna);
+	}
 
 	public ComunaJpaDao getComunaDAO() {
 		return repositorio.getComunaJpaDao();

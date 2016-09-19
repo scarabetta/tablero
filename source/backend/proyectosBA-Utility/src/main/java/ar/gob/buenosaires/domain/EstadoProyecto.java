@@ -4,7 +4,7 @@ public enum EstadoProyecto {
 
 	COMPLETO("Completo"), INCOMPLETO("Incompleto"), PRESENTADO("Presentado"), BORRADOR("Borrador"), 
 	APLAZADO("Aplazado"), PREAPROBADO("Pre Aprobado"), VERIFICADO("Verificado"), 
-	ENPRIORIZACION("En Priorizacion"), CANCELADO("Cancelado"), RECHAZADO("Rechazado"),
+	ENPRIORIZACION("En Priorización"), CANCELADO("Cancelado"), RECHAZADO("Rechazado"),
 	APROBADO("Aprobado");
 
 	private String name;

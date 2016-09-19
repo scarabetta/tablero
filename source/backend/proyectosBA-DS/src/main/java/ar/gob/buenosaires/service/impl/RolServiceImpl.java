@@ -39,7 +39,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setRol(Rol);
 
 		getLogger().debug("Mensaje creado para crear un Rol : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, RolRespMsg.class);
 		List<Rol> roles = getRolFromResponse(response);
 		return getFirstRolFromTheList(roles);
 	}
@@ -50,7 +50,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setRol(Rol);
 
 		getLogger().debug("Mensaje creado para actualizar un Rol : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, RolRespMsg.class);
 		List<Rol> roles = getRolFromResponse(response);
 		return getFirstRolFromTheList(roles);
 	}
@@ -61,7 +61,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar un Rol : {}", reqMsg.toString());
-		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE);
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, RolRespMsg.class);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class RolServiceImpl implements RolService {
 
 	private List<Rol> getRolFromReqMsg(RolReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener un Rol : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, RolRespMsg.class);
 
 		List<Rol> ususarios = getRolFromResponse(response);
 		return ususarios;

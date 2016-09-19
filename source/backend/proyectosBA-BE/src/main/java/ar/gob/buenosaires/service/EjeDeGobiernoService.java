@@ -12,9 +12,9 @@ public interface EjeDeGobiernoService {
 
 	EjeDeGobierno getEjeDeGobiernoPorId(Long id);	
 	
-//	void createEjeDeGobierno(EjeDeGobierno ejeDeGobierno);
-//	
-//	void updateEjeDeGobierno (EjeDeGobierno ejeDeGobierno);
-//	
-//	void deleteEjeDeGobierno (EjeDeGobierno ejeDeGobierno);
+	EjeDeGobierno createEjeDeGobierno(EjeDeGobierno ejeDeGobierno);
+	
+	EjeDeGobierno updateEjeDeGobierno (EjeDeGobierno ejeDeGobierno);
+	
+	void deleteEjeDeGobierno (EjeDeGobierno ejeDeGobierno);
 }

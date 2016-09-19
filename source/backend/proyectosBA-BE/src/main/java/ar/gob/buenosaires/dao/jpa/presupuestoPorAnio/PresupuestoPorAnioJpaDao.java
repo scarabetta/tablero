@@ -9,5 +9,5 @@ import ar.gob.buenosaires.domain.Proyecto;
 
 public interface PresupuestoPorAnioJpaDao extends JpaRepository<PresupuestoPorAnio, Long> {
 	
-	List<PresupuestoPorAnio> findByProyectoPresupuestoPorAnio(Proyecto proyecto);
+	List<PresupuestoPorAnio> findByProyecto(Proyecto proyecto);
 }

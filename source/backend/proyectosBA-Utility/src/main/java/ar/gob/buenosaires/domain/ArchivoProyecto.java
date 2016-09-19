@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "archivos_proyecto")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idArchivoProyecto", "nombre" })
+@XmlType(propOrder = { "idArchivoProyecto", "proyecto", "nombre" })
 @XmlRootElement(name = "ArchivoProyecto")
 public class ArchivoProyecto implements Serializable {
 
@@ -39,8 +38,8 @@ public class ArchivoProyecto implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "proyecto_idproyecto")
 	@JsonBackReference
-	@XmlTransient
-	private Proyecto proyectoDelArchivo;
+//	@XmlTransient
+	private Proyecto proyecto;
 
 	public String getNombre() {
 		return nombre;
@@ -59,11 +58,11 @@ public class ArchivoProyecto implements Serializable {
 	}
 
 	public Proyecto getProyecto() {
-		return proyectoDelArchivo;
+		return proyecto;
 	}
 
 	public void setProyecto(final Proyecto proyecto) {
-		proyectoDelArchivo = proyecto;
+		this.proyecto = proyecto;
 	}
 
 }

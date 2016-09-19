@@ -3,7 +3,6 @@ package ar.gob.buenosaires.esb.handler;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ProyectoService;
 
 public class ProyectoHandler extends AbstractBaseEventHandler {
@@ -28,13 +28,17 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ProyectoService.class);
+		final ProyectoReqMsg request = (ProyectoReqMsg) JMSUtil.crearObjeto(event.getXml(), ProyectoReqMsg.class);
+
 		final ProyectoRespMsg response = new ProyectoRespMsg();
-		final ProyectoReqMsg request = (ProyectoReqMsg) event.getObj();
+		event.setObj(response);
+		List<Proyecto> proyectos = new ArrayList<Proyecto>();
+		response.setProyectos(proyectos);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
-			retrieveProyectos(event, response, request);
+			retrieveProyectos(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
-			createProyecto(event, response, request);
+			proyectos.add(service.createProyecto(request.getProyecto()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_ACTIONS)) {
 			retrieveActions(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
@@ -70,20 +74,23 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		}
 	}
 
-	private void retrieveProyectos(ESBEvent event,
-			final ProyectoRespMsg response, final ProyectoReqMsg request) {
-		List<Proyecto> proyectos = new ArrayList<>();
+	private void retrieveProyectos(final ProyectoRespMsg response, final ProyectoReqMsg request) {
+		List<Proyecto> proyectos = new ArrayList<Proyecto>();
 
 		if (request.getId() != null) {
 			proyectos.add(service.getProyectoPorId(request.getId()));
-		} else if (StringUtils.isNotBlank(request.getName())) {
-			proyectos.add(service.getProyectoPorNombre(request.getName()));
-		} else if (StringUtils.isNotBlank(request.getCodigo())) {
+		} else if (request.getName() != null) {
+			if (request.getIdJurisdiccion() != null) {
+				proyectos.add(service.getProyectoPorNombreYIdJurisdiccion(request.getName(), request.getIdJurisdiccion()));
+			} else {
+				proyectos.add(service.getProyectoPorNombre(request.getName()));
+			}
+		} else if (request.getCodigo() != null) {
 			proyectos.add(service.getProyectoPorCodigo(request.getCodigo()));
 		} else {
 			proyectos = service.getProyectos();
 		}
-		addProyectosToResponse(event, response, proyectos);
+		response.setProyectos(proyectos);
 	}
 
 	private void retrieveActions(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) {
@@ -91,12 +98,12 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		String estado = proyectoGuardado.getEstado();
 		List<String> acciones = new ArrayList<>();
 
-		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado)){
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.CANCELAR.getName());
 			acciones.add(AccionesProyecto.VERIFICAR.getName());
-		} else if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado)){
+		} else if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.DESHACER_CANCELACION.getName());
-		} else if (EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)){
+		} else if (EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.CANCELAR.getName());
 		}
 
@@ -104,25 +111,16 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		event.setObj(response);
 	}
 
-	private void createProyecto(ESBEvent event,
-			final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
-
-		request.getProyecto().setVerificado(false);
-		List<Proyecto> proyectos = new ArrayList<>();
-		proyectos.add(service.createProyecto(request.getProyecto()));
-
-		addProyectosToResponse(event, response, proyectos);
-	}
-
-	private void updateProyecto(ESBEvent event,
-			final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
+	private void updateProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
+			throws ESBException {
 		List<Proyecto> proyectos = new ArrayList<>();
 		proyectos.add(service.updateProyecto(request.getProyecto()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}
 
-	private void cancelarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
+	private void cancelarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
+			throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
 
 		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
@@ -136,7 +134,8 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	}
 
-	private void verificarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
+	private void verificarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
+			throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
 
 		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
@@ -166,11 +165,10 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	}
 
 	private void setEstadoAnterior(Proyecto proyecto) {
-		if(proyecto.getVerificado()){
+		if (proyecto.getVerificado()) {
 			proyecto.setEstado(EstadoProyecto.VERIFICADO.getName());
 		} else {
 			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
 		}
 	}
 }
-

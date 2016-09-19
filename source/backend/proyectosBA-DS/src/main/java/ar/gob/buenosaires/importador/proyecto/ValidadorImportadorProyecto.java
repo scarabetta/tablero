@@ -19,9 +19,9 @@ import java.util.function.Predicate;
 import javax.jms.JMSException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
@@ -64,34 +64,32 @@ public class ValidadorImportadorProyecto {
 		int numeroCeldaFechaInicio = Integer.parseInt(env.getProperty("proyecto.col.fecha.inicio.numero"));
 		int numeroCeldaFechaFin = Integer.parseInt(env.getProperty("proyecto.col.fecha.fin.numero"));
 
-		validarCampoVacio(unaFila, unaFila.getCell(0, Row.CREATE_NULL_AS_BLANK).getStringCellValue(), "Proyecto");
-		validarCampoVacio(unaFila, unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-				"Objetivo estratégico");
-		validarCampoVacio(unaFila, unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK).getStringCellValue(),
-				"Objetivo operativo");
-		validarCampoVacio(unaFila, unaFila.getCell(numeroCeldaFechaInicio, Row.CREATE_NULL_AS_BLANK).getDateCellValue(),
-				"Fecha inicio");
-		validarCampoVacio(unaFila, unaFila.getCell(numeroCeldaFechaFin, Row.CREATE_NULL_AS_BLANK).getDateCellValue(),
-				"Fecha fin");
+		validarCampoVacio(unaFila, unaFila.getCell(0, Row.CREATE_NULL_AS_BLANK), "Proyecto");
+		validarCampoVacio(unaFila, unaFila.getCell(1, Row.CREATE_NULL_AS_BLANK), "Objetivo estratégico");
+		validarCampoVacio(unaFila, unaFila.getCell(2, Row.CREATE_NULL_AS_BLANK), "Objetivo operativo");
+		validarCampoVacio(unaFila, unaFila.getCell(numeroCeldaFechaInicio, Row.CREATE_NULL_AS_BLANK), "Fecha inicio");
+		validarCampoVacio(unaFila, unaFila.getCell(numeroCeldaFechaFin, Row.CREATE_NULL_AS_BLANK), "Fecha fin");
 
 		validarFechaMismoOMayorAnio(unaFila.getRowNum(),
-				unaFila.getCell(numeroCeldaFechaInicio, Row.CREATE_NULL_AS_BLANK).getDateCellValue(), "Fecha inicio");
-		validarFechaMismoOMayorAnio(unaFila.getRowNum(),
-				unaFila.getCell(numeroCeldaFechaFin, Row.CREATE_NULL_AS_BLANK).getDateCellValue(), "Fecha fin");
+				unaFila.getCell(numeroCeldaFechaInicio, Row.CREATE_NULL_AS_BLANK), "Fecha inicio");
+		validarFechaMismoOMayorAnio(unaFila.getRowNum(), unaFila.getCell(numeroCeldaFechaFin, Row.CREATE_NULL_AS_BLANK),
+				"Fecha fin");
 		return !getProblemasFilas().containsKey(unaFila.getRowNum());
 	}
 
 	public List<MensajeError> validarSolapa(SolapaProyecto solpaAValidar) {
 		problemasSolapa = new ArrayList<>();
 		validarEsTemplate(solpaAValidar);
-		validarJurisdiccion(solpaAValidar.getSolapa());
-		//validarPermisoDelUsuario();
+		validarJurisdiccion(solpaAValidar);
+		// validarPermisoDelUsuario();
 		existeMuchasVecesElMismoProyecto(solpaAValidar);
 
 		return getProblemasSolapa();
 	}
 
-	private void validarCampoVacio(Row fila, Object contenidoAValidar, String campoAValidar) {
+	private void validarCampoVacio(Row fila, Cell unaCelda, String campoAValidar) {
+		String contenidoAValidar = SolapaProyecto.getCellStringValue(unaCelda.getCellType(), unaCelda);
+
 		if (contenidoAValidar == null || (contenidoAValidar != null && contenidoAValidar.toString().isEmpty())) {
 			agregarMensajeParaFila(fila.getRowNum(), "El campo " + campoAValidar + " no puede estar vacio.",
 					MensajeError.TIPO_ERROR);
@@ -138,7 +136,7 @@ public class ValidadorImportadorProyecto {
 			Cell unaCelda = celdas.next();
 			nombreValido = env.getProperty("proyecto.col." + solpaAValidar.getNumeroFilaNombreColumnas() + "."
 					+ unaCelda.getColumnIndex() + ".nombre");
-			nombreAValidar = unaCelda.getStringCellValue();
+			nombreAValidar = SolapaProyecto.getCellStringValue(unaCelda.getCellType(), unaCelda);
 
 			if (nombreValido != null && !nombreValido.equalsIgnoreCase(nombreAValidar)) {
 				esTemplateValido = false;
@@ -153,12 +151,13 @@ public class ValidadorImportadorProyecto {
 
 		List<String> nombresProyecto = new ArrayList<>();
 		String nombreProyecto;
-
-		for (int i = solpaAValidar.getNumeroFilaInicioImportacion(); i < solpaAValidar.getNumeroUltimaFila(); i++) {
-			nombreProyecto = solpaAValidar.getFilaNumero(i).getCell(0, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-			nombresProyecto.add(nombreProyecto);
+		for (int i = solpaAValidar.getNumeroFilaInicioImportacion(); i <= solpaAValidar.getNumeroUltimaFila(); i++) {
+			Cell laCelda = solpaAValidar.getFilaNumero(i).getCell(0, Row.CREATE_NULL_AS_BLANK);
+			nombreProyecto = SolapaProyecto.getCellStringValue(laCelda.getCellType(), laCelda);
+			if (!nombreProyecto.isEmpty()) {
+				nombresProyecto.add(nombreProyecto);
+			}
 		}
-
 		nombresProyecto.stream().collect(groupingBy(identity(), counting())).entrySet().stream()
 		.filter(t -> t.getValue() > 1).map(Map.Entry::getKey).collect(toList()).forEach(new Consumer<String>() {
 
@@ -175,17 +174,19 @@ public class ValidadorImportadorProyecto {
 
 	}
 
-	private void validarJurisdiccion(Sheet solpaAValidar) {
+	private void validarJurisdiccion(SolapaProyecto solpaAValidar) {
 		jurisdiccion = null;
 
 		try {
-			String codigoJurisdiccion = solpaAValidar.getRow(1).getCell(1, Row.CREATE_NULL_AS_BLANK)
-					.getCellType() == Cell.CELL_TYPE_ERROR ? ""
-							: solpaAValidar.getRow(1).getCell(1, Row.CREATE_NULL_AS_BLANK).getStringCellValue();
-			String nombreJurisdiccion = solpaAValidar.getRow(0).getCell(1, Row.CREATE_NULL_AS_BLANK)
-					.getStringCellValue();
-			jurisdiccion = jurisdiccionService.getJurisdiccionesPorCodigo(codigoJurisdiccion);
-			if (jurisdiccion == null) {
+			Cell celdaCodigo = solpaAValidar.getFilaNumero(1).getCell(1, Row.CREATE_NULL_AS_BLANK);
+			Cell celdanombre = solpaAValidar.getFilaNumero(0).getCell(1, Row.CREATE_NULL_AS_BLANK);
+			String codigoJurisdiccion = SolapaProyecto.getCellStringValue(celdaCodigo.getCellType(), celdaCodigo);
+			String nombreJurisdiccion = SolapaProyecto.getCellStringValue(celdanombre.getCellType(), celdanombre);
+
+			if (StringUtils.isNotBlank(codigoJurisdiccion)) {
+				jurisdiccion = jurisdiccionService.getJurisdiccionesPorCodigo(codigoJurisdiccion);
+			}
+			if (jurisdiccion == null && StringUtils.isNotBlank(nombreJurisdiccion)) {
 				jurisdiccion = jurisdiccionService.getJurisdiccionesByName(nombreJurisdiccion);
 			}
 		} catch (ESBException | JMSException e) {
@@ -197,7 +198,8 @@ public class ValidadorImportadorProyecto {
 		}
 	}
 
-	private void validarFechaMismoOMayorAnio(int numeroFila, Date fechaAValidar, String tipoFecha) {
+	private void validarFechaMismoOMayorAnio(int numeroFila, Cell unaCelda, String tipoFecha) {
+		Date fechaAValidar = unaCelda.getCellType() == Cell.CELL_TYPE_NUMERIC ? unaCelda.getDateCellValue() : null;
 
 		if (fechaAValidar != null) {
 			Calendar dateAsCalendar = Calendar.getInstance();

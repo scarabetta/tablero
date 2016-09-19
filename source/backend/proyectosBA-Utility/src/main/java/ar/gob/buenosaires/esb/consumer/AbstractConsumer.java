@@ -16,7 +16,6 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.pool.PooledConnectionFactory;
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,9 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.xml.sax.SAXParseException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.ESBException;
@@ -60,11 +62,15 @@ public abstract class AbstractConsumer implements MessageListener {
 		String s = ((TextMessage) jmsMsg).getText();
 		//para que el mensaje pase a dequeued.
 		jmsMsg.acknowledge();
-		final Object message = (StringUtils.isBlank(s)) ? "" : JMSUtil.unmarshal(s, marshaller);
-		ESBEvent event = JMSUtil.constructEvent(jmsMsg, s, message);
+		
+		// creamos el evento.
+		ESBEvent event = JMSUtil.constructEvent(jmsMsg);
 		getLogger().debug(" mensaje recibido " + "{} " + "(Thread: {}): {} ",
 				new Object[] { event.toString(), Thread.currentThread().getName(), s });
+		
+		// lo pasamos por lo handlers
 		passDownHandlers(event);
+		
 		return event;
 	}
 
@@ -91,13 +97,21 @@ public abstract class AbstractConsumer implements MessageListener {
 	}
 
 	protected void responseBack(Message jmsMsg, ESBEvent event) throws JMSException {
-		String outputText = JMSUtil.marshal(event.getObj(), marshaller);
+//		String outputText = JMSUtil.marshal(event.getObj(), marshaller);
+		
+		
+    	XmlMapper xmlMapper = new XmlMapper();
+    	String outputText = "";
+		try {
+			outputText = xmlMapper.writeValueAsString(event.getObj());
+		} catch (JsonProcessingException e) {
+			getLogger().error("Se ha producido un error al querer parsear el mensaje a XML", e);
+			throw new JMSException(e.getMessage());
+		}
 
 		// Note: jms messageId/correlationId switch below - requesting client is
-		// assumed
-		// by JMS convention to be waiting with a correlationId selector of this
-		// jms message
-		// messageId.
+		// assumed by JMS convention to be waiting with a correlationId selector of this
+		// jms message messageId.
 		final EsbMessageCreator mc = new EsbMessageCreator(outputText, jmsMsg.getJMSMessageID(), jmsMsg, event);
 
 		// reply the message to the original destination.

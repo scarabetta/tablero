@@ -6,10 +6,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import ar.gob.buenosaires.domain.Jurisdiccion;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "jurisdiccion", "codigo" })
+@XmlType(propOrder = { "id", "name", "jurisdiccion", "codigo", "usuario" })
 @XmlRootElement(name = "JurisdiccionReqMsg")
 public class JurisdiccionReqMsg extends EsbBaseMsg {
 	
@@ -20,6 +21,7 @@ public class JurisdiccionReqMsg extends EsbBaseMsg {
     private String name;
     private Jurisdiccion jurisdiccion;
     private String codigo;
+    private Usuario usuario;
 
 	@Override
 	public String getEventType() {
@@ -56,5 +58,14 @@ public class JurisdiccionReqMsg extends EsbBaseMsg {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}		
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
 }

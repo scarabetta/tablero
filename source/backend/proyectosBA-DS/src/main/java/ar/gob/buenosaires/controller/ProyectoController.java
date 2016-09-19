@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +40,8 @@ import ar.gob.buenosaires.service.UsuarioService;
 @RestController
 @RequestMapping("/api/proyecto")
 public class ProyectoController {
+	
+	private final static Logger LOGGER = LoggerFactory.getLogger(ProyectoController.class);
 
 	@Autowired
 	private ProyectoService service;
@@ -48,9 +52,9 @@ public class ProyectoController {
 	@Value("${download.archivos.proyecto.path}")
 	private String PATHARCHIVOS;
 
-	@RequestMapping(path = "/bajar_archivo", method = RequestMethod.GET)
-	public @ResponseBody void bajarArchivoDeProyecto(final String id, final String idJurisdiccion,
-			final String nombreArchivo, final HttpServletResponse response) {
+	@RequestMapping(path = "/bajar_archivo/{id}/{idJurisdiccion}/{nombreArchivo:.+}", method = RequestMethod.GET)
+	public @ResponseBody void bajarArchivoDeProyecto(@PathVariable final String id, @PathVariable final String idJurisdiccion,
+			@PathVariable final String nombreArchivo, final HttpServletResponse response) {
 		final String path = PATHARCHIVOS.replace("idJurisdiccion", idJurisdiccion).replace("idProyecto", id);
 
 		FileInputStream fis;
@@ -70,30 +74,34 @@ public class ProyectoController {
 
 	@RequestMapping(path = "/subir_archivo", method = RequestMethod.POST)
 	public @ResponseBody String addArchivoAProyecto(final String id, final String idJurisdiccion,
-			final MultipartFile archivoASubir) throws ESBException, JMSException {
+			final MultipartFile archivoASubir) throws ESBException, JMSException, IOException {
 		final Proyecto elProyecto = service.getProyectoPorId(id);
 		final ArchivoProyecto nuevoArchivo = new ArchivoProyecto();
 		nuevoArchivo.setNombre(archivoASubir.getOriginalFilename());
 		final String pathArchivos = PATHARCHIVOS.replace("idJurisdiccion", idJurisdiccion).replace("idProyecto", id);
 
 		// Chequear si exite el path, sino crearlo
-		if (Files.notExists(Paths.get(pathArchivos))) {
-			try {
-				Files.createDirectories(Paths.get(pathArchivos));
-			} catch (final IOException e) {
-				e.printStackTrace();
-			}
-		}
 		// guardar archivo.
-		try {
-			archivoASubir.transferTo(new File(pathArchivos + nuevoArchivo.getNombre()));
-			elProyecto.getArchivos().add(nuevoArchivo);
-			nuevoArchivo.setProyecto(elProyecto);
-			service.updateProyecto(elProyecto);
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-
+			try {
+				if (Files.notExists(Paths.get(pathArchivos))) {
+					Files.createDirectories(Paths.get(pathArchivos));
+				}
+			} catch (final IOException e) {
+				getLogger().error("verifique que exista la carpeta: " + PATHARCHIVOS);
+				throw new IOException("verifique que exista la carpeta: " + PATHARCHIVOS);
+			}
+			
+			try {
+				if(Files.isWritable(Paths.get(pathArchivos))){
+					archivoASubir.transferTo(new File(pathArchivos + nuevoArchivo.getNombre()));
+					elProyecto.getArchivos().add(nuevoArchivo);
+					nuevoArchivo.setProyecto(elProyecto);
+					service.updateProyecto(elProyecto);
+				}
+			} catch (final IOException e) {
+				getLogger().error("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
+				throw new IOException("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
+			}
 		return nuevoArchivo.getNombre();
 	}
 
@@ -123,16 +131,10 @@ public class ProyectoController {
 	public Proyecto createProyecto(@RequestBody final Proyecto proyecto) throws ESBException, JMSException {
 		return service.createProyecto(proyecto);
 	}
-	
+
 	@RequestMapping(path = "/presentar", method = RequestMethod.POST)
-	public Proyecto presentarProyecto(@RequestBody final Proyecto proyecto, final HttpServletRequest request) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-		Usuario user = usuarioService.getUsuarioPorToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-		if (user.tienePerfilSecretaria()) {
-			return service.presentarProyecto(proyecto);
-		} else {
-			throw new ESBException("No tiene el perfil para realizar esta accion");
-		}
-		
+	public Proyecto presentarProyecto(@RequestBody final Proyecto proyecto) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.presentarProyecto(proyecto);		
 	}
 	
 	@RequestMapping(path = "/cambiarEstado/{action}", method = RequestMethod.POST)
@@ -163,5 +165,9 @@ public class ProyectoController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody void deleteProyecto(@PathVariable final String id) throws ESBException, JMSException {
 		service.deleteProyecto(id);
+	}
+	
+	public static Logger getLogger() {
+		return LOGGER;
 	}
 }

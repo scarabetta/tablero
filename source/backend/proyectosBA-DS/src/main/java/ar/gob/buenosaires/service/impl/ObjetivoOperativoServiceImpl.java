@@ -72,7 +72,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 
 		getLogger().debug("Mensaje creado para crear un Objetivo Operativo : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, ObjetivoOperativoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {
 			responseObjetivosOperativos = ((ObjetivoOperativoRespMsg) response).getObjetivosOperativos();
 		}
@@ -88,7 +88,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 		
 		getLogger().debug("Mensaje creado para actualizar un Objetivo Operativo : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, ObjetivoOperativoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {
 			responseObjetivosOperativos = ((ObjetivoOperativoRespMsg) response).getObjetivosOperativos();
 		}
@@ -102,7 +102,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar un Objetivo Operativo : {}",reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoOperativoRespMsg.class);
 	}
 
 	public static Logger getLogger() {
@@ -114,7 +114,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 
 		getLogger()
 				.debug("Mensaje creado para obtener todos los Objetivos Operativoes: {}",reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ObjetivoOperativoRespMsg.class);
 
 		List<ObjetivoOperativo> objetivosOperativoes = null;
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {

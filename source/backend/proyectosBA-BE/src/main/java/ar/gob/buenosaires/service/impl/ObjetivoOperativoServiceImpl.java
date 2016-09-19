@@ -6,19 +6,19 @@ import org.fest.util.VisibleForTesting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepository;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalRepository;
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.objetivoOperativo.ObjetivoOperativoJpaDao;
 import ar.gob.buenosaires.dao.jpa.objetivoOperativo.ObjetivoOperativoRepository;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
-import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.ObjetivoOperativoService;
 
 @Service
 public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
+
+	private static final String WILDCARD = "%";
 
 	@Autowired
 	private ObjetivoOperativoRepository repositorio;
@@ -59,22 +59,34 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 			throw new ESBException("El objetivoJurisdiccional con id: "
 					+ objetivoOperativo.getIdObjetivoJurisdiccionalAux()
 					+ " no existe");
-		}					
+		}
 	}
-	
+
 	@Override
 	public ObjetivoOperativo updateObjetivoOperativo(ObjetivoOperativo objetivoOperativo) throws ESBException {
 		ObjetivoJurisdiccional objetivoJurisdiccional = repositorioObjetivoJurisdiccional.getObjetivoJurisdiccionalJpaDao()
 				.findOne(objetivoOperativo.getIdObjetivoJurisdiccionalAux());
 		
-		if (objetivoJurisdiccional != null) {						
+		if (objetivoJurisdiccional != null) {	
+			validarNombre(getCodigoJurisdiccion(objetivoJurisdiccional.getCodigo()), objetivoOperativo.getNombre());
 			objetivoOperativo.setObjetivoJurisdiccional(objetivoJurisdiccional);
-			return getObjetivoOperativoDAO().save(objetivoOperativo);			
+			return getObjetivoOperativoDAO().save(objetivoOperativo);
 		} else { 
-			throw new ESBException("El objetivoJurisdiccional con id: "
-					+ objetivoOperativo.getIdObjetivoJurisdiccionalAux()
+			throw new ESBException("El objetivoJurisdiccional con id: " + objetivoOperativo.getIdObjetivoJurisdiccionalAux()
 					+ " no existe");
-		}					
+		}
+	}
+	
+	private String getCodigoJurisdiccion(String codigo) {		
+		String[] parts = codigo.split("\\.");
+		return parts[0];
+	}
+	
+	private void validarNombre(String codigoJuri, String nombre) throws ESBException {		
+		String op = getObjetivoOperativoDAO().getObjetivosPorNombreYJurisdccion(codigoJuri + WILDCARD, nombre);
+		if (op != null) {
+			throw new ESBException("Ya existe un objetivo operativo con el nombre: '" + nombre + "' para esta Jurisdiccion"); 
+		}
 	}
 	
 	@Override
