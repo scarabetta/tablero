@@ -4,33 +4,28 @@ module Home {
 
   export class AlertController {
 
-    private title: string;
-    private text: string;
-    private callback: any;
+    constructor(private $scope: ng.IScope) {}
 
-    /*@ngInject*/
-    constructor() {
-      (<any>$('#alertModalId')).modal('hide');
-      console.log(this.title);
-      console.log(this.text);
+    accept() {
+      (<any>$('#' + (<any>this.$scope).modalId)).modal('hide');
+      (<any>this.$scope).onAccept();
     }
-
-    acept() {
-      (<any>$('#alertModalId')).modal('hide');
-      this.callback();
-    }
-
   }
 
-  export let alertComponent = {
-      bindings: {
-          title: '@',
-          text: '@',
-          callback: '&'
-      },
+  /*@ngInject*/
+  export function alertModalDirective() {
+    return {
+      restrict: 'E',
       templateUrl: template,
+      scope: {
+        modalId: '@',
+        modalTitle: '@',
+        modalBody: '@',
+        onAccept: '&'
+      },
       controller: AlertController,
-      controllerAs: 'alertCtrl',
+      controllerAs: 'alertCtrl'
+    };
   };
 }
 

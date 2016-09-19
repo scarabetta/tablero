@@ -1,5 +1,6 @@
 import {GeneralServices} from "../services/services.ts";
 const template = require('./excel.html');
+const templateButton = require('./excel-button.html');
 
 module App {
 
@@ -34,6 +35,12 @@ module App {
           showimport: '<'
       },
       templateUrl: template,
+      controller: ExcelController,
+      controllerAs: 'excelCtrl',
+  };
+
+  export let excelButton = {
+      templateUrl: templateButton,
       controller: ExcelController,
       controllerAs: 'excelCtrl',
   };

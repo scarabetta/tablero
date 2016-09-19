@@ -9,25 +9,30 @@
         </div>
       <div class="col-md-12">
           <p class="title">Resumen de proyectos</p>
-          <div class="alert alert-warning" style="margin-bottom: 15px;">Los proyectos en estado borrador no se incluyen en la priorización por no haber sido formalmente presentados.</div>
+          <div class="alert alert-info" style="margin-bottom: 15px;">Los proyectos en estado borrador no se incluyen en la priorización por no haber sido formalmente presentados.</div>
           <div class="contet-report">
-            <strong>{{priorizationCtrl.dataResult.Presentado}}</strong>
+            <strong ng-if="priorizationCtrl.dataResult.Presentado">{{priorizationCtrl.dataResult.Presentado}}</strong>
+            <strong ng-if="!priorizationCtrl.dataResult.Presentado">-</strong>
             <p>Proyectos presentados</p>
           </div>
           <div class="contet-report">
-            <strong>{{priorizationCtrl.dataResult.Verificado}}</strong>
+            <strong ng-if="priorizationCtrl.dataResult.Verificado">{{priorizationCtrl.dataResult.Verificado}}</strong>
+            <strong ng-if="!priorizationCtrl.dataResult.Verificado">-</strong>
             <p>Proyectos verificados</p>
           </div>
           <div class="contet-report" disabled>
-            <strong>{{priorizationCtrl.dataResult.En-Priorizacion}}</strong>
+            <strong ng-if="priorizationCtrl.dataResult.EnPriorizacion">{{priorizationCtrl.dataResult.EnPriorizacion}}</strong>
+            <strong ng-if="!priorizationCtrl.dataResult.EnPriorizacion">-</strong>
             <p>Proyectos en priorización</p>
           </div>
       </div>
       <div class="col-md-12">
            <hr>
-          <button type="button" class="btn btn-default" ng-click="priorizationCtrl.downloadExcelPriorization()"><i class="glyphicon glyphicon-export" aria-hidden="true"></i> Descargar Excel de priorización</button>
-          <button type="button" class="btn btn-default" disabled><i class="glyphicon glyphicon-import" aria-hidden="true"></i> Importar proyectos</button>
-          <button type="button" class="btn btn-link" disabled>Cancelar priorización</button>
+          <div class="principalBtn">
+            <button type="button" ng-disabled="priorizationCtrl.dataResult.EnPriorizacion === '0' && priorizationCtrl.dataResult.Verificado === '0' && priorizationCtrl.dataResult.Presentado === '0'" class="btn btn-default" ng-click="priorizationCtrl.downloadExcelPriorization()"><i class="glyphicon glyphicon-export" aria-hidden="true"></i> Descargar Excel de priorización</button>
+            <button type="button" class="btn btn-default" disabled><i class="glyphicon glyphicon-import" aria-hidden="true"></i> Importar proyectos</button>
+            <button type="button" class="btn btn-link" disabled>Cancelar priorización</button>
+          </div>
        </div>
     </div>
   </div>

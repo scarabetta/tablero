@@ -69,16 +69,6 @@ module Home {
         }
     }
 
-    deleteStrategicObjective(id) {
-      var dataAlert = {
-        title: "Aviso",
-        text: "Se va a eliminar el Objetivo Estratégico. ¿Continuar?",
-        callback: 'deleteStrategicObjectiveById',
-        id: id
-      };
-      this.addAlert(dataAlert);
-    }
-
     addNotification(data) {
       var referralDivFactory = this.$compile(' <notification type="' +data.type+ '" icon="' +data.icon+ '" title="' +data.title+ '" text="' +data.text+ '" '+data.action+'="' +data.valueAction+ '" textlink="' +data.textlink+ '"></notification> '); // tslint:disable-line
       var referralDiv = referralDivFactory(this.$scope);
@@ -93,21 +83,11 @@ module Home {
       500);
     }
 
-    addAlert(data) {
-      var formDiv = document.getElementsByTagName('alertmodal');
-      angular.element(formDiv).remove();
-      var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
-      var referralDiv = referralDivFactory(this.$scope);
-      var containerDiv = document.getElementById('grupo-level-3-3');
-      angular.element(containerDiv).append(referralDiv);
-    }
-
     addIndicador() {
       if (!this.currentStrategicObjective.indicadoresEstrategicos) {
         this.currentStrategicObjective.indicadoresEstrategicos = new Array<IndicadorEstrategico>();
       }
       this.currentStrategicObjective.indicadoresEstrategicos.push(<IndicadorEstrategico>{});
-      (<any>$('[data-toggle="popover"]')).popover();
     }
 
     removeIndicador(index) {

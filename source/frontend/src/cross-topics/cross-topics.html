@@ -19,7 +19,7 @@
             <div id="newcrosstopic">
             </div>
           </div>
-        </div>
+        </div>        
       </div>
     </div>
     <div class="table-responsive">
@@ -41,11 +41,12 @@
                 <label for="cmn-toggle-{{crossTopic.idTemaTransversal}}"></label>
               </div>
             </td>
-            <td class="colum-action"><i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)"></i></td>
-            <td class="colum-action"><i class="glyphicon glyphicon-remove line" aria-hidden="true" data-toggle="modal" data-target="#alertModalId" data-original-title="Eliminar" ng-click="crossTopicsCtrl.deleteCrossTopic(crossTopic.idTemaTransversal)"></i></td>
+            <td class="colum-action"><i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)"></i></td>
+            <td class="colum-action"><i class="glyphicon glyphicon-remove line" aria-hidden="true" title="Editar" data-toggle="modal" data-target="#crossTopicAlert" data-original-title="Eliminar"></i></td>
           </tr>
         </tbody>
       </table>
+      <alertmodal modal-id="crossTopicAlert" modal-title="Aviso" modal-body="Se va a eliminar el tema transversal. ¿Continuar?" on-accept="crossTopicsCtrl.deleteCrossTopicById(crossTopic.idTemaTransversal)"></alertmodal>
     </div>
   </div>
 </div>

@@ -37,29 +37,10 @@ module CrossTopics {
         this.services.toggleCrossTopicState(crossTopic);
       }
 
-      addAlert(data) {
-        var formDiv = document.getElementsByTagName('alertmodal');
-        angular.element(formDiv).remove();
-        var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='crossTopicsCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
-        var referralDiv = referralDivFactory(this.$scope);
-        var containerDiv = document.getElementById('alertmodalcomponent');
-        angular.element(containerDiv).append(referralDiv);
-      }
-
       deleteCrossTopicById(id) {
         this.services.deleteTemaTransversal(id).then((data) => {
             this.$state.reload();
         });
-      }
-
-      deleteCrossTopic(id) {
-        var dataAlert = {
-          title: "Aviso",
-          text: "Se va a eliminar el tema transversal. ¿Continuar?",
-          callback: 'deleteCrossTopicById',
-          id: id
-        };
-        this.addAlert(dataAlert);
       }
     }
 }

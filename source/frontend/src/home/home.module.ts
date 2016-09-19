@@ -1,5 +1,5 @@
-import {routes} from "./home.routes.ts";
 import * as angular from "angular";
+import {routes} from "./home.routes.ts";
 import {HomeController} from "./home.controller.ts";
 import {formProjectComponent} from "./form.project.component.ts";
 import {formOperativeObjectiveComponent} from "./form.operative.objective.component";
@@ -7,8 +7,9 @@ import {formStrategicObjectiveComponent} from "./form.strategic.objective.compon
 import {moveProjectComponent} from "./form-project/move.project.component.ts";
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
-import {alertComponent} from "../alert/alertmodal.ts";
+import {alertModalDirective} from "../alert/alertmodal.ts";
 import {usigAutocompleteDirective} from './autocomplete.directive.ts';
+import {popoverDirective} from './popover.directive.ts';
 
 module Home {
 
@@ -19,10 +20,11 @@ module Home {
         .component('formoperativeobjective', formOperativeObjectiveComponent)
         .component('formstrategicobjective', formStrategicObjectiveComponent)
         .component('moveproject', moveProjectComponent)
-        .component('alertmodal', alertComponent)
+        .directive('alertmodal', alertModalDirective)
         .service('services', GeneralServices)
         .service('search', Search)
         .directive("usigautocomplete", usigAutocompleteDirective)
+        .directive("popover", popoverDirective)
         .name;
 
 }

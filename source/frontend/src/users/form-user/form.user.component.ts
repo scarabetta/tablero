@@ -8,6 +8,7 @@ module Home {
 
   export class UserFormController {
 
+    private title: string;
     private currentuser: Usuario;
     private currentuserid: number;
     private roles: Rol[];
@@ -18,6 +19,7 @@ module Home {
       console.log('New user form');
 
       if (!this.currentuserid) {
+        this.title = "Nuevo usuario";
         this.currentuser = {
             "idUsuario": null,
             "activo": false,
@@ -34,6 +36,7 @@ module Home {
           this.currentuser = data;
           console.log(this.currentuser);
         });
+        this.title = "Modificar usuario";
       }
       services.getRoles().then((data) => {
         this.roles = data;

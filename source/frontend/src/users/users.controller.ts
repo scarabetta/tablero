@@ -37,29 +37,10 @@ module Users {
         this.services.toggleUserState(user);
       }
 
-      addAlert(data) {
-        var formDiv = document.getElementsByTagName('alertmodal');
-        angular.element(formDiv).remove();
-        var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='usersCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
-        var referralDiv = referralDivFactory(this.$scope);
-        var containerDiv = document.getElementById('alertmodalcomponent');
-        angular.element(containerDiv).append(referralDiv);
-      }
-
       deleteUserById(id) {
         this.services.deleteUser(id).then((data) => {
             this.$state.reload();
         });
-      }
-
-      deleteUser(id) {
-        var dataAlert = {
-          title: "Aviso",
-          text: "Se va a eliminar el Usuario. ¿Continuar?",
-          callback: 'deleteUserById',
-          id: id
-        };
-        this.addAlert(dataAlert);
       }
 
       goToElement(idElement) {

@@ -20,10 +20,14 @@ import {home} from '../home/home.module.ts';
 import {login} from '../login/login.module.ts';
 import {users} from '../users/users.module.ts';
 import {priorization} from '../priorization/priorization.module.ts';
+import {upload} from '../upload/upload.module.ts';
+import {preview} from '../upload/preview/preview.module.ts';
+import {results} from '../upload/results/results.module.ts';
 import {crossTopics} from '../cross-topics/cross.topics.module.ts';
 import {menuComponent} from '../menu/menu.component.ts';
 import {excelComponent} from '../excel/excel.component.ts';
-import {notificationComponent} from '../notification/notification.component.ts';
+import {excelButton} from '../excel/excel.component.ts';
+import {notificationDirective} from '../notification/notification.component.ts';
 import {jurisdiccionHeaderComponent} from '../home/jurisdiccion.header.component.ts';
 import {versionComponent} from './app.version.component.ts';
 
@@ -34,7 +38,8 @@ $http.get(config.authBaseUrl + 'config/properties').then(
     function (response) {
         let configModule = angular.module('config', []).constant('urlsConfig', response.data);
         angular.module('app', ['ui.router', 'ui.bootstrap', 'ngAnimate', 'vcRecaptcha', 'ngFileUpload', 'angularValidator',
-        'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home, login, users, priorization, crossTopics, configModule.name])
+        'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home, login, users,
+        priorization, crossTopics, upload, preview, results, configModule.name])
             .config(routes)
             .config((tagsInputConfigProvider) => {
               tagsInputConfigProvider
@@ -43,11 +48,17 @@ $http.get(config.authBaseUrl + 'config/properties').then(
             })
             .config(localStorageConfig)
             .config(authInterceptor)
-            .component('notification', notificationComponent)
+            .directive('notification', notificationDirective)
             .component('attversion', versionComponent)
             .component('navigationmenu', menuComponent)
             .component('excelcomponent', excelComponent)
+            .component('excelbutton', excelButton)
             .component('jurisdiccionheader', jurisdiccionHeaderComponent)
+            .filter('capitalize', function() {
+              return function(input) {
+                return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+              };
+            })
             .run(routesInterceptor);
 
         angular.element(document).ready(function() {

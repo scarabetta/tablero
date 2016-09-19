@@ -6,6 +6,7 @@ export interface Jurisdiccion {
     nombre: string;
     abreviatura: string;
     mision: string;
+    codigo: string;
     areas: Area[];
     objetivosJurisdiccionales: ObjetivoJurisdiccional[];
 }
@@ -28,6 +29,7 @@ export interface ObjetivoOperativo {
 }
 
 export interface Proyecto {
+  "archivos": any;
   "idProyecto": number;
   "nombre": string;
   "codigo": string;
@@ -51,6 +53,14 @@ export interface Proyecto {
   "poblacionesMeta": PoblacionMeta[];
   "comunas": Comuna[];
   "presupuestosPorAnio": Presupuesto[];
+}
+
+export interface ProyectoProcesado {
+  estado: string;
+  fechaFin: Date;
+  fechaInicio: Date;
+  idProyecto: number;
+  nombreProyecto: string;
 }
 
 export interface IndicadorEstrategico {

@@ -94,8 +94,7 @@ module Menu {
     }
 
     export let menuComponent =  {
-       template: `<div class="jumbotron jumbotron-misc jumbotron-main" ng-if="$ctrl.isLoginView()">
-                   <nav  class="navbar navbar-default" role="navigation">
+       template: `<nav  class="navbar navbar-default" role="navigation" ng-if="$ctrl.isLoginView()">
                     <div class="container contentApp">
                         <div class="row">
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -111,7 +110,7 @@ module Menu {
                                             <div class="col-sm-6" ng-repeat="item in $ctrl.jurisdiccion | orderBy:'abreviatura'">
                                               <li><a ng-click="$ctrl.changeJurisdiccion(item.idJurisdiccion)">
                                               {{item.abreviatura}}
-                                              <i ng-if="$ctrl.currentJurisdiccion(item.idJurisdiccion)" class="glyphicon glyphicon-eye-open"></i>
+                                              <i ng-if="$ctrl.currentJurisdiccion(item.idJurisdiccion)" class="glyphicon glyphicon-ok icJurisdiccion"></i>
                                               </a>
                                               </li>
                                             </div>
@@ -125,6 +124,7 @@ module Menu {
                               </ul>
                               <form class="navbar-form navbar-right" role="search">
                                 <div class="form-group">
+                                  <div class="icLupa"></div>
                                   <input ng-model="$ctrl.searchTextModel" class="form-control" placeholder="Buscar en la Jurisdicción" type="text">
                                 </div>
                                 <button ng-click="$ctrl.applySearch()" type="submit" class="btn btn-default">Buscar</button>
@@ -133,6 +133,7 @@ module Menu {
                         </div>
                     </div>
                  </nav>
+                <div class="jumbotron jumbotron-misc jumbotron-main" ng-if="$ctrl.isLoginView()">
                  <jurisdiccionheader></jurisdiccionheader>
                </div>`,
         controller: MenuController
