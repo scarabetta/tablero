@@ -508,16 +508,16 @@ public class ExportacionProyectoView implements Serializable {
 		Calendar dateAsCalendar = Calendar.getInstance();
 		dateAsCalendar.setTime(getFechaInicio());
 		int anio = dateAsCalendar.get(Calendar.YEAR);
-		Double importeAñoFechaInicio = new Double(0);
+		Double importeAnioFechaInicio = new Double(0);
 
 		if (getPresupuestosPorAnio() != null && !getPresupuestosPorAnio().isEmpty()) {
 			for (PresupuestoPorAnio ppa : getPresupuestosPorAnio()) {
 				if (anio == ppa.getAnio()) {
-					importeAñoFechaInicio += ppa.getPresupuesto();
+					importeAnioFechaInicio += ppa.getPresupuesto();
 				}
 			}
 		}
-		return importeAñoFechaInicio;
+		return importeAnioFechaInicio;
 	}
 
 	@JsonIgnore
