@@ -1,3 +1,3 @@
 se debera agregar al final del archivo /etc/tomcat/conf/tomcat.conf
 
-CATALINA_OPTS="-Dspring.profiles.active=dev"
+CATALINA_OPTS="-Dspring.profiles.active=prod"

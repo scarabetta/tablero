@@ -4,21 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>proyectosBA-DS</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-RELEASE</version>
 	<packaging>war</packaging>
 	<name>Proyectos BA - Data services</name>
 
 	<parent>
 		<groupId>ar.gob.buenosaires.backend</groupId>
 		<artifactId>proyectosBA</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0-RELEASE</version>
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<tomcat.version>7.0.54</tomcat.version>
-		<utility.version>1.0.0-SNAPSHOT</utility.version>
+		<utility.version>1.0.0-RELEASE</utility.version>
 		<jaxrs.version>2.6.3</jaxrs.version>
 		<nimbusjwt.version>4.16.2</nimbusjwt.version>
 		<!-- Test -->
