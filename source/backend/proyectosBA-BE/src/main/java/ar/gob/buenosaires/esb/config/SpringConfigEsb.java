@@ -8,12 +8,15 @@ import org.springframework.context.annotation.Profile;
 import ar.gob.buenosaires.esb.consumer.EsbConsumer;
 import ar.gob.buenosaires.esb.consumer.EsbServer;
 import ar.gob.buenosaires.esb.handler.AreaHandler;
+import ar.gob.buenosaires.esb.handler.CompromisoPublicoHandler;
 import ar.gob.buenosaires.esb.handler.ComunaHandler;
 import ar.gob.buenosaires.esb.handler.EjeDeGobiernoHandler;
+import ar.gob.buenosaires.esb.handler.EtiquetasHandler;
 import ar.gob.buenosaires.esb.handler.ExportacionProyectoViewHandler;
 import ar.gob.buenosaires.esb.handler.JurisdiccionHandler;
 import ar.gob.buenosaires.esb.handler.ObjetivoJurisdiccionalHandler;
 import ar.gob.buenosaires.esb.handler.ObjetivoOperativoHandler;
+import ar.gob.buenosaires.esb.handler.OtrasEtiquetasHandler;
 import ar.gob.buenosaires.esb.handler.PoblacionMetaHandler;
 import ar.gob.buenosaires.esb.handler.ProyectoHandler;
 import ar.gob.buenosaires.esb.handler.RolHandler;
@@ -56,7 +59,6 @@ public class SpringConfigEsb {
 		ProyectoHandler proyectoHandler = new ProyectoHandler();
 		((EsbServer)consumer).addHandler(proyectoHandler);
 		return proyectoHandler;
-
 	}
 
 	@Bean
@@ -106,6 +108,27 @@ public class SpringConfigEsb {
 		TemaTransversalHandler temaTransversalHandler = new TemaTransversalHandler();
 		((EsbServer)consumer).addHandler(temaTransversalHandler);
 		return temaTransversalHandler;
+	}
+	
+	@Bean
+	public CompromisoPublicoHandler getCompromisoPublicoHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		CompromisoPublicoHandler compromisoPublicoHandler = new CompromisoPublicoHandler();
+		((EsbServer)consumer).addHandler(compromisoPublicoHandler);
+		return compromisoPublicoHandler;
+	}
+	
+	@Bean
+	public OtrasEtiquetasHandler getOtrasEtiquetasHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		OtrasEtiquetasHandler otrasEtiquetasHandler = new OtrasEtiquetasHandler();
+		((EsbServer)consumer).addHandler(otrasEtiquetasHandler);
+		return otrasEtiquetasHandler;
+	}
+	
+	@Bean
+	public EtiquetasHandler getEtiquetasHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		EtiquetasHandler etiquetasHandler = new EtiquetasHandler();
+		((EsbServer)consumer).addHandler(etiquetasHandler);
+		return etiquetasHandler;
 	}
 
 	@Bean

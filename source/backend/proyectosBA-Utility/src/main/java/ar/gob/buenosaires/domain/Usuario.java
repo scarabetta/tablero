@@ -1,6 +1,7 @@
 package ar.gob.buenosaires.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -50,17 +51,18 @@ public class Usuario implements Serializable {
 	private Boolean activo;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "rol_por_usuario", joinColumns = {
-			@JoinColumn(name = "usuario_idusuario") }, inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
+	@JoinTable(name = "rol_por_usuario", 
+			joinColumns = { @JoinColumn(name = "usuario_idusuario") }, 
+			inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
 	@XmlElement(name = "roles")
-	private List<Rol> roles;
+	private List<Rol> roles = new ArrayList<Rol>();
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "usuario_por_jurisdiccion", joinColumns = {
-			@JoinColumn(name = "usuario_idusuario") }, inverseJoinColumns = {
-					@JoinColumn(name = "jurisdiccion_idjurisdiccion") })
+	@JoinTable(name = "usuario_por_jurisdiccion", 
+			joinColumns = { @JoinColumn(name = "usuario_idusuario") }, 
+			inverseJoinColumns = { @JoinColumn(name = "jurisdiccion_idjurisdiccion") })
 	@XmlElement(name = "jurisdicciones")
-	private List<Jurisdiccion> jurisdicciones;
+	private List<Jurisdiccion> jurisdicciones = new ArrayList<Jurisdiccion>();
 
 	public Long getIdUsuario() {
 		return idUsuario;
@@ -95,6 +97,9 @@ public class Usuario implements Serializable {
 	}
 
 	public List<Rol> getRoles() {
+		if(roles == null){
+			roles = new ArrayList<Rol>();
+		}
 		return roles;
 	}
 
@@ -103,6 +108,9 @@ public class Usuario implements Serializable {
 	}
 
 	public List<Jurisdiccion> getJurisdicciones() {
+		if(jurisdicciones == null){
+			jurisdicciones = new ArrayList<Jurisdiccion>();
+		}
 		return jurisdicciones;
 	}
 

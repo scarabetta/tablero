@@ -2,14 +2,23 @@ package ar.gob.buenosaires.service.impl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.function.Consumer;
 
 import javax.jms.JMSException;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.FormulaParseException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -20,9 +29,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.importador.MensajeError;
+import ar.gob.buenosaires.importador.ResultadoProcesamiento;
 import ar.gob.buenosaires.importador.proyecto.ImportadorProyectoBuilder;
+import ar.gob.buenosaires.importador.proyecto.ProyectoImportadoDTO;
 import ar.gob.buenosaires.importador.proyecto.SolapaProyecto;
 import ar.gob.buenosaires.service.IServiceFactory;
 import ar.gob.buenosaires.service.ImportarProyectoService;
@@ -42,6 +54,22 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 	private SolapaProyecto solapaProyecto;
 
 	@Override
+	public ResultadoProcesamiento previewProyectos(Workbook solpaAImportar) {
+		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
+		getSolapaProyecto().configurarSolapa();
+		getSolapaProyecto().validarSolapa();
+		ResultadoProcesamiento resultadoProcesamiento = getInformacionProyectosParaPreview(getSolapaProyecto());
+		getSolapaProyecto().getValidador().getProblemasSolapa().forEach(new Consumer<MensajeError>() {
+			@Override
+			public void accept(MensajeError t) {
+				resultadoProcesamiento.getErroresDeSolapa().add(t.getMensaje() + "\n");
+			}
+		});
+
+		return resultadoProcesamiento;
+	}
+
+	@Override
 	public List<MensajeError> validarSolapaProyectos(Workbook solpaAImportar) {
 		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
 		getSolapaProyecto().configurarSolapa();
@@ -51,13 +79,14 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 	}
 
 	@Override
-	public Workbook importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos)
+	public ResultadoProcesamiento importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos)
 			throws InvalidFormatException, IOException {
 
 		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
 		getSolapaProyecto().configurarSolapa(pisarProyectos);
 
 		List<MensajeError> problemasSolpa = getSolapaProyecto().validarSolapa();
+		ResultadoProcesamiento resultadoProcesamiento = new ResultadoProcesamiento();
 
 		if (problemasSolpa.isEmpty()) {
 			ImportadorProyectoBuilder builder = null;
@@ -72,12 +101,13 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 
 				try {
 					if (getSolapaProyecto().validarEImportarFila(unaFila, builder)) {
-						builder.build();
+						resultadoProcesamiento.agregarProyecto(builder.build());
 					}
 				} catch (ESBException | JMSException e) {
 					LOGGER.error("Hubo un error en la fila " + unaFila.getRowNum() + "\n" + e.getMessage());
-					getSolapaProyecto().getValidador().agregarMensajeParaFila(unaFila.getRowNum(),
-							"Hubo un error inesperado en la fila " + unaFila.getRowNum() + " al ser gurdada en la base de datos.",
+					getSolapaProyecto().getValidador()
+					.agregarMensajeParaFila(unaFila.getRowNum(), "Hubo un error inesperado en la fila "
+							+ unaFila.getRowNum() + " al ser gurdada en la base de datos.",
 							MensajeError.TIPO_ERROR);
 				}
 				laProximaEsUltimaFila = (getSolapaProyecto().getFilaNumero(i + 1) == null)
@@ -87,29 +117,20 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 		}
 
 		if (!getSolapaProyecto().getValidador().getProblemasSolapa().isEmpty()) {
-			StringBuilder erroresSolapa = new StringBuilder();
 			for (Iterator<MensajeError> iterator = getSolapaProyecto().getValidador().getProblemasSolapa()
 					.iterator(); iterator.hasNext();) {
 				MensajeError mensajeError = iterator.next();
-				erroresSolapa.append(mensajeError.getMensaje()).append("\n");
+				resultadoProcesamiento.agregarErrorSolapa(mensajeError.getMensaje());
 			}
 
-			getSolapaProyecto().getSolapa().getRow(0).getCell(3, Row.CREATE_NULL_AS_BLANK)
-			.setCellValue(erroresSolapa.toString());
-
-			return solpaAImportar;
 		}
 
 		// Si hay errores, borro las filas que se importaron bien y deja las
 		// malas
 		if (!getSolapaProyecto().getValidador().getProblemasFilas().isEmpty()) {
-			return crearExcelErroresSiEsNecesario();
-
-		} else {
-			return null;
-
+			crearExcelErroresSiEsNecesario(resultadoProcesamiento);
 		}
-
+		return resultadoProcesamiento;
 	}
 
 	@Override
@@ -117,10 +138,23 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 		return solapaProyecto;
 	}
 
-	public XSSFWorkbook crearExcelErroresSiEsNecesario() throws InvalidFormatException, IOException {
+	public void crearExcelErroresSiEsNecesario(ResultadoProcesamiento resultadoProcesamiento)
+			throws InvalidFormatException, IOException {
 		XSSFWorkbook wb = null;
+
 		try {
+			Date now = new Date();
+			String pathParaGuardar = env.getProperty("save.archivos.proyecto.error.path").replace("idJurisdiccion",
+					String.valueOf(getSolapaProyecto().getJurisdiccion().getIdJurisdiccion()));
+
+			if (Files.notExists(Paths.get(pathParaGuardar))) {
+				Files.createDirectories(Paths.get(pathParaGuardar));
+			}
+
+			String nombreArchivo = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(now) + ".xlsx";
+
 			FileInputStream fis = new FileInputStream(env.getProperty("download.template.proyecto.path"));
+			FileOutputStream out = new FileOutputStream(pathParaGuardar + nombreArchivo);
 			wb = new XSSFWorkbook(fis);
 			Sheet solapaProyectoTemplate = wb.getSheetAt(0);
 			int numeroFilaInicioImportacion = getSolapaProyecto().getNumeroFilaInicioImportacion();
@@ -133,16 +167,72 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 				getSolapaProyecto().copiarFilas(getSolapaProyecto().getFilaNumero(numeroFilaConError),
 						solapaProyectoTemplate.createRow(numeroNuevaFila));
 
+				resultadoProcesamiento.agregarProyectoFallido(getSolapaProyecto().getFilaNumero(numeroFilaConError),
+						getSolapaProyecto().getValidador().getProblemasFilas().get(numeroFilaConError));
 				index++;
-
 			}
+			wb.write(out);
 			fis.close();
+			wb.close();
+			out.close();
+			resultadoProcesamiento.setNombreArchivoError(nombreArchivo);
 		} catch (FileNotFoundException | FormulaParseException | IllegalStateException e) {
 			LOGGER.debug("Hubo un problema leyendo el archivo template : \n" + e.getMessage());
 			e.printStackTrace();
+			resultadoProcesamiento
+			.setErrorGenerico("Hubo un problema leyendo el archivo template : \n" + e.getMessage());
 		}
-		return wb;
+	}
 
+	private ResultadoProcesamiento getInformacionProyectosParaPreview(SolapaProyecto solpaAValidar) {
+
+		List<String> nombresProyecto = new ArrayList<>();
+		String nombreProyecto;
+		ProyectoImportadoDTO proyectoDTO;
+		Proyecto unProyecto;
+		ResultadoProcesamiento resultadoProcesamiento = new ResultadoProcesamiento();
+		int numeroCeldaFechaInicio = Integer.parseInt(env.getProperty("proyecto.col.fecha.inicio.numero"));
+		int numeroCeldaFechaFin = Integer.parseInt(env.getProperty("proyecto.col.fecha.fin.numero"));
+
+		for (int i = solpaAValidar.getNumeroFilaInicioImportacion(); i <= solpaAValidar.getNumeroUltimaFila(); i++) {
+
+			Cell laCeldaProyecto = solpaAValidar.getFilaNumero(i).getCell(0, Row.CREATE_NULL_AS_BLANK);
+			Cell celdaFechaInicio = solpaAValidar.getFilaNumero(i).getCell(numeroCeldaFechaInicio,
+					Row.CREATE_NULL_AS_BLANK);
+			Cell celdaFechaFin = solpaAValidar.getFilaNumero(i).getCell(numeroCeldaFechaFin, Row.CREATE_NULL_AS_BLANK);
+			proyectoDTO = new ProyectoImportadoDTO();
+
+			nombreProyecto = SolapaProyecto.getCellStringValue(laCeldaProyecto.getCellType(), laCeldaProyecto);
+			if (!nombreProyecto.isEmpty()) {
+				nombresProyecto.add(nombreProyecto);
+				try {
+					unProyecto = serviceFactory.getProyectoService().getProyectoPorNombreIdJurisdiccionYCiertosEstados(
+							nombreProyecto, solapaProyecto.getJurisdiccion().getIdJurisdiccion());
+					if (unProyecto != null) {
+						proyectoDTO.setNombreProyecto(unProyecto.getNombre());
+						proyectoDTO.setFechaInicio(unProyecto.getFechaInicio());
+						proyectoDTO.setFechaFin(unProyecto.getFechaFin());
+						proyectoDTO.setIdProyecto(unProyecto.getIdProyecto());
+					} else {
+						proyectoDTO.setNombreProyecto(nombreProyecto);
+						if (Cell.CELL_TYPE_NUMERIC == celdaFechaInicio.getCellType()) {
+							proyectoDTO.setFechaInicio(celdaFechaInicio.getDateCellValue());
+						}
+						if (Cell.CELL_TYPE_NUMERIC == celdaFechaFin.getCellType()) {
+							proyectoDTO.setFechaFin(celdaFechaFin.getDateCellValue());
+						}
+					}
+					resultadoProcesamiento.getProyectoProcesados().add(proyectoDTO);
+
+				} catch (ESBException | JMSException e) {
+					LOGGER.debug(e.getMessage());
+					e.printStackTrace();
+					proyectoDTO.setNombreProyecto(nombreProyecto);
+					resultadoProcesamiento.getProyectoProcesados().add(proyectoDTO);
+				}
+			}
+		}
+		return resultadoProcesamiento;
 	}
 
 }

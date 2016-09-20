@@ -4,13 +4,14 @@
         <form role="form" ng-submit="formCtrl.saveOperativeObjective()">
                 <div class="form-group col-md-12 agrupador">
                     <label for="name">Nombre de Objetivo Operativo</label>
-                    <input type="text" class="form-control form-group" id="name" placeholder="Ingresar nombre" ng-model="formCtrl.currentOperativeObjective.nombre" required>
+                    <input type="text" class="form-control form-group" id="name" maxlength="512" placeholder="Ingresar nombre" ng-model="formCtrl.currentOperativeObjective.nombre" required>
                 </div>
             <button type="submit" class="btn btn-success">Guardar Objetivo Operativo</button>
-            <button class="btn btn-default btnRemove right" type="button" data-toggle="modal" data-target="#alertModalId" ng-click="formCtrl.deleteOperativeObjective(formCtrl.currentOperativeObjective.idObjetivoOperativo)">
+            <button class="btn btn-default btnRemove right" type="button" data-toggle="modal" data-target="#operObjAlert">
                Eliminar
             </button>
             <button type="button" class="btn btn-default right" ng-click="formCtrl.cancelOperativeObjective()">Cancelar cambios</button>
         </form>
-    </div>
+    </div>    
+    <alertmodal modal-id="operObjAlert" modal-title="Aviso" modal-body="Se va a eliminar el Objetivo Operativo. ¿Continuar?" on-accept="formCtrl.deleteOperativeObjectiveByID(formCtrl.currentOperativeObjective.idObjetivoOperativo)"></alertmodal>
 </div>

@@ -22,4 +22,8 @@ public interface JurisdiccionService {
 	void deleteJurisdiccion (Long id) throws ESBException;
 
 	void presentarProyectosCompletos(Long id) throws ESBException;
+
+	Jurisdiccion getJurisdiccionPorIdParaSecretaria(Long id);
+
+	List<Jurisdiccion> getJurisdiccionesParaSecretaria();
 }

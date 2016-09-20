@@ -1,7 +1,6 @@
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
-const config = require('webpack-config-loader!app-config');
 
 module Home {
 
@@ -9,20 +8,32 @@ module Home {
 
         private jurisdiccion:Jurisdiccion[];
         private objetivosJurisdiccionales: any;
-        private importURL:string;
-        private pisarProyectos:boolean;
         private idjurisdiccionKey = 'idJurisdiccionStorage';
 
         /*@ngInject*/
         constructor(private services:GeneralServices, private $scope:ng.IScope, private $compile: ng.ICompileService, private localStorageService:angular.local.storage.ILocalStorageService,
-          $sce: ng.ISCEService, private Upload: angular.angularFileUpload.IUploadService, private $http: ng.IHttpService, private search:Search, // tslint:disable-line variable-name
-          private $state: ng.ui.IStateService) {
+          $sce: ng.ISCEService, private Upload: angular.angularFileUpload.IUploadService, // tslint:disable-line variable-name
+          private search:Search, private $state: ng.ui.IStateService) {
+
             search.setText("");
+            (<any>$("document")).ready(function($){
+
+                (<any>$(window)).scroll(function () {
+                    if ((<any>$(this)).scrollTop() > 60) {
+                        (<any>$('.navbar-default')).addClass("scroll");
+                    } else {
+                        (<any>$('.navbar-default')).removeClass("scroll");
+                    }
+                });
+            });
             var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
             if (idJurisdiccionStorage) {
               services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
                 this.jurisdiccion = data;
                 this.objetivosJurisdiccionales = data.objetivosJurisdiccionales;
+                setTimeout(() => {
+                  this.showAll();
+                }, 0);
 
                 if (!this.localStorageService.get('flagOnboarding') && this.$state.current.name === 'home.tree') {
 
@@ -132,10 +143,17 @@ module Home {
                   (<any>$).prompt(statesdemo);
                   this.localStorageService.set('flagOnboarding', true);
                 }
+
+                //Note: this code should be moved on controller's refactoring phase
+                var completeness = this.getJurisdiccionCompleteness(this.objetivosJurisdiccionales);
+                if (completeness.complete) {
+                  this.showCompleteStatus();
+                }
+                if (completeness.incomplete) {
+                  this.showIncompleteStatus();
+                }
               });
             }
-            this.importURL = config.authBaseUrl + 'api/importar/proyecto';
-            this.pisarProyectos = false;
 
         }
 
@@ -147,19 +165,6 @@ module Home {
             angular.element(containerDiv).append(referralDiv);
           }
         }
-
-        saveData = (function () {
-          var a = document.createElement("a");
-          document.body.appendChild(a);
-          return function (data, fileName) {
-              var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
-              var url = window.URL.createObjectURL(blob);
-              a.href = url;
-              (<any>a).download = fileName;
-              a.click();
-              window.URL.revokeObjectURL(url);
-          };
-        }());
 
         editStrategicObjective(idStrategicObjective) {
           if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
@@ -276,7 +281,9 @@ module Home {
           this.objetivosJurisdiccionales.forEach((entryJuris) => {
               (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('show');
               entryJuris.objetivosOperativos.forEach((entryOp) => {
-                  (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('show');
+                  if (entryOp.proyectos.length > 0) {
+                      (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('show');
+                  }
               });
           });
         }
@@ -284,12 +291,85 @@ module Home {
         addNotification(data) {
           var formDiv = document.getElementsByTagName('alertmodal');
           angular.element(formDiv).remove();
-          var referralDivFactory = this.$compile(' <notification type="' +data.type+ '" icon="' +data.icon+ '" title="' +data.title+ '" text="' +data.text+ '" '+data.action+'="' +data.valueAction+ '" textlink="' +data.textlink+ '"></notification> '); // tslint:disable-line
+          var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="'  + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
           var referralDiv = referralDivFactory(this.$scope);
           var containerDiv = document.getElementById('notifications');
           angular.element(containerDiv).append(referralDiv);
           this.goToTop();
         }
+
+        showCompleteStatus() {
+          var notificationDataCompleto = {
+            "type" : "success",
+            "icon" : "ok-sign",
+            "title" : "Completo",
+            "text" : "Los proyectos en verde se agregaron en modo borrador. Podrás seguir modificándolos hasta que la SECPECG los verifique. Es necesario que los presentes para que la secretaría pueda verlos.", // tslint:disable-line max-line-length
+            "action": "hascallback",
+            "valueAction" : true,
+            "textlink": "Presentar todos los proyectos completos",
+            "callback": 'presentAllProjects()'
+          };
+
+          this.addNotification(notificationDataCompleto);
+        }
+
+        showIncompleteStatus() {
+          var notificationDataIncompleto = {
+            "type" : "warning",
+            "icon" : "exclamation-sign",
+            "title" : "Incompleto",
+            "text" : "Los proyectos señalados en rojo tienen datos incompletos." // tslint:disable-line
+          };
+
+          this.addNotification(notificationDataIncompleto);
+        }
+
+        getJurisdiccionCompleteness(objetivosJurisdiccionales) {
+          var objJurisdiccionales = objetivosJurisdiccionales;
+          var objOperativos;
+          var proyectos;
+          var jurisI = 0;
+          var operI = 0;
+          var proyI = 0;
+          var completeness = {
+            complete: false,
+            incomplete: false
+          };
+          var completeStatesSet = function(completeness){
+            return completeness.complete && completeness.incomplete;
+          };
+
+          while ( (jurisI < objJurisdiccionales.length) &&
+                  (!completeStatesSet(completeness)) ) {
+            objOperativos = objJurisdiccionales[jurisI].objetivosOperativos;
+
+            operI = 0;
+            while ( (operI < objOperativos.length) &&
+                  (!completeStatesSet(completeness)) ) {
+              proyectos = objOperativos[operI].proyectos;
+
+              proyI = 0;
+              while ( (proyI < proyectos.length) &&
+                (!completeStatesSet(completeness)) ) {
+
+                if (proyectos[proyI].estado === 'Completo') {
+                  completeness.complete = true;
+                }
+                if (proyectos[proyI].estado === 'Incompleto') {
+                  completeness.incomplete = true;
+                }
+
+                proyI++;
+              }
+
+              operI++;
+            }
+
+            jurisI++;
+          }
+
+          return completeness;
+        };
 
         goToElement(idElement) {
             (<any>$('html,body')).animate({
@@ -303,56 +383,10 @@ module Home {
             500);
         }
 
-        submit() {
-          var f = document.getElementById('archivoAImportar');
-          var file = (<any>f).files[0];
-          var fd = new FormData();
-          fd.append('archivoAImportar', file);
-          fd.append('pisarProyectos', this.pisarProyectos);
-          this.$http.post(this.importURL, fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined},
-            responseType:'arraybuffer'
-          })
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              var scope = this;
-                this.$state.go('home.tree').then(function() {
-                  var notificationDataCompleto = {
-                    "type" : "success",
-                    "icon" : "ok-sign",
-                    "title" : "Completo",
-                    "text" : "Los proyectos en verde se agregaron en modo borrador. Podrás seguir modificándolos hasta que la SECPECG los verifique. Es necesario que los presentes para que la secretaría pueda verlos." // tslint:disable-line
-                  };
-                  var notificationDataIncompleto = {
-                    "type" : "warning",
-                    "icon" : "exclamation-sign",
-                    "title" : "Incompleto",
-                    "text" : "Los proyectos señalados en rojo tienen datos incompletos." // tslint:disable-line
-                  };
-                  scope.addNotification(notificationDataCompleto);
-                  scope.addNotification(notificationDataIncompleto);
-                });
-            } else if (response.status === 202) {
-              var addZero = function(i) {
-                if (i < 10) {
-                    i = "0" + i;
-                }
-                return i;
-              };
-              var date = new Date();
-              var year = addZero(date.getFullYear());
-              var month = addZero(date.getMonth());
-              var day = addZero(date.getDate());
-              var hour = addZero(date.getHours());
-              var minutes = addZero(date.getMinutes());
-              var fileName = 'PGI_ProyectosNoImportados_' + year + month + day
-                              + '_' + hour + minutes + '.xlsx';
-              this.saveData(response.data, fileName);
-            }
-          })
-          .catch((response) => console.log(response.data));
+        presentAllProjects() {
+          this.services.presentAllProject(this.localStorageService.get(this.idjurisdiccionKey)).then((data) => {
+            this.$state.reload();
+          });
         }
 
     }

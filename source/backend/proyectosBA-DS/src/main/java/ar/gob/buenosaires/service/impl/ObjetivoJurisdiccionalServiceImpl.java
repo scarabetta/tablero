@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
-import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoJurisdiccionalReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoJurisdiccionalRespMsg;
-import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.service.ObjetivoJurisdiccionalService;
@@ -74,7 +72,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
 		getLogger().debug("Mensaje creado para crear un ObjetivoJurisdiccional : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, ObjetivoJurisdiccionalRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {
 			responseObjetivosJurisdiccionales = ((ObjetivoJurisdiccionalRespMsg) response).getObjetivosJurisdiccionales();
 		}
@@ -90,7 +88,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
 		getLogger().debug("Mensaje creado para actualizar un ObjetivoJurisdiccional : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, ObjetivoJurisdiccionalRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {
 			responseObjetivosJurisdiccionales = ((ObjetivoJurisdiccionalRespMsg) response).getObjetivosJurisdiccionales();
 		}
@@ -105,7 +103,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar una Jurisdiccion : {}",reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoJurisdiccionalRespMsg.class);
 	}
 
 	public static Logger getLogger() {
@@ -117,7 +115,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 
 		getLogger()
 				.debug("Mensaje creado para obtener todos los Objetivos Jurisdiccionales: {}",reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ObjetivoJurisdiccionalRespMsg.class);
 
 		List<ObjetivoJurisdiccional> objetivosJurisdiccionales = null;
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {

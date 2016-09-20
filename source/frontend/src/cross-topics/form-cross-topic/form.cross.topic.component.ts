@@ -6,18 +6,21 @@ module Home {
 
   export class CrossTopicFormController {
 
+    private title: string;
     private currentCrossTopic: TemaTransversal;
     private currentcrosstopicid: number;
 
     /*@ngInject*/
     constructor(private services:GeneralServices, private $state:ng.ui.IStateService) {
       if (!this.currentcrosstopicid) {
+        this.title = "Nuevo tema transversal";
         this.currentCrossTopic = <TemaTransversal>{};
       } else {
         services.getTemaTransversal(this.currentcrosstopicid).then((data) => {
           this.currentCrossTopic = data;
           console.log(this.currentCrossTopic);
         });
+        this.title = "Modificar tema transversal";
       }
     }
 

@@ -1,0 +1,31 @@
+<div class="pageContanerCustom">
+  <div class="item page">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="title-year">Plan 2017</h2>
+        <excelcomponent></excelcomponent>
+        <div style="clear:both;"></div>
+        <div class="row">
+          <div class="col-md-12">
+            <p class="title-import-excel">Importar Excel</p>
+              <hr>
+              <span style="font-size: 14px; font-weight: bold; font-size:18px;">Paso 1 de 2</span>
+              <div class="progress">
+                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                </div>
+              </div>
+              <div class="alert alert-info left">Tenes que descargar el excel maestro para poder importar proyectos desde Excel
+                <excelbutton></excelbutton>
+              </div>
+              <form name="fileform" ng-submit="uploadCtrl.submit(fileform)">
+                  <input type="file" id="archivoAImportar">
+                  <hr>
+                    <button type="submit" class="btn btn-default">Continuar</button>
+                    <button type="button" class="btn btn-link" ui-sref="home.tree">Cancelar</button>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,19 +13,21 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados" })
+@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados", "idJurisdiccion" })
 @XmlRootElement(name = "ProyectoReqMsg")
 public class ProyectoReqMsg extends EsbBaseMsg {
-	
-    public static final String PROYECTO_TYPE = "ProyectoReqMsg";
-    
-    private Long id;
-    private String name;
-    private Proyecto proyecto;
-    private String codigo;
-    
-    @XmlElement(name = "estados")
-    private List<String> estados;
+
+	public static final String PROYECTO_TYPE = "ProyectoReqMsg";
+
+	private Long id;
+	private String name;
+	private Proyecto proyecto;
+	private String codigo;
+
+	@XmlElement(name = "estados")
+	private List<String> estados;
+
+	private Long idJurisdiccion;
 
 	@Override
 	public String getEventType() {
@@ -65,13 +67,24 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 	}
 
 	public List<String> getEstados() {
-		if(estados == null){
-			estados = new ArrayList<String>();
+		if (estados == null) {
+			estados = new ArrayList<>();
 		}
 		return estados;
 	}
 
 	public void setEstados(List<String> estados) {
 		this.estados = estados;
+	}
+
+	public void setIdJurisdiccion(Long idJurisdiccion) {
+		this.idJurisdiccion = idJurisdiccion;
+	}
+
+	/**
+	 * @return the idJurisdiccion
+	 */
+	public Long getIdJurisdiccion() {
+		return idJurisdiccion;
 	}
 }

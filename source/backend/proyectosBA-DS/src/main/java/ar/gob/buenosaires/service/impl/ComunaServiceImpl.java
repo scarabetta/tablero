@@ -94,7 +94,7 @@ public class ComunaServiceImpl implements ComunaService {
 	
 	private List<Comuna> getComunasFromReqMsg(ComunaReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener una Comuna : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ComunaRespMsg.class);
 
 		List<Comuna> comunas = null;
 		if (response.getEventType().equalsIgnoreCase(ComunaRespMsg.COMUNA_TYPE)) {

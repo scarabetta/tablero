@@ -14,13 +14,14 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "permiso_entidad")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idPermisoEntidad", "alta", "baja", "modificacion", "gestion", "nombre" })
+@XmlType(propOrder = { "idPermisoEntidad", "rol", "alta", "baja", "modificacion", "gestion", "nombre" })
 @XmlRootElement(name = "PermisoEntidad")
 public class PermisoEntidad implements Serializable{
 
@@ -33,7 +34,7 @@ public class PermisoEntidad implements Serializable{
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idrol")
-	@XmlTransient
+	@JsonBackReference
 	private Rol rol;
 
 	@Column(name = "alta", nullable = false)
@@ -97,5 +98,13 @@ public class PermisoEntidad implements Serializable{
 
 	public void setGestion(Boolean gestion) {
 		this.gestion = gestion;
+	}
+
+	public Rol getRol() {
+		return rol;
+	}
+
+	public void setRol(Rol rol) {
+		this.rol = rol;
 	}
 }

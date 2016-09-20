@@ -1,8 +1,10 @@
 package ar.gob.buenosaires.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,8 +20,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "rol")
@@ -41,16 +44,18 @@ public class Rol implements Serializable {
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "rol_por_usuario", joinColumns = {
-			@JoinColumn(name = "usuario_idusuario") }, 
-			inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
-	@XmlTransient
-	private List<Usuario> usuarios;
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	@JoinTable(name = "rol_por_usuario", 
+//			joinColumns = { @JoinColumn(name = "usuario_idusuario") }, 
+//			inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
+//	@XmlElement(name = "usuarios")
+//	private List<Usuario> usuarios;
 
-	@OneToMany(mappedBy = "rol", fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "rol", 
+			fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "permisosEntidad")
-	private List<PermisoEntidad> permisosEntidad;
+	@JsonManagedReference
+	private List<PermisoEntidad> permisosEntidad = new ArrayList<PermisoEntidad>();
 
 	public Long getIdRol() {
 		return idRol;
@@ -77,18 +82,26 @@ public class Rol implements Serializable {
 	}
 
 	public List<PermisoEntidad> getPermisosEntidad() {
+		if(this.permisosEntidad == null){
+			this.permisosEntidad = new ArrayList<PermisoEntidad>();
+		}
 		return permisosEntidad;
 	}
 
 	public void setPermisosEntidad(final List<PermisoEntidad> permisosEntidad) {
-		this.permisosEntidad = permisosEntidad;
+		if(this.permisosEntidad == null){
+			this.permisosEntidad = permisosEntidad;
+		} else if(permisosEntidad != null){
+			this.permisosEntidad.clear();
+			this.permisosEntidad.addAll(permisosEntidad);
+		}
 	}
 
-	public List<Usuario> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(final List<Usuario> usuarios) {
-		this.usuarios = usuarios;
-	}
+//	public List<Usuario> getUsuarios() {
+//		return usuarios;
+//	}
+//
+//	public void setUsuarios(final List<Usuario> usuarios) {
+//		this.usuarios = usuarios;
+//	}
 }

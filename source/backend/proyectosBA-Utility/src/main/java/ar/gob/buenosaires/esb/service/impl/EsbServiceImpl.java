@@ -26,7 +26,7 @@ public class EsbServiceImpl implements EsbService {
 	}
 
 	@Override
-	public EsbBaseMsg sendToBus(final EsbBaseMsg req, final String origin, final String action) throws ESBException, JMSException {
+	public EsbBaseMsg sendToBus(final EsbBaseMsg req, final String origin, final String action, final Class<?> clase) throws ESBException, JMSException {
 		EsbBaseMsg retval = null;
 		final ESBEvent event = JMSUtil.createSyncEvent(req, origin, action);
 
@@ -40,7 +40,8 @@ public class EsbServiceImpl implements EsbService {
 
 		if (event.getExceptions().isEmpty()) {
 			if (event.getRequestStatus().equalsIgnoreCase(ESBEvent.STATUS_SUCCESSFUL)) {
-				retval = (EsbBaseMsg) event.getObj();
+//				retval = (EsbBaseMsg) event.getObj();
+				retval = (EsbBaseMsg) JMSUtil.crearObjeto(event.getXml(), clase);
 			} else {
 				getLogger().error(String.format(UNEXPECTED_EVENT_REQUEST_STATUS_S,
 

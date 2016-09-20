@@ -1,30 +1,31 @@
-<main class="main-container no-padding-top" role="main">
+<main class="main-container login no-padding-top" role="main">
   <section>
     <div class="container">
-      <br>
-      <h3 class="text-center">Plataforma de Gestión Integral</h3>
-      <br>
       <div class="row">
-        <div class="tab-content col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="tab-content">
           <div role="tabpanel" class="tab-pane active">
             <div class="panel panel-default">
-              <div class="panel-heading text-center">Iniciá sesión</div>
+              <div class="panel-heading text-center">
+                <p class="hello">¡Hola!</p>
+                <p>Iniciá sesión para comenzar</p>
+              </div>
               <div class="panel-body">
                 <div id="notificationLogin"></div>
                 <form ng-submit="loginCtrl.login()" id="login" name="loginCtrl.form">
                   <div class="form-group">
+                      
+                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Ingresar correo electrónico" ng-model="loginCtrl.email" required maxlength="512">
                       <label for="exampleInputEmail1">Correo electrónico</label>
-                      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Ingresar correo electrónico" ng-model="loginCtrl.email" required>
                   </div>
                   <div class="form-group">
-                   <label for="InputPasword">Contraseña</label>
+                   
                     <input type="password" class="form-control" id="InputPasword" placeholder="Ingresar Contraseña" ng-model="loginCtrl.password" required>
+                    <label for="InputPasword">Contraseña</label>
                   </div>
                   <div class="form-group" ng-show="loginCtrl.numberOfAttempts >= loginCtrl.maxNumberOfAttempts">
                     <div vc-recaptcha ng-model="loginCtrl.captcha"></div>
                   </div>
-                  <br>
-                  <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresar</button>
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresá</button>
                 </form>
               </div>
             </div>

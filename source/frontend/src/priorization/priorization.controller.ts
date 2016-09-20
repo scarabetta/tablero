@@ -30,6 +30,7 @@ module Priorization {
       downloadExcelPriorization() {
         this.services.downloadExcelPriorization().then((data) => {
            this.saveData(data, 'PGI_Priorizacion.xlsx');
+           this.$state.reload();
         });
       }
 

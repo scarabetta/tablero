@@ -23,35 +23,30 @@ public class PoblacionMetaServiceImpl implements PoblacionMetaService {
 		return getPoblacionMetaDAO().findAll();
 	}
 
-//	@Override
-//	public PoblacionMeta getPoblacionMetaPorNombre(String nombre) {
-//		return getPoblacionMetaDAO().findByNombre(nombre);
-//	}
-//
-//	@Override
-//	public PoblacionMeta getPoblacionMetaPorId(Long id) {
-//		return getPoblacionMetaDAO().findOne(id);
-//	}
-//	
-//	@Override
-//	public PoblacionMeta getPoblacionMetaPorCodigo(String codigo) {
-//		return getPoblacionMetaDAO().findByCodigo(codigo);
-//	}
-//	
-//	@Override
-//	public void createPoblacionMeta(PoblacionMeta PoblacionMeta) {
-//		getPoblacionMetaDAO().save(PoblacionMeta);
-//	}
-//	
-//	@Override
-//	public void updatePoblacionMeta(PoblacionMeta PoblacionMeta) {
-//		getPoblacionMetaDAO().save(PoblacionMeta);
-//	}
-//	
-//	@Override
-//	public void deletePoblacionMeta(PoblacionMeta PoblacionMeta) {
-//		getPoblacionMetaDAO().delete(PoblacionMeta);
-//	}
+	@Override
+	public PoblacionMeta getPoblacionMetaPorNombre(String nombre) {
+		return getPoblacionMetaDAO().findByNombre(nombre);
+	}
+
+	@Override
+	public PoblacionMeta getPoblacionMetaPorId(Long id) {
+		return getPoblacionMetaDAO().findOne(id);
+	}
+	
+	@Override
+	public PoblacionMeta createPoblacionMeta(PoblacionMeta PoblacionMeta) {
+		return getPoblacionMetaDAO().save(PoblacionMeta);
+	}
+	
+	@Override
+	public PoblacionMeta updatePoblacionMeta(PoblacionMeta PoblacionMeta) {
+		return getPoblacionMetaDAO().save(PoblacionMeta);
+	}
+	
+	@Override
+	public void deletePoblacionMeta(PoblacionMeta PoblacionMeta) {
+		getPoblacionMetaDAO().delete(PoblacionMeta);
+	}
 
 	PoblacionMetaJpaDao getPoblacionMetaDAO() {
 		return repositorio.getPoblacionMetaJpaDao();

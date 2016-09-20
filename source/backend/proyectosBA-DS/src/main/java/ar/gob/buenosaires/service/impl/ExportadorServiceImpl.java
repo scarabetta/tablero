@@ -171,7 +171,7 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 	private List<ExportacionProyectoView> getExportacionProyectoViewFromReqMsg(ExportacionProyectoViewReqMsg reqMsg)
 			throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener una ExportacionProyectoView : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, ExportacionProyectoViewRespMsg.class);
 
 		List<ExportacionProyectoView> exportacionProyectoViews = null;
 		if (response.getEventType().equalsIgnoreCase(ExportacionProyectoViewRespMsg.EXPORTACION_PROYECTO_VIEW_TYPE)) {

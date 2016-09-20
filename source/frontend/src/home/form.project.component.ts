@@ -36,6 +36,7 @@ module Home {
       private actionMove:string;
       private changingStateFlag:boolean;
       private validators = new Array<any>();
+      private fileArray = new Array<any>();
       private datePickerInicio = {
         status: false
       };
@@ -56,6 +57,7 @@ module Home {
             });
           }
           this.currentProject = <Proyecto>{
+                "archivos": null,
                 "idProyecto": null,
                 "nombre": null,
                 "codigo": "a definir",
@@ -100,7 +102,6 @@ module Home {
               });
               this.changingStateFlag = false;
               services.getMoveOptions(this.idproject).then((data) => {
-                console.log(data);
                 this.moveOptions = data;
               });
             });
@@ -146,10 +147,37 @@ module Home {
             this.poblacionesMetaPlaceholder = value > 0 ? '' : 'Ej. Jubilados, Estudiantes';
           });
 
+          (<any>$("#buttonFile")).click(function() {
+              $("#inputFile").click();
+          });
+
+          var scope = this;
+
+          (<any>$( "#inputFile" )).change(function() {
+            var i = 0,
+                files = this.files,
+                len = files.length;
+
+            for (; i < len; i++) {
+                scope.fileArray.push(files[i]);
+                scope.$scope.$apply();
+            }
+
+          });
+
       };
 
+      deleteFile(file) {
+        var index = this.fileArray.indexOf(file);
+        this.fileArray.splice(index, 1);
+      }
+
+      deleteFileFromCurrent(file) {
+        var index = this.currentProject.archivos.indexOf(file);
+        this.currentProject.archivos.splice(index, 1);
+      }
+
       cleanCheckEjes() {
-        console.log(this.currentProject.ejesDeGobierno);
         if ((<any>$("#no-selection")).prop("checked")) {
           this.currentProject.ejesDeGobierno = [];
         } else {
@@ -163,7 +191,6 @@ module Home {
       }
 
       checkNoSelection() {
-        console.log(this.currentProject.ejesDeGobierno);
         if (this.currentProject.ejesDeGobierno.length > 0) {
           (<any>$("#no-selection")).prop("checked", false);
         } else {
@@ -215,8 +242,8 @@ module Home {
           this.validators.push(this.createValidatorRequired(this.currentProject, 'fechaInicio'));
           this.validators.push(this.createValidatorRequired(this.currentProject, 'fechaFin'));
           this.validators.push(this.createValidatorRequired(this.currentProject, 'prioridadJurisdiccional'));
+          this.validators.push(this.createValidatorRequired(this.currentProject, 'tipoProyecto'));
           this.validators.push(this.createValidatorRequired(this.currentProject, 'presupuestosPorAnio'));
-          this.validators.push(this.createValidatorRequired(this.currentProject, 'ejesDeGobierno'));
           this.validators.push(this.createValidatorRequired(this.currentProject, 'poblacionesMeta'));
           this.validators.push(this.createValidatorRequired(this.currentProject, 'tipoUbicacionGeografica'));
           this.validators.push(this.createValidatorComposeRequired(this.currentProject, 'direccion', 'tipoUbicacionGeografica', 'Dirección'));
@@ -227,7 +254,6 @@ module Home {
         var scope = this;
         if (this.changingStateFlag) {
           this.services.changeState(this.actionMove, this.currentProject).then((data) => {
-            console.log(data);
             scope.$state.reload().then(function() {
                 var notificationData = {
                   "type" : "success",
@@ -254,19 +280,53 @@ module Home {
 
       }
 
+      uploadFiles(idProject) {
+        if (this.fileArray.length > 0) {
+          this.fileArray.forEach((file) => {
+              this.services.formProjectFileUploader(file, idProject, this.jurisdiccion.idJurisdiccion).then((data) => {
+                console.log(data);
+              });
+          });
+        }
+      }
+
+      getFile(fileName) {
+        this.services.getProjectFile(fileName, this.currentProject.idProyecto, this.jurisdiccion.idJurisdiccion).then((data) => {
+          var a = document.createElement("a");
+          document.body.appendChild(a);
+          var url = window.URL.createObjectURL(data);
+          a.href = url;
+          (<any>a).download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      }
+
       saveProject() {
         var scope = this;
-        console.log(this.currentProject);
-        if (this.idproject) {
+
+        if (this.changingStateFlag && this.idproject) {
           this.services.changeState(this.actionMove, this.currentProject).then((data) => {
-            console.log(data);
+            this.uploadFiles(this.idproject);
+            scope.$state.reload().then(function() {
+                var notificationData = {
+                  "type" : "success",
+                  "icon" : "ok-sign",
+                  "title" : "Ok",
+                  "text" : "El proyecto se guardó con éxito." // tslint:disable-line
+                };
+                scope.addNotification(notificationData);
+            });
+          });
+        } else if (this.idproject) {
             this.services.updateProject(this.currentProject).then((data) => {
+                this.uploadFiles(this.idproject);
                 this.$state.reload();
              });
-          });
         } else {
             this.services.saveProject(this.currentProject).then((data) => {
               if (data.idProyecto) {
+                this.uploadFiles(data.idProyecto);
                 scope.$state.reload().then(function() {
                     var notificationData = {
                       "type" : "success",
@@ -279,25 +339,6 @@ module Home {
               }
             });
         }
-      }
-
-      addAlert(data) {
-        var formDiv = document.getElementsByTagName('alertmodal');
-        angular.element(formDiv).remove();
-        var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
-        var referralDiv = referralDivFactory(this.$scope);
-        var containerDiv = document.getElementById('alertmodalcomponent');
-        angular.element(containerDiv).append(referralDiv);
-      }
-
-      deleteProject(id) {
-        var dataAlert = {
-          title: "Aviso",
-          text: "Se va a eliminar el Proyecto. ¿Continuar?",
-          callback: 'deleteProjectById',
-          id: id
-        };
-        this.addAlert(dataAlert);
       }
 
       deleteProjectById(id) {

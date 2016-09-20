@@ -15,12 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "objetivo_jurisdiccional")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idObjetivoJurisdiccional", "codigo", "nombre", "objetivosOperativos", "indicadoresEstrategicos",
+@XmlType(propOrder = { "idObjetivoJurisdiccional", "jurisdiccion", "codigo", "nombre", "objetivosOperativos", "indicadoresEstrategicos",
 		"idJurisdiccionAux" })
 
 @XmlRootElement(name = "ObjetivoJurisdiccional")
@@ -46,7 +44,7 @@ public class ObjetivoJurisdiccional implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idjurisdiccion")
 	@JsonBackReference
-	@XmlTransient
+//	@XmlTransient
 	private Jurisdiccion jurisdiccion;
 	
 	@Column(name="codigo", nullable = true)
@@ -60,10 +58,10 @@ public class ObjetivoJurisdiccional implements Serializable {
 	@JsonManagedReference
     private List<ObjetivoOperativo> objetivosOperativos = new ArrayList<>();
 	
-	@OneToMany(cascade = CascadeType.ALL,mappedBy = "objetivoJurisdiccional",fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "objetivoJurisdiccional", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "indicadoresEstrategicos")
 	@JsonManagedReference
-    private List<IndicadorEstrategico> indicadoresEstrategicos = new ArrayList<>();
+    private List<IndicadorEstrategico> indicadoresEstrategicos = new ArrayList<IndicadorEstrategico>();
 	
 	@Column(name = "idjurisdiccionaux", nullable = false)
 	private long idJurisdiccionAux;
@@ -92,7 +90,7 @@ public class ObjetivoJurisdiccional implements Serializable {
 		this.nombre = nombre;
 	}	
 	
-	@XmlTransient
+//	@XmlTransient
     public Jurisdiccion getJurisdiccion() {
         return jurisdiccion;
     }
@@ -102,6 +100,9 @@ public class ObjetivoJurisdiccional implements Serializable {
 	}
 
 	public List<ObjetivoOperativo> getObjetivosOperativos() {
+		if(objetivosOperativos == null){
+			objetivosOperativos = new ArrayList<ObjetivoOperativo>();
+		}
 		return objetivosOperativos;
 	}
 
@@ -110,12 +111,20 @@ public class ObjetivoJurisdiccional implements Serializable {
 	}
 
 	public List<IndicadorEstrategico> getIndicadoresEstrategicos() {
+		if(indicadoresEstrategicos == null){
+			indicadoresEstrategicos = new ArrayList<IndicadorEstrategico>();
+		}
 		return indicadoresEstrategicos;
 	}
 
 	public void setIndicadoresEstrategicos(
 			List<IndicadorEstrategico> indicadoresEstrategicos) {
-		this.indicadoresEstrategicos = indicadoresEstrategicos;
+		if(this.indicadoresEstrategicos == null){
+			this.indicadoresEstrategicos = indicadoresEstrategicos;
+		} else if (indicadoresEstrategicos != null){
+			this.indicadoresEstrategicos.clear();
+			this.indicadoresEstrategicos.addAll(indicadoresEstrategicos);
+		}
 	}
 
 	public long getIdJurisdiccionAux() {

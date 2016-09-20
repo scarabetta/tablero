@@ -9,7 +9,7 @@
 
             </div>
             <div class="col-md-12">
-                <div id="notifications" class="row"></div>
+                <div id="notifications"></div>
                 <div class="content-first-btn principalBtn">
                     <!--<button type="button" class="btn btn-default" ng-click="">
                       <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Proyecto
@@ -23,17 +23,19 @@
                     <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.collapseAll()">
                     <i class="glyphicon glyphicon-chevron-up" aria-hidden="true"></i> Colapsar todo
                   </button>
-                 <button type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.showAll()">
+                 <button id="showAllButton" type="button" class="btn btn-link action-collapse" ng-click="homeCtrl.showAll()">
                     <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i> Desplegar todo
                   </button>
                 </div>
-                <hr>
+                <hr class="lineColor">
                 <div id="add-strategic-objetive"></div>
 
                 <!-- objetivos estrategicos -->
-                    <p ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"</p>
+                    <div class="alert alert-danger" ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
+                        <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i> No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"
+                    </div>
                     <div class="title titleOjEestrategico">Objetivos Estrat&eacute;gicos</div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 colorObjOperativo">
                         <ul class="content-level-1" ng-repeat="objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text">
                             <li class="firstLabel">
                                 <span id="es-{{objJ.idObjetivoJurisdiccional}}">
@@ -42,7 +44,7 @@
                                             <div class="col-md-9 notPadding">
                                                 <i class="collapsed glyphicon glyphicon-chevron-down" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objJ.idObjetivoJurisdiccional}}"></i>
                                                 {{ objJ.nombre }}
-                                                <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)"></i>
+                                                <i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)"></i>
                                             </div>
                                                 <button type="button" class="btn btn-default btn-arbol" ng-click="homeCtrl.addOperativeObjective(objJ.idObjetivoJurisdiccional, objJ.idObjetivoJurisdiccional)">
                                                 <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Obj. Operativo
@@ -55,9 +57,12 @@
                                 <span id="grupo-level-{{objJ.idObjetivoJurisdiccional}}" class="collapse objOContent">
                                     <span ng-if="objJ.objetivosOperativos.length > 0" class="title viewArbol">Objetivos Operativos</span>
                                     <span ng-if="objJ.objetivosOperativos.length === 0">
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div class="col-md-12 col-sm-12 col-xs-12 notPadding">
                                             <br>
-                                            <p>No existen objetivos operativos para este objetivo estratégico.</p>
+                                            <div class="alert alert-danger">
+                                                <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i>
+                                                No existen objetivos operativos para este objetivo estratégico.
+                                            </div>
                                         </div>
                                     </span>
                                     <div id="add-operative-objetive-{{objJ.idObjetivoJurisdiccional}}"></div>
@@ -69,14 +74,14 @@
                                                         <div class="col-md-9 col-sm-8 textObjOp notPadding">
                                                             <i class="glyphicon glyphicon-chevron-down collapsed" aria-hidden="true" data-toggle="collapse" href="#grupo-level-2-{{objO.idObjetivoOperativo}}"></i>
                                                             {{ objO.nombre }}
-                                                            <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" ng-click="homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)" data-placement="top" title="" data-original-title="Editar"></i>
+                                                            <i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)" data-placement="top" title="" data-original-title="Editar"></i>
                                                         </div>
                                                         <div class="content-button">
                                                           <button type="button" class="btn btn-default btn-arbol" ng-click="homeCtrl.addProject(objO.idObjetivoOperativo)" id="addProjectButton-{{objO.idObjetivoOperativo}}">
                                                             <i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Proyecto
                                                           </button>
                                                         </div>
-                                                    <div>    
+                                                    <div>
                                                 </div>
                                             </span>
 
@@ -94,13 +99,13 @@
                                                 <ul id="addproject">
                                                     <li class="listProject" ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
                                                         <span class="thirdLabel columnRight">
-                                                            <i class="glyphicon glyphicon-chevron-down collapsed" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i> {{proyecto.nombre}}  <i class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></i>
+                                                            <i class="glyphicon glyphicon-chevron-down collapsed" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i> {{proyecto.nombre}}  <i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></i>
                                                         </span>
 
                                                         <div class="box-date">
                                                             <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
                                                             <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
-                                                            <span class="date right" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado'}">{{proyecto.estado}}</span>
+                                                            <span class="date right" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Aplazado', 'rechazadoClass' : proyecto.estado === 'Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
                                                         </div>
 
                                                         <div id="grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}" class="col-md-12 collapse">
@@ -117,9 +122,11 @@
 
 
                                             <span ng-if="objO.proyectos.length === 0" id="grupo-level-2-{{objO.idObjetivoOperativo}}" class="collapse">
-                                                <div class="col-md-9 col-sm-12 col-xs-12">
+                                                <div class="col-md-12 col-sm-12 col-xs-12 notPadding">
                                                 <br>
-                                                    <p>No existen proyectos para este objetivo operativo.</p>
+                                                    <div class="alert alert-danger">
+                                                    <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i>
+                                                     No existen proyectos para este objetivo operativo.</div>
                                                 </div>
                                             </span>
 

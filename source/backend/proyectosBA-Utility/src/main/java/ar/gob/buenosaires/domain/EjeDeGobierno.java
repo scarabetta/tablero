@@ -13,15 +13,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "eje_de_gobierno")
-@XmlType(propOrder = { "idEjeDeGobierno", "nombre", "descripcion", "ejemplos", "proyectosEjeDeGobierno" })
-public class EjeDeGobierno implements Serializable, IExportableAExcel  {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = { "idEjeDeGobierno", "nombre", "descripcion", 
+		"ejemplos", "proyectos" })
+@XmlRootElement(name = "EjeDeGobierno")
+public class EjeDeGobierno implements Serializable, IExportableAExcel {
 
 	private static final long serialVersionUID = -3297460062606797267L;
 
@@ -40,11 +48,11 @@ public class EjeDeGobierno implements Serializable, IExportableAExcel  {
 	private String ejemplos;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "eje_de_gobierno_por_proyecto",
-	joinColumns = { @JoinColumn(name = "id_proyecto") },
-	inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
-	@XmlElement(name = "proyectosEjeDeGobierno")
-	private List<Proyecto> proyectosEjeDeGobierno;
+	@JoinTable(name = "eje_de_gobierno_por_proyecto", 
+		joinColumns = { @JoinColumn(name = "id_proyecto") }, 
+	    inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
+	@XmlElement(name = "proyectos")
+	private List<Proyecto> proyectos;
 
 	public Long getIdEjeDeGobierno() {
 		return idEjeDeGobierno;
@@ -78,9 +86,17 @@ public class EjeDeGobierno implements Serializable, IExportableAExcel  {
 		this.ejemplos = ejemplos;
 	}
 
+	public List<Proyecto> getProyectos() {
+		return proyectos;
+	}
+
+	public void setProyectos(List<Proyecto> proyectos) {
+		this.proyectos = proyectos;
+	}
+
+	@JsonIgnore
 	@Override
 	public String getNombreParaExportacion() {
 		return "EG:" + getNombre();
 	}
-
 }

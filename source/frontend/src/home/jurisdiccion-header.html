@@ -3,5 +3,6 @@
     <span class="title-jurisdiccion collapsed" data-toggle="collapse" href="#mision">
       <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver misión"></i> Misión de la jurisdicción
     </span>
-    <p class="mision collapse" id="mision" aria-expanded="false">{{$ctrl.jurisdiccion.mision}}</p>
+    <p class="mision collapse" id="mision" aria-expanded="false">{{$ctrl.jurisdiccion.mision}} <i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-placement="top" title="" data-original-title="Editar" ng-click="$ctrl.editJurisdiccion()"></i></p>
+    <div id="inputMisionArea"></div>
 </div>

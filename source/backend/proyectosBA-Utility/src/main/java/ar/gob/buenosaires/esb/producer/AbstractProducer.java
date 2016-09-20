@@ -13,13 +13,15 @@ import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.ESBException;
@@ -49,7 +51,17 @@ public abstract class AbstractProducer {
         MessageCreator mc = new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
-                String messageAsString = JMSUtil.marshal(event.getObj(), marshaller);
+//                String messageAsString = JMSUtil.marshal(event.getObj(), marshaller);
+            	
+            	XmlMapper xmlMapper = new XmlMapper();
+            	String messageAsString = "";
+				try {
+					messageAsString = xmlMapper.writeValueAsString(event.getObj());
+				} catch (JsonProcessingException e) {
+					getLogger().error("Se ha producido un error al querer parsear el mensaje a XML", e);
+					throw new JMSException(e.getMessage());
+				}
+            	
                 TextMessage message = session.createTextMessage(messageAsString);
                 //reply to destination, en el topic/queue donde va a volver la respuesta.
                 event.setReplyToDestination(getActiveMQQueue());
@@ -92,9 +104,10 @@ public abstract class AbstractProducer {
                         "displayName",
                         text,
                         Thread.currentThread().getName()});
-        final Object message = StringUtils.isBlank(text) ? ""
-                : JMSUtil.unmarshal(replyMessage.getText(), marshaller);
-        event.setObj(message);
+//        final Object message = StringUtils.isBlank(text) ? ""
+//                : JMSUtil.unmarshal(replyMessage.getText(), marshaller);
+//        event.setObj(message);
+        event.setXml(text);
 	}
     
     protected abstract Logger getLogger();

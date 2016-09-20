@@ -13,8 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "presupuesto_por_anio")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idPresupuestoPorAnio", "anio", "presupuesto", "otrasFuentes" })
+@XmlType(propOrder = { "idPresupuestoPorAnio", "proyecto", "anio", "presupuesto", "otrasFuentes", "exportacionProyectoViewPresupuestoPorAnio" })
 
 @XmlRootElement(name = "PresupuestoPorAnio")
 public class PresupuestoPorAnio implements Serializable {
@@ -37,13 +37,15 @@ public class PresupuestoPorAnio implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto")
 	@JsonBackReference(value = "proy-presu")
-	@XmlTransient
-	private Proyecto proyectoPresupuestoPorAnio;
+//	@XmlTransient
+	@XmlElement(name = "proyecto")
+	private Proyecto proyecto;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
 	@JsonBackReference(value = "exp-presu")
-	@XmlTransient
+//	@XmlTransient
+	@XmlElement(name = "exportacionProyectoViewPresupuestoPorAnio")
 	private ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio;
 
 	@Column(name = "anio")
@@ -64,11 +66,11 @@ public class PresupuestoPorAnio implements Serializable {
 	}
 
 	public Proyecto getProyecto() {
-		return proyectoPresupuestoPorAnio;
+		return proyecto;
 	}
 
 	public void setProyecto(Proyecto proyectoPresupuestoPorAnio) {
-		this.proyectoPresupuestoPorAnio = proyectoPresupuestoPorAnio;
+		this.proyecto = proyectoPresupuestoPorAnio;
 	}
 
 	public int getAnio() {

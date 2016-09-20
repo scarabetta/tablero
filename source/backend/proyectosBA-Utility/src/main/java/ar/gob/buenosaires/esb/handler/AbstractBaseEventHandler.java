@@ -94,4 +94,5 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
     protected abstract void process(final ESBEvent event) throws ESBException;
     
     protected abstract Logger getLogger();
+	
 }

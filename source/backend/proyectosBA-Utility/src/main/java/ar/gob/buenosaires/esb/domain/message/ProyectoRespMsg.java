@@ -57,6 +57,9 @@ public class ProyectoRespMsg extends EsbBaseMsg {
 	}
 
 	public List<String> getAccionesPermitidas() {
+		if(accionesPermitidas == null) {
+			accionesPermitidas = new ArrayList<>();
+		}
 		return accionesPermitidas;
 	}
 

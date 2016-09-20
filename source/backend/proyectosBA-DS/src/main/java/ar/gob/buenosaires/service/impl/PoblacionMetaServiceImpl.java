@@ -93,7 +93,7 @@ public class PoblacionMetaServiceImpl implements PoblacionMetaService {
 	
 	private List<PoblacionMeta> getPoblacionesMetaFromReqMsg(PoblacionMetaReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener una PoblacionMeta : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, PoblacionMetaRespMsg.class);
 
 		List<PoblacionMeta> poblacionMeta = null;
 		if (response.getEventType().equalsIgnoreCase(PoblacionMetaRespMsg.POBLACION_META_TYPE)) {

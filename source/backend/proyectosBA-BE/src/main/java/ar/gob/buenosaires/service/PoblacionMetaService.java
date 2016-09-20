@@ -8,15 +8,13 @@ public interface PoblacionMetaService {
 
 	List<PoblacionMeta> getPoblacionesMeta();
 
-//	PoblacionMeta getPoblacionMetaPorNombre(String nombre);
-//
-//	PoblacionMeta getPoblacionMetaPorId(Long id);
-//	
-//	PoblacionMeta getPoblacionMetaPorCodigo(String codigo);
-//	
-//	void createPoblacionMeta(PoblacionMeta poblacionMeta);
-//	
-//	void updatePoblacionMeta (PoblacionMeta poblacionMeta);
-//	
-//	void deletePoblacionMeta (PoblacionMeta poblacionMeta);
+	PoblacionMeta getPoblacionMetaPorNombre(String nombre);
+
+	PoblacionMeta getPoblacionMetaPorId(Long id);
+	
+	PoblacionMeta createPoblacionMeta(PoblacionMeta poblacionMeta);
+	
+	PoblacionMeta updatePoblacionMeta (PoblacionMeta poblacionMeta);
+	
+	void deletePoblacionMeta (PoblacionMeta poblacionMeta);
 }

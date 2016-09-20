@@ -13,7 +13,6 @@ module Home {
     /*@ngInject*/
     constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService,
       private $compile: ng.ICompileService, private $scope:ng.IScope) {
-
       if (this.idoperativeobjective) {
         this.title = "Modificar objetivo operativo";
         services.getOperativeObjective(this.idoperativeobjective).then((data) => {
@@ -49,16 +48,6 @@ module Home {
       angular.element(formDiv).remove();
     }
 
-    deleteOperativeObjective(id) {
-      var dataAlert = {
-        title: "Aviso",
-        text: "Se va a eliminar el Objetivo Operativo. ¿Continuar?",
-        callback: 'deleteOperativeObjectiveByID',
-        id: id
-      };
-      this.addAlert(dataAlert);
-    }
-
     deleteOperativeObjectiveByID(id) {
         if (this.currentOperativeObjective.proyectos.length > 0) {
           var notificationData = {
@@ -91,16 +80,6 @@ module Home {
       scrollTop: 0},
       500);
     }
-
-    addAlert(data) {
-      var formDiv = document.getElementsByTagName('alertmodal');
-      angular.element(formDiv).remove();
-      var referralDivFactory = this.$compile(" <alertmodal title='" + data.title + "' text='" + data.text + "' callback='formCtrl." + data.callback + "(" + data.id + ")'></alertmodal> ");
-      var referralDiv = referralDivFactory(this.$scope);
-      var containerDiv = document.getElementById('grupo-level-3-3');
-      angular.element(containerDiv).append(referralDiv);
-    }
-
   }
 
   export let formOperativeObjectiveComponent = {

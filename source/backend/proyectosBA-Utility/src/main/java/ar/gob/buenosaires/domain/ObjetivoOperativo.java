@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "objetivo_operativo")
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idObjetivoOperativo", "codigo", "nombre", "proyectos", "idObjetivoJurisdiccionalAux"})
+@XmlType(propOrder = { "idObjetivoOperativo", "objetivoJurisdiccional", "codigo", "nombre", "proyectos", "idObjetivoJurisdiccionalAux"})
 
 @XmlRootElement(name = "ObjetivoOperativo")
 public class ObjetivoOperativo implements Serializable {
@@ -44,7 +43,7 @@ public class ObjetivoOperativo implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idobjetivojurisdiccional")
 	@JsonBackReference
-	@XmlTransient
+//	@XmlTransient
 	private ObjetivoJurisdiccional objetivoJurisdiccional;
 	
 	@OneToMany(cascade = CascadeType.ALL,mappedBy = "objetivoOperativo",fetch = FetchType.LAZY)
@@ -69,7 +68,7 @@ public class ObjetivoOperativo implements Serializable {
 		this.idObjetivoOperativo = idObjetivoOperativo;
 	}
 
-	@XmlTransient
+//	@XmlTransient
 	public ObjetivoJurisdiccional getObjetivoJurisdiccional() {
 		return objetivoJurisdiccional;
 	}
@@ -94,6 +93,9 @@ public class ObjetivoOperativo implements Serializable {
 		this.nombre = nombre;
 	}
 	public List<Proyecto> getProyectos() {
+		if(proyectos == null){
+			proyectos = new ArrayList<Proyecto>();
+		}
 		return proyectos;
 	}
 

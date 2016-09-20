@@ -34,6 +34,11 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 	public List<Jurisdiccion> getJurisdicciones() {
 		return getJurisdiccionDAO().findAll();
 	}
+	
+	@Override
+	public List<Jurisdiccion> getJurisdiccionesParaSecretaria() {
+		return getJurisdiccionDAO().findAllParaSecretaria();
+	}
 
 	@Override
 	public Jurisdiccion getJurisdiccionPorNombre(String nombre) {
@@ -43,6 +48,12 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 	@Override
 	public Jurisdiccion getJurisdiccionPorId(Long id) {
 		return getJurisdiccionDAO().findOne(id);
+	}
+	
+	@Override
+	public Jurisdiccion getJurisdiccionPorIdParaSecretaria(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	@Override

@@ -39,7 +39,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setTemaTransversal(temaTransversal);
 
 		getLogger().debug("Mensaje creado para crear un Tema Transversal : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, TemaTransversalRespMsg.class);
 		List<TemaTransversal> temasTransversales = getTemaTransversalFromResponse(response);
 		return getFirstTemaTransversalFromTheList(temasTransversales);
 	}
@@ -50,7 +50,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setTemaTransversal(temaTransversal);
 
 		getLogger().debug("Mensaje creado para actualizar un Tema Transversal : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, TemaTransversalRespMsg.class);
 		List<TemaTransversal> temasTransversales = getTemaTransversalFromResponse(response);
 		return getFirstTemaTransversalFromTheList(temasTransversales);
 	}
@@ -61,7 +61,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar un Tema Transversal : {}", reqMsg.toString());
-		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE);
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, TemaTransversalRespMsg.class);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 
 	private List<TemaTransversal> getTemaTransversalFromReqMsg(TemaTransversalReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener un Tema Transversal : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE);
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, TemaTransversalRespMsg.class);
 
 		List<TemaTransversal> temasTransversales = null;
 		if (response.getEventType().equalsIgnoreCase(TemaTransversalRespMsg.TEMA_TRANSVERSAL_TYPE)) {

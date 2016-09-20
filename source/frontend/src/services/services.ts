@@ -35,6 +35,12 @@ module Services {
                 .catch((response) => console.log(response.data));
         }
 
+        editJurisdiccion(jurisdiccion): ng.IPromise<any> {
+            return this.$http.put(this.apiBaseUrl + "jurisdiccion/", jurisdiccion)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
         poblacionMeta(): ng.IPromise<any> {
             return this.$http.get<PoblacionMeta>(this.apiBaseUrl + "poblacionMeta/")
                 .then((response) => response.data)
@@ -68,9 +74,13 @@ module Services {
         }
 
         presentProject(project): ng.IPromise<any> {
-            project.fechaInicio = new Date(project.fechaInicio);
-            project.fechaFin = new Date(project.fechaFin);
             return this.$http.post(this.apiBaseUrl + "proyecto/presentar", project)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        presentAllProject(idJurisdiccion): ng.IPromise<any> {
+            return this.$http.post(this.apiBaseUrl + "jurisdiccion/presentarCompletos/" + idJurisdiccion, '')
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
@@ -271,6 +281,36 @@ module Services {
                   crossTopic.activo = !crossTopic.activo;
                   console.log(response.data);
                 });
+        }
+
+        formProjectFileUploader(file, idProject, idJurisdiccion): ng.IPromise<any> {
+          return this.$http({
+                    method: 'POST',
+                    url: this.apiBaseUrl + 'proyecto/subir_archivo',
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    data: {
+                        archivoASubir: file,
+                        id: idProject,
+                        idJurisdiccion: idJurisdiccion
+                    },
+                    transformRequest: function (data, headersGetter) {
+                        var formData = new FormData();
+                        angular.forEach(data, function (value, key) {
+                            formData.append(key, value);
+                        });
+                        return formData;
+                    }
+                })
+              .then((response) => response.data)
+              .catch((response) => console.log(response.data));
+        }
+
+        getProjectFile(nombreArchivo, id, idJurisdiccion): ng.IPromise<any> {
+          return this.$http.get(this.apiBaseUrl + "proyecto/bajar_archivo/" + id + '/' + idJurisdiccion + '/' + nombreArchivo, {responseType: 'blob'})
+          .then((response) => response.data)
+          .catch((response) => console.log(response.data));
         }
 
         serviceVersion(): ng.IPromise<any> {

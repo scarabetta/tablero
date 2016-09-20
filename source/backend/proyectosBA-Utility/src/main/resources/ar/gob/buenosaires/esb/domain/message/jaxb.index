@@ -20,5 +20,11 @@ RolReqMsg
 RolRespMsg
 TemaTransversalReqMsg
 TemaTransversalRespMsg
+CompromisoPublicoReqMsg
+CompromisoPublicoRespMsg
+OtrasEtiquetasReqMsg
+OtrasEtiquetasRespMsg
+EtiquetasReqMsg
+EtiquetasRespMsg
 ExportacionProyectoViewReqMsg
 ExportacionProyectoViewRespMsg

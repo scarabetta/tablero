@@ -128,7 +128,7 @@ public class ImportadorProyectoBuilder {
 	public ImportadorProyectoBuilder cargarProyectoArea(String area) {
 		try {
 			proyectoTransient.setArea(serviceFactory.getAreaService().getAreasByNameAndIdJurisdiccion(area,
-					this.jurisdiccion.getIdJurisdiccion()));
+					jurisdiccion.getIdJurisdiccion()));
 
 		} catch (ESBException | JMSException e) {
 			e.printStackTrace();
@@ -243,13 +243,12 @@ public class ImportadorProyectoBuilder {
 	 * @throws JMSException
 	 * @throws ESBException
 	 */
-	public Jurisdiccion build() throws ESBException, JMSException {
+	public Proyecto build() throws ESBException, JMSException {
 		buildObjetivoJurisdiccional();
 		buildObjetivoOperativo();
 		crearYCargarProyecto();
-		serviceFactory.getProyectoService().updateProyecto(proyecto);
 
-		return getJurisdiccion();
+		return serviceFactory.getProyectoService().updateProyecto(proyecto);
 	}
 
 	private boolean getBooleanFromString(String unString) {
@@ -282,6 +281,10 @@ public class ImportadorProyectoBuilder {
 	}
 
 	private void setearColleccionesAlProyecto(Proyecto unProyecto) {
+		unProyecto.getComunas().clear();
+		unProyecto.getEjesDeGobierno().clear();
+		unProyecto.getPresupuestosPorAnio().clear();
+		unProyecto.getPoblacionesMeta().clear();
 
 		for (Iterator<Comuna> iterator = comunas.iterator(); iterator.hasNext();) {
 			Comuna comuna = iterator.next();
@@ -381,7 +384,8 @@ public class ImportadorProyectoBuilder {
 
 		if (!getJurisdiccion().getObjetivosJurisdiccionales().isEmpty()) {
 			codigoObjetivoJurisdiccional = getJurisdiccion().getObjetivosJurisdiccionales().parallelStream()
-					.map(oj -> Integer.parseInt(oj.getCodigo().split("\\.")[1])).max(Integer::compare).get();
+					.filter(o -> o != null).map(oj -> Integer.parseInt(oj.getCodigo().split("\\.")[1]))
+					.max(Integer::compare).get();
 		}
 		return codigoJurisdiccion.concat(".").concat(String.valueOf(codigoObjetivoJurisdiccional + 1));
 	}
@@ -391,7 +395,8 @@ public class ImportadorProyectoBuilder {
 
 		if (!objetivoJurisdiccional.getObjetivosOperativos().isEmpty()) {
 			codigoObjetivoOperativo = objetivoJurisdiccional.getObjetivosOperativos().parallelStream()
-					.map(oj -> Integer.parseInt(oj.getCodigo().split("\\.")[2])).max(Integer::compare).get();
+					.filter(o -> o != null).map(oj -> Integer.parseInt(oj.getCodigo().split("\\.")[2]))
+					.max(Integer::compare).get();
 		}
 		return objetivoJurisdiccional.getCodigo().concat(".").concat(String.valueOf(codigoObjetivoOperativo + 1));
 	}
@@ -406,38 +411,40 @@ public class ImportadorProyectoBuilder {
 
 	private void buildObjetivoJurisdiccional() throws ESBException, JMSException {
 		ObjetivoJurisdiccionalService objetivoJurisdiccionalService = serviceFactory.getObjetivoJurisdiccionalService();
-
-		objetivoJurisdiccional = objetivoJurisdiccionalService.getObjetivoJurisdiccionalPorCodigo(codigoObjJuri);
-		if (objetivoJurisdiccional == null) {
+		if (codigoObjJuri != null && !codigoObjJuri.isEmpty()) {
+			objetivoJurisdiccional = objetivoJurisdiccionalService.getObjetivoJurisdiccionalPorCodigo(codigoObjJuri);
+		}
+		if (objetivoJurisdiccional == null && nombreObjJuri != null && !nombreObjJuri.isEmpty()) {
 			objetivoJurisdiccional = objetivoJurisdiccionalService.getObjetivoJurisdiccionalPorNombre(nombreObjJuri);
 		}
 		if (objetivoJurisdiccional == null) {
 			objetivoJurisdiccional = new ObjetivoJurisdiccional();
-			objetivoJurisdiccional.setCodigo(getProximoCodigoObjJurisdiccional());
 			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);
 			objetivoJurisdiccional.setNombre(nombreObjJuri);
 			objetivoJurisdiccional.getObjetivosOperativos().add(objetivoOperativo);
 			objetivoJurisdiccional.setIdJurisdiccionAux(jurisdiccion.getIdJurisdiccion());
 			objetivoJurisdiccional = objetivoJurisdiccionalService.createObjetivoJurisdiccional(objetivoJurisdiccional);
 			getJurisdiccion().getObjetivosJurisdiccionales().add(objetivoJurisdiccional);
+			objetivoJurisdiccional.setCodigo(getProximoCodigoObjJurisdiccional());
 
 		}
 	}
 
 	private void buildObjetivoOperativo() throws ESBException, JMSException {
 		ObjetivoOperativoService objetivoOperativoService = serviceFactory.getObjetivoOperativoService();
-
-		objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorCodigo(codigoObjOper);
-		if (objetivoOperativo == null) {
+		if (codigoObjOper != null && !codigoObjOper.isEmpty()) {
+			objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorCodigo(codigoObjOper);
+		}
+		if (objetivoOperativo == null && nombreObjOper != null && !nombreObjOper.isEmpty()) {
 			objetivoOperativo = objetivoOperativoService.getObjetivoOperativoPorNombre(nombreObjOper);
 		}
 		if (objetivoOperativo == null) {
 			objetivoOperativo = new ObjetivoOperativo();
-			objetivoOperativo.setCodigo(getProximoCodigoObjOperativo(objetivoJurisdiccional));
 			objetivoOperativo.setNombre(nombreObjOper);
 			objetivoOperativo.setIdObjetivoJurisdiccionalAux(objetivoJurisdiccional.getIdObjetivoJurisdiccional());
 			objetivoOperativo = objetivoOperativoService.createObjetivoOperativo(objetivoOperativo);
 			objetivoJurisdiccional.getObjetivosOperativos().add(objetivoOperativo);
+			objetivoOperativo.setCodigo(getProximoCodigoObjOperativo(objetivoJurisdiccional));
 		}
 
 	}

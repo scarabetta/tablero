@@ -3,24 +3,13 @@
         <div class="row">
             <div class="col-md-12">
                 <h2 class="title-year">Plan 2017</h2>
-                
-                <div class="dropdown menuExcel" id="dropdownExcel">
-                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <img src="../../assets/icono-xls.png">
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <!-- <li><a href="#">Descargar Excel con todos los proyectos</a></li> -->
-                        <li><a ng-click="homeCtrl.downloadExcel()">Descargar Excel maestro</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a ui-sref="home.upload">Importar proyectos de Excel</a></li>
-                    </ul>
-                </div>
+
+                <excelcomponent showimport="true"></excelcomponent>
 
                 <div style="clear:both;"></div>
                 <p class="register">No hay proyectos cargados a&uacute;n en el Plan 2017</p>
                 <div class="content-first-btn principalBtn">
-                    <button type="button" class="btn btn-default" ui-sref="home.upload">Importar proyectos de Excel</button>
+                    <button type="button" class="btn btn-default" ui-sref="upload">Importar proyectos de Excel</button>
                     <button type="button" class="btn btn-default" ui-sref="home.tree">Agregar proyectos en forma manual</button>
                 </div>
             </div>

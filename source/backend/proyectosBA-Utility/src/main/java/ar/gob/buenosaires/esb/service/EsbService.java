@@ -7,6 +7,6 @@ import ar.gob.buenosaires.esb.exception.ESBException;
 
 public interface EsbService {
 
-	EsbBaseMsg sendToBus(EsbBaseMsg req, String origin, String action) throws ESBException, JMSException;
+	EsbBaseMsg sendToBus(EsbBaseMsg req, String origin, String action, Class<?> clase) throws ESBException, JMSException;
 
 }

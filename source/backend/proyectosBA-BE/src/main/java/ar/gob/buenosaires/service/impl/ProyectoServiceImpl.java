@@ -1,7 +1,6 @@
 package ar.gob.buenosaires.service.impl;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.fest.util.VisibleForTesting;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,13 @@ import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioRepositor
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoJpaDao;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
-import ar.gob.buenosaires.domain.ArchivoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
-import ar.gob.buenosaires.domain.PresupuestoPorAnio;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
 import ar.gob.buenosaires.geocoder.service.GeoCoderService;
 import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
+import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepository;
 import ar.gob.buenosaires.service.ProyectoService;
 
 @Service
@@ -33,6 +31,9 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 	@Autowired
 	private PresupuestoPorAnioRepository repositorioPresupuestoPorAnio;
+	
+	@Autowired
+	private OtrasEtiquetasRepository otrasEtiquetasRepository;
 
 	@Autowired
 	private GeoCoderService geoCoderService;
@@ -62,14 +63,11 @@ public class ProyectoServiceImpl implements ProyectoService {
 		final ObjetivoOperativo op = repositorioObjetivoOperativo.getObjetivoOperativoJpaDao()
 				.findOne(proyecto.getIdObjetivoOperativo2());
 		if (op != null) {
-			relacionarProyectoAlArchivos(proyecto);
-			relacionarPresupuestoAlProyecto(proyecto);
 			proyecto.setObjetivoOperativo(op);
-			proyecto.setEstado(proyecto.getEstadoActualizado());
 			guardarCoordenadas(proyecto);
-
+			proyecto.setEstado(proyecto.getEstadoActualizado());			
+			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			return getProyectoDAO().save(proyecto);
-			
 		} else {
 			throw new ESBException("El objetivo operativo con id: "
 					+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
@@ -80,21 +78,16 @@ public class ProyectoServiceImpl implements ProyectoService {
 	public Proyecto updateProyecto(final Proyecto proyecto) throws ESBException {
 		final ObjetivoOperativo op = repositorioObjetivoOperativo.getObjetivoOperativoJpaDao()
 				.findOne(proyecto.getIdObjetivoOperativo2());
-	
-		deletePresupuestosPorAnioAnteriores(proyecto);
-		relacionarProyectoAlArchivos(proyecto);
-		relacionarPresupuestoAlProyecto(proyecto);
 
 		if (op != null) {
 			proyecto.setObjetivoOperativo(op);
-			proyecto.setEstado(proyecto.getEstadoActualizado());
 			guardarCoordenadas(proyecto);
-
+			proyecto.setEstado(proyecto.getEstadoActualizado());
+			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			return getProyectoDAO().save(proyecto);
 		}
 		throw new ESBException("El objetivo operativo con id: "
 				+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
-
 	}
 
 	@Override
@@ -109,14 +102,6 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 	ProyectoJpaDao getProyectoDAO() {
 		return repositorio.getProyectoJpaDao();
-	}
-
-	private void deletePresupuestosPorAnioAnteriores(final Proyecto proyecto) {
-		final List<PresupuestoPorAnio> presupuestos = repositorioPresupuestoPorAnio.getPresupuestoPorAnioJpaDao()
-				.findByProyectoPresupuestoPorAnio(proyecto);
-		for (final PresupuestoPorAnio presupuesto : presupuestos) {
-			repositorioPresupuestoPorAnio.getPresupuestoPorAnioJpaDao().delete(presupuesto);
-		}
 	}
 
 	private void guardarCoordenadas(final Proyecto proyecto) {
@@ -141,26 +126,12 @@ public class ProyectoServiceImpl implements ProyectoService {
 	public void setRepositorioPresupuestoPorAnio(final PresupuestoPorAnioRepository presupuestoPorAnioRepository) {
 		repositorioPresupuestoPorAnio = presupuestoPorAnioRepository;
 	}
-
-	private void relacionarProyectoAlArchivos(final Proyecto proyecto) {
-		proyecto.getArchivos().forEach(new Consumer<ArchivoProyecto>() {
-
-			@Override
-			public void accept(final ArchivoProyecto t) {
-				t.setProyecto(proyecto);
-			}
-		});
+	
+	@VisibleForTesting
+	public void setRepositorioOtrasEtiquetas(final OtrasEtiquetasRepository otrasEtiquetasRepository) {
+		this.otrasEtiquetasRepository = otrasEtiquetasRepository;
 	}
 
-	private void relacionarPresupuestoAlProyecto(final Proyecto proyecto) {
-		proyecto.getPresupuestosPorAnio().forEach(new Consumer<PresupuestoPorAnio>() {
-
-			@Override
-			public void accept(final PresupuestoPorAnio t) {
-				t.setProyecto(proyecto);
-			}
-		});
-	}
 
 	@VisibleForTesting
 	public void setGeoCoderService(final GeoCoderServiceImpl geoCoderServiceImpl) {
@@ -185,5 +156,10 @@ public class ProyectoServiceImpl implements ProyectoService {
 	@Override
 	public void iniciarPriorizacionDeProyectos() {
 		getProyectoDAO().iniciarPriorizacionDeProyectos();
+	}
+
+	@Override
+	public Proyecto getProyectoPorNombreYIdJurisdiccion(String nombre, Long IdJurisdiccion) {
+		return getProyectoDAO().findByNombreAndIdJurisdiccion(nombre, IdJurisdiccion);
 	}
 }

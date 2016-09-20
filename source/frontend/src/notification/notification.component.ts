@@ -4,21 +4,7 @@ module Notification {
 
     export class NotificationController {
 
-      private type: string;// tslint:disable-line
-      private icon: string;// tslint:disable-line
-      private text: string;// tslint:disable-line
-      private title: string;// tslint:disable-line
-      private gotoform: boolean;// tslint:disable-line
-      private gotoestrategico: boolean;// tslint:disable-line
-      private gotooperativo: boolean;// tslint:disable-line
-      private textlink: string;// tslint:disable-line
-
-      /*@ngInject*/
-      // constructor() {
-      //   console.log(this.gotoform);
-      //   console.log(this.gotoestrategico);
-      //   console.log(this.gotooperativo);
-      // };
+      constructor(private $scope: ng.IScope) {};
 
       goToCurrentForm() {
         (<any>$(document.getElementsByTagName('notification'))).hide();
@@ -44,22 +30,32 @@ module Notification {
         'slow');
       }
 
+      callback() {
+        (<any>this.$scope).callback();
+      }
+
     }
 
-    export let notificationComponent = {
-        bindings: {
-            type: '@',
-            icon: '@',
-            text: '@',
-            title: '@',
-            gotoform: '=',
-            gotoestrategico: '=',
-            gotooperativo: '=',
-            textlink: '@'
-        },
+    /*@ngInject*/
+    export function notificationDirective() {
+      return {
+        restrict: 'E',
         templateUrl: template,
+        scope: {
+          type: '@',
+          icon: '@',
+          text: '@',
+          title: '@',
+          gotoform: '=',
+          gotoestrategico: '=',
+          gotooperativo: '=',
+          hascallback: '=',
+          textlink: '@',
+          callback: '&'
+        },
         controller: NotificationController,
-        controllerAs: 'notificationCtrl',
+        controllerAs: 'notificationCtrl'
+      };
     };
 
 }

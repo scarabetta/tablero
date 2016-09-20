@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<artifactId>proyectosBA-Utility</artifactId>
-	<version>0.0.1-RELEASE</version>
+	<version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 	<name>Proyectos BA - Utility</name>
 	
 	<parent>
 		<groupId>ar.gob.buenosaires.backend</groupId>
 		<artifactId>proyectosBA</artifactId>
-		<version>0.0.1-RELEASE</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -29,6 +29,7 @@
 		<jackson-core.version>2.6.3</jackson-core.version>
         <jackson-annotations.version>2.6.3</jackson-annotations.version>
         <jackson-databind.version>2.6.3</jackson-databind.version>
+        <jackson-dataformat-xml.version>2.6.3</jackson-dataformat-xml.version>
 		<!-- Utility dependencies -->
         <joda-money.version>0.9</joda-money.version>
         <joda-time.version>2.3</joda-time.version>
@@ -39,7 +40,7 @@
 		<fest-assert.version>2.0M10</fest-assert.version>
 	</properties>
 	
-<dependencies>
+	<dependencies>
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -114,6 +115,11 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson-core.version}</version>
         </dependency>
+        <dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-xml</artifactId>
+		    <version>${jackson-dataformat-xml.version}</version>
+		</dependency>
 	  
         <!-- Joda -->
         <dependency>
@@ -150,7 +156,11 @@
             <artifactId>fest-assert-core</artifactId>
             <version>${fest-assert.version}</version>
             <scope>test</scope>
-        </dependency>        
+        </dependency>
+<!--         <dependency> -->
+<!--         	<groupId>org.hibernate</groupId> -->
+<!--         	<artifactId>hibernate-jpamodelgen</artifactId> -->
+<!--         </dependency> -->
 	</dependencies>
 	
 	<build>

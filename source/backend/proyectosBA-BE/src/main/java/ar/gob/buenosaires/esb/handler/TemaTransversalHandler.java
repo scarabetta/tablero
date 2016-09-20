@@ -12,6 +12,7 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.TemaTransversalReqMsg;
 import ar.gob.buenosaires.esb.domain.message.TemaTransversalRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.TemaTransversalService;
 
 public class TemaTransversalHandler extends AbstractBaseEventHandler {
@@ -29,24 +30,23 @@ public class TemaTransversalHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, TemaTransversalService.class);
+		final TemaTransversalReqMsg request = (TemaTransversalReqMsg) JMSUtil.crearObjeto(event.getXml(), TemaTransversalReqMsg.class);
+
 		final TemaTransversalRespMsg response = new TemaTransversalRespMsg();
-		final TemaTransversalReqMsg request = (TemaTransversalReqMsg) event.getObj();
+		event.setObj(response);
 		List<TemaTransversal> temasTransversales = new ArrayList<TemaTransversal>();
+		response.setTemasTransversales(temasTransversales);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveTemasTransversales(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
 			temasTransversales.add(service.createTemaTransversal(request.getTemaTransversal()));
-			response.setTemasTransversales(temasTransversales);
-			event.setObj(response);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
 			temasTransversales.add(service.updateTemaTransversal(request.getTemaTransversal()));
-			response.setTemasTransversales(temasTransversales);
-			event.setObj(response);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteTemaTransversal(request.getId());
 		} else {
-
+			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Temas transversales");
 		}
 		logResponseMessage(event, TemaTransversalService.class);
 	}

@@ -94,4 +94,8 @@ public interface ESBEvent {
     public void setReplyToDestination(Destination replyToDestination);
     
     public Object getProperty(String key);
+    
+    public void setXml(String xml);
+    
+    public String getXml();
 }
