@@ -63,10 +63,16 @@ public class AuthenticationAdapterImpl implements AuthenticationAdapter {
 		
 		StreamSource source = new StreamSource(new StringReader(marshall(validarRequest, getMarshaller())));
 		StringWriter result = new StringWriter();
+		
 		WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
+		getLogger().info("Enviando mensaje al LDAP: " + endpointURL);
 		webServiceTemplate.sendSourceAndReceiveToResult(endpointURL, source, new StreamResult(result));
+		getLogger().info("Se recibio la respuesta del LDAP: " + endpointURL);
 		
 		ValidarResponse response = (ValidarResponse) unmarshall(result.getBuffer().toString(), getUnMarshaller());
+		
+		String respuesta = response.getRta() != null ? response.getRta(): "fallo la respuesta";
+		getLogger().info("la repuesta del LDAP fue: " + respuesta + " , y la validacion es: " + VALID_USER.equalsIgnoreCase(response.getRta()));
 		
 		return VALID_USER.equalsIgnoreCase(response.getRta());
 	}
@@ -110,14 +116,32 @@ public class AuthenticationAdapterImpl implements AuthenticationAdapter {
 		return unmarshaller;
 	}
 	
-	public static Object unmarshall(final String string, Jaxb2Marshaller unmarshaller) {								
+	public static Object unmarshall(final String string, Jaxb2Marshaller unmarshaller) {
+		getLogger().info("Mensaje recibido del LDAP: " + string);
 		return unmarshaller.unmarshal(new StreamSource(new StringReader(string)));
 	}
 
 	public static String marshall(final Object message, Jaxb2Marshaller marshaller) {		
 		StringWriter out = new StringWriter();
 		marshaller.marshal(message, new StreamResult(out));
+		getLogger().info("Mensaje enviado al LDAP (clave ocultada): " + sacarPassword(out.toString()));
 		return out.toString();
+	}
+
+	/**
+	 * <?xml version="1.0" encoding="UTF-8" standalone="yes"?><validar><email>cperret@buenosaires.gob.ar</email><clave>troquel</clave></validar>
+	 * @param string
+	 * @return
+	 */
+	private static String sacarPassword(String xml) {
+		String cutXml = xml;
+		
+		if(xml.contains("<clave>")){
+			cutXml = xml.substring(0, xml.indexOf("<clave>"));
+			cutXml = cutXml.concat(xml.substring(xml.indexOf("</clave>") + 8));
+		}
+			
+		return cutXml;
 	}
 
 	public static Logger getLogger() {
