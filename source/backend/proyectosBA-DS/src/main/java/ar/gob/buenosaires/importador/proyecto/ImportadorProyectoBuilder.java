@@ -120,7 +120,7 @@ public class ImportadorProyectoBuilder {
 
 	public ImportadorProyectoBuilder cargarProyectoPoblacionAfectada(Double poblacionAfectada) {
 		if (!StringUtils.isEmpty(poblacionAfectada.toString()) && poblacionAfectada != 0) {
-			proyectoTransient.setPoblacionAfectada(poblacionAfectada.intValue());
+			proyectoTransient.setPoblacionAfectada(poblacionAfectada.longValue());
 		}
 		return this;
 	}

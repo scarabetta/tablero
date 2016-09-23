@@ -100,7 +100,7 @@ public class Proyecto implements Serializable {
 	private String unidadMeta;
 
 	@Column(name = "poblacionafectada", nullable = true)
-	private Integer poblacionAfectada;
+	private Long poblacionAfectada;
 
 	@Column(name = "liderproyecto", nullable = true)
 	private String liderProyecto;
@@ -238,11 +238,11 @@ public class Proyecto implements Serializable {
 		this.unidadMeta = unidadMeta;
 	}
 
-	public Integer getPoblacionAfectada() {
+	public Long getPoblacionAfectada() {
 		return poblacionAfectada;
 	}
 
-	public void setPoblacionAfectada(final Integer poblacionAfectada) {
+	public void setPoblacionAfectada(final Long poblacionAfectada) {
 		this.poblacionAfectada = poblacionAfectada;
 	}
 

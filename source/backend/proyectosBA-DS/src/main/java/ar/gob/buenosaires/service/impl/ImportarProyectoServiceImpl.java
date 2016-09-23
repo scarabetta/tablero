@@ -228,43 +228,51 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 		// Combo para el la Poblacion meta
 		numeroCeldaInicio = env.getProperty("proyecto.col.segmento.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.segmento.numero.fin");
-		agregarOpciones(sheet, nombresPoblacionMeta, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin);
+		agregarOpciones(sheet, nombresPoblacionMeta, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin,
+				true);
 		// Combo para el la Comuna
 		numeroCeldaInicio = env.getProperty("proyecto.col.comuna.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.comuna.numero.fin");
-		agregarOpciones(sheet, nombresComuna, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin);
+		agregarOpciones(sheet, nombresComuna, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin, true);
 		// Combo para el Tipo de ubicacion
 		numeroCeldaInicio = env.getProperty("proyecto.col.tipoUbicacion.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.tipoUbicacion.numero.fin");
-		agregarOpciones(sheet, nombresTipoUbicacion, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin);
+		agregarOpciones(sheet, nombresTipoUbicacion, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin,
+				true);
 		// Combo para el Tipo de Proyecto
 		numeroCeldaInicio = env.getProperty("proyecto.col.tipoProyecto.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.tipoProyecto.numero.fin");
-		agregarOpciones(sheet, nombresTipoProyecto, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin);
+		agregarOpciones(sheet, nombresTipoProyecto, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin,
+				true);
 		// Combo para el los ejes de gobierno
 		numeroCeldaInicio = env.getProperty("proyecto.col.ejeGobierno.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.ejeGobierno.numero.fin");
-		agregarOpciones(sheet, nombresEjesDeGobierno, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin);
+		agregarOpciones(sheet, nombresEjesDeGobierno, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin,
+				true);
 		// Combo para el implicaCambioLegislativo
 		numeroCeldaInicio = env.getProperty("proyecto.col.implicaCambioLegislativo.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.implicaCambioLegislativo.numero.fin");
 		agregarOpciones(sheet, nombresImplicaCambioLegislativo, dvHelper, numeroUltimaFila, numeroCeldaInicio,
-				numeroCeldaFin);
+				numeroCeldaFin, true);
 		// Combo para el prioridadJurisdiccional
 		numeroCeldaInicio = env.getProperty("proyecto.col.prioridadJurisdiccional.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.prioridadJurisdiccional.numero.fin");
 		agregarOpciones(sheet, nombresPrioridadJurisdiccional, dvHelper, numeroUltimaFila, numeroCeldaInicio,
-				numeroCeldaFin);
+				numeroCeldaFin, true);
 		// Combo para el Area
 		numeroCeldaInicio = env.getProperty("proyecto.col.area.numero.inicio");
 		numeroCeldaFin = env.getProperty("proyecto.col.area.numero.fin");
-		dvHelper.createFormulaListConstraint("=INDIRECT(CONCATENATE($B$2,\".Areas\"))");
-		agregarOpciones(sheet, null, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin,
+		agregarOpciones(sheet, null, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin, false,
 				"=INDIRECT(CONCATENATE($B$2,\".Areas\"))");
+		// Combo para Objetivos Juris.
+		numeroCeldaInicio = env.getProperty("proyecto.col.objetivoJurisdiccional.numero.inicio");
+		numeroCeldaFin = env.getProperty("proyecto.col.objetivoJurisdiccional.numero.fin");
+		agregarOpciones(sheet, null, dvHelper, numeroUltimaFila, numeroCeldaInicio, numeroCeldaFin, false,
+				"=INDIRECT($B$2)");
 	}
 
 	private void agregarOpciones(Sheet sheet, String[] opciones, DataValidationHelper dvHelper, int numeroUltimaFila,
-			String numeroColumnaInicio, String numeroColumnaFin, String... formula) {
+			String numeroColumnaInicio, String numeroColumnaFin, boolean showError, String... formula) {
 		int numeroPrimerFilaExportada = 2;
 		DataValidationConstraint dvConstraint;
 		if (opciones == null || ArrayUtils.isNotEmpty(formula)) {
@@ -275,9 +283,17 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 		CellRangeAddressList addressListPrioridadJefatura = new CellRangeAddressList(numeroPrimerFilaExportada,
 				numeroUltimaFila, Integer.parseInt(numeroColumnaInicio), Integer.parseInt(numeroColumnaFin));
 		DataValidation validation = dvHelper.createValidation(dvConstraint, addressListPrioridadJefatura);
-		validation.setErrorStyle(DataValidation.ErrorStyle.STOP);
-		validation.createErrorBox("Error", "El valor ingresado es inválido. Seleccioná un valor de la lista.");
-		validation.setShowErrorBox(true);
+		if (showError) {
+			validation.setErrorStyle(DataValidation.ErrorStyle.STOP);
+			validation.createErrorBox("Error", "El valor ingresado es inválido. Seleccioná un valor de la lista.");
+			validation.setShowErrorBox(true);
+		} else {
+			validation.setErrorStyle(DataValidation.ErrorStyle.WARNING);
+			validation.createErrorBox("Objetivo estratégico nuevo",
+					"Cuando importes este archivo, estarás registrando un nuevo objetivo estratégico para la jurisdicción.");
+			validation.setShowErrorBox(true);
+		}
+
 		sheet.addValidationData(validation);
 	}
 

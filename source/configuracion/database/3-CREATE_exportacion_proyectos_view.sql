@@ -47,7 +47,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`admin`@`localhost` VIEW `exportacion_proyect
 			   NULL "prioridadJefatura",  NULL "estadoAprobacion"
 FROM jurisdiccion j
 INNER JOIN objetivo_jurisdiccional oj ON oj.idJurisdiccion = j.idJurisdiccion
-INNER JOIN objetivo_operativo oop ON oop.idObjetivoOperativo = oj.idObjetivoJurisdiccional
+INNER JOIN objetivo_operativo oop ON oop.idObjetivoJurisdiccional = oj.idObjetivoJurisdiccional
 INNER JOIN proyecto p ON p.idObjetivoOperativo = oop.idObjetivoOperativo
 LEFT JOIN area a on a.idArea = p.idArea
 where p.estado in ("verificado", "presentado")
