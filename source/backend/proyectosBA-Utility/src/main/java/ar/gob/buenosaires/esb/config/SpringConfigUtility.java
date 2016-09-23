@@ -33,8 +33,18 @@ public class SpringConfigUtility {
 		return marshaller;
 	}
 
-	@Bean
-	public JmsTemplate getJmsTemplate(PooledConnectionFactory pooledCF) {
+	@Bean(name = "Consumer")
+	public JmsTemplate getJmsTemplateConsumer(PooledConnectionFactory pooledCF) {
+		JmsTemplate jmsTemplate = new JmsTemplate(pooledCF);
+		jmsTemplate.setExplicitQosEnabled(true);
+		jmsTemplate.setPubSubDomain(jmsTemplateTopic); // topic = true, Queue = false.
+		jmsTemplate.setTimeToLive(1000);
+		jmsTemplate.setDeliveryPersistent(false);
+		return jmsTemplate;
+	}
+	
+	@Bean(name = "Producer")
+	public JmsTemplate getJmsTemplateProducer(PooledConnectionFactory pooledCF) {
 		JmsTemplate jmsTemplate = new JmsTemplate(pooledCF);
 		jmsTemplate.setExplicitQosEnabled(true);
 		jmsTemplate.setPubSubDomain(jmsTemplateTopic); // topic = true, Queue = false.

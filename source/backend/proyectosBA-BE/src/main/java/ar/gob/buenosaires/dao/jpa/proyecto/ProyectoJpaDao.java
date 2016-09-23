@@ -40,6 +40,13 @@ public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
 
 	@Query("SELECT p FROM Proyecto p JOIN p.objetivoOperativo op"
 			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
-			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre and p.estado in (\'Completo\', \'Incompleto\', \'Presentado\')")
-	Proyecto findByNombreAndIdJurisdiccion(@Param("nombre") String nombre, @Param("idJurisdiccion") Long idJurisdiccion);
+			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre and p.estado in (:estados)")
+	Proyecto findByNombreAndIdJurisdiccionAndCiertosEstados(@Param("nombre") String nombre,
+			@Param("idJurisdiccion") Long idJurisdiccion, @Param("estados") List<String> estados);
+
+	@Query("SELECT p FROM Proyecto p JOIN p.objetivoOperativo op"
+			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
+			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre")
+	Proyecto findByNombreAndIdJurisdiccion(@Param("nombre") String nombre,
+			@Param("idJurisdiccion") Long idJurisdiccion);
 }

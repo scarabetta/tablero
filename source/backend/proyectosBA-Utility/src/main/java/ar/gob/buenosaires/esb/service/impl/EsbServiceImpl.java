@@ -46,7 +46,7 @@ public class EsbServiceImpl implements EsbService {
 				getLogger().error(String.format(UNEXPECTED_EVENT_REQUEST_STATUS_S,
 
 						event.getRequestStatus(), event.toString()));
-				throw new ESBException(event.getStatusDescription());
+				throw new ESBException(event.getErrorCode(), event.getStatusDescription());
 			}
 		} else {
 			logExceptions(event);

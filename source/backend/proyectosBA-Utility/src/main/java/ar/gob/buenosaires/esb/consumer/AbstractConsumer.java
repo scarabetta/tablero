@@ -19,6 +19,7 @@ import org.apache.activemq.pool.PooledConnectionFactory;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -39,6 +40,7 @@ public abstract class AbstractConsumer implements MessageListener {
 	private PooledConnectionFactory pooledConnectionFactory;
 
 	@Autowired
+	@Qualifier("Consumer")
 	private JmsTemplate jmsTemplate;
 
 	@Autowired

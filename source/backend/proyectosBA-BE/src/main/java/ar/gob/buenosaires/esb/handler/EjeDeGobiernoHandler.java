@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.EjeDeGobierno;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.EjeDeGobiernoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.EjeDeGobiernoRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.EjeDeGobiernoService;
@@ -43,7 +44,7 @@ public class EjeDeGobiernoHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteEjeDeGobierno(request.getEjeDeGobierno());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Ejes de Gobierno.");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Ejes de Gobierno.");
 		}
 		logResponseMessage(event, EjeDeGobiernoService.class);
 	}

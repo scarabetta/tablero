@@ -11,6 +11,7 @@ import ar.gob.buenosaires.dao.jpa.temaTransversal.TemaTransversalRepository;
 import ar.gob.buenosaires.dao.jpa.temaTransversal.TemaTransversalRepositoryImpl;
 import ar.gob.buenosaires.domain.EstadoTemaTransversal;
 import ar.gob.buenosaires.domain.TemaTransversal;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.TemaTransversalService;
 
@@ -27,7 +28,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 			temaTransversal.setActivo(true);
 			return getTemaTransversalJpaDao().save(temaTransversal);
 		} else {
-			throw new ESBException("Ya existe un tema transversal con nombre: " + temaTransversal.getTemaTransversal());
+			throw new ESBException(CodigoError.TEMA_TRANSVERSAL_REPETIDO.getCodigo(), "Ya existe un tema transversal con nombre: " + temaTransversal.getTemaTransversal());
 		}				
 	}
 
@@ -35,7 +36,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 	public TemaTransversal updateTemaTransversal(TemaTransversal temaTransversal) throws ESBException {
 		TemaTransversal temaTransversalNombre = getTemaTransversalJpaDao().findByTemaTransversal(temaTransversal.getTemaTransversal());
 		if (temaTransversalNombre != null && temaTransversalNombre.getIdTemaTransversal() != temaTransversal.getIdTemaTransversal()) {
-			throw new ESBException("Ya existe un tema transversal con nombre: " + temaTransversal.getTemaTransversal());
+			throw new ESBException(CodigoError.TEMA_TRANSVERSAL_REPETIDO.getCodigo(), "Ya existe un tema transversal con nombre: " + temaTransversal.getTemaTransversal());
 		} else {
 			return getTemaTransversalJpaDao().save(temaTransversal);
 		}
@@ -47,7 +48,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		if (temaTransversal != null) {
 			getTemaTransversalJpaDao().delete(temaTransversal);
 		} else {
-			throw new ESBException("No se encontro Tema Transversal con id: " + id);
+			throw new ESBException(CodigoError.TEMA_TRANSVERSAL_INEXISTENTE.getCodigo(), "No se encontro Tema Transversal con id: " + id);
 		}		
 	}
 

@@ -13,6 +13,7 @@ import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
 import ar.gob.buenosaires.geocoder.service.GeoCoderService;
@@ -31,7 +32,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 	@Autowired
 	private PresupuestoPorAnioRepository repositorioPresupuestoPorAnio;
-	
+
 	@Autowired
 	private OtrasEtiquetasRepository otrasEtiquetasRepository;
 
@@ -65,12 +66,12 @@ public class ProyectoServiceImpl implements ProyectoService {
 		if (op != null) {
 			proyecto.setObjetivoOperativo(op);
 			guardarCoordenadas(proyecto);
-			proyecto.setEstado(proyecto.getEstadoActualizado());			
+			proyecto.setEstado(proyecto.getEstadoActualizado());
 			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			return getProyectoDAO().save(proyecto);
 		} else {
-			throw new ESBException("El objetivo operativo con id: "
-					+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
+			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
+					+ proyecto.getIdObjetivoOperativo2() + " no existe");
 		}
 	}
 
@@ -86,7 +87,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			return getProyectoDAO().save(proyecto);
 		}
-		throw new ESBException("El objetivo operativo con id: "
+		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
 				+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
 	}
 
@@ -96,7 +97,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 		if (proyecto != null) {
 			getProyectoDAO().delete(proyecto);
 		} else {
-			throw new ESBException("No se encontro proyecto con id: " + id);
+			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(), "No se encontro proyecto con id: " + id);
 		}
 	}
 
@@ -126,7 +127,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 	public void setRepositorioPresupuestoPorAnio(final PresupuestoPorAnioRepository presupuestoPorAnioRepository) {
 		repositorioPresupuestoPorAnio = presupuestoPorAnioRepository;
 	}
-	
+
 	@VisibleForTesting
 	public void setRepositorioOtrasEtiquetas(final OtrasEtiquetasRepository otrasEtiquetasRepository) {
 		this.otrasEtiquetasRepository = otrasEtiquetasRepository;
@@ -156,6 +157,11 @@ public class ProyectoServiceImpl implements ProyectoService {
 	@Override
 	public void iniciarPriorizacionDeProyectos() {
 		getProyectoDAO().iniciarPriorizacionDeProyectos();
+	}
+
+	@Override
+	public Proyecto getProyectoPorNombreYIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados) {
+		return getProyectoDAO().findByNombreAndIdJurisdiccionAndCiertosEstados(nombre, IdJurisdiccion, estados);
 	}
 
 	@Override

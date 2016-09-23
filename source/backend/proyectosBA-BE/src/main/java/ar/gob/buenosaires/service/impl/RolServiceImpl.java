@@ -11,6 +11,7 @@ import ar.gob.buenosaires.dao.jpa.rol.RolRepository;
 import ar.gob.buenosaires.dao.jpa.rol.RolRepositoryImpl;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Rol;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.RolService;
 
@@ -36,7 +37,7 @@ public class RolServiceImpl implements RolService {
 		if (rol != null) {
 			getRolJpaDao().delete(rol);
 		} else {
-			throw new ESBException("No se encontro Rol con id: " + id);
+			throw new ESBException(CodigoError.ROL_INEXISTENTE.getCodigo(), "No se encontro Rol con id: " + id);
 		}		
 	}
 

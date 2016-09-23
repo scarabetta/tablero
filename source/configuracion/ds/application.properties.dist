@@ -35,7 +35,7 @@ download.archivos.proyecto.path = /var/pba/adjuntos/idJurisdiccion/idProyecto/
 save.archivos.proyecto.error.path = /var/pba/archivos/idJurisdiccion/
 
 # definir las propiedades para el Json de configuracion clave valor separadas por ";" ej: nombre;esteban;apellido;pepe
-configs.key.value=
+configs.key.value=captcha;6LcSLyoTAAAAAN4zBx2nuOKIUwdQ0G1ZINLiqOkG
 
 #Path para el archivo template para la exportacion
 exportacion.archivos.proyecto.path = /etc/pba/ds/template_exportacion_priorizacion.xlsx

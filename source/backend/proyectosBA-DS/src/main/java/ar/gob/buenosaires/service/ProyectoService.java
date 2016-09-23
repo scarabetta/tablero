@@ -7,6 +7,7 @@ import javax.jms.JMSException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
 
 public interface ProyectoService {
@@ -27,7 +28,17 @@ public interface ProyectoService {
 			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
 			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre and p.estado in (\'Completo\', \'Incompleto\', \'Presentado\')")</p>
 	 * */
-	Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion) throws ESBException, JMSException;
+	Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados) throws ESBException, JMSException;
+
+	/**
+	 * Se filtran por los estados \'Completo\', \'Incompleto\', \'Presentado\')
+	 * el SQL es:<br>
+	 *
+	 * <p>@Query("SELECT p FROM Proyecto p JOIN p.objetivoOperativo op"
+			+ " join op.objetivoJurisdiccional oj join oj.jurisdiccion j"
+			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre")</p>
+	 * */
+	Proyecto getProyectoPorNombreIdJurisdiccion(String nombre, Long IdJurisdiccion) throws ESBException, JMSException;
 
 	Proyecto createProyecto(Proyecto proyecto) throws ESBException, JMSException;
 
@@ -45,7 +56,7 @@ public interface ProyectoService {
 
 	Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action) throws ESBException, JMSException;
 
-	List<String> getAccionesPermitidas(String idProyecto) throws ESBException, JMSException;
+	List<String> getAccionesPermitidas(String idProyecto, Usuario user) throws ESBException, JMSException;
 
 	JsonNode getResumenProyectosPriorizacion() throws ESBException, JMSException;
 

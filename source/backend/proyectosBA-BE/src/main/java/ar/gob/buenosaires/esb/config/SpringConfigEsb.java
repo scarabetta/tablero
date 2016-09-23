@@ -11,6 +11,7 @@ import ar.gob.buenosaires.esb.handler.AreaHandler;
 import ar.gob.buenosaires.esb.handler.CompromisoPublicoHandler;
 import ar.gob.buenosaires.esb.handler.ComunaHandler;
 import ar.gob.buenosaires.esb.handler.EjeDeGobiernoHandler;
+import ar.gob.buenosaires.esb.handler.ErrorDescripcionHandler;
 import ar.gob.buenosaires.esb.handler.EtiquetasHandler;
 import ar.gob.buenosaires.esb.handler.ExportacionProyectoViewHandler;
 import ar.gob.buenosaires.esb.handler.JurisdiccionHandler;
@@ -122,6 +123,13 @@ public class SpringConfigEsb {
 		OtrasEtiquetasHandler otrasEtiquetasHandler = new OtrasEtiquetasHandler();
 		((EsbServer)consumer).addHandler(otrasEtiquetasHandler);
 		return otrasEtiquetasHandler;
+	}
+	
+	@Bean
+	public ErrorDescripcionHandler getErrorDescripcionHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		ErrorDescripcionHandler errorDescripcionHandler = new ErrorDescripcionHandler();
+		((EsbServer)consumer).addHandler(errorDescripcionHandler);
+		return errorDescripcionHandler;
 	}
 	
 	@Bean

@@ -15,6 +15,7 @@ import javax.jms.TextMessage;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
@@ -24,12 +25,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 
 public abstract class AbstractProducer {
 	
     @Autowired
+    @Qualifier("Producer")
     private JmsTemplate jmsTemplate;
 
     @Autowired
@@ -85,7 +88,7 @@ public abstract class AbstractProducer {
         final TextMessage replyMessage = (TextMessage) jmsTemplate
                 .receiveSelected(replyToDestination, messageSelector);
         if (null == replyMessage) {
-            throw new ESBException(String.format("se supero el tiempo de espera por la respuesta del BUS " +
+            throw new ESBException(CodigoError.TIMEOUT_BUS.getCodigo(), String.format("se supero el tiempo de espera por la respuesta del BUS " +
             		"(timeout=%d milisegundos)", responseTimeout));
         }
         createResponseEvent(event, replyMessage);
@@ -97,6 +100,7 @@ public abstract class AbstractProducer {
         event.setAction(replyMessage.getStringProperty(ESBEvent.ACTION_TAG));
         event.setRequestStatus(replyMessage.getStringProperty(ESBEvent.STATUS_TAG));
         event.setStatusDescription(replyMessage.getStringProperty(ESBEvent.STATUS_DESC_TAG));
+        event.setErrorCode(replyMessage.getStringProperty(ESBEvent.ERROR_CODE_TAG));
         final String text = replyMessage.getText();
         getLogger().debug("\"{}\" se recibio la respuesta para el mensaje "
                         + "{} "

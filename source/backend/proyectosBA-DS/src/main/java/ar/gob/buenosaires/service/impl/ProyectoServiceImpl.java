@@ -12,20 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ar.gob.buenosaires.domain.AccionesProyecto;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.service.ProyectoService;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ProyectoServiceImpl implements ProyectoService {
@@ -62,7 +64,19 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 
 	@Override
-	public Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion)
+	public Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados)
+			throws ESBException, JMSException {
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+		reqMsg.setName(nombre);
+		reqMsg.setEstados(estados);
+		reqMsg.setIdJurisdiccion(IdJurisdiccion);
+
+		List<Proyecto> proyectos = getProyectosFromReqMsg(reqMsg);
+		return getProyectoFromResponse(proyectos);
+	}
+
+	@Override
+	public Proyecto getProyectoPorNombreIdJurisdiccion(String nombre, Long IdJurisdiccion)
 			throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setName(nombre);
@@ -84,7 +98,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 	@Override
 	public Proyecto createProyecto(@RequestBody Proyecto proyecto) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
-		List<Proyecto> responseProyectos = new ArrayList<Proyecto>();
+		List<Proyecto> responseProyectos = new ArrayList<>();
 		reqMsg.setProyecto(proyecto);
 
 		getLogger().debug("Mensaje creado para crear un Proyecto : {}", reqMsg.toString());
@@ -112,7 +126,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 			}
 
 		} else {
-			throw new ESBException("El proyecto debe estar completo para poder ser presentado");
+			throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(), "El proyecto debe estar completo para poder ser presentado");
 		}
 
 	}
@@ -131,9 +145,10 @@ public class ProyectoServiceImpl implements ProyectoService {
 	}
 
 	@Override
-	public List<String> getAccionesPermitidas(String idProyecto) throws ESBException, JMSException {
+	public List<String> getAccionesPermitidas(String idProyecto, Usuario user) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setId(Long.parseLong(idProyecto));
+		reqMsg.setUsuario(user);
 
 		getLogger().debug("Mensaje creado para obtener las acciones para un Proyecto : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE_ACTIONS, ProyectoRespMsg.class);
@@ -193,7 +208,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 	@Override
 	public Proyecto updateProyecto(@RequestBody Proyecto proyecto) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
-		List<Proyecto> responseProyectos = new ArrayList<Proyecto>();
+		List<Proyecto> responseProyectos = new ArrayList<>();
 		reqMsg.setProyecto(proyecto);
 
 		getLogger().debug("Mensaje creado para actualizar un Proyecto : {}", reqMsg.toString());
@@ -210,7 +225,7 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para borrar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ProyectoRespMsg.class);		
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ProyectoRespMsg.class);
 	}
 
 	public static Logger getLogger() {

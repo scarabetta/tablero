@@ -138,23 +138,14 @@ public class ProyectoController {
 	}
 	
 	@RequestMapping(path = "/cambiarEstado/{action}", method = RequestMethod.POST)
-	public Proyecto cambiarEstadoProyecto(@RequestBody final Proyecto proyecto, @PathVariable final String action, final HttpServletRequest request) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-		Usuario user = usuarioService.getUsuarioPorToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-		if (user.tienePerfilSecretaria()) {
+	public Proyecto cambiarEstadoProyecto(@RequestBody final Proyecto proyecto, @PathVariable final String action) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
 			return service.cambiarEstadoProyecto(proyecto, action);
-		} else {
-			throw new ESBException("No tiene el perfil para realizar esta accion");
-		}
 	}
 	
 	@RequestMapping(path = "/cambiarEstado/accionesPermitidas/{id}", method = RequestMethod.GET)
 	public List<String> getAccionesPermitidas(@PathVariable final String id, final HttpServletRequest request) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
 		Usuario user = usuarioService.getUsuarioPorToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-		if (user.tienePerfilSecretaria()) {
-			return service.getAccionesPermitidas(id);			
-		} else {
-			return new ArrayList<String>();
-		}
+		return service.getAccionesPermitidas(id, user);			
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)

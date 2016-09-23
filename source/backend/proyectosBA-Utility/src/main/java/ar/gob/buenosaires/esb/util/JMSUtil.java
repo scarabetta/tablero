@@ -20,6 +20,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import ar.gob.buenosaires.esb.domain.ESBAsyncEvent;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.ESBSyncEvent;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 
 public class JMSUtil {
@@ -45,6 +46,8 @@ public class JMSUtil {
         m.setStringProperty(ESBEvent.STATUS_TAG, requestStatus);
         final String statusDescription = event.getStatusDescription() == null ? "" : event.getStatusDescription();
         m.setStringProperty(ESBEvent.STATUS_DESC_TAG, statusDescription);
+        final String errorCode = event.getErrorCode() == null ? "" : event.getErrorCode();
+        m.setStringProperty(ESBEvent.ERROR_CODE_TAG, errorCode);
         m.setJMSExpiration(event.getExpiration());
         m.setJMSReplyTo(event.getReplyToDestination());
         event.setOutputMsg(m);
@@ -108,7 +111,7 @@ public class JMSUtil {
 		try {
 			result = xmlMapper.readValue(Xmlrecortado, clase);
 		} catch (IOException e) {
-			LoggerFactory.getLogger(clase).error("Se ha producido un error al querer parsear el XML a Objecto", e);
+			LoggerFactory.getLogger(clase).error(CodigoError.ERROR_PARSEO.getCodigo(), "Se ha producido un error al querer parsear el XML a Objecto", e);
 			throw new ESBException(e);
 		}
 		

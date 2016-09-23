@@ -17,6 +17,7 @@ public interface ESBEvent {
     public static final String STATUS_FAIL = "9999";
     public static final String STATUS_FAIL_DESC = "Fail While Processing";
     public static final String STATUS_DESC_TAG = "RequestStatusDesc";
+    public static final String ERROR_CODE_TAG = "RequestErrorCode";
     public static final String ACTION_TAG = "RequestType";
     public static final String ACTION_CREATE = "CREATE";
     public static final String ACTION_DEFAULT = ACTION_CREATE;
@@ -84,6 +85,10 @@ public interface ESBEvent {
     public String getRequestStatus();
 
     public void setRequestStatus(String requestStatus);
+    
+    public String getErrorCode();
+
+    public void setErrorCode(String errorCode);
 
     public String getStatusDescription();
 

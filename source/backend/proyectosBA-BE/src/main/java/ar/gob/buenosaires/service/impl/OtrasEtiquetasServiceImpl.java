@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.gob.buenosaires.domain.OtraEtiqueta;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasJpaDao;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepository;
@@ -25,7 +26,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		if (OtrasEtiquetasNombre == null) {
 			return getOtrasEtiquetasJpaDao().save(otrasEtiquetas);
 		} else {
-			throw new ESBException("Ya existe una etiqueta con nombre: " + otrasEtiquetas.getEtiqueta());
+			throw new ESBException(CodigoError.ETIQUETA_REPETIDA.getCodigo(), "Ya existe una etiqueta con nombre: " + otrasEtiquetas.getEtiqueta());
 		}				
 	}
 
@@ -33,7 +34,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 	public OtraEtiqueta updateOtrasEtiquetas(OtraEtiqueta otrasEtiquetas) throws ESBException {
 		OtraEtiqueta OtrasEtiquetasNombre = getOtrasEtiquetasJpaDao().findByEtiqueta(otrasEtiquetas.getEtiqueta());
 		if (OtrasEtiquetasNombre != null && OtrasEtiquetasNombre.getIdEtiqueta() != otrasEtiquetas.getIdEtiqueta()) {
-			throw new ESBException("Ya existe una etique con nombre: " + otrasEtiquetas.getEtiqueta());
+			throw new ESBException(CodigoError.ETIQUETA_REPETIDA.getCodigo(),  "Ya existe una etiqueta con nombre: " + otrasEtiquetas.getEtiqueta());
 		} else {
 			return getOtrasEtiquetasJpaDao().save(otrasEtiquetas);
 		}
@@ -45,7 +46,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		if (otrasEtiquetas != null) {
 			getOtrasEtiquetasJpaDao().delete(otrasEtiquetas);
 		} else {
-			throw new ESBException("No se encontro etiqueta con id: " + id);
+			throw new ESBException(CodigoError.ETIQUETA_INEXISTENTE.getCodigo(), "No se encontro etiqueta con id: " + id);
 		}		
 	}
 

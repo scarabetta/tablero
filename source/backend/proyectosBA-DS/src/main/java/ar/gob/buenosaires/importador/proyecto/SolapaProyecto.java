@@ -368,7 +368,8 @@ public class SolapaProyecto {
 	private boolean esProyectoExistenteYActualizableONuevo(String nombreProyecto) {
 		boolean esProyectoExistenteYActualizable = pisarProyectos;
 		try {
-			Proyecto pr = proyectoService.getProyectoByName(nombreProyecto);
+			Proyecto pr = proyectoService.getProyectoPorNombreIdJurisdiccion(nombreProyecto,
+					getValidador().getJurisdiccion().getIdJurisdiccion());
 			esProyectoExistenteYActualizable = (pr == null || (pr != null && pisarProyectos));
 		} catch (ESBException | JMSException e) {
 			LOGGER.debug(e.getMessage());

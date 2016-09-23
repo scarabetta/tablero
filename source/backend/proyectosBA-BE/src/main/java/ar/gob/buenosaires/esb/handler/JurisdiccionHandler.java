@@ -18,6 +18,7 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.JurisdiccionReqMsg;
 import ar.gob.buenosaires.esb.domain.message.JurisdiccionRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.JurisdiccionService;
@@ -53,7 +54,7 @@ public class JurisdiccionHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR_TODOS)) {
 			service.presentarProyectosCompletos(request.getId());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Jurisdiccion");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Jurisdiccion");
 		}
 		logResponseMessage(event, JurisdiccionService.class);
 	}

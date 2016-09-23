@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		"objetivoOperativo", "descripcionProyecto", "responsable", "areaNombre", "organismosCorresponsables",
 		"fechaInicio", "fechaFin", "tipoProyecto", "implicaCambioLegislativo", "prioridadJurisdiccional", "meta",
 		"unidadMeta", "cantidadPoblacionImpactada", "prioridadJefatura", "estadoAprobacion", "poblacionesMeta",
-		"ejesDeGobierno", "comunas", "presupuestosPorAnio" })
+		"ejesDeGobierno", "comunas", "presupuestosPorAnio", "temasTransversales" })
 @XmlRootElement(name = "exportacion_proyectos")
 public class ExportacionProyectoView implements Serializable {
 
@@ -125,6 +125,12 @@ public class ExportacionProyectoView implements Serializable {
 			@JoinColumn(name = "idcomuna") })
 	@XmlElement(name = "comunas")
 	private List<Comuna> comunas;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "tema_transversal_por_proyecto", joinColumns = {
+			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idtematransversal") })
+	@XmlElement(name = "temasTransversales")
+	private List<TemaTransversal> temasTransversales;
 
 	/**
 	 * @return the nombreJurisidiccion
@@ -529,6 +535,14 @@ public class ExportacionProyectoView implements Serializable {
 			}
 		}
 		return total;
+	}
+
+	public List<TemaTransversal> getTemasTransversales() {
+		return temasTransversales;
+	}
+
+	public void setTemasTransversales(List<TemaTransversal> temasTransversales) {
+		this.temasTransversales = temasTransversales;
 	}
 
 }

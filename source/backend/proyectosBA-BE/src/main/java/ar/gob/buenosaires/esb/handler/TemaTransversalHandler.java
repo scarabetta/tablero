@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.TemaTransversal;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.TemaTransversalReqMsg;
 import ar.gob.buenosaires.esb.domain.message.TemaTransversalRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.TemaTransversalService;
@@ -46,7 +47,7 @@ public class TemaTransversalHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteTemaTransversal(request.getId());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Temas transversales");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Temas transversales");
 		}
 		logResponseMessage(event, TemaTransversalService.class);
 	}

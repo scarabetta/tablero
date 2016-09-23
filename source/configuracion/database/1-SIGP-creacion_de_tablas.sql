@@ -352,6 +352,13 @@ CREATE TABLE IF NOT EXISTS `permiso_entidad` (
   CONSTRAINT `FK_idRol_pe` FOREIGN KEY (`idRol`) REFERENCES `rol` (`idRol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Dumping structure for table proyectos_ba_generated.error_descripcion
+CREATE TABLE IF NOT EXISTS `error_descripcion` (
+  `codigo_error` int(11) NOT NULL,
+  `descripcion_error` varchar(50) NOT NULL,
+  PRIMARY KEY (`codigo_error`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- Data exporting was unselected.
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

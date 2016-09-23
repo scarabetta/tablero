@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.Comuna;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ComunaReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ComunaRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ComunaService;
@@ -42,7 +43,7 @@ public class ComunaHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteComuna(comunaRequest.getComuna());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Comuna.");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Comuna.");
 		}
 		logResponseMessage(event, ComunaService.class);
 	}

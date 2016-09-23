@@ -17,6 +17,7 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.domain.message.UsuarioReqMsg;
 import ar.gob.buenosaires.esb.domain.message.UsuarioRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
@@ -64,7 +65,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			 return getFirstUsuarioFromTheList(usuarios);			 		
 			 
 		 } else {
-			 throw new ESBException("No se encontró el usuario con mail: " + usuario.getEmail());
+			 throw new ESBException(CodigoError.USUARIO_INEXISTENTE.getCodigo(), "No se encontró el usuario con mail: " + usuario.getEmail());
 		 }
 	}
 
@@ -79,7 +80,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			final List<Usuario> usuarios = getUsuarioFromResponse(response);
 			return getFirstUsuarioFromTheList(usuarios);
 		} else {
-			 throw new ESBException("No se encontró el usuario con mail: " + usuario.getEmail());
+			 throw new ESBException(CodigoError.USUARIO_INEXISTENTE.getCodigo(), "No se encontró el usuario con mail: " + usuario.getEmail());
 		 }
 	}
 	

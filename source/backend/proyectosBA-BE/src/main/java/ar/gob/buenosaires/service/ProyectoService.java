@@ -11,6 +11,8 @@ public interface ProyectoService {
 
 	Proyecto getProyectoPorNombre(String nombre);
 
+	Proyecto getProyectoPorNombreYIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados);
+
 	Proyecto getProyectoPorNombreYIdJurisdiccion(String nombre, Long IdJurisdiccion);
 
 	Proyecto getProyectoPorId(Long id);

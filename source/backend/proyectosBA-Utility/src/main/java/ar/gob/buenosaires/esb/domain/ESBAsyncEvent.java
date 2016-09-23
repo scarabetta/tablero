@@ -24,6 +24,7 @@ public class ESBAsyncEvent implements ESBEvent {
     protected String countryCode;
     protected long expiration = 0L;
     protected String requestStatus;
+    protected String errorCode;
     protected String statusDescription;
     protected Destination replyToDestination;
     protected String xml;
@@ -76,7 +77,8 @@ public class ESBAsyncEvent implements ESBEvent {
                     this.getAction(),
                     this.getType(),
                     this.getOrigin(),
-                    this.getStatusDescription()));
+                    this.getStatusDescription(),
+                    this.getErrorCode()));
         } catch (final JMSException ex) {
         }
         return retval.toString();
@@ -196,6 +198,16 @@ public class ESBAsyncEvent implements ESBEvent {
     @Override
     public void setStatusDescription(final String statusDescription) {
         this.statusDescription = statusDescription;
+    }
+
+    @Override
+    public String getErrorCode() {
+    	return errorCode;
+    }
+    
+    @Override
+    public void setErrorCode(final String errorCode) {
+    	this.errorCode = errorCode;
     }
 
     @Override

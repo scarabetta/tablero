@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoJurisdiccionalReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoJurisdiccionalRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ObjetivoJurisdiccionalService;
@@ -42,7 +43,7 @@ public class ObjetivoJurisdiccionalHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteObjetivoJurisdiccional(request.getId());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Objetivo Jurisdiccional");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Objetivo Jurisdiccional");
 		}
 		logResponseMessage(event, ObjetivoJurisdiccionalService.class);
 	}

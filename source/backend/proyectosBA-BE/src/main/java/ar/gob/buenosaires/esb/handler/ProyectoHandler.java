@@ -13,6 +13,7 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ProyectoService;
@@ -32,7 +33,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 		final ProyectoRespMsg response = new ProyectoRespMsg();
 		event.setObj(response);
-		List<Proyecto> proyectos = new ArrayList<Proyecto>();
+		List<Proyecto> proyectos = new ArrayList<>();
 		response.setProyectos(proyectos);
 
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
@@ -51,18 +52,19 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			deshacerCancelacion(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteProyecto(request.getId());
- 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CANCELAR_PRIORIZACION)) {
- 			service.cancelarPriorizacionDeProyectosNoVerificados();
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CANCELAR_PRIORIZACION)) {
+			service.cancelarPriorizacionDeProyectosNoVerificados();
 			service.cancelarPriorizacionDeProyectosVerificados();
- 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_INICIAR_PRIORIZACION)) {
- 			service.iniciarPriorizacionDeProyectos();
- 		} else {
- 			throw new ESBException("La accion: " + event.getAction() + ", no existe para servicio de Proyecto");
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_INICIAR_PRIORIZACION)) {
+			service.iniciarPriorizacionDeProyectos();
+		} else {
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para servicio de Proyecto");
 		}
 		logResponseMessage(event, ProyectoService.class);
 	}
 
-	private void deshacerCancelacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) throws ESBException {
+	private void deshacerCancelacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request)
+			throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
 
 		if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
@@ -70,18 +72,24 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			request.setProyecto(proyectoGuardado);
 			updateProyecto(event, response, request);
 		} else {
-			throw new ESBException("El proyecto debe estar cancelado para deshacer la cancelacion");
+			throw new ESBException(CodigoError.PROYECTO_NO_CANCELADO.getCodigo(), "El proyecto debe estar cancelado para deshacer la cancelacion");
 		}
 	}
 
 	private void retrieveProyectos(final ProyectoRespMsg response, final ProyectoReqMsg request) {
-		List<Proyecto> proyectos = new ArrayList<Proyecto>();
+		List<Proyecto> proyectos = new ArrayList<>();
 
 		if (request.getId() != null) {
 			proyectos.add(service.getProyectoPorId(request.getId()));
 		} else if (request.getName() != null) {
 			if (request.getIdJurisdiccion() != null) {
-				proyectos.add(service.getProyectoPorNombreYIdJurisdiccion(request.getName(), request.getIdJurisdiccion()));
+				if (request.getEstados() == null || request.getEstados().isEmpty()) {
+					proyectos.add(service.getProyectoPorNombreYIdJurisdiccion(request.getName(),
+							request.getIdJurisdiccion()));
+				} else if (request.getEstados() != null) {
+					proyectos.add(service.getProyectoPorNombreYIdJurisdiccionYCiertosEstados(request.getName(),
+							request.getIdJurisdiccion(), request.getEstados()));
+				}
 			} else {
 				proyectos.add(service.getProyectoPorNombre(request.getName()));
 			}
@@ -98,6 +106,17 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		String estado = proyectoGuardado.getEstado();
 		List<String> acciones = new ArrayList<>();
 
+		if (request.getUsuario().tienePerfilSecretaria()) {
+			getAccionesParaSecretaria(estado, acciones);
+		} else {
+			getAccionesParaJurisdiccion(estado, acciones);
+		}
+
+		response.setAccionesPermitidas(acciones);
+		event.setObj(response);
+	}
+
+	private void getAccionesParaSecretaria(String estado, List<String> acciones) {
 		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.CANCELAR.getName());
 			acciones.add(AccionesProyecto.VERIFICAR.getName());
@@ -106,9 +125,14 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		} else if (EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.CANCELAR.getName());
 		}
+	}
 
-		response.setAccionesPermitidas(acciones);
-		event.setObj(response);
+	private void getAccionesParaJurisdiccion(String estado, List<String> acciones) {
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado) || EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.CANCELAR.getName());
+		} else if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.DESHACER_CANCELACION.getName());
+		}
 	}
 
 	private void updateProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
@@ -129,7 +153,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			request.setProyecto(proyectoGuardado);
 			updateProyecto(event, response, request);
 		} else {
-			throw new ESBException("El proyecto debe estar presentado o verificado para poder ser cancelado");
+			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO_O_VERIFICADO.getCodigo(), "El proyecto debe estar presentado o verificado para poder ser cancelado");
 		}
 
 	}
@@ -144,7 +168,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			request.setProyecto(proyectoGuardado);
 			updateProyecto(event, response, request);
 		} else {
-			throw new ESBException("El proyecto debe estar presentado para poder ser verificado");
+			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO.getCodigo(), "El proyecto debe estar presentado para poder ser verificado");
 		}
 
 	}

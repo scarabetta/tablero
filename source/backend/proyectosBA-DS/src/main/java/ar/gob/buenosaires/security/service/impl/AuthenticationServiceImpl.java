@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
 import ar.gob.buenosaires.security.jwt.JWToken;
@@ -49,11 +50,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					e.printStackTrace();
 				}
 			} else {
-				throw new LoginException("El usuario esta inactivo");
+				throw new ESBException(CodigoError.USUARIO_INACTIVO.getCodigo(), "El usuario esta inactivo");
 			}
 			
 		} else {
-			throw new LoginException("El usuario y/o contraseña no son válidos");
+			throw new ESBException(CodigoError.PASS_INVALIDO.getCodigo(), "El usuario y/o contraseña no son válidos");
 		}
 
 		return token;
@@ -62,10 +63,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private boolean usuarioEstaActivo(Payload payload) throws ESBException, JMSException, LoginException {
 		Usuario usuario = usuarioService.getUsuarioByEmail(payload.getEmail());
 		if(usuario != null) {
-			return usuario.getActivo();		
-			
+			return usuario.getActivo();			
 		}else {
-			throw new LoginException("El usuario no existe. Contactese con un administrador");
+			throw new ESBException(CodigoError.USUARIO_INEXISTENTE.getCodigo(),"El usuario no existe. Contactese con un administrador");
 		}
 	}
 

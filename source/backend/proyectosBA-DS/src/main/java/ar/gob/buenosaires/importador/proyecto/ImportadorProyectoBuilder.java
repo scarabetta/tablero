@@ -259,7 +259,8 @@ public class ImportadorProyectoBuilder {
 		ProyectoService proyectoService = serviceFactory.getProyectoService();
 
 		try {
-			proyecto = proyectoService.getProyectoByName(proyectoTransient.getNombre());
+			proyecto = proyectoService.getProyectoPorNombreIdJurisdiccion(proyectoTransient.getNombre(),
+					getJurisdiccion().getIdJurisdiccion());
 		} catch (ESBException | JMSException e) {
 			e.printStackTrace();
 		}

@@ -40,6 +40,7 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
             final Exception e) {
         event.setRequestStatus(ESBEvent.STATUS_FAIL);
         event.setStatusDescription(e.getLocalizedMessage());
+        event.setErrorCode(((ESBException)e).getCodigoError());
     }
 
     private void completeLog() {

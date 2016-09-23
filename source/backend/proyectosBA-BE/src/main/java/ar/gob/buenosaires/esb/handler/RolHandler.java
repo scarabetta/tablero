@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.Rol;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.RolReqMsg;
 import ar.gob.buenosaires.esb.domain.message.RolRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.JurisdiccionService;
@@ -47,7 +48,7 @@ public class RolHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteRol(request.getId());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Rol");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Rol");
 		}
 		logResponseMessage(event, RolService.class);
 	}

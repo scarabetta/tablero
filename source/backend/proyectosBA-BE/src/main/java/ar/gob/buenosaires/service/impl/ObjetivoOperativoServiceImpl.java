@@ -12,6 +12,7 @@ import ar.gob.buenosaires.dao.jpa.objetivoOperativo.ObjetivoOperativoJpaDao;
 import ar.gob.buenosaires.dao.jpa.objetivoOperativo.ObjetivoOperativoRepository;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.ObjetivoOperativoService;
 
@@ -56,7 +57,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 			objetivoOperativo.setCodigo(getProximoCodigoObjOperativo(objetivoJurisdiccional));
 			return getObjetivoOperativoDAO().save(objetivoOperativo);			
 		} else { 
-			throw new ESBException("El objetivoJurisdiccional con id: "
+			throw new ESBException(CodigoError.OBJETIVO_ESTRATEGICO_INEXISTENTE.getCodigo(), "El objetivoJurisdiccional con id: "
 					+ objetivoOperativo.getIdObjetivoJurisdiccionalAux()
 					+ " no existe");
 		}
@@ -72,7 +73,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 			objetivoOperativo.setObjetivoJurisdiccional(objetivoJurisdiccional);
 			return getObjetivoOperativoDAO().save(objetivoOperativo);
 		} else { 
-			throw new ESBException("El objetivoJurisdiccional con id: " + objetivoOperativo.getIdObjetivoJurisdiccionalAux()
+			throw new ESBException(CodigoError.OBJETIVO_ESTRATEGICO_INEXISTENTE.getCodigo(), "El objetivoJurisdiccional con id: " + objetivoOperativo.getIdObjetivoJurisdiccionalAux()
 					+ " no existe");
 		}
 	}
@@ -85,7 +86,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 	private void validarNombre(String codigoJuri, String nombre) throws ESBException {		
 		String op = getObjetivoOperativoDAO().getObjetivosPorNombreYJurisdccion(codigoJuri + WILDCARD, nombre);
 		if (op != null) {
-			throw new ESBException("Ya existe un objetivo operativo con el nombre: '" + nombre + "' para esta Jurisdiccion"); 
+			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_REPETIDO.getCodigo(), "Ya existe un objetivo operativo con el nombre: '" + nombre + "' para esta Jurisdiccion"); 
 		}
 	}
 	
@@ -95,7 +96,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		if (objetivoOperativo != null) {
 			getObjetivoOperativoDAO().delete(objetivoOperativo);
 		} else {
-			throw new ESBException("No se encontro Objetivo Operativo con id: " + id);
+			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "No se encontro Objetivo Operativo con id: " + id);
 		}
 	}
 	

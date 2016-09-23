@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.Area;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.AreaReqMsg;
 import ar.gob.buenosaires.esb.domain.message.AreaRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.AreaService;
@@ -34,7 +35,7 @@ public class AreaHandler extends AbstractBaseEventHandler {
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveAreas(event, areaResponse, areaRequest);
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Areas.");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Areas.");
 		}
 		logResponseMessage(event, AreaService.class);
 	}

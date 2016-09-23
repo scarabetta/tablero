@@ -46,6 +46,9 @@ public class ExportacionProyectoViewRespMsg extends EsbBaseMsg {
 	}
 
 	public List<ExportacionProyectoView> getExportacionProyectoViews() {
+		if (exportacionProyectoView == null) {
+			exportacionProyectoView = new ArrayList<>();
+		}
 		return exportacionProyectoView;
 	}
 

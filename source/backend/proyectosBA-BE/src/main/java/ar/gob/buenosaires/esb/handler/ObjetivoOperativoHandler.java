@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoOperativoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ObjetivoOperativoRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ObjetivoOperativoService;
@@ -42,7 +43,7 @@ public class ObjetivoOperativoHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteObjetivoOperativo(request.getId());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Objetivo Operativo");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Objetivo Operativo");
 		}
 		logResponseMessage(event, ObjetivoOperativoService.class);
 	}

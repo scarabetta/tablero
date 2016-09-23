@@ -13,6 +13,7 @@ import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalR
 import ar.gob.buenosaires.dao.jpa.objetivoJurisdiccional.ObjetivoJurisdiccionalRepositoryImpl;
 import ar.gob.buenosaires.domain.Jurisdiccion;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.ObjetivoJurisdiccionalService;
 
@@ -59,7 +60,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);		
 			return objJuri;
 		} else { 
-			throw new ESBException("La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
+			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
 		}		
 	}	
 	
@@ -71,7 +72,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);
 			return objJuri;
 		} else { 
-			throw new ESBException("La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
+			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
 		}	
 	}
 	
@@ -81,7 +82,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		if (objetivoJurisdiccional != null) {
 			getObjetivoJurisdiccionalDAO().delete(objetivoJurisdiccional);
 		} else {
-			throw new ESBException("No se encontro Objetivo Jurisdiccional con id: " + id);
+			throw new ESBException(CodigoError.OBJETIVO_ESTRATEGICO_INEXISTENTE.getCodigo(), "No se encontro Objetivo Jurisdiccional con id: " + id);
 		}
 	}
 

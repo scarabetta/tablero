@@ -10,6 +10,7 @@ import ar.gob.buenosaires.dao.jpa.compromisoPublico.CompromisoPublicoJpaDao;
 import ar.gob.buenosaires.dao.jpa.compromisoPublico.CompromisoPublicoRepository;
 import ar.gob.buenosaires.dao.jpa.compromisoPublico.CompromisoPublicoRepositoryImpl;
 import ar.gob.buenosaires.domain.CompromisoPublico;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.CompromisoPublicoService;
 
@@ -26,7 +27,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 			compromisoPublico.setActivo(true);
 			return getCompromisoPublicoJpaDao().save(compromisoPublico);
 		} else {
-			throw new ESBException("Ya existe un Compromiso Publico con nombre: " + compromisoPublico.getCompromisoPublico());
+			throw new ESBException(CodigoError.COMPROMISO_PUBLICO_REPETIDO.getCodigo(), "Ya existe un Compromiso Publico con nombre: " + compromisoPublico.getCompromisoPublico());
 		}				
 	}
 
@@ -34,7 +35,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 	public CompromisoPublico updateCompromisoPublico(CompromisoPublico compromisoPublico) throws ESBException {
 		CompromisoPublico compromisoPublicoNombre = getCompromisoPublicoJpaDao().findByCompromisoPublico(compromisoPublico.getCompromisoPublico());
 		if (compromisoPublicoNombre != null && compromisoPublicoNombre.getIdCompromisoPublico() != compromisoPublico.getIdCompromisoPublico()) {
-			throw new ESBException("Ya existe un Compromiso Publico con nombre: " + compromisoPublico.getCompromisoPublico());
+			throw new ESBException(CodigoError.COMPROMISO_PUBLICO_REPETIDO.getCodigo(), "Ya existe un Compromiso Publico con nombre: " + compromisoPublico.getCompromisoPublico());
 		} else {
 			return getCompromisoPublicoJpaDao().save(compromisoPublico);
 		}
@@ -46,7 +47,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 		if (compromisoPublico != null) {
 			getCompromisoPublicoJpaDao().delete(compromisoPublico);
 		} else {
-			throw new ESBException("No se encontro Compromiso Publico con id: " + id);
+			throw new ESBException(CodigoError.COMPROMISO_PUBLICO_INEXISTENTE.getCodigo(), "No se encontro Compromiso Publico con id: " + id);
 		}		
 	}
 

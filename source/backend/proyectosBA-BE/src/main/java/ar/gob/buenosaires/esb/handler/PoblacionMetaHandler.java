@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.PoblacionMeta;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.PoblacionMetaReqMsg;
 import ar.gob.buenosaires.esb.domain.message.PoblacionMetaRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.PoblacionMetaService;
@@ -43,7 +44,7 @@ public class PoblacionMetaHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deletePoblacionMeta(request.getPoblacionMeta());
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Poblacion Meta");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Poblacion Meta");
 		}
 		logResponseMessage(event, PoblacionMetaService.class);
 	}

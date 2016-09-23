@@ -11,6 +11,7 @@ import ar.gob.buenosaires.dao.jpa.usuario.UsuarioRepository;
 import ar.gob.buenosaires.dao.jpa.usuario.UsuarioRepositoryImpl;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.UsuarioService;
 
@@ -51,7 +52,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		if (usuario != null) {
 			getUsuarioDAO().delete(usuario);
 		} else {
-			throw new ESBException("No se encontro usuario con id: " + id);
+			throw new ESBException(CodigoError.USUARIO_INEXISTENTE.getCodigo(), "No se encontro usuario con id: " + id);
 		}
 	}
 

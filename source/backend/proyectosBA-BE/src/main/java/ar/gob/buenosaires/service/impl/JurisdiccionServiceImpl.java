@@ -17,6 +17,7 @@ import ar.gob.buenosaires.domain.Jurisdiccion;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.JurisdiccionService;
 
@@ -77,7 +78,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		if (jurisdiccion != null) {
 			getJurisdiccionDAO().delete(jurisdiccion);
 		} else {
-			throw new ESBException("No se encontro Jurisdiccion con id: " + id);
+			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "No se encontro Jurisdiccion con id: " + id);
 		}
 	}
 	
@@ -91,7 +92,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 				repositorioProyecto.getProyectoJpaDao().updateProyectosCompletos(proyectosCompletos);
 			}
 		} else {
-			throw new ESBException("No se encontro Jurisdiccion con id: " + id);
+			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "No se encontro Jurisdiccion con id: " + id);
 		}
 	}
 	

@@ -11,6 +11,7 @@ import ar.gob.buenosaires.domain.ExportacionProyectoView;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ExportacionProyectoViewReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ExportacionProyectoViewRespMsg;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ExportacionProyectoViewService;
@@ -36,7 +37,7 @@ public class ExportacionProyectoViewHandler extends AbstractBaseEventHandler {
 			retrieveExportacionProyectoViews(event, exportacionProyectoViewResponse,
 					exportacionProyectoViewRequest);
 		} else {
-			throw new ESBException("La accion: " + event.getAction() + ", no existe para el servicio de Exportacion Proyecto");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Exportacion Proyecto");
 		}
 		logResponseMessage(event, ExportacionProyectoViewService.class);
 	}

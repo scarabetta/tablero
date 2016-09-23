@@ -102,7 +102,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		reqMsg.setId(Long.parseLong(id));
 
 		getLogger().debug("Mensaje creado para presentar todos los proyectos completos de una Jurisdiccion : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_PRESENTAR_TODOS, JurisdiccionRespMsg.class); //TODO: crear un event type para esto ver con socas		
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_PRESENTAR_TODOS, JurisdiccionRespMsg.class); 		
 	}
 
 	public static Logger getLogger() {
@@ -116,10 +116,13 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		List<Jurisdiccion> jurisdicciones = null;
 		if (response.getEventType().equalsIgnoreCase(JurisdiccionRespMsg.JURISDICCION_TYPE)) {
 			jurisdicciones = ((JurisdiccionRespMsg) response).getJurisdicciones();
-			LOGGER.debug("Obteninendo las jurisdicciones de la respues del BUS de servicios: {}",
-					jurisdicciones.toString());
+			LOGGER.debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}", jurisdiccionToString(jurisdicciones));
 		}
 		return jurisdicciones;
+	}
+
+	private String jurisdiccionToString(List<Jurisdiccion> jurisdicciones) {
+		return jurisdicciones == null ? "El user no tiene jurisdicciones" : jurisdicciones.toString();
 	}
 	
 	private Jurisdiccion getJurisdiccionFromResponse(
@@ -135,7 +138,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		List<Jurisdiccion> jurisdicciones = new ArrayList<Jurisdiccion>();
 		if (response.getEventType().equalsIgnoreCase(JurisdiccionRespMsg.JURISDICCION_TYPE)) {
 			jurisdicciones = ((JurisdiccionRespMsg) response).getJurisdicciones();
-			LOGGER.debug("Obteninendo las jutisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			LOGGER.debug("Obteninendo las jutisdicciones de la respuesta del BUS de servicios: {}", jurisdiccionToString(jurisdicciones));
 		}
 		return jurisdicciones;
 	}
