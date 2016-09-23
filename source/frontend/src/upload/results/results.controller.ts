@@ -76,7 +76,7 @@ module Results {
            var day = addZero(date.getDate());
            var hour = addZero(date.getHours());
            var minutes = addZero(date.getMinutes());
-           var fileName = 'PGI_ProyectosNoImportados_' + year + month + day
+           var fileName = 'PIG_ProyectosNoImportados_' + year + month + day
                            + '_' + hour + minutes + '.xlsx';
            this.saveData(response.data, fileName);
         })

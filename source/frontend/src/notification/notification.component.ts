@@ -4,7 +4,11 @@ module Notification {
 
     export class NotificationController {
 
-      constructor(private $scope: ng.IScope) {};
+      constructor(private $scope: ng.IScope) {
+        setTimeout(function() {
+          $('.alert').fadeOut('slow');
+        }, 10000);
+      };
 
       goToCurrentForm() {
         (<any>$(document.getElementsByTagName('notification'))).hide();

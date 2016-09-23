@@ -35,114 +35,114 @@ module Home {
                   this.showAll();
                 }, 0);
 
-                if (!this.localStorageService.get('flagOnboarding') && this.$state.current.name === 'home.tree') {
-
-                  var statesdemo = [
-                    {
-                      title: 'Bienvenido a PGI',
-                      html: 'Te contamos los principales beneficios del nuevo sistema que simplifica la gestión de proyectos',
-                      buttons: { Siguiente: 1 },
-                      focus: 0,
-                      submit: function(e, v, m, f) {
-                        (<any>$).prompt.nextState();
-                        return false;
-                      }
-                    },
-                    {
-                      title: 'Importación de proyectos',
-                      html: 'Para facilitar el proceso de carga, permitimos el alta de proyectos por medio de Excel para evitar la carga manual.',
-                      buttons: { Anterior: -1, Siguiente: 1 },
-                      focus: 1,
-                      opacity: 0.1,
-                      position: { container: '#dropdownExcel', x: 100, y: -70, width: 500, arrow: 'lm' },
-                      submit: function(e, v, m, f) {
-                        if (v === -1) {
-                          (<any>$).prompt.prevState();
-                          return false;
-                        } else if (v === 1) {
-                          data.objetivosJurisdiccionales.forEach((entryJuris) => {
-                              (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('show');
-                              entryJuris.objetivosOperativos.forEach((entryOp) => {
-                                  (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('show');
-                              });
-                          });
-                          (<any>$).prompt.nextState();
-                          return false;
-                        }
-                      }
-                    },
-                    {
-                      title: "Visualización de proyectos",
-                      html: 'Los proyectos se estructuran en forma de árbol, agrupando los mismos por objetivo estratégico y operativo.',
-                      buttons: { Anterior: -1, Siguiente: 1 },
-                      focus: 1,
-                      position: { container: '#add-strategic-objetive', x: 0, y: -145, width: 500, arrow: 'bl' },
-                      submit: function(e, v, m, f) {
-                        if (v === -1) {
-                          data.objetivosJurisdiccionales.forEach((entryJuris) => {
-                              (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('hide');
-                              entryJuris.objetivosOperativos.forEach((entryOp) => {
-                                  (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('hide');
-                              });
-                          });
-                          (<any>$).prompt.prevState();
-                          return false;
-                        } else if (v === 1) {
-                          (<any>$('#addProjectButton-' + data.objetivosJurisdiccionales[0].objetivosOperativos[0].idObjetivoOperativo)).trigger( "click" );
-                          (<any>$).prompt.nextState();
-                          return false;
-                        }
-                      }
-                    },
-                    {
-                      title: 'Menos campos',
-                      html: 'Simplificamos los campos requeridos al momento del alta inicial de proyecto.',
-                      buttons: { Anterior: -1, Siguiente: 1 },
-                      focus: 1,
-                      position: { container: '#projectFormID', x:20, y: -150, width: 500, arrow: 'bl' },
-                      submit: function(e, v, m, f) {
-                        if (v === -1) {
-                          var formDiv = document.getElementsByTagName('formproject');
-                          angular.element(formDiv).remove();
-                          (<any>$).prompt.prevState();
-                          return false;
-                        } else if (v === 1) {
-                          (<any>$).prompt.nextState();
-                          return false;
-                        }
-                      }
-                    },
-                    {
-                      title: 'Guardar borrador',
-                      html: 'En caso de no contar con toda la información, se permite guardar el proyecto como borrador y completarlo más adelante.',
-                      buttons: { Anterior: -1, Finalizar: 1 },
-                      focus: 1,
-                      position: { container: '#draftButton', x: 180, y: -65, width: 400, arrow: 'lm' },
-                      submit: function(e, v, m, f) {
-                        if (v === -1) {
-                          (<any>$).prompt.prevState();
-                          return false;
-                        } else if (v === 1) {
-                          (<any>$('html,body')).animate({
-                            scrollTop: 0},
-                          500);
-                          data.objetivosJurisdiccionales.forEach((entryJuris) => {
-                              (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('hide');
-                              entryJuris.objetivosOperativos.forEach((entryOp) => {
-                                  (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('hide');
-                              });
-                          });
-                          var formDiv = document.getElementsByTagName('formproject');
-                          angular.element(formDiv).remove();
-                          (<any>$).prompt.close();
-                        }
-                      }
-                    }
-                  ];
-
-                  (<any>$).prompt(statesdemo);
-                  this.localStorageService.set('flagOnboarding', true);
-                }
+                // if (!this.localStorageService.get('flagOnboarding') && this.$state.current.name === 'home.tree') {
+                //
+                //   var statesdemo = [
+                //     {
+                //       title: 'Bienvenido a PIG',
+                //       html: 'Te contamos los principales beneficios del nuevo sistema que simplifica la gestión de proyectos',
+                //       buttons: { Siguiente: 1 },
+                //       focus: 0,
+                //       submit: function(e, v, m, f) {
+                //         (<any>$).prompt.nextState();
+                //         return false;
+                //       }
+                //     },
+                //     {
+                //       title: 'Importación de proyectos',
+                //       html: 'Para facilitar el proceso de carga, permitimos el alta de proyectos por medio de Excel para evitar la carga manual.',
+                //       buttons: { Anterior: -1, Siguiente: 1 },
+                //       focus: 1,
+                //       opacity: 0.1,
+                //       position: { container: '#dropdownExcel', x: 100, y: -70, width: 500, arrow: 'lm' },
+                //       submit: function(e, v, m, f) {
+                //         if (v === -1) {
+                //           (<any>$).prompt.prevState();
+                //           return false;
+                //         } else if (v === 1) {
+                //           data.objetivosJurisdiccionales.forEach((entryJuris) => {
+                //               (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('show');
+                //               entryJuris.objetivosOperativos.forEach((entryOp) => {
+                //                   (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('show');
+                //               });
+                //           });
+                //           (<any>$).prompt.nextState();
+                //           return false;
+                //         }
+                //       }
+                //     },
+                //     {
+                //       title: "Visualización de proyectos",
+                //       html: 'Los proyectos se estructuran en forma de árbol, agrupando los mismos por objetivo estratégico y operativo.',
+                //       buttons: { Anterior: -1, Siguiente: 1 },
+                //       focus: 1,
+                //       position: { container: '#add-strategic-objetive', x: 0, y: -145, width: 500, arrow: 'bl' },
+                //       submit: function(e, v, m, f) {
+                //         if (v === -1) {
+                //           data.objetivosJurisdiccionales.forEach((entryJuris) => {
+                //               (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('hide');
+                //               entryJuris.objetivosOperativos.forEach((entryOp) => {
+                //                   (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('hide');
+                //               });
+                //           });
+                //           (<any>$).prompt.prevState();
+                //           return false;
+                //         } else if (v === 1) {
+                //           (<any>$('#addProjectButton-' + data.objetivosJurisdiccionales[0].objetivosOperativos[0].idObjetivoOperativo)).trigger( "click" );
+                //           (<any>$).prompt.nextState();
+                //           return false;
+                //         }
+                //       }
+                //     },
+                //     {
+                //       title: 'Menos campos',
+                //       html: 'Simplificamos los campos requeridos al momento del alta inicial de proyecto.',
+                //       buttons: { Anterior: -1, Siguiente: 1 },
+                //       focus: 1,
+                //       position: { container: '#projectFormID', x:20, y: -150, width: 500, arrow: 'bl' },
+                //       submit: function(e, v, m, f) {
+                //         if (v === -1) {
+                //           var formDiv = document.getElementsByTagName('formproject');
+                //           angular.element(formDiv).remove();
+                //           (<any>$).prompt.prevState();
+                //           return false;
+                //         } else if (v === 1) {
+                //           (<any>$).prompt.nextState();
+                //           return false;
+                //         }
+                //       }
+                //     },
+                //     {
+                //       title: 'Guardar borrador',
+                //       html: 'En caso de no contar con toda la información, se permite guardar el proyecto como borrador y completarlo más adelante.',
+                //       buttons: { Anterior: -1, Finalizar: 1 },
+                //       focus: 1,
+                //       position: { container: '#draftButton', x: 180, y: -65, width: 400, arrow: 'lm' },
+                //       submit: function(e, v, m, f) {
+                //         if (v === -1) {
+                //           (<any>$).prompt.prevState();
+                //           return false;
+                //         } else if (v === 1) {
+                //           (<any>$('html,body')).animate({
+                //             scrollTop: 0},
+                //           500);
+                //           data.objetivosJurisdiccionales.forEach((entryJuris) => {
+                //               (<any>$("#grupo-level-" + entryJuris.idObjetivoJurisdiccional)).collapse('hide');
+                //               entryJuris.objetivosOperativos.forEach((entryOp) => {
+                //                   (<any>$("#grupo-level-2-" + entryOp.idObjetivoOperativo)).collapse('hide');
+                //               });
+                //           });
+                //           var formDiv = document.getElementsByTagName('formproject');
+                //           angular.element(formDiv).remove();
+                //           (<any>$).prompt.close();
+                //         }
+                //       }
+                //     }
+                //   ];
+                //
+                //   (<any>$).prompt(statesdemo);
+                //   this.localStorageService.set('flagOnboarding', true);
+                // }
 
                 //Note: this code should be moved on controller's refactoring phase
                 var completeness = this.getJurisdiccionCompleteness(this.objetivosJurisdiccionales);
@@ -153,6 +153,13 @@ module Home {
                   this.showIncompleteStatus();
                 }
               });
+            } else {
+                this.services.jurisdicciones().then((data) => {
+                  if (data) {
+                    this.localStorageService.set(this.idjurisdiccionKey, data[0].idJurisdiccion);
+                    this.$state.reload();
+                  }
+                });
             }
 
         }

@@ -24,7 +24,7 @@ module App {
 
     downloadExcel() {
        this.services.downloadExcelMAestro().then((data) => {
-          this.saveData(data, 'PGI_ExcelMaestro.xlsx');
+          this.saveData(data, 'PIG_ExcelMaestro.xlsx');
        });
     }
 

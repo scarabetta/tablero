@@ -12,7 +12,7 @@
            <div class="title titleOjEestrategico">Objetivo Estrat&eacute;gico</div>
             <li class="titleMenu">{{objJ.nombre}}</li>
             <div ng-repeat="objO in objJ.objetivosOperativos">
-            <div class="title titleOjEestrategico titleOjoperativo">Objetivo Operativo</div>
+            <div class="title titleOjoperativo">Objetivo Operativo</div>
               <li ng-class="{'selectedObj' : moveProjectCtrl.currentproject.idObjetivoOperativo2 === objO.idObjetivoOperativo}">
                 <a ng-click="moveProjectCtrl.changeOperativeObjective(objO.idObjetivoOperativo)" data-dismiss="modal">
                   <i class="glyphicon glyphicon-record"

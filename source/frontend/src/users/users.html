@@ -3,8 +3,11 @@
     <div class="row">
       <div class="col-md-12" id="alertmodalcomponent">
         <div class="row">
-          <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12">
-            <button type="button" class="btn btn-default" ng-click="usersCtrl.addUser()"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar Nuevo</button>
+          <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn">
+            <button type="button" class="btn btn-default" ng-click="usersCtrl.addUser()">
+              <div class="icNew" title="Agregar"></div>
+              <span>Agregar nuevo</span>
+            </button>
           </div>
           <div class="col-lg-3 col-md-4 col-sm-8 col-xs-12">
             <div class="form-group has-button contentSearch searchPage">
@@ -15,7 +18,7 @@
             </div>
           </div>
           <div class="col-md-12">
-            <hr>
+            <hr class="lineColor">
             <div id="newuser">
             </div>
           </div>
@@ -45,9 +48,10 @@
                 <label for="cmn-toggle-{{user.idUsuario}}"></label>
               </div>
             </td>
-            <td class="colum-action"><i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="usersCtrl.editUser(user.idUsuario)"></i>
+            <td class="colum-action">
+            <i class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="usersCtrl.editUser(user.idUsuario)"></i>
             </td>
-            <td class="colum-action"><i class="glyphicon glyphicon-remove line" title="Editar" aria-hidden="true" data-toggle="modal" data-target="#userAlert" data-original-title="Eliminar"></i>
+            <td class="colum-action"><i class="glyphicon glyphicon-remove" title="Eliminar" aria-hidden="true" data-toggle="modal" data-target="#userAlert" data-original-title="Eliminar"></i>
             </td>
           </tr>
         </tbody>

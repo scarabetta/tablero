@@ -9,7 +9,6 @@ module Priorization {
       /*@ngInject*/
       constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private $scope:ng.IScope, private $compile: ng.ICompileService) {
         services.getValuesPriorization().then((data) => {
-          console.log(data);
           this.dataResult = data;
         });
       }
@@ -29,7 +28,13 @@ module Priorization {
 
       downloadExcelPriorization() {
         this.services.downloadExcelPriorization().then((data) => {
-           this.saveData(data, 'PGI_Priorizacion.xlsx');
+           this.saveData(data, 'PIG_Priorizacion.xlsx');
+           this.$state.reload();
+        });
+      }
+
+      cancelPriorization() {
+        this.services.cancelPriorization().then((data) => {
            this.$state.reload();
         });
       }

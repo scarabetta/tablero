@@ -14,7 +14,7 @@ import 'angular-animate.js';
 import 'angular-validator.min.js';
 import routes from './app.routes.ts';
 import routesInterceptor from './app.routes.interceptor.ts';
-import authInterceptor from './app.auth.interceptor.ts';
+import httpInterceptor from './app.http.interceptor.ts';
 import localStorageConfig from './app.local.storage.config.ts';
 import {home} from '../home/home.module.ts';
 import {login} from '../login/login.module.ts';
@@ -26,6 +26,7 @@ import {results} from '../upload/results/results.module.ts';
 import {crossTopics} from '../cross-topics/cross.topics.module.ts';
 import {menuComponent} from '../menu/menu.component.ts';
 import {excelComponent} from '../excel/excel.component.ts';
+import {errorModalComponent} from '../alert/errormodal.ts';
 import {excelButton} from '../excel/excel.component.ts';
 import {notificationDirective} from '../notification/notification.component.ts';
 import {jurisdiccionHeaderComponent} from '../home/jurisdiccion.header.component.ts';
@@ -47,10 +48,11 @@ $http.get(config.authBaseUrl + 'config/properties').then(
                 .setDefaults('tagsInput', { placeholder: '' });
             })
             .config(localStorageConfig)
-            .config(authInterceptor)
+            .config(httpInterceptor)
             .directive('notification', notificationDirective)
             .component('attversion', versionComponent)
             .component('navigationmenu', menuComponent)
+            .directive('errormodaldisplay', errorModalComponent)
             .component('excelcomponent', excelComponent)
             .component('excelbutton', excelButton)
             .component('jurisdiccionheader', jurisdiccionHeaderComponent)

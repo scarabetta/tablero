@@ -6,15 +6,14 @@ module Auth {
      private tokenKey = 'token';
 
     /*@ngInject*/
-    public static Factory($q: ng.IQService, localStorageService:angular.local.storage.ILocalStorageService) {
+    public static Factory($q: ng.IQService, localStorageService:angular.local.storage.ILocalStorageService, $injector) {
       if (!AuthInterceptor.instance) {
-        AuthInterceptor.instance = new AuthInterceptor($q, localStorageService);
+        AuthInterceptor.instance = new AuthInterceptor($q, localStorageService, $injector);
       }
       return AuthInterceptor.instance;
     }
 
-    /*@ngInject*/
-    constructor(private $q: ng.IQService, private localStorageService:angular.local.storage.ILocalStorageService) {}
+    constructor(private $q: ng.IQService, private localStorageService:angular.local.storage.ILocalStorageService, private $injector) {}
 
     public request(request) {
       var self = Auth.AuthInterceptor.instance;
@@ -40,9 +39,8 @@ module Auth {
     public responseError(rejection) {
       var self = Auth.AuthInterceptor.instance;
       (<any>$).LoadingOverlay("hide");
-      console.log(rejection.status);
-      if (rejection.status === 401) {
-        console.log('Error');
+      if (rejection.status === 401 || rejection.status === 400) {
+        self.$injector.get('$state').go('login');
       }
       return self.$q.reject(rejection);
     }

@@ -9,6 +9,7 @@ module Menu {
         public state: string;
         public title: string;
         public controllerAs: string;
+        public permission: string;
     }
 
     export class MenuController {
@@ -22,10 +23,10 @@ module Menu {
         /*@ngInject*/
         constructor(private $state: ng.ui.IStateService, private services:GeneralServices, private search:Search, private localStorageService:angular.local.storage.ILocalStorageService) {
             this.items = [
-                {"state": "home.tree", "title": "Alta de proyectos", "controllerAs": "homeCtrl"},
-                {"state": "users", "title": "Usuarios", "controllerAs": "usersCtrl"},
-                {"state": "priorization", "title": "Priorización", "controllerAs": "priorizationCtrl"},
-                {"state": "cross", "title": "Temas Transversales", "controllerAs": "crossTopicsCtrl"}
+                {"state": "home.tree", "title": "Alta de proyectos", "controllerAs": "homeCtrl", "permission": null},
+                {"state": "users", "title": "Usuarios", "controllerAs": "usersCtrl", "permission": "Gestion de usuarios"},
+                {"state": "priorization", "title": "Priorización", "controllerAs": "priorizationCtrl", "permission": "Gestion de Temas Transversales"},
+                {"state": "cross", "title": "Temas Transversales", "controllerAs": "crossTopicsCtrl", "permission": "Gestion de priorizacion"}
             ];
             this.isWaitingJurisdicciones = false;
         }
@@ -48,23 +49,23 @@ module Menu {
           }
         }
 
-        showUsers(item) {
-          if (item.state === 'users') {
+        showItem(item) {
             var userData = this.localStorageService.get(this.currentUserKey);
             var user = <Usuario>userData;
+            if (item.permission === null) {
+              return true;
+            }
             var retVal = false;
             if (user) {
               user.roles.forEach((rol) => {
                 rol.permisosEntidad.forEach((permiso) => {
-                  if (permiso.nombre === "Gestion de usuarios" && permiso.gestion) {
+                  if (permiso.nombre === item.permission && permiso.gestion) {// tslint:disable-line max-line-length
                     retVal = true;
                   }
                 });
               });
             }
             return retVal;
-          }
-          return true;
         }
 
         setIdJurisdiccion() {
@@ -84,7 +85,11 @@ module Menu {
 
         changeJurisdiccion(id) {
             this.localStorageService.set(this.idjurisdiccionKey, id);
-            this.$state.reload();
+            if (this.$state.current.name === 'home.tree') {
+              this.$state.reload();
+            } else {
+              this.$state.go('home.tree');
+            }
         }
 
         applySearch() {
@@ -95,11 +100,12 @@ module Menu {
 
     export let menuComponent =  {
        template: `<nav  class="navbar navbar-default" role="navigation" ng-if="$ctrl.isLoginView()">
+                   <div class="contentMenu">
                     <div class="container contentApp">
                         <div class="row">
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                               <ul class="nav navbar-nav">
-                                <li ui-sref="{{item.state}}" ng-repeat="item in $ctrl.items" ng-class="{active: $ctrl.$state.current.controllerAs==item.controllerAs}" ng-show="$ctrl.showUsers(item)">
+                                <li ui-sref="{{item.state}}" ng-repeat="item in $ctrl.items" ng-class="{active: $ctrl.$state.current.controllerAs==item.controllerAs}" ng-show="$ctrl.showItem(item)">
                                     <a>{{item.title}}</a>
                                 </li>
                                 <li ng-if="$ctrl.jurisdiccion.length > 1" class="dropdown">
@@ -120,7 +126,8 @@ module Menu {
                                 </li>
                               </ul>
                               <ul class="nav navbar-nav navbar-right">
-                                <li><a ng-click="$ctrl.logout()">Salir</a></li>
+                              <li class="separador">|</li>
+                                <li><a class="menuExit" ng-click="$ctrl.logout()">Salir</a></li>
                               </ul>
                               <form class="navbar-form navbar-right" role="search">
                                 <div class="form-group">
@@ -132,6 +139,7 @@ module Menu {
                             </div>
                         </div>
                     </div>
+                  </div>
                  </nav>
                 <div class="jumbotron jumbotron-misc jumbotron-main" ng-if="$ctrl.isLoginView()">
                  <jurisdiccionheader></jurisdiccionheader>

@@ -22,7 +22,7 @@ module Home {
         this.title = "Nuevo usuario";
         this.currentuser = {
             "idUsuario": null,
-            "activo": false,
+            "activo": true,
             "apellido": "",
             "descripcion": "",
             "email": "",

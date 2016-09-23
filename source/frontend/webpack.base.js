@@ -49,7 +49,7 @@ module.exports = {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                 loader: "url-loader?limit=10000&minetype=application/font-woff"
             },
-            {test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"},
+            {test: /\.(ttf|otf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader"},
             {test: /\.(png|eot|ttf|svg)$/, loader: 'url-loader?limit=100000'},
             {test: /\.html$/, loader: 'ngtemplate!html-loader'},
             {test: /\.ts$/, loaders: ['ts-loader'], exclude: [/node_modules/, /test/]}
@@ -60,7 +60,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Gobierno de la Ciudad de Buenos Aires',
             template: 'index.html',
-            favicon: __dirname + "/assets/styles/bastrap3/favicon.ico"
+            favicon: __dirname + "/assets/favicon.ico"
         }),
         new webpack.ProvidePlugin({
             jQuery: 'jquery',
@@ -72,7 +72,8 @@ module.exports = {
             {from: "assets/usig-3.1/images", to: "images"},
             {from: "assets/usig-3.1/css", to: "css"},
             {from: "assets/loader/images", to: "images"},
-            {from: "assets/imgEjes", to: "images"}
+            {from: "assets/imgEjes", to: "images"},
+            {from: "assets/montserrat", to: "fonts"}
         ]),
         new webpack.DefinePlugin({
             __VERSION__: JSON.stringify(require('./package').version)

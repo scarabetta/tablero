@@ -39,9 +39,9 @@ module Home {
       (<any>$("#areaMision")).val(this.jurisdiccion.mision);
       (<any>$("#areaMision")).focus();
       (<any>$("#inputMisionArea"))
-      .append('<i class="glyphicon glyphicon-ok" aria-hidden="true" title="Editar" data-placement="top" title="" data-original-title="Editar" id="saveMision"></i>&nbsp;&nbsp;'); // tslint:disable-line max-line-length
+      .append('<button class="btn btn-default" id="saveMision">Guardar</button>&nbsp;&nbsp;'); // tslint:disable-line max-line-length
       (<any>$("#inputMisionArea"))
-      .append('<i class="glyphicon glyphicon-remove" aria-hidden="true" title="Editar" data-placement="top" title="" data-original-title="Editar" id="cancelEdit"></i>');
+      .append('<button class="btn btn-default" id="cancelEdit">Cancelar</button>');
       (<any>$("#cancelEdit")).click(function() {
         (<any>$("#inputMisionArea *")).remove();
         (<any>$("#mision")).show();
@@ -64,3 +64,6 @@ module Home {
 }
 
 export = Home;
+
+
+

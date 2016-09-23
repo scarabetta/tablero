@@ -18,7 +18,7 @@
             <div class="contentProgress content-actionForm">
                 <div class="titleProgress">Progreso de creación</div>
                 <div class="row">
-                    <div class="c100 p{{formCtrl.percentForm}} centerProgress green">
+                    <div class="c100 p{{formCtrl.percentForm}} centerProgress coloGreen">
                       <span>{{formCtrl.percentForm}}%</span>
                       <div class="slice">
                         <div class="bar"></div>
@@ -52,7 +52,7 @@
             <div class="dropdown content-actionForm contentButtonRight">
               <button ng-show="formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != null" type="button" ng-click="formCtrl.saveProject()" ng-disabled="!formCtrl.allInputs" class="btn btn-success fullButtonRight">Guardar</button>
               <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg fullButtonRight">Guardar y Presentar</button>
-              <button ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" form="principalForm" class="btn btn-default fullButtonRight" id="draftButton fullButtonRight">Guardar Borrador</button>
+              <button ng-if="formCtrl.flagForSaveDraft" ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" form="principalForm" class="btn btn-default fullButtonRight" id="draftButton fullButtonRight">Guardar Borrador</button>
               <button type="button" class="btn btn-default fullButtonRight" data-toggle="modal" data-target="#cancelAlert">Cancelar cambios</button>
               <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" type="button" class="btn btn-default right btnRemove fullButtonRight" data-toggle="modal" data-target="#projectAlert" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">Eliminar</button>
             </div>
@@ -63,7 +63,7 @@
     <div class="col-md-9 col-sm-10 col-xs-12">
         <form role="form" id="principalForm" ng-submit="formCtrl.saveProject()">
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>&nbsp;&nbsp;Información inicial
+                    <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="nombre">Nombre</label>
@@ -80,7 +80,7 @@
                         <div class="form-group col-md-3">
                             <div></div>
                             <label for="meta 2017">Meta 2017</label>
-                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="20">
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="15">
                         </div>
                         <div class="form-group col-md-9">
                             <label for="unidad de la meta">Unidad de la meta</label>
@@ -90,7 +90,7 @@
                 </div>
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-calendar" aria-hidden="true"></i>&nbsp;&nbsp;Fechas y presupuesto
+                    <div class="ic-title ic-presupuesto"></div>&nbsp;Fechas y presupuesto
                     <div class="row">
                         <div class="form-group col-md-5">
                             <label for="fecha de inicio">Fecha de inicio</label>
@@ -172,11 +172,11 @@
 
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-user" aria-hidden="true"></i>&nbsp;&nbsp;Población
+                    <div class="ic-title ic-poblacion"></div>&nbsp;Población
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="cantidad de población impactada">Cantidad de población impactada</label>
-                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="20">
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="15">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="segmento de la población impactada">Segmento de la población impactada</label>
@@ -199,7 +199,7 @@
                 </div>
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-lock" aria-hidden="true"></i>&nbsp;&nbsp;Responsables
+                    <div class="ic-title ic-responsabilidad"></div>&nbsp;Responsables
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="responsable">Responsable</label>
@@ -221,7 +221,7 @@
                 </div>
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>&nbsp;&nbsp;Ubicación
+                    <div class="ic-title ic-ubicacion"></div>&nbsp;Ubicación
                     <p class="reference">Seleccioná el tipo de ubicación que mejor describa al proyecto.
 Si el proyecto impacta en una ubicación específica, seleccioná "Dirección".
 Si impacta en varias direcciones, seleccioná "Comunas".
@@ -261,15 +261,15 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                 </div>
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>&nbsp;&nbsp;Información adicional
+                     <div class="ic-title ic-infoInicial"></div>&nbsp;Información adicional
                     <div class="form-group">
                         <label for="tipo de proyecto">Tipo de Proyecto</label>
                         <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
-                            <label for="nuevo" class="option">
+                            <label for="optionsRadios1" class="option">
                                 <input type="radio" name="optionsTipo" id="optionsRadios1" value="Nuevo" checked ng-model="formCtrl.currentProject.tipoProyecto">
                                 Nuevo
                             </label>
-                            <label for="ampliacion" class="option">
+                            <label for="optionsRadios2" class="option">
                                 <input type="radio" name="optionsTipo" id="optionsRadios2" value="Ampliación" ng-model="formCtrl.currentProject.tipoProyecto">
                                 Ampliaci&oacute;n
                             </label>
@@ -321,7 +321,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                 </div>
             <br>
                 <div class="col-md-12 agrupador">
-                    <i class="glyphicon glyphicon-paperclip" aria-hidden="true"></i>&nbsp;&nbsp;Archivos adjuntos <span class="opcional">(Opcional)</span>
+                    <div class="ic-title ic-adjuntar"></div>&nbsp;Archivos adjuntos <span class="opcional">(Opcional)</span>
                     <div class="row">
                         <div class="col-md-12">
                             <p class="reference">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>
@@ -337,8 +337,8 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                           </div>
                           <div  ng-repeat="file in formCtrl.currentProject.archivos">
                             <div class="col-md-12 attach">
-                                <span ng-click="formCtrl.getFile(file.nombre)" style="cursor:pointer">{{file.nombre}}</span>
-                                <i class="glyphicon glyphicon-remove" ng-click="formCtrl.deleteFileFromCurrent(file)" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
+                                <span ng-click="formCtrl.getFile(file.nombre)">{{file.nombre}}</span>
+                                <i class="glyphicon glyphicon-remove" ng-click="formCtrl.deleteFileFromCurrent(file)" aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar"></i>
                             </div>
                             <div class="col-md-6 col-sm-12 col-xs-12">
                                 <hr class="line-inner-proyect">
@@ -360,7 +360,10 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                         </div> -->
                         <div class="col-md-12">
                             <input type="file" id="inputFile" multiple>
-                            <button id="buttonFile" type="button" class="btn btn-default btn-presupuesto"><i class="glyphicon glyphicon-plus" aria-hidden="true"></i> Agregar nuevo archivo</button>
+                            <button id="buttonFile" type="button" class="btn btn-default">
+                              <div class="icNew" title="Agregar"></div>
+                              <span>Agregar nuevo archivo</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -370,7 +373,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
             </div>
             <button ng-show="formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null" type="submit" ng-disabled="!formCtrl.allInputs" class="btn btn-success">Guardar</button>
             <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg">Guardar y Presentar</button>
-            <button ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" class="btn btn-default" id="draftButton">Guardar Borrador</button>
+            <button ng-if="formCtrl.flagForSaveDraft" ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" class="btn btn-default" id="draftButton">Guardar Borrador</button>
             <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" type="button" class="btn btn-default right btnRemove" data-toggle="modal" data-target="#projectAlert">Eliminar</button>
             <button type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlert">Cancelar cambios</button>
         </form>

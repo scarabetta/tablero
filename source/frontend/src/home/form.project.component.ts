@@ -8,6 +8,7 @@ import {EjeDeGobierno} from "../models/jurisdiccion.ts";
 import {Comuna} from "../models/jurisdiccion.ts";
 import {Presupuesto} from "../models/jurisdiccion.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
+import {Usuario} from "../models/jurisdiccion.ts";
 const template = require('./form-project.html');
 
 module Home {
@@ -37,6 +38,8 @@ module Home {
       private changingStateFlag:boolean;
       private validators = new Array<any>();
       private fileArray = new Array<any>();
+      private currentUserKey = 'currentUser';
+      private flagForSaveDraft = false;
       private datePickerInicio = {
         status: false
       };
@@ -48,6 +51,17 @@ module Home {
       constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService, private $scope:ng.IScope,
         private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService) {
           // (<any>$(".pull-right")).pin({containerSelector: ".contentFormProyect"});
+
+          var userData = this.localStorageService.get(this.currentUserKey);
+          var user = <Usuario>userData;
+          if (user) {
+            user.roles.forEach((rol) => {
+                if (rol.nombre === "Operador de jurisdicción") {
+                  this.flagForSaveDraft = true;
+                }
+            });
+          }
+
           services.poblacionMeta().then((data) => this.poblacionesMeta = data);
           services.ejesDeGobierno().then((data) => this.ejesDeGobierno = data);
           var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);

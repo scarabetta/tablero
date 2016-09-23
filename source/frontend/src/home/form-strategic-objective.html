@@ -21,14 +21,17 @@
                     <div class="form-group col-md-6 col-sm-5 col-xs-11 add-line">
                         <input type="text" class="form-control" ng-model="indicador.descripcion" maxlength="512" placeholder="Ingresar forma de medici&oacute;n">
                     </div>
-                    <i class="glyphicon glyphicon-remove line" aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i>
+                    <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i>
                     <!-- <div class="form-group col-md-1 col-sm-1">
                       <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.removeIndicador($index)"><i class="glyphicon glyphicon-minus" aria-hidden="true"></i></button>
                     </div> -->
                 </div>
                 <div class="row">
-                  <div class="col-md-12 form-group">
-                      <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.addIndicador()">Agregar nuevo indicador</button>
+                  <div class="col-md-12 form-group addBtn">
+                      <button type="button" class="btn btn-default" ng-click="formCtrl.addIndicador()">
+                          <div class="icNew" title="Agregar"></div>
+                          <span>Agregar nuevo indicador</span>
+                      </button>
                   </div>
                 </div> 
             </div>

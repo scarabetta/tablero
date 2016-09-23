@@ -18,6 +18,7 @@ module Services {
     export class GeneralServices {
 
         private tokenKey = 'token';
+        private idjurisdiccionKey = 'idJurisdiccionStorage';
         private apiBaseUrl = config.authBaseUrl + 'api/';
 
         /*@ngInject*/
@@ -161,6 +162,12 @@ module Services {
 
         downloadExcelPriorization(): ng.IPromise<any> {
             return this.$http.get(this.apiBaseUrl + "exportar/proyectos", {responseType:'arraybuffer'})
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        cancelPriorization(): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "exportar/cancelarPriorizacion")
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
@@ -327,6 +334,7 @@ module Services {
 
         logout() {
           this.localStorageService.remove(this.tokenKey);
+          this.localStorageService.remove(this.idjurisdiccionKey);
           this.$state.go('login');
         }
     }

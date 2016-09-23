@@ -1,8 +1,10 @@
 <div class="containerTop">
     <h1 class="nameYear">{{$ctrl.jurisdiccion.nombre}}</h1>
     <span class="title-jurisdiccion collapsed" data-toggle="collapse" href="#mision">
-      <i class="glyphicon glyphicon-chevron-down" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ver misión"></i> Misión de la jurisdicción
+      Misión de la jurisdicción <i class="img-chevron-down collapsed" aria-hidden="true" data-toggle="collapse" title="Ver misión" href="#mision"></i> 
     </span>
-    <p class="mision collapse" id="mision" aria-expanded="false">{{$ctrl.jurisdiccion.mision}} <i class="glyphicon glyphicon-edit" aria-hidden="true" title="Editar" data-placement="top" title="" data-original-title="Editar" ng-click="$ctrl.editJurisdiccion()"></i></p>
+    <p class="mision collapse" id="mision" aria-expanded="false">{{$ctrl.jurisdiccion.mision}} 
+    <span class="icEditWhite" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="$ctrl.editJurisdiccion()" data-placement="top" title="" data-original-title="Editar"></span>
+    </p>
     <div id="inputMisionArea"></div>
 </div>
