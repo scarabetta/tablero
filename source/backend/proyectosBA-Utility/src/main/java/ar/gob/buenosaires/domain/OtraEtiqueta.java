@@ -13,10 +13,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ar.gob.buenosaires.exportador.IExportableAExcel;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "otras_etiquetas")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idEtiqueta", "etiqueta" })
 @XmlRootElement(name = "OtraEtiqueta")

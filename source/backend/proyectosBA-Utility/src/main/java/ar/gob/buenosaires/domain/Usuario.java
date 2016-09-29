@@ -3,7 +3,6 @@ package ar.gob.buenosaires.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,13 +20,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.envers.Audited;
+
 @Entity
 @Table(name = "usuario")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idUsuario", "nombre", "apellido", "email", "descripcion", "roles", "jurisdicciones", "activo" })
 @XmlRootElement(name = "Usuario")
 public class Usuario implements Serializable {
 
+	private static final String SECRETARIA = "Secretaria";
 	private static final long serialVersionUID = -4092862591595801120L;
 
 	@Id
@@ -135,12 +139,13 @@ public class Usuario implements Serializable {
 	}
 
 	public boolean tienePerfilSecretaria(){
-		return getRoles() != null && getRoles().parallelStream().anyMatch(new Predicate<Rol>() {
-
-			@Override
-			public boolean test(final Rol t) {
-				return "Secretaría".equalsIgnoreCase(t.getNombre());
+		if(this.getRoles() != null){
+			for (Rol rol : this.getRoles()) {
+				if(SECRETARIA.equalsIgnoreCase(StringUtils.stripAccents(rol.getNombre()))){
+					return Boolean.TRUE;
+				}
 			}
-		});
+		}
+		return Boolean.FALSE;
 	}
 }

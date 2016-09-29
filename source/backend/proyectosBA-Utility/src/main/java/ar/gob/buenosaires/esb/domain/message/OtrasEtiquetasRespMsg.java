@@ -1,5 +1,6 @@
 package ar.gob.buenosaires.esb.domain.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,6 +21,9 @@ public class OtrasEtiquetasRespMsg extends EsbBaseMsg {
     private List<OtraEtiqueta> otrasEtiquetas;
                     		
 	public List<OtraEtiqueta> getOtrasEtiquetas() {
+		if (otrasEtiquetas == null) {
+			otrasEtiquetas = new ArrayList<>();
+		}
 		return otrasEtiquetas;
 	}
 

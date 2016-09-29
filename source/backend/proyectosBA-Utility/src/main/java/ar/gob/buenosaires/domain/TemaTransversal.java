@@ -13,12 +13,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "tema_transversal")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idTemaTransversal", "temaTransversal", "activo" })
 @XmlRootElement(name = "TemaTransversal")

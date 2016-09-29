@@ -13,10 +13,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ar.gob.buenosaires.exportador.IExportableAExcel;
+import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name = "compromiso_publico")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idCompromisoPublico", "compromisoPublico", "activo" })
 @XmlRootElement(name = "CompromisoPublico")

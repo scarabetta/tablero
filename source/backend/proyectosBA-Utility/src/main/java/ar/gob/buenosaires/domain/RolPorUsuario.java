@@ -13,8 +13,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 @Entity
 @Table(name = "rol_por_usuario")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "rol", "usuario" })
 @XmlRootElement(name = "RolPorUsuario")

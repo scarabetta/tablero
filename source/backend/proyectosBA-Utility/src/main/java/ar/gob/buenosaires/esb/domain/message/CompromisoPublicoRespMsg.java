@@ -1,5 +1,6 @@
 package ar.gob.buenosaires.esb.domain.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -20,6 +21,9 @@ public class CompromisoPublicoRespMsg extends EsbBaseMsg {
     private List<CompromisoPublico> compromisosPublicos;
                     		
 	public List<CompromisoPublico> getCompromisosPublicos() {
+		if (compromisosPublicos == null) {
+			compromisosPublicos = new ArrayList<>();
+		}
 		return compromisosPublicos;
 	}
 

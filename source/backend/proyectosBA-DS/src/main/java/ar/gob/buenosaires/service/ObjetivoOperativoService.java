@@ -17,10 +17,10 @@ public interface ObjetivoOperativoService {
 	
 	ObjetivoOperativo getObjetivoOperativoPorNombre(String nombre) throws ESBException, JMSException;
 
-	ObjetivoOperativo createObjetivoOperativo(ObjetivoOperativo jurisdiccion) throws ESBException, JMSException;
+	ObjetivoOperativo createObjetivoOperativo(ObjetivoOperativo jurisdiccion, String email) throws ESBException, JMSException;
 
-	ObjetivoOperativo updateObjetivoOperativo(ObjetivoOperativo jurisdiccion) throws ESBException, JMSException;
+	ObjetivoOperativo updateObjetivoOperativo(ObjetivoOperativo jurisdiccion, String email) throws ESBException, JMSException;
 	
-	void deleteObjetivoOperativo(String id) throws ESBException, JMSException;	
+	void deleteObjetivoOperativo(String id, String email) throws ESBException, JMSException;	
 
 }

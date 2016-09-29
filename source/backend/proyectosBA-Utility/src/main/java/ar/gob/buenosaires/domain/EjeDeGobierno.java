@@ -19,12 +19,15 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "eje_de_gobierno")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idEjeDeGobierno", "nombre", "descripcion", 
 		"ejemplos", "proyectos" })

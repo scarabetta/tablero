@@ -22,7 +22,7 @@ public class ObjetivoOperativoRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "objetivosOperativos")
-    private List<ObjetivoOperativo> objetivosOperativos = new ArrayList<>();
+    private List<ObjetivoOperativo> objetivosOperativos;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class ObjetivoOperativoRespMsg extends EsbBaseMsg {
 	}
 
 	public List<ObjetivoOperativo> getObjetivosOperativos() {
+		if (objetivosOperativos == null) {
+			objetivosOperativos = new ArrayList<>();
+		}
 		return objetivosOperativos;
 	}
 

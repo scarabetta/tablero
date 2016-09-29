@@ -27,11 +27,11 @@ public class AreaHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, AreaService.class);
-		final AreaReqMsg areaRequest = (AreaReqMsg) JMSUtil.crearObjeto(event.getXml(), AreaReqMsg.class);
+		final AreaReqMsg areaRequest = (AreaReqMsg) JMSUtil.crearObjeto(getReader(AreaReqMsg.class), event.getXml());
 
 		final AreaRespMsg areaResponse = new AreaRespMsg();
 		event.setObj(areaResponse);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveAreas(event, areaResponse, areaRequest);
 		} else {

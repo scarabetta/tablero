@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
 @Configuration
 @ComponentScan("ar.gob.buenosaires.jms")
 public class SpringConfigUtility {
@@ -58,5 +61,12 @@ public class SpringConfigUtility {
 		AMQCF.setClientID(pooledConnectionClientID);
 		PooledConnectionFactory pooledCF = new PooledConnectionFactory(AMQCF);
 		return pooledCF;
+	}
+	
+	@Bean
+	public ObjectWriter getObjectWriter(){
+		XmlMapper xmlMapper = new XmlMapper();
+		ObjectWriter writer = xmlMapper.writer();
+		return writer;
 	}
 }

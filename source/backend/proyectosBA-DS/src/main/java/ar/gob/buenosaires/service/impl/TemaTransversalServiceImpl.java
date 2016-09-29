@@ -34,9 +34,10 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 	}
 
 	@Override
-	public TemaTransversal createTemaTransversal(TemaTransversal temaTransversal) throws ESBException, JMSException {
+	public TemaTransversal createTemaTransversal(TemaTransversal temaTransversal, String email) throws ESBException, JMSException {
 		TemaTransversalReqMsg reqMsg = new TemaTransversalReqMsg();
 		reqMsg.setTemaTransversal(temaTransversal);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para crear un Tema Transversal : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, TemaTransversalRespMsg.class);
@@ -45,9 +46,10 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 	}
 
 	@Override
-	public TemaTransversal updateTemaTransversal(TemaTransversal temaTransversal) throws ESBException, JMSException {
+	public TemaTransversal updateTemaTransversal(TemaTransversal temaTransversal, String email) throws ESBException, JMSException {
 		TemaTransversalReqMsg reqMsg = new TemaTransversalReqMsg();
 		reqMsg.setTemaTransversal(temaTransversal);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para actualizar un Tema Transversal : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, TemaTransversalRespMsg.class);
@@ -56,9 +58,10 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 	}
 
 	@Override
-	public void deleteTemaTransversal(String id) throws ESBException, JMSException {
+	public void deleteTemaTransversal(String id, String email) throws ESBException, JMSException {
 		TemaTransversalReqMsg reqMsg = new TemaTransversalReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar un Tema Transversal : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, TemaTransversalRespMsg.class);

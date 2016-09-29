@@ -13,10 +13,10 @@ public interface OtrasEtiquetasService {
 
 	OtraEtiqueta getOtraEtiquetaPorId(Long id) throws ESBException, JMSException;
 
-	OtraEtiqueta createOtraEtiqueta(OtraEtiqueta OtraEtiqueta) throws ESBException, JMSException;
+	OtraEtiqueta createOtraEtiqueta(OtraEtiqueta OtraEtiqueta, String email) throws ESBException, JMSException;
 
-	OtraEtiqueta updateOtraEtiqueta(OtraEtiqueta OtraEtiqueta) throws ESBException, JMSException;
+	OtraEtiqueta updateOtraEtiqueta(OtraEtiqueta OtraEtiqueta, String email) throws ESBException, JMSException;
 
-	void deleteOtraEtiqueta(String id) throws ESBException, JMSException;
+	void deleteOtraEtiqueta(String id, String email) throws ESBException, JMSException;
 
 }

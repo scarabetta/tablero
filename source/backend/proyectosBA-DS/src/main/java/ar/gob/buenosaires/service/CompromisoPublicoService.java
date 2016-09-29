@@ -13,10 +13,10 @@ public interface CompromisoPublicoService {
 
 	CompromisoPublico getCompromisoPublicoPorId(Long id) throws ESBException, JMSException;
 
-	CompromisoPublico createCompromisoPublico(CompromisoPublico compromisoPublico) throws ESBException, JMSException;
+	CompromisoPublico createCompromisoPublico(CompromisoPublico compromisoPublico, String email) throws ESBException, JMSException;
 
-	CompromisoPublico updateCompromisoPublico(CompromisoPublico compromisoPublico) throws ESBException, JMSException;
+	CompromisoPublico updateCompromisoPublico(CompromisoPublico compromisoPublico, String email) throws ESBException, JMSException;
 
-	void deleteCompromisoPublico(String id) throws ESBException, JMSException;
+	void deleteCompromisoPublico(String id, String email) throws ESBException, JMSException;
 
 }

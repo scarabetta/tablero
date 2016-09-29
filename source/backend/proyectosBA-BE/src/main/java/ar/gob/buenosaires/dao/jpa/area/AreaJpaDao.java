@@ -9,6 +9,8 @@ import ar.gob.buenosaires.domain.Area;
 public interface AreaJpaDao extends JpaRepository<Area, Long> {
 
 	List<Area> findByNombre(String nombre);
+	
+	List<Area> findByidJurisdiccion(long idJurisdiccion);
 
 	Area findByNombreAndIdJurisdiccion(String nombre, Long idIdJurisdiccion);
 

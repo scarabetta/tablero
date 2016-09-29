@@ -15,11 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.xml.sax.SAXParseException;
 
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import ar.gob.buenosaires.esb.domain.ESBAsyncEvent;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.ESBSyncEvent;
+import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 
@@ -48,6 +50,8 @@ public class JMSUtil {
         m.setStringProperty(ESBEvent.STATUS_DESC_TAG, statusDescription);
         final String errorCode = event.getErrorCode() == null ? "" : event.getErrorCode();
         m.setStringProperty(ESBEvent.ERROR_CODE_TAG, errorCode);
+        final String userEmail = event.getUserEmail() == null ? "" : event.getUserEmail();
+        m.setStringProperty(ESBEvent.USER_EMAIL_TAG, userEmail);
         m.setJMSExpiration(event.getExpiration());
         m.setJMSReplyTo(event.getReplyToDestination());
         event.setOutputMsg(m);
@@ -61,6 +65,7 @@ public class JMSUtil {
         event.setOrigin(jmsMsg.getStringProperty(ESBEvent.ORIGIN_TAG));
         event.setRequestStatus(jmsMsg.getStringProperty(ESBEvent.STATUS_TAG));
         event.setStatusDescription(jmsMsg.getStringProperty(ESBEvent.STATUS_DESC_TAG));
+        event.setUserEmail(jmsMsg.getStringProperty(ESBEvent.USER_EMAIL_TAG));
         event.setExpiration(jmsMsg.getJMSExpiration());
         event.setReplyToDestination(jmsMsg.getJMSReplyTo());
         event.setXml(((TextMessage) jmsMsg).getText());
@@ -84,6 +89,7 @@ public class JMSUtil {
         event.setOrigin(origin);
         event.setRequestStatus(ESBEvent.STATUS_SUCCESSFUL);
         event.setStatusDescription("Processed Successfully");
+        event.setUserEmail(((EsbBaseMsg)request).getEmailUsuario());
         return event;
     }
 
@@ -104,15 +110,29 @@ public class JMSUtil {
 	 * @throws ESBException
 	 */
 	public static Object crearObjeto(String xml, Class<?> clase) throws ESBException {
+		XmlMapper xmlMapper = new XmlMapper();
+		ObjectReader reader = xmlMapper.readerFor(clase);
+		
+		return crearObjeto(reader, xml);
+	}
+	
+	/**
+	 * Metodo para parsear el XML que viene por el BUS a un objeto.
+	 * @param xml
+	 * @param reader
+	 * @return EL objeto creado desde el XML.
+	 * @throws ESBException
+	 */
+	public static Object crearObjeto(ObjectReader reader, String xml) throws ESBException {
 		String Xmlrecortado = recortarXml(xml);
 		
-		XmlMapper xmlMapper = new XmlMapper();
 		Object result = null;
 		try {
-			result = xmlMapper.readValue(Xmlrecortado, clase);
+			result = reader.readValue(Xmlrecortado);
 		} catch (IOException e) {
-			LoggerFactory.getLogger(clase).error(CodigoError.ERROR_PARSEO.getCodigo(), "Se ha producido un error al querer parsear el XML a Objecto", e);
-			throw new ESBException(e);
+			LoggerFactory.getLogger(JMSUtil.class).error(CodigoError.ERROR_PARSEO.getCodigo(),
+					"Se ha producido un error al querer parsear el XML a Objecto", e);
+			throw new ESBException(CodigoError.ERROR_PARSEO.getCodigo(), "Se ha producido un error al querer parsear el XML a Objecto");
 		}
 		
 		return result;

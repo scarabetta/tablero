@@ -23,9 +23,9 @@ public class ProyectoRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "proyectos")
-    private List<Proyecto> proyectos = new ArrayList<>();
+    private List<Proyecto> proyectos;
     @XmlElement(name = "accionesPermitidas")
-    private List<String> accionesPermitidas = new ArrayList<>();
+    private List<String> accionesPermitidas;
 
 	@Override
 	public String getEventType() {
@@ -53,11 +53,14 @@ public class ProyectoRespMsg extends EsbBaseMsg {
 	}
 
 	public void setProyectos(List<Proyecto> proyectos) {
+		if (proyectos == null){
+			proyectos = new ArrayList<>();
+		}
 		this.proyectos = proyectos;
 	}
 
 	public List<String> getAccionesPermitidas() {
-		if(accionesPermitidas == null) {
+		if (accionesPermitidas == null) {
 			accionesPermitidas = new ArrayList<>();
 		}
 		return accionesPermitidas;

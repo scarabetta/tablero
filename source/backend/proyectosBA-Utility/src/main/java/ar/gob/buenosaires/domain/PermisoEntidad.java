@@ -16,10 +16,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "permiso_entidad")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idPermisoEntidad", "rol", "alta", "baja", "modificacion", "gestion", "nombre" })
 @XmlRootElement(name = "PermisoEntidad")

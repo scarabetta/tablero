@@ -18,12 +18,15 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.gob.buenosaires.exportador.IExportableAExcel;
 
 @Entity
 @Table(name = "poblacion_meta")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idPoblacionMeta", "nombre", "proyectos" })
 public class PoblacionMeta implements Serializable, IExportableAExcel {

@@ -22,10 +22,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "jurisdiccion")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idJurisdiccion", "nombre", "abreviatura", "mision", "objetivosJurisdiccionales", "areas", "codigo", "usuarios" })
 
@@ -67,7 +70,7 @@ public class Jurisdiccion implements Serializable {
 			inverseJoinColumns = { @JoinColumn(name = "jurisdiccion_idjurisdiccion") })
 	@XmlElement(name = "usuarios")	
 	private List<Usuario> usuarios = new ArrayList<Usuario>();
-
+	
 	public Long getIdJurisdiccion() {
 		return idJurisdiccion;
 	}

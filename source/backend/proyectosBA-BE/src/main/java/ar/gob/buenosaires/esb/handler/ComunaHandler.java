@@ -27,7 +27,7 @@ public class ComunaHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ComunaService.class);
-		final ComunaReqMsg comunaRequest = (ComunaReqMsg) JMSUtil.crearObjeto(event.getXml(), ComunaReqMsg.class);
+		final ComunaReqMsg comunaRequest = (ComunaReqMsg) JMSUtil.crearObjeto(getReader(ComunaReqMsg.class), event.getXml());
 
 		final ComunaRespMsg comunaResponse = new ComunaRespMsg();
 		event.setObj(comunaResponse);

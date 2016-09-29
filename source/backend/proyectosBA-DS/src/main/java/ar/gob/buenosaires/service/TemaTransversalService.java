@@ -13,10 +13,10 @@ public interface TemaTransversalService {
 
 	TemaTransversal getTemaTransversalPorId(Long id) throws ESBException, JMSException;
 
-	TemaTransversal createTemaTransversal(TemaTransversal TemaTransversal) throws ESBException, JMSException;
+	TemaTransversal createTemaTransversal(TemaTransversal TemaTransversal, String email) throws ESBException, JMSException;
 
-	TemaTransversal updateTemaTransversal(TemaTransversal TemaTransversal) throws ESBException, JMSException;
+	TemaTransversal updateTemaTransversal(TemaTransversal TemaTransversal, String email) throws ESBException, JMSException;
 
-	void deleteTemaTransversal(String id) throws ESBException, JMSException;
+	void deleteTemaTransversal(String id, String email) throws ESBException, JMSException;
 
 }

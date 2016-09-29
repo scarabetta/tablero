@@ -28,7 +28,7 @@ public class ExportacionProyectoViewHandler extends AbstractBaseEventHandler {
 
 		logRequestMessage(event, ExportacionProyectoViewService.class);
 		final ExportacionProyectoViewReqMsg exportacionProyectoViewRequest = (ExportacionProyectoViewReqMsg) JMSUtil
-				.crearObjeto(event.getXml(), ExportacionProyectoViewReqMsg.class);
+				.crearObjeto(getReader(ExportacionProyectoViewReqMsg.class), event.getXml());
 
 		final ExportacionProyectoViewRespMsg exportacionProyectoViewResponse = new ExportacionProyectoViewRespMsg();
 		event.setObj(exportacionProyectoViewResponse);

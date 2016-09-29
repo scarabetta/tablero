@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -20,15 +21,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nimbusds.jose.JOSEException;
+
 import ar.gob.buenosaires.importador.ResultadoProcesamiento;
+import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.ImportarProyectoService;
+import ar.gob.buenosaires.util.DSUtils;
 
 /**
  * @author Mauro Gonzalez
@@ -113,7 +120,8 @@ public class ImportarProyectoController {
 	@RequestMapping(path = "/proyecto/{nombreArchivo:.+}/{idJurisdiccion}/{pisarProyectos}", method = RequestMethod.GET)
 	public ResultadoProcesamiento importarProyecto(@PathVariable final String nombreArchivo,
 			@PathVariable final Integer idJurisdiccion, @PathVariable final boolean pisarProyectos,
-			HttpServletResponse response) {
+			HttpServletResponse response, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ParseException, JOSEException, SignatureVerificationException {
 		ResultadoProcesamiento resultadoProcesamiento = null;
 		try {
 			FileInputStream fis = new FileInputStream(env.getProperty("save.archivos.proyecto.error.path")
@@ -121,7 +129,7 @@ public class ImportarProyectoController {
 
 			XSSFWorkbook workbook = new XSSFWorkbook(fis);
 
-			resultadoProcesamiento = service.importarSolapaProyectos(workbook, pisarProyectos);
+			resultadoProcesamiento = service.importarSolapaProyectos(workbook, pisarProyectos, DSUtils.getMailDelUsuarioDelToken(token));
 
 			fis.close();
 			workbook.close();

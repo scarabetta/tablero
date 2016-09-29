@@ -26,13 +26,13 @@ public class UsuarioHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, UsuarioService.class);
-		final UsuarioReqMsg request = (UsuarioReqMsg) JMSUtil.crearObjeto(event.getXml(), UsuarioReqMsg.class);
+		final UsuarioReqMsg request = (UsuarioReqMsg) JMSUtil.crearObjeto(getReader(UsuarioReqMsg.class), event.getXml());
 
 		final UsuarioRespMsg response = new UsuarioRespMsg();
 		event.setObj(response);
 		List<Usuario> usuarios = new ArrayList<Usuario>();
 		response.setUsuarios(usuarios);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveUsuarios(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

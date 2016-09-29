@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.gob.buenosaires.domain.AccionesProyecto;
 import ar.gob.buenosaires.domain.EstadoProyecto;
+import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
@@ -17,6 +19,7 @@ import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 import ar.gob.buenosaires.service.ProyectoService;
+import ar.gob.buenosaires.service.UsuarioService;
 
 public class ProyectoHandler extends AbstractBaseEventHandler {
 
@@ -25,21 +28,26 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	@Autowired
 	private ProyectoService service;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ProyectoService.class);
-		final ProyectoReqMsg request = (ProyectoReqMsg) JMSUtil.crearObjeto(event.getXml(), ProyectoReqMsg.class);
+		final ProyectoReqMsg request = (ProyectoReqMsg) JMSUtil.crearObjeto(getReader(ProyectoReqMsg.class), event.getXml());
 
 		final ProyectoRespMsg response = new ProyectoRespMsg();
 		event.setObj(response);
 		List<Proyecto> proyectos = new ArrayList<>();
 		response.setProyectos(proyectos);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveProyectos(response, request);
-		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {			
 			proyectos.add(service.createProyecto(request.getProyecto()));
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR)) {
+			presentarProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_ACTIONS)) {
 			retrieveActions(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
@@ -76,6 +84,30 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		}
 	}
 
+	private void presentarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
+		/*
+		 * TODO temporal hasta que arreglemos el bus. Sacarlo una vez que el Bus
+		 * no nos rompa las relaciones. Sin esto falla el check que se fija si
+		 * el proyecto esta completo
+		 */
+		Proyecto proyecto = request.getProyecto();
+		proyecto.setObjetivoOperativo(new ObjetivoOperativo());
+
+		if (EstadoProyecto.COMPLETO.getName().equals(proyecto.getEstadoActualizado())) {
+			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
+			proyecto.setVerificado(false);
+			if (proyecto.getIdProyecto() == null) {
+				List<Proyecto> proyectos = new ArrayList<Proyecto>();
+				proyectos.add(service.createProyecto(proyecto));
+				addProyectosToResponse(event, response, proyectos);
+			} else {
+				updateProyecto(event, response, request);
+			}
+		} else {
+			throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(),"El proyecto debe estar completo para poder ser presentado");
+		}
+	}
+
 	private void retrieveProyectos(final ProyectoRespMsg response, final ProyectoReqMsg request) {
 		List<Proyecto> proyectos = new ArrayList<>();
 
@@ -105,8 +137,9 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getId());
 		String estado = proyectoGuardado.getEstado();
 		List<String> acciones = new ArrayList<>();
-
-		if (request.getUsuario().tienePerfilSecretaria()) {
+		Usuario usuario = usuarioService.getUsuarioPorEmail(request.getUsuario().getEmail());
+		
+		if (usuario.tienePerfilSecretaria()) {
 			getAccionesParaSecretaria(estado, acciones);
 		} else {
 			getAccionesParaJurisdiccion(estado, acciones);

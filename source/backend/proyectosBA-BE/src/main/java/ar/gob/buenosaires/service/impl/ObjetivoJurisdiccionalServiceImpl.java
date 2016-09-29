@@ -55,6 +55,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 	public ObjetivoJurisdiccional createObjetivoJurisdiccional(ObjetivoJurisdiccional objetivoJurisdiccional) throws ESBException {
 		Jurisdiccion jurisdiccion = repositorioJurisdiccion.getJurisdiccionJpaDao().findOne(objetivoJurisdiccional.getIdJurisdiccionAux());
 		if (jurisdiccion != null) {
+			validarNombre(jurisdiccion.getCodigo(), objetivoJurisdiccional.getNombre(), String.valueOf(objetivoJurisdiccional.getIdObjetivoJurisdiccional()));
 			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);
 			objetivoJurisdiccional.setCodigo(getProximoCodigoObjJurisdiccional(jurisdiccion));
 			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);		
@@ -62,18 +63,27 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		} else { 
 			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
 		}		
-	}	
+	}
 	
 	@Override
 	public ObjetivoJurisdiccional updateObjetivoJurisdiccional(ObjetivoJurisdiccional objetivoJurisdiccional) throws ESBException {
 		Jurisdiccion jurisdiccion = repositorioJurisdiccion.getJurisdiccionJpaDao().findOne(objetivoJurisdiccional.getIdJurisdiccionAux());
-		if (jurisdiccion != null) {						
+		if (jurisdiccion != null) {
+			validarNombre(jurisdiccion.getCodigo(), objetivoJurisdiccional.getNombre(), String.valueOf(objetivoJurisdiccional.getIdObjetivoJurisdiccional()));
 			objetivoJurisdiccional.setJurisdiccion(jurisdiccion);			
 			ObjetivoJurisdiccional objJuri = getObjetivoJurisdiccionalDAO().save(objetivoJurisdiccional);
 			return objJuri;
 		} else { 
 			throw new ESBException(CodigoError.JURISDICCION_INEXISTENTE.getCodigo(), "La Jurisdiccion con id: " + objetivoJurisdiccional.getIdJurisdiccionAux() + "no existe");
 		}	
+	}
+	
+	private void validarNombre(String codigoJuri, String nombre, String id) throws ESBException {		
+		String op = getObjetivoJurisdiccionalDAO().getObjetivosPorNombreYJurisdccion(codigoJuri + WILDCARD, nombre);
+		if (op != null && ! op.equalsIgnoreCase(id)) {
+			throw new ESBException(CodigoError.OBJETIVO_ESTRATEGICO_REPETIDO.getCodigo(),
+							"Ya existe un objetivo Jurisdiccional con el nombre: '" + nombre + "' para esta Jurisdiccion"); 
+		}
 	}
 	
 	@Override

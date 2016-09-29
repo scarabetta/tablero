@@ -61,6 +61,17 @@ public class ObjetivoOperativoServiceImplTest {
 
 	private ObjetivoOperativo createFakeObjetivoOperativo() {
 		ObjetivoOperativo fakeObjetivoOperativo = new ObjetivoOperativo();
+		fakeObjetivoOperativo.setIdObjetivoOperativo(new Long(1));
+		fakeObjetivoOperativo.setNombre(FAKE_NOMBRE);
+		fakeObjetivoOperativo.setIdObjetivoJurisdiccionalAux(new Long(1));
+		ObjetivoJurisdiccional fakeOJ = new ObjetivoJurisdiccional();
+		fakeOJ.setCodigo("AGC.1");
+		fakeObjetivoOperativo.setObjetivoJurisdiccional(fakeOJ);
+		return fakeObjetivoOperativo;
+	}
+	
+	private ObjetivoOperativo createFakeObjetivoOperativoCreate() {
+		ObjetivoOperativo fakeObjetivoOperativo = new ObjetivoOperativo();
 		fakeObjetivoOperativo.setNombre(FAKE_NOMBRE);
 		fakeObjetivoOperativo.setIdObjetivoJurisdiccionalAux(new Long(1));
 		ObjetivoJurisdiccional fakeOJ = new ObjetivoJurisdiccional();
@@ -80,7 +91,7 @@ public class ObjetivoOperativoServiceImplTest {
 	@Test
 	public void createObjetivoOperativo() throws ESBException {
 
-		ObjetivoOperativo fakeObjetivoOperativo = createFakeObjetivoOperativo();
+		ObjetivoOperativo fakeObjetivoOperativo = createFakeObjetivoOperativoCreate();
 
 		when(repositorio.getObjetivoOperativoJpaDao().save(any(ObjetivoOperativo.class))).thenReturn(
 				fakeObjetivoOperativo);

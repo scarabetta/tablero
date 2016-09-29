@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
@@ -64,11 +63,12 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 	}
 
 	@Override
-	public ObjetivoJurisdiccional createObjetivoJurisdiccional(@RequestBody ObjetivoJurisdiccional objetivoJurisdiccional)
+	public ObjetivoJurisdiccional createObjetivoJurisdiccional(ObjetivoJurisdiccional objetivoJurisdiccional, String email)
 			throws ESBException, JMSException {
 		
 		ObjetivoJurisdiccionalReqMsg reqMsg = new ObjetivoJurisdiccionalReqMsg();
 		reqMsg.setObjetivoJurisdiccional(objetivoJurisdiccional);
+		reqMsg.setEmailUsuario(email);
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
 		getLogger().debug("Mensaje creado para crear un ObjetivoJurisdiccional : {}", reqMsg.toString());
@@ -80,11 +80,12 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 	}
 
 	@Override
-	public ObjetivoJurisdiccional updateObjetivoJurisdiccional(@RequestBody ObjetivoJurisdiccional objetivoJurisdiccional)
+	public ObjetivoJurisdiccional updateObjetivoJurisdiccional(ObjetivoJurisdiccional objetivoJurisdiccional, String email)
 			throws ESBException, JMSException {
 		
 		ObjetivoJurisdiccionalReqMsg reqMsg = new ObjetivoJurisdiccionalReqMsg();
 		reqMsg.setObjetivoJurisdiccional(objetivoJurisdiccional);
+		reqMsg.setEmailUsuario(email);
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
 		getLogger().debug("Mensaje creado para actualizar un ObjetivoJurisdiccional : {}", reqMsg.toString());
@@ -96,11 +97,12 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 	}
 
 	@Override
-	public void deleteObjetivoJurisdiccional(String id)
+	public void deleteObjetivoJurisdiccional(String id, String email)
 			throws ESBException, JMSException {
 		
 		ObjetivoJurisdiccionalReqMsg reqMsg = new ObjetivoJurisdiccionalReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar una Jurisdiccion : {}",reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoJurisdiccionalRespMsg.class);

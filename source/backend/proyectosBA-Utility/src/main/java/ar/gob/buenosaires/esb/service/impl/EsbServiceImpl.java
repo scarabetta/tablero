@@ -19,7 +19,7 @@ public class EsbServiceImpl implements EsbService {
 	private static final String UNEXPECTED_EVENT_REQUEST_STATUS_S = "El mensaje enviado por el BUS ha vuelto en un estado inseperado: \"%s\" del mensaje \"%s\"";
 
 	private EsbProducer esbProducer;
-
+	
 	public EsbServiceImpl(EsbProducer esbProducer) {
 		super();
 		this.esbProducer = esbProducer;
@@ -40,7 +40,6 @@ public class EsbServiceImpl implements EsbService {
 
 		if (event.getExceptions().isEmpty()) {
 			if (event.getRequestStatus().equalsIgnoreCase(ESBEvent.STATUS_SUCCESSFUL)) {
-//				retval = (EsbBaseMsg) event.getObj();
 				retval = (EsbBaseMsg) JMSUtil.crearObjeto(event.getXml(), clase);
 			} else {
 				getLogger().error(String.format(UNEXPECTED_EVENT_REQUEST_STATUS_S,

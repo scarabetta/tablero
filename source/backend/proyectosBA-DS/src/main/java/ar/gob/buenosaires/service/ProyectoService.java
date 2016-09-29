@@ -40,28 +40,28 @@ public interface ProyectoService {
 	 * */
 	Proyecto getProyectoPorNombreIdJurisdiccion(String nombre, Long IdJurisdiccion) throws ESBException, JMSException;
 
-	Proyecto createProyecto(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto createProyecto(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	Proyecto updateProyecto(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto updateProyecto(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	void deleteProyecto(String id) throws ESBException, JMSException;
+	void deleteProyecto(String id, String email) throws ESBException, JMSException;
 
-	Proyecto presentarProyecto(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto presentarProyecto(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	Proyecto cancelarProyecto(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto cancelarProyecto(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	Proyecto verificarProyecto(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto verificarProyecto(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	Proyecto deshacerCancelacion(Proyecto proyecto) throws ESBException, JMSException;
+	Proyecto deshacerCancelacion(Proyecto proyecto, String email) throws ESBException, JMSException;
 
-	Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action) throws ESBException, JMSException;
+	Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action, String email) throws ESBException, JMSException;
 
-	List<String> getAccionesPermitidas(String idProyecto, Usuario user) throws ESBException, JMSException;
+	List<String> getAccionesPermitidas(String idProyecto, String userMail) throws ESBException, JMSException;
 
 	JsonNode getResumenProyectosPriorizacion() throws ESBException, JMSException;
 
-	void cancelarPriorizacionDeProyectos() throws ESBException, JMSException;
+	void cancelarPriorizacionDeProyectos(String email) throws ESBException, JMSException;
 
-	void updatePriorizarProyectos() throws ESBException, JMSException;
+	void updatePriorizarProyectos(String email) throws ESBException, JMSException;
 
 }

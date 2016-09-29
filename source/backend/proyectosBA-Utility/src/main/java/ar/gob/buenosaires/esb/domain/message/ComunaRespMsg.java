@@ -22,7 +22,7 @@ public class ComunaRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "comunas")
-    private List<Comuna> comunas = new ArrayList<>();
+    private List<Comuna> comunas;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class ComunaRespMsg extends EsbBaseMsg {
 	}
 
 	public List<Comuna> getComunas() {
+		if (comunas == null) {
+			comunas = new ArrayList<>();
+		}
 		return comunas;
 	}
 

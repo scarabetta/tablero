@@ -95,7 +95,7 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 	}
 
 	@Override
-	public ResultadoProcesamiento importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos)
+	public ResultadoProcesamiento importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos, String email)
 			throws InvalidFormatException, IOException {
 
 		getSolapaProyecto().setSolapa(solpaAImportar.getSheetAt(0));
@@ -117,7 +117,7 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 
 				try {
 					if (getSolapaProyecto().validarEImportarFila(unaFila, builder)) {
-						resultadoProcesamiento.agregarProyecto(builder.build());
+						resultadoProcesamiento.agregarProyecto(builder.build(email));
 					}
 				} catch (ESBException | JMSException e) {
 					LOGGER.error("Hubo un error en la fila " + unaFila.getRowNum() + "\n" + e.getMessage());

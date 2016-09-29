@@ -30,7 +30,7 @@ public class OtrasEtiquetasHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, OtrasEtiquetasService.class);
-		final OtrasEtiquetasReqMsg request = (OtrasEtiquetasReqMsg) JMSUtil.crearObjeto(event.getXml(), OtrasEtiquetasReqMsg.class);
+		final OtrasEtiquetasReqMsg request = (OtrasEtiquetasReqMsg) JMSUtil.crearObjeto(getReader(OtrasEtiquetasReqMsg.class), event.getXml());
 
 		final OtrasEtiquetasRespMsg response = new OtrasEtiquetasRespMsg();
 		event.setObj(response);

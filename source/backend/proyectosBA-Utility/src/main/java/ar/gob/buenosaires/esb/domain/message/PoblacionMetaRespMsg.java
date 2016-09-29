@@ -22,7 +22,7 @@ public class PoblacionMetaRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "poblacionesMeta")
-    private List<PoblacionMeta> poblacionesMeta = new ArrayList<>();
+    private List<PoblacionMeta> poblacionesMeta;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class PoblacionMetaRespMsg extends EsbBaseMsg {
 	}
 
 	public List<PoblacionMeta> getPoblacionesMeta() {
+		if (poblacionesMeta == null) {
+			poblacionesMeta = new ArrayList<>();
+		}
 		return poblacionesMeta;
 	}
 

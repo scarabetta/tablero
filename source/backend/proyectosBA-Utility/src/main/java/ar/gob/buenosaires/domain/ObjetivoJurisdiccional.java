@@ -21,11 +21,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "objetivo_jurisdiccional")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idObjetivoJurisdiccional", "jurisdiccion", "codigo", "nombre", "objetivosOperativos", "indicadoresEstrategicos",
 		"idJurisdiccionAux" })

@@ -13,10 +13,10 @@ public interface RolService {
 
 	Rol getRolPorId(Long id) throws ESBException, JMSException;
 
-	Rol createRol(Rol rol) throws ESBException, JMSException;
+	Rol createRol(Rol rol, String email) throws ESBException, JMSException;
 
-	Rol updateRol(Rol rol) throws ESBException, JMSException;
+	Rol updateRol(Rol rol, String email) throws ESBException, JMSException;
 
-	void deleteRol(String id) throws ESBException, JMSException;
+	void deleteRol(String id, String email) throws ESBException, JMSException;
 
 }

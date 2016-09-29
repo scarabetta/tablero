@@ -52,7 +52,8 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		ObjetivoJurisdiccional objetivoJurisdiccional = repositorioObjetivoJurisdiccional.getObjetivoJurisdiccionalJpaDao()
 				.findOne(objetivoOperativo.getIdObjetivoJurisdiccionalAux());
 		
-		if (objetivoJurisdiccional != null) {						
+		if (objetivoJurisdiccional != null) {
+			validarNombre(getCodigoJurisdiccion(objetivoJurisdiccional.getCodigo()), objetivoOperativo.getNombre(), String.valueOf(objetivoOperativo.getIdObjetivoOperativo()));
 			objetivoOperativo.setObjetivoJurisdiccional(objetivoJurisdiccional);
 			objetivoOperativo.setCodigo(getProximoCodigoObjOperativo(objetivoJurisdiccional));
 			return getObjetivoOperativoDAO().save(objetivoOperativo);			
@@ -69,7 +70,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 				.findOne(objetivoOperativo.getIdObjetivoJurisdiccionalAux());
 		
 		if (objetivoJurisdiccional != null) {	
-			validarNombre(getCodigoJurisdiccion(objetivoJurisdiccional.getCodigo()), objetivoOperativo.getNombre());
+			validarNombre(getCodigoJurisdiccion(objetivoJurisdiccional.getCodigo()), objetivoOperativo.getNombre(), String.valueOf(objetivoOperativo.getIdObjetivoOperativo()));
 			objetivoOperativo.setObjetivoJurisdiccional(objetivoJurisdiccional);
 			return getObjetivoOperativoDAO().save(objetivoOperativo);
 		} else { 
@@ -83,9 +84,9 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		return parts[0];
 	}
 	
-	private void validarNombre(String codigoJuri, String nombre) throws ESBException {		
+	private void validarNombre(String codigoJuri, String nombre, String id) throws ESBException {		
 		String op = getObjetivoOperativoDAO().getObjetivosPorNombreYJurisdccion(codigoJuri + WILDCARD, nombre);
-		if (op != null) {
+		if (op != null && ! op.equalsIgnoreCase(id)) {
 			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_REPETIDO.getCodigo(), "Ya existe un objetivo operativo con el nombre: '" + nombre + "' para esta Jurisdiccion"); 
 		}
 	}

@@ -27,13 +27,13 @@ public class ObjetivoOperativoHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ObjetivoOperativoService.class);
-		final ObjetivoOperativoReqMsg request = (ObjetivoOperativoReqMsg) JMSUtil.crearObjeto(event.getXml(), ObjetivoOperativoReqMsg.class); 
+		final ObjetivoOperativoReqMsg request = (ObjetivoOperativoReqMsg) JMSUtil.crearObjeto(getReader(ObjetivoOperativoReqMsg.class), event.getXml());
 
 		final ObjetivoOperativoRespMsg response = new ObjetivoOperativoRespMsg();
 		event.setObj(response);
 		List<ObjetivoOperativo> objetivosOperativos = new ArrayList<ObjetivoOperativo>();
 		response.setObjetivosOperativos(objetivosOperativos);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveObjetivosOperativos(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

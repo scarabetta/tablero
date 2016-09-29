@@ -16,20 +16,31 @@ import org.mockito.Spy;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import ar.gob.buenosaires.dao.jpa.area.AreaJpaDao;
+import ar.gob.buenosaires.dao.jpa.area.AreaRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionJpaDao;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepositoryImpl;
 import ar.gob.buenosaires.domain.Jurisdiccion;
+import ar.gob.buenosaires.domain.JurisdiccionResumen;
+import ar.gob.buenosaires.domain.Rol;
+import ar.gob.buenosaires.domain.Usuario;
 
 public class JurisdiccionServiceImplTest {
 
 	private static final String FAKE_NOMBRE = "fakeNombre";
+	private static final String SECRETARIA = "Secretaria";
 
 	@Mock
 	JurisdiccionJpaDao jpaDao;
+	@Mock
+	AreaJpaDao jpaDaoArea;
 
 	@InjectMocks
 	@Spy
 	JurisdiccionRepositoryImpl repositorio;
+	@InjectMocks
+	@Spy
+	AreaRepositoryImpl repositorioArea;
 
 	@InjectMocks
 	JurisdiccionServiceImpl service;
@@ -42,12 +53,24 @@ public class JurisdiccionServiceImplTest {
 		repositorio.setJurisdiccionJpaDao(jpaDao);
 		service = new JurisdiccionServiceImpl();
 		service.setJurisdiccionRepository(repositorio);
+		service.setAreaRepository(repositorioArea);
 	}
 	
 	private Jurisdiccion createFakeJurisdiccion() {
 		Jurisdiccion fakeJuris = new Jurisdiccion();
 		fakeJuris.setNombre(FAKE_NOMBRE);
 		return fakeJuris;
+	}
+	
+	private Usuario createFakeUsuario() {
+		Usuario user = new Usuario();
+		user.setIdUsuario(new Long(1));
+		List<Rol> roles = new ArrayList<>();
+		Rol rol = new Rol();
+		rol.setNombre(SECRETARIA);
+		roles.add(rol);
+		user.setRoles(roles);
+		return user;
 	}
 
 	@Test
@@ -118,10 +141,24 @@ public class JurisdiccionServiceImplTest {
 		Jurisdiccion fakeJurisdiccion = new Jurisdiccion();
 		fakeJurisdicciones.add(fakeJurisdiccion);
 
-		when(repositorio.getJurisdiccionJpaDao().findAll()).thenReturn(
-				fakeJurisdicciones);
+		when(repositorio.getJurisdiccionJpaDao().findAll()).thenReturn(fakeJurisdicciones);
 
 		List<Jurisdiccion> response = service.getJurisdicciones();
+		assertThat(response).isNotNull();
+		assertThat(response).isNotEmpty();
+	}
+	
+	@Test
+	public void getJurisdiccionesResumen() {
+		List<JurisdiccionResumen> fakeResumenJurisdicciones = new ArrayList<JurisdiccionResumen>();
+		JurisdiccionResumen fakeJurisdiccionResumen = new JurisdiccionResumen();
+		fakeResumenJurisdicciones.add(fakeJurisdiccionResumen);
+		Usuario user = createFakeUsuario();
+		
+		
+		when(repositorio.getJurisdiccionJpaDao().findAllResumen()).thenReturn(fakeResumenJurisdicciones);
+		
+		List<JurisdiccionResumen> response = service.getJurisdiccionesResumen(user);
 		assertThat(response).isNotNull();
 		assertThat(response).isNotEmpty();
 	}

@@ -7,6 +7,8 @@ import org.fest.util.VisibleForTesting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.gob.buenosaires.dao.jpa.area.AreaRepository;
+import ar.gob.buenosaires.dao.jpa.area.AreaRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionJpaDao;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepository;
 import ar.gob.buenosaires.dao.jpa.jurisdiccion.JurisdiccionRepositoryImpl;
@@ -14,9 +16,11 @@ import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.Jurisdiccion;
+import ar.gob.buenosaires.domain.JurisdiccionResumen;
 import ar.gob.buenosaires.domain.ObjetivoJurisdiccional;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.service.JurisdiccionService;
@@ -24,16 +28,61 @@ import ar.gob.buenosaires.service.JurisdiccionService;
 @Service
 public class JurisdiccionServiceImpl implements JurisdiccionService {
 
+	private static final int POSICION_CODIGO = 4;
+
+	private static final int POSICION_MISION = 3;
+
+	private static final int POSICION_ABREVIATURA = 2;
+
+	private static final int POSICION_NOMBRE = 1;
+
+	private static final int POSICION_ID = 0;
+
 	@Autowired
 	private JurisdiccionRepository repositorio;
 	
 	@Autowired
 	private ProyectoRepository repositorioProyecto;
+	
+	@Autowired
+	private AreaRepository repositorioArea;
 
 
 	@Override
 	public List<Jurisdiccion> getJurisdicciones() {
 		return getJurisdiccionDAO().findAll();
+	}
+	
+	@Override
+	public List<JurisdiccionResumen> getJurisdiccionesResumen(Usuario user) {
+		List<JurisdiccionResumen> resumenJurisdicciones = new ArrayList<>();
+		
+		if (user != null && user.tienePerfilSecretaria()) {
+			resumenJurisdicciones = getJurisdiccionDAO().findAllResumen();
+		} else {
+			List<Object[]> findResumenParaUsuario = getJurisdiccionDAO().findResumenParaUsuario(user.getIdUsuario());
+			for (Object object[] : findResumenParaUsuario) {				
+				agregarJurisdiccionAResumen(resumenJurisdicciones, object); 
+			}
+		}
+		
+		agregarAreas(resumenJurisdicciones);
+		return resumenJurisdicciones;
+	}
+
+	private void agregarAreas(List<JurisdiccionResumen> resumenJurisdicciones) {
+		for (JurisdiccionResumen jurisdiccionResumen : resumenJurisdicciones) {
+			jurisdiccionResumen.setAreas(repositorioArea.getAreaJpaDao().findByidJurisdiccion(jurisdiccionResumen.getIdJurisdiccion()));
+		}
+	}
+
+	private void agregarJurisdiccionAResumen(List<JurisdiccionResumen> resumenJurisdicciones, Object[] object) {
+		int id = (int)object[POSICION_ID];
+		String nombre = (String)object[POSICION_NOMBRE];
+		String abreviatura = (String)object[POSICION_ABREVIATURA];
+		String mision = (String)object[POSICION_MISION];
+		String codigo = (String)object[POSICION_CODIGO];
+		resumenJurisdicciones.add(new JurisdiccionResumen(id, nombre, abreviatura, mision, codigo));
 	}
 	
 	@Override
@@ -120,5 +169,10 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 	@VisibleForTesting
 	public void setProyectoRepository(ProyectoRepositoryImpl repo) {
 		this.repositorioProyecto = repo;
+	}
+	
+	@VisibleForTesting
+	public void setAreaRepository(AreaRepositoryImpl repo) {
+		this.repositorioArea = repo;
 	}
 }

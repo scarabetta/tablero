@@ -34,9 +34,10 @@ public class RolServiceImpl implements RolService {
 	}
 
 	@Override
-	public Rol createRol(Rol Rol) throws ESBException, JMSException {
+	public Rol createRol(Rol Rol, String email) throws ESBException, JMSException {
 		RolReqMsg reqMsg = new RolReqMsg();
 		reqMsg.setRol(Rol);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para crear un Rol : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, RolRespMsg.class);
@@ -45,9 +46,10 @@ public class RolServiceImpl implements RolService {
 	}
 
 	@Override
-	public Rol updateRol(Rol Rol) throws ESBException, JMSException {
+	public Rol updateRol(Rol Rol, String email) throws ESBException, JMSException {
 		RolReqMsg reqMsg = new RolReqMsg();
 		reqMsg.setRol(Rol);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para actualizar un Rol : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, RolRespMsg.class);
@@ -56,9 +58,10 @@ public class RolServiceImpl implements RolService {
 	}
 
 	@Override
-	public void deleteRol(String id) throws ESBException, JMSException {
+	public void deleteRol(String id, String email) throws ESBException, JMSException {
 		RolReqMsg reqMsg = new RolReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar un Rol : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, RolRespMsg.class);

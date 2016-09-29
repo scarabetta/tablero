@@ -27,13 +27,13 @@ public class ObjetivoJurisdiccionalHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ObjetivoJurisdiccionalService.class);
-		final ObjetivoJurisdiccionalReqMsg request = (ObjetivoJurisdiccionalReqMsg) JMSUtil.crearObjeto(event.getXml(), ObjetivoJurisdiccionalReqMsg.class); 
+		final ObjetivoJurisdiccionalReqMsg request = (ObjetivoJurisdiccionalReqMsg) JMSUtil.crearObjeto(getReader(ObjetivoJurisdiccionalReqMsg.class), event.getXml());
 
 		final ObjetivoJurisdiccionalRespMsg response = new ObjetivoJurisdiccionalRespMsg();
 		event.setObj(response);
 		List<ObjetivoJurisdiccional> objetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 		response.setObjetivosJurisdiccionales(objetivosJurisdiccionales);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveObjetivosJurisdiccionales(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

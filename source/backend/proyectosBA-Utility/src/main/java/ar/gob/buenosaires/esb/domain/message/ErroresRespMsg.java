@@ -1,5 +1,6 @@
 package ar.gob.buenosaires.esb.domain.message;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,6 +23,9 @@ public class ErroresRespMsg extends EsbBaseMsg {
     private List<ErrorDescripcion> errores;        	
 	
 	public List<ErrorDescripcion> getErrores() {
+		if (errores == null) {
+			return new ArrayList<>();
+		}
 		return errores;
 	}
 

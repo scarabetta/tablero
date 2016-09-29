@@ -53,11 +53,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario createUsuario(final Usuario usuario) throws ESBException, JMSException {
+	public Usuario createUsuario(final Usuario usuario, String email) throws ESBException, JMSException {
 		
 		 if(authAdapter.validMail(usuario.getEmail()) != null){
 			 final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
 			 reqMsg.setUsuario(usuario);
+			 reqMsg.setEmailUsuario(email);
 			 
 			 getLogger().debug("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
 			 final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, UsuarioRespMsg.class);
@@ -70,10 +71,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario updateUsuario(final Usuario usuario) throws ESBException, JMSException {
+	public Usuario updateUsuario(final Usuario usuario, String email) throws ESBException, JMSException {
 		if(authAdapter.validMail(usuario.getEmail()) != null){
 			final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
 			reqMsg.setUsuario(usuario);
+			reqMsg.setEmailUsuario(email);
 	
 			getLogger().debug("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
 			final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, UsuarioRespMsg.class);
@@ -90,9 +92,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public void deleteUsuario(final String id) throws ESBException, JMSException {
+	public void deleteUsuario(final String id, String email) throws ESBException, JMSException {
 		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar un Usuario : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, UsuarioRespMsg.class);

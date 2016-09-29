@@ -22,7 +22,7 @@ public class ObjetivoJurisdiccionalRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "objetivosJurisdiccionales")
-    private List<ObjetivoJurisdiccional> objetivosJurisdiccionales = new ArrayList<>();
+    private List<ObjetivoJurisdiccional> objetivosJurisdiccionales;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class ObjetivoJurisdiccionalRespMsg extends EsbBaseMsg {
 	}
 
 	public List<ObjetivoJurisdiccional> getObjetivosJurisdiccionales() {
+		if (objetivosJurisdiccionales == null) {
+			objetivosJurisdiccionales = new ArrayList<>();
+		}
 		return objetivosJurisdiccionales;
 	}
 

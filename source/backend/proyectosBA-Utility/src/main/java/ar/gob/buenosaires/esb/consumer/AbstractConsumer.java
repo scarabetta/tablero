@@ -27,7 +27,7 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.xml.sax.SAXParseException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.ESBException;
@@ -45,6 +45,9 @@ public abstract class AbstractConsumer implements MessageListener {
 
 	@Autowired
 	private Jaxb2Marshaller marshaller;
+	
+	@Autowired
+	private ObjectWriter writer;
 
 	@Value("${esb.producer.destination}")
 	private String JmsDestination;
@@ -102,10 +105,11 @@ public abstract class AbstractConsumer implements MessageListener {
 //		String outputText = JMSUtil.marshal(event.getObj(), marshaller);
 		
 		
-    	XmlMapper xmlMapper = new XmlMapper();
+//    	XmlMapper xmlMapper = new XmlMapper();
+//    	ObjectWriter writer = xmlMapper.writer();
     	String outputText = "";
 		try {
-			outputText = xmlMapper.writeValueAsString(event.getObj());
+			outputText = writer.writeValueAsString(event.getObj());
 		} catch (JsonProcessingException e) {
 			getLogger().error("Se ha producido un error al querer parsear el mensaje a XML", e);
 			throw new JMSException(e.getMessage());

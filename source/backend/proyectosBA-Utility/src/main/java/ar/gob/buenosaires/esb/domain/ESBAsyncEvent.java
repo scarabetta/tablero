@@ -28,6 +28,7 @@ public class ESBAsyncEvent implements ESBEvent {
     protected String statusDescription;
     protected Destination replyToDestination;
     protected String xml;
+    protected String userEmail;
     
     protected Map<String, Object> properties;
 
@@ -236,5 +237,15 @@ public class ESBAsyncEvent implements ESBEvent {
 	@Override
 	public String getXml() {
 		return xml;
+	}
+
+	@Override
+	public void setUserEmail(String emailUsuario) {
+		this.userEmail = emailUsuario;
+	}
+
+	@Override
+	public String getUserEmail() {
+		return userEmail;
 	}
 }

@@ -22,7 +22,7 @@ public class EjeDeGobiernoRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "ejesDeGobierno")
-    private List<EjeDeGobierno> ejesDeGobierno = new ArrayList<>();
+    private List<EjeDeGobierno> ejesDeGobierno;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class EjeDeGobiernoRespMsg extends EsbBaseMsg {
 	}
 
 	public List<EjeDeGobierno> getEjesDeGobierno() {
+		if (ejesDeGobierno == null) {
+			ejesDeGobierno = new ArrayList<>();
+		}
 		return ejesDeGobierno;
 	}
 

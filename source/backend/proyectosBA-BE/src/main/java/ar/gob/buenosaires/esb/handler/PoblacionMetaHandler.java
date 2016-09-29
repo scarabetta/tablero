@@ -28,13 +28,13 @@ public class PoblacionMetaHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, PoblacionMetaService.class);
-		final PoblacionMetaReqMsg request = (PoblacionMetaReqMsg) JMSUtil.crearObjeto(event.getXml(), PoblacionMetaReqMsg.class);
+		final PoblacionMetaReqMsg request = (PoblacionMetaReqMsg) JMSUtil.crearObjeto(getReader(PoblacionMetaReqMsg.class), event.getXml());
 
 		final PoblacionMetaRespMsg response = new PoblacionMetaRespMsg();
 		event.setObj(response);
 		List<PoblacionMeta> metas = new ArrayList<PoblacionMeta>();
 		response.setPoblacionesMeta(metas);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrievePoblacionesMeta(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

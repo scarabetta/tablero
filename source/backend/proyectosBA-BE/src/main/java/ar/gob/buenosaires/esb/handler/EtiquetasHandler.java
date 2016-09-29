@@ -27,7 +27,7 @@ public class EtiquetasHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, EtiquetasService.class);
-		final EtiquetasReqMsg request = (EtiquetasReqMsg) JMSUtil.crearObjeto(event.getXml(), EtiquetasReqMsg.class);
+		final EtiquetasReqMsg request = (EtiquetasReqMsg) JMSUtil.crearObjeto(getReader(EtiquetasReqMsg.class), event.getXml());
 
 		final EtiquetasRespMsg response = new EtiquetasRespMsg();
 		event.setObj(response);

@@ -31,13 +31,13 @@ public class TemaTransversalHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, TemaTransversalService.class);
-		final TemaTransversalReqMsg request = (TemaTransversalReqMsg) JMSUtil.crearObjeto(event.getXml(), TemaTransversalReqMsg.class);
+		final TemaTransversalReqMsg request = (TemaTransversalReqMsg) JMSUtil.crearObjeto(getReader(TemaTransversalReqMsg.class), event.getXml());
 
 		final TemaTransversalRespMsg response = new TemaTransversalRespMsg();
 		event.setObj(response);
 		List<TemaTransversal> temasTransversales = new ArrayList<TemaTransversal>();
 		response.setTemasTransversales(temasTransversales);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveTemasTransversales(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

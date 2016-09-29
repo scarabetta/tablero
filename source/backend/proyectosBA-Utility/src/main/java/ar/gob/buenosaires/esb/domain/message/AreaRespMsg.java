@@ -22,7 +22,7 @@ public class AreaRespMsg extends EsbBaseMsg {
     private Long id;
     private String name;
     @XmlElement(name = "areas")
-    private List<Area> areas = new ArrayList<>();
+    private List<Area> areas;
 
 	@Override
 	public String getEventType() {
@@ -46,6 +46,9 @@ public class AreaRespMsg extends EsbBaseMsg {
 	}
 
 	public List<Area> getAreas() {
+		if (areas == null) {
+			areas = new ArrayList<>();
+		}
 		return areas;
 	}
 

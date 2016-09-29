@@ -34,9 +34,10 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 	}
 
 	@Override
-	public OtraEtiqueta createOtraEtiqueta(OtraEtiqueta otraEtiqueta) throws ESBException, JMSException {
+	public OtraEtiqueta createOtraEtiqueta(OtraEtiqueta otraEtiqueta, String email) throws ESBException, JMSException {
 		OtrasEtiquetasReqMsg reqMsg = new OtrasEtiquetasReqMsg();
 		reqMsg.setOtraEtiqueta(otraEtiqueta);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para crear una etiqueta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, OtrasEtiquetasRespMsg.class);
@@ -45,9 +46,10 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 	}
 
 	@Override
-	public OtraEtiqueta updateOtraEtiqueta(OtraEtiqueta otraEtiqueta) throws ESBException, JMSException {
+	public OtraEtiqueta updateOtraEtiqueta(OtraEtiqueta otraEtiqueta, String email) throws ESBException, JMSException {
 		OtrasEtiquetasReqMsg reqMsg = new OtrasEtiquetasReqMsg();
 		reqMsg.setOtraEtiqueta(otraEtiqueta);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para actualizar una etiqueta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, OtrasEtiquetasRespMsg.class);
@@ -56,9 +58,10 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 	}
 
 	@Override
-	public void deleteOtraEtiqueta(String id) throws ESBException, JMSException {
+	public void deleteOtraEtiqueta(String id, String email) throws ESBException, JMSException {
 		OtrasEtiquetasReqMsg reqMsg = new OtrasEtiquetasReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar una etiqueta: {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, OtrasEtiquetasRespMsg.class);

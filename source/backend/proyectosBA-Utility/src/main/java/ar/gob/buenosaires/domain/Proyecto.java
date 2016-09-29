@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.envers.Audited;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -35,13 +36,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "proyecto")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idProyecto", "nombre", "descripcion", "objetivoOperativo", "tipoProyecto", "meta", "unidadMeta",
 		"poblacionAfectada", "liderProyecto", "area", "tipoUbicacionGeografica", "direccion", "cambioLegislativo",
 		"fechaInicio", "fechaFin", "prioridadJurisdiccional", "estado", "ejesDeGobierno", "poblacionesMeta", "comunas",
 		"codigo", "idJurisdiccion2", "idObjetivoJurisdiccional2", "idObjetivoOperativo2", "organismosCorresponsables",
 		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado", "temasTransversales", "compromisosPublicos",
-"otrasEtiquetas" })
+		"otrasEtiquetas" })
 
 @XmlRootElement(name = "Proyecto")
 public class Proyecto implements Serializable {
@@ -522,9 +524,9 @@ public class Proyecto implements Serializable {
 	}
 
 	private Object[] getPropiedadesAValidar() {
-		return new Object[] { nombre, descripcion, objetivoOperativo, tipoProyecto, meta, unidadMeta, poblacionAfectada,
-				liderProyecto, area, cambioLegislativo, fechaInicio, fechaFin, tipoUbicacionGeografica,
-				prioridadJurisdiccional, getEstado(), poblacionesMeta, idObjetivoOperativo2, presupuestosPorAnio };
+		return new Object[] { getNombre(), getDescripcion(), getObjetivoOperativo(), getTipoProyecto(), getMeta(), getUnidadMeta(), getPoblacionAfectada(),
+				getLiderProyecto(), getArea(), getCambioLegislativo(), getFechaInicio(), getFechaFin(), getTipoUbicacionGeografica(),
+				getPrioridadJurisdiccional(), getEstado(), getPoblacionesMeta(), getIdObjetivoOperativo2(), getPresupuestosPorAnio() };
 	}
 
 	public List<ArchivoProyecto> getArchivos() {

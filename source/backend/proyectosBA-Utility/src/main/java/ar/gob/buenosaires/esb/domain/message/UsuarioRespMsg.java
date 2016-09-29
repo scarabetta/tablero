@@ -17,14 +17,13 @@ import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 @XmlRootElement(name = "UsuarioRespMsg")
 public class UsuarioRespMsg extends EsbBaseMsg {
 
-    public static final String USUARIO_TYPE =
-            "UsuarioRespMsg";
+    public static final String USUARIO_TYPE = "UsuarioRespMsg";
     
     @XmlElement(name = "usuarios")
     private List<Usuario> usuarios; 
     
 	public List<Usuario> getUsuarios() {
-		if(usuarios == null){
+		if (usuarios == null) {
 			usuarios = new ArrayList<Usuario>();
 		}
 		return usuarios;

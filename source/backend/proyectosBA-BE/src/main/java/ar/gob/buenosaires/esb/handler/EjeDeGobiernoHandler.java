@@ -28,13 +28,13 @@ public class EjeDeGobiernoHandler extends AbstractBaseEventHandler {
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, EjeDeGobiernoService.class);
-		final EjeDeGobiernoReqMsg request = (EjeDeGobiernoReqMsg) JMSUtil.crearObjeto(event.getXml(), EjeDeGobiernoReqMsg.class); 
+		final EjeDeGobiernoReqMsg request = (EjeDeGobiernoReqMsg) JMSUtil.crearObjeto(getReader(EjeDeGobiernoReqMsg.class), event.getXml()); 
 
 		final EjeDeGobiernoRespMsg response = new EjeDeGobiernoRespMsg();
 		event.setObj(response);
 		List<EjeDeGobierno> ejesDeGob = new ArrayList<EjeDeGobierno>();
 		response.setEjesDeGobierno(ejesDeGob);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveEjesDeGobierno(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

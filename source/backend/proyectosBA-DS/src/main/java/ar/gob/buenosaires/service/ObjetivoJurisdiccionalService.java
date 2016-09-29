@@ -17,10 +17,10 @@ public interface ObjetivoJurisdiccionalService {
 	
 	ObjetivoJurisdiccional getObjetivoJurisdiccionalPorNombre(String nombre) throws ESBException, JMSException;
 
-	ObjetivoJurisdiccional createObjetivoJurisdiccional(ObjetivoJurisdiccional jurisdiccion) throws ESBException, JMSException;
+	ObjetivoJurisdiccional createObjetivoJurisdiccional(ObjetivoJurisdiccional jurisdiccion, String email) throws ESBException, JMSException;
 
-	ObjetivoJurisdiccional updateObjetivoJurisdiccional(ObjetivoJurisdiccional jurisdiccion) throws ESBException, JMSException;
+	ObjetivoJurisdiccional updateObjetivoJurisdiccional(ObjetivoJurisdiccional jurisdiccion, String email) throws ESBException, JMSException;
 	
-	void deleteObjetivoJurisdiccional(String id) throws ESBException, JMSException;	
+	void deleteObjetivoJurisdiccional(String id, String email) throws ESBException, JMSException;	
 
 }

@@ -12,7 +12,7 @@ import ar.gob.buenosaires.importador.proyecto.SolapaProyecto;
 
 public interface ImportarProyectoService {
 
-	ResultadoProcesamiento importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos)
+	ResultadoProcesamiento importarSolapaProyectos(Workbook solpaAImportar, boolean pisarProyectos, String email)
 			throws InvalidFormatException, IOException;
 
 	List<MensajeError> validarSolapaProyectos(Workbook solpaAImportar);

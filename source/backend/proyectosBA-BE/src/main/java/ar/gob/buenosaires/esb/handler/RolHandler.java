@@ -32,13 +32,13 @@ public class RolHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, JurisdiccionService.class);
-		final RolReqMsg request = (RolReqMsg) JMSUtil.crearObjeto(event.getXml(), RolReqMsg.class);
+		final RolReqMsg request = (RolReqMsg) JMSUtil.crearObjeto(getReader(RolReqMsg.class), event.getXml());
 
 		final RolRespMsg response = new RolRespMsg();
 		event.setObj(response);
 		List<Rol> roles = new ArrayList<Rol>();
 		response.setRoles(roles);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveRoles(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

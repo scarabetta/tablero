@@ -26,7 +26,7 @@ public class ErrorDescripcionHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, ErrorDescripcionService.class);
-		final ErroresReqMsg request = (ErroresReqMsg) JMSUtil.crearObjeto(event.getXml(), ErroresReqMsg.class);
+		final ErroresReqMsg request = (ErroresReqMsg) JMSUtil.crearObjeto(getReader(ErroresReqMsg.class), event.getXml());
 
 		final ErroresRespMsg response = new ErroresRespMsg();
 		event.setObj(response);

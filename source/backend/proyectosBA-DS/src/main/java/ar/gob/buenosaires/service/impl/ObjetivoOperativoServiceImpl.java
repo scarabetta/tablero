@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
@@ -64,11 +63,12 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 	}
 
 	@Override
-	public ObjetivoOperativo createObjetivoOperativo(@RequestBody ObjetivoOperativo objetivoOperativo)
+	public ObjetivoOperativo createObjetivoOperativo(ObjetivoOperativo objetivoOperativo, String email)
 			throws ESBException, JMSException {
 		
 		ObjetivoOperativoReqMsg reqMsg = new ObjetivoOperativoReqMsg();
 		reqMsg.setObjetivoOperativo(objetivoOperativo);
+		reqMsg.setEmailUsuario(email);
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 
 		getLogger().debug("Mensaje creado para crear un Objetivo Operativo : {}", reqMsg.toString());
@@ -80,11 +80,12 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 	}
 
 	@Override
-	public ObjetivoOperativo updateObjetivoOperativo(@RequestBody ObjetivoOperativo objetivoOperativo)
+	public ObjetivoOperativo updateObjetivoOperativo(ObjetivoOperativo objetivoOperativo, String email)
 			throws ESBException, JMSException {
 		
 		ObjetivoOperativoReqMsg reqMsg = new ObjetivoOperativoReqMsg();
 		reqMsg.setObjetivoOperativo(objetivoOperativo);
+		reqMsg.setEmailUsuario(email);
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 		
 		getLogger().debug("Mensaje creado para actualizar un Objetivo Operativo : {}", reqMsg.toString());
@@ -96,10 +97,11 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 	}
 
 	@Override
-	public void deleteObjetivoOperativo(String id) throws ESBException, JMSException {
+	public void deleteObjetivoOperativo(String id, String email) throws ESBException, JMSException {
 		
 		ObjetivoOperativoReqMsg reqMsg = new ObjetivoOperativoReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar un Objetivo Operativo : {}",reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoOperativoRespMsg.class);

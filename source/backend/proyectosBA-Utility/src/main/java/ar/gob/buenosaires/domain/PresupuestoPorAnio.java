@@ -17,10 +17,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name = "presupuesto_por_anio")
+@Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idPresupuestoPorAnio", "proyecto", "anio", "presupuesto", "otrasFuentes", "exportacionProyectoViewPresupuestoPorAnio" })
 
@@ -43,6 +47,7 @@ public class PresupuestoPorAnio implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
+	@NotAudited
 	@JsonBackReference(value = "exp-presu")
 //	@XmlTransient
 	@XmlElement(name = "exportacionProyectoViewPresupuestoPorAnio")

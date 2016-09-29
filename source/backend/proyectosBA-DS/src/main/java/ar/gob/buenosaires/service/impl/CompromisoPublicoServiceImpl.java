@@ -34,9 +34,10 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 	}
 
 	@Override
-	public CompromisoPublico createCompromisoPublico(CompromisoPublico compromisoPublico) throws ESBException, JMSException {
+	public CompromisoPublico createCompromisoPublico(CompromisoPublico compromisoPublico, String email) throws ESBException, JMSException {
 		CompromisoPublicoReqMsg reqMsg = new CompromisoPublicoReqMsg();
 		reqMsg.setCompromisoPublico(compromisoPublico);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para crear un Compromiso Publico : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, CompromisoPublicoRespMsg.class);
@@ -45,9 +46,10 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 	}
 
 	@Override
-	public CompromisoPublico updateCompromisoPublico(CompromisoPublico compromisoPublico) throws ESBException, JMSException {
+	public CompromisoPublico updateCompromisoPublico(CompromisoPublico compromisoPublico, String email) throws ESBException, JMSException {
 		CompromisoPublicoReqMsg reqMsg = new CompromisoPublicoReqMsg();
 		reqMsg.setCompromisoPublico(compromisoPublico);
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para actualizar un Compromiso Publico : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, CompromisoPublicoRespMsg.class);
@@ -56,9 +58,10 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 	}
 
 	@Override
-	public void deleteCompromisoPublico(String id) throws ESBException, JMSException {
+	public void deleteCompromisoPublico(String id, String email) throws ESBException, JMSException {
 		CompromisoPublicoReqMsg reqMsg = new CompromisoPublicoReqMsg();
 		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEmailUsuario(email);
 
 		getLogger().debug("Mensaje creado para borrar un Compromiso Publico : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, CompromisoPublicoRespMsg.class);

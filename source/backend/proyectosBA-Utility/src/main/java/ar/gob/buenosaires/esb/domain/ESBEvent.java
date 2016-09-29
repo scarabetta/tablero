@@ -22,6 +22,7 @@ public interface ESBEvent {
     public static final String ACTION_CREATE = "CREATE";
     public static final String ACTION_DEFAULT = ACTION_CREATE;
     public static final String ACTION_RETRIEVE = "RETRIEVE";
+    public static final String ACTION_RETRIEVE_RESUMEN = "RETRIEVE_RESUMEN";
     public static final String ACTION_RETRIEVE_ACTIONS = "RETRIEVE_ACTIONS";
     public static final String ACTION_REQUEST = "REQUEST";
     public static final String ACTION_UPDATE = "UPDATE";
@@ -29,6 +30,7 @@ public interface ESBEvent {
     public static final String ACTION_CANCEL = "CANCEL";
     public static final String ACTION_DESHACER_CANCELACION = "DESHACER_CANCELACION";
     public static final String ACTION_VERIFICAR = "Verificar";
+    public static final String ACTION_PRESENTAR = "PRESENTAR";
     public static final String ACTION_PRESENTAR_TODOS = "PRESENTAR_TODOS";
     public static final String ACTION_CANCELAR_PRIORIZACION = "CANCELAR_PRIORIZACION";
     public static final String ACTION_INICIAR_PRIORIZACION = "INICIAR_PRIORIZACION";
@@ -36,6 +38,7 @@ public interface ESBEvent {
     public static final String DEFAULT_ORIGIN = "UNKNOWN";
     public static final String COMPANYCODE_TAG = "CompanyCode";
     public static final String COUNTRYCODE_TAG = "CountryCode";
+    public static final String USER_EMAIL_TAG = "UserEmail";
     public static final String MANIFEST_TAG = "Manifest";
     public static final String PATH = "Path";
     public static final String TIME_STAMP = "timestamp";
@@ -103,4 +106,7 @@ public interface ESBEvent {
     public void setXml(String xml);
     
     public String getXml();
+
+	public void setUserEmail(String emailUsuario);
+	public String getUserEmail();
 }

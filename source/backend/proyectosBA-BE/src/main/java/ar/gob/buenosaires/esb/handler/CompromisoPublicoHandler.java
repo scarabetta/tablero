@@ -30,13 +30,13 @@ public class CompromisoPublicoHandler extends AbstractBaseEventHandler {
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 		logRequestMessage(event, CompromisoPublicoService.class);
-		final CompromisoPublicoReqMsg request = (CompromisoPublicoReqMsg) JMSUtil.crearObjeto(event.getXml(), CompromisoPublicoReqMsg.class);
+		final CompromisoPublicoReqMsg request = (CompromisoPublicoReqMsg)  JMSUtil.crearObjeto(getReader(CompromisoPublicoReqMsg.class), event.getXml());
 
 		final CompromisoPublicoRespMsg response = new CompromisoPublicoRespMsg();
 		event.setObj(response);
 		List<CompromisoPublico> compromisosPublicos = new ArrayList<CompromisoPublico>();
 		response.setCompromisosPublicos(compromisosPublicos);
-
+		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveCompromisosPublicos(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {

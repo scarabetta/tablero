@@ -22,7 +22,7 @@ import org.springframework.jms.core.MessageCreator;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.CodigoError;
@@ -37,6 +37,9 @@ public abstract class AbstractProducer {
 
     @Autowired
     private Jaxb2Marshaller marshaller;
+    
+	@Autowired
+	private ObjectWriter writer;
     
     @Value("${esb.producer.timeout}")
     private Long responseTimeout;
@@ -54,12 +57,9 @@ public abstract class AbstractProducer {
         MessageCreator mc = new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
-//                String messageAsString = JMSUtil.marshal(event.getObj(), marshaller);
-            	
-            	XmlMapper xmlMapper = new XmlMapper();
             	String messageAsString = "";
 				try {
-					messageAsString = xmlMapper.writeValueAsString(event.getObj());
+					messageAsString = writer.writeValueAsString(event.getObj());
 				} catch (JsonProcessingException e) {
 					getLogger().error("Se ha producido un error al querer parsear el mensaje a XML", e);
 					throw new JMSException(e.getMessage());

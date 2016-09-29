@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jms.JMSException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,30 +30,27 @@ import com.nimbusds.jose.JOSEException;
 
 import ar.gob.buenosaires.domain.ArchivoProyecto;
 import ar.gob.buenosaires.domain.Proyecto;
-import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.ProyectoService;
-import ar.gob.buenosaires.service.UsuarioService;
+import ar.gob.buenosaires.util.DSUtils;
 
 @RestController
 @RequestMapping("/api/proyecto")
 public class ProyectoController {
-	
+
 	private final static Logger LOGGER = LoggerFactory.getLogger(ProyectoController.class);
 
 	@Autowired
 	private ProyectoService service;
-	
-	@Autowired
-	private UsuarioService usuarioService;
 
 	@Value("${download.archivos.proyecto.path}")
 	private String PATHARCHIVOS;
 
 	@RequestMapping(path = "/bajar_archivo/{id}/{idJurisdiccion}/{nombreArchivo:.+}", method = RequestMethod.GET)
-	public @ResponseBody void bajarArchivoDeProyecto(@PathVariable final String id, @PathVariable final String idJurisdiccion,
-			@PathVariable final String nombreArchivo, final HttpServletResponse response) {
+	public @ResponseBody void bajarArchivoDeProyecto(@PathVariable final String id,
+			@PathVariable final String idJurisdiccion, @PathVariable final String nombreArchivo,
+			final HttpServletResponse response) {
 		final String path = PATHARCHIVOS.replace("idJurisdiccion", idJurisdiccion).replace("idProyecto", id);
 
 		FileInputStream fis;
@@ -74,7 +70,9 @@ public class ProyectoController {
 
 	@RequestMapping(path = "/subir_archivo", method = RequestMethod.POST)
 	public @ResponseBody String addArchivoAProyecto(final String id, final String idJurisdiccion,
-			final MultipartFile archivoASubir) throws ESBException, JMSException, IOException {
+			final MultipartFile archivoASubir, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, IOException, ParseException, JOSEException,
+			SignatureVerificationException {
 		final Proyecto elProyecto = service.getProyectoPorId(id);
 		final ArchivoProyecto nuevoArchivo = new ArchivoProyecto();
 		nuevoArchivo.setNombre(archivoASubir.getOriginalFilename());
@@ -82,26 +80,26 @@ public class ProyectoController {
 
 		// Chequear si exite el path, sino crearlo
 		// guardar archivo.
-			try {
-				if (Files.notExists(Paths.get(pathArchivos))) {
-					Files.createDirectories(Paths.get(pathArchivos));
-				}
-			} catch (final IOException e) {
-				getLogger().error("verifique que exista la carpeta: " + PATHARCHIVOS);
-				throw new IOException("verifique que exista la carpeta: " + PATHARCHIVOS);
+		try {
+			if (Files.notExists(Paths.get(pathArchivos))) {
+				Files.createDirectories(Paths.get(pathArchivos));
 			}
-			
-			try {
-				if(Files.isWritable(Paths.get(pathArchivos))){
-					archivoASubir.transferTo(new File(pathArchivos + nuevoArchivo.getNombre()));
-					elProyecto.getArchivos().add(nuevoArchivo);
-					nuevoArchivo.setProyecto(elProyecto);
-					service.updateProyecto(elProyecto);
-				}
-			} catch (final IOException e) {
-				getLogger().error("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
-				throw new IOException("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
+		} catch (final IOException e) {
+			getLogger().error("verifique que exista la carpeta: " + PATHARCHIVOS);
+			throw new IOException("verifique que exista la carpeta: " + PATHARCHIVOS);
+		}
+
+		try {
+			if (Files.isWritable(Paths.get(pathArchivos))) {
+				archivoASubir.transferTo(new File(pathArchivos + nuevoArchivo.getNombre()));
+				elProyecto.getArchivos().add(nuevoArchivo);
+				nuevoArchivo.setProyecto(elProyecto);
+				service.updateProyecto(elProyecto, DSUtils.getMailDelUsuarioDelToken(token));
 			}
+		} catch (final IOException e) {
+			getLogger().error("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
+			throw new IOException("No se ha podido guardar el archivo adjunto en la carpeta: " + PATHARCHIVOS);
+		}
 		return nuevoArchivo.getNombre();
 	}
 
@@ -128,36 +126,45 @@ public class ProyectoController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public Proyecto createProyecto(@RequestBody final Proyecto proyecto) throws ESBException, JMSException {
-		return service.createProyecto(proyecto);
+	public Proyecto createProyecto(@RequestBody final Proyecto proyecto,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.createProyecto(proyecto, DSUtils.getMailDelUsuarioDelToken(token));
 	}
 
 	@RequestMapping(path = "/presentar", method = RequestMethod.POST)
-	public Proyecto presentarProyecto(@RequestBody final Proyecto proyecto) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-		return service.presentarProyecto(proyecto);		
+	public Proyecto presentarProyecto(@RequestBody final Proyecto proyecto,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.presentarProyecto(proyecto, DSUtils.getMailDelUsuarioDelToken(token));
 	}
-	
+
 	@RequestMapping(path = "/cambiarEstado/{action}", method = RequestMethod.POST)
-	public Proyecto cambiarEstadoProyecto(@RequestBody final Proyecto proyecto, @PathVariable final String action) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-			return service.cambiarEstadoProyecto(proyecto, action);
+	public Proyecto cambiarEstadoProyecto(@RequestBody final Proyecto proyecto, @PathVariable final String action,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.cambiarEstadoProyecto(proyecto, action, DSUtils.getMailDelUsuarioDelToken(token));
 	}
-	
+
 	@RequestMapping(path = "/cambiarEstado/accionesPermitidas/{id}", method = RequestMethod.GET)
-	public List<String> getAccionesPermitidas(@PathVariable final String id, final HttpServletRequest request) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-		Usuario user = usuarioService.getUsuarioPorToken(request.getHeader(HttpHeaders.AUTHORIZATION));
-		return service.getAccionesPermitidas(id, user);			
+	public List<String> getAccionesPermitidas(@PathVariable final String id, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.getAccionesPermitidas(id, DSUtils.getMailDelUsuarioDelToken(token));			
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
-	public Proyecto updateProyecto(@RequestBody final Proyecto proyecto) throws ESBException, JMSException {
-		return service.updateProyecto(proyecto);
+	public Proyecto updateProyecto(@RequestBody final Proyecto proyecto,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.updateProyecto(proyecto, DSUtils.getMailDelUsuarioDelToken(token));
 	}
 
 	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody void deleteProyecto(@PathVariable final String id) throws ESBException, JMSException {
-		service.deleteProyecto(id);
+	public @ResponseBody void deleteProyecto(@PathVariable final String id,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		service.deleteProyecto(id, DSUtils.getMailDelUsuarioDelToken(token));
 	}
-	
+
 	public static Logger getLogger() {
 		return LOGGER;
 	}

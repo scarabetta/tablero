@@ -17,11 +17,11 @@ public interface UsuarioService {
 
 	List<Usuario> getUsuarios() throws ESBException, JMSException;
 
-	Usuario createUsuario(Usuario usuario) throws ESBException, JMSException;
+	Usuario createUsuario(Usuario usuario, String email) throws ESBException, JMSException;
 
-	Usuario updateUsuario(Usuario usuario) throws ESBException, JMSException;
+	Usuario updateUsuario(Usuario usuario, String email) throws ESBException, JMSException;
 
-	void deleteUsuario(String id) throws ESBException, JMSException;
+	void deleteUsuario(String id, String email) throws ESBException, JMSException;
 
 	Usuario getUsuarioPorId(Long id) throws ESBException, JMSException;
 	
