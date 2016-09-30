@@ -12,7 +12,7 @@
 
 -- Dumping structure for view proyectos_ba_generated.exportacion_proyectos_view
 -- Removing temporary table and create final VIEW structure
-DROP TABLE IF EXISTS `exportacion_proyectos_view`;
+DROP VIEW IF EXISTS `exportacion_proyectos_view`;
 CREATE VIEW `exportacion_proyectos_view` AS SELECT DISTINCT p.idProyecto "idProyecto", j.nombre "nombreJurisidiccion", p.nombre "nombreProyecto", 
 			  p.estado, oj.nombre "objetivoEstrategico", oop.nombre "objetivoOperativo", p.descripcion "descripcionProyecto", p.liderProyecto "responsable",
 			   a.nombre "area", p.organismosCorresponsables "organismosCorresponsables", p.fechaInicio "fechaInicio",
