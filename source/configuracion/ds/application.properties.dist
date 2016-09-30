@@ -41,5 +41,7 @@ configs.key.value=captcha;6LcSLyoTAAAAAN4zBx2nuOKIUwdQ0G1ZINLiqOkG
 exportacion.archivos.proyecto.path = /etc/pba/ds/template_exportacion_priorizacion.xlsx
 
 #Configuracion tamaño de archivos
-spring.http.multipart.max-file-size=1Mb
-spring.http.multipart.max-request-size=1Mb
+#spring.http.multipart.max-file-size=15MB
+#spring.http.multipart.max-request-size=15MB
+multipart.max-file-size=15MB
+multipart.max-request-size=15MB
