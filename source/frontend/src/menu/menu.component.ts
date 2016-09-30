@@ -88,7 +88,10 @@ module Menu {
             if (this.$state.current.name === 'home.tree') {
               this.$state.reload();
             } else {
-              this.$state.go('home.tree');
+              var scope = this;
+              this.$state.reload().then(function() {
+                scope.$state.go('home.tree');
+              });
             }
         }
 

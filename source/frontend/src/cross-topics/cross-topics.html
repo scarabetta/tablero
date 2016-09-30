@@ -22,7 +22,7 @@
             <div id="newcrosstopic">
             </div>
           </div>
-        </div>        
+        </div>
       </div>
     </div>
     <div class="table-responsive">
@@ -48,12 +48,12 @@
               <i class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)"></i>
             </td>
             <td class="colum-action">
-              <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" data-toggle="modal" data-target="#crossTopicAlert" data-original-title="Eliminar"></i>
+              <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" data-toggle="modal" data-target="#crossTopicAlert" data-original-title="Eliminar" ng-click="crossTopicsCtrl.topicForDelete(crossTopic.idTemaTransversal)"></i>
             </td>
           </tr>
         </tbody>
       </table>
-      <alertmodal modal-id="crossTopicAlert" modal-title="Aviso" modal-body="Se va a eliminar el tema transversal. ¿Continuar?" on-accept="crossTopicsCtrl.deleteCrossTopicById(crossTopic.idTemaTransversal)"></alertmodal>
+      <alertmodal modal-id="crossTopicAlert" modal-title="Aviso" modal-body="Se va a eliminar el tema transversal. ¿Continuar?" on-accept="crossTopicsCtrl.deleteCrossTopicById()"></alertmodal>
     </div>
   </div>
 </div>

@@ -1826,3 +1826,6 @@ div.jqi .jqititle {
 .absoluteContent {
     position: absolute;
 }
+#notificationsUser notification{
+  width: 100%;
+}

@@ -36519,10 +36519,10 @@
 	 * angular-ui-bootstrap
 	 * http://angular-ui.github.io/bootstrap/
 
-	 * Version: 1.3.3 - 2016-05-22
+	 * Version: 1.1.2 - 2016-02-01
 	 * License: MIT
-	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
-	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
+	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
+	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/popup.html","uib/template/datepicker/year.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
 	angular.module('ui.bootstrap.collapse', [])
 
 	  .directive('uibCollapse', ['$animate', '$q', '$parse', '$injector', function($animate, $q, $parse, $injector) {
@@ -36691,7 +36691,6 @@
 	    },
 	    scope: {
 	      heading: '@',               // Interpolate the heading attribute onto this scope
-	      panelClass: '@?',           // Ditto with panelClass
 	      isOpen: '=?',
 	      isDisabled: '=?'
 	    },
@@ -36751,23 +36750,12 @@
 	    link: function(scope, element, attrs, controller) {
 	      scope.$watch(function() { return controller[attrs.uibAccordionTransclude]; }, function(heading) {
 	        if (heading) {
-	          var elem = angular.element(element[0].querySelector(getHeaderSelectors()));
-	          elem.html('');
-	          elem.append(heading);
+	          element.find('span').html('');
+	          element.find('span').append(heading);
 	        }
 	      });
 	    }
 	  };
-
-	  function getHeaderSelectors() {
-	      return 'uib-accordion-header,' +
-	          'data-uib-accordion-header,' +
-	          'x-uib-accordion-header,' +
-	          'uib\\:accordion-header,' +
-	          '[uib-accordion-header],' +
-	          '[data-uib-accordion-header],' +
-	          '[x-uib-accordion-header]';
-	  }
 	});
 
 	angular.module('ui.bootstrap.alert', [])
@@ -36847,7 +36835,7 @@
 
 	      if (attrs.uibUncheckable) {
 	        scope.$watch(uncheckableExpr, function(uncheckable) {
-	          attrs.$set('uncheckable', uncheckable ? '' : undefined);
+	          attrs.$set('uncheckable', uncheckable ? '' : null);
 	        });
 	      }
 	    }
@@ -36902,41 +36890,35 @@
 	  var self = this,
 	    slides = self.slides = $scope.slides = [],
 	    SLIDE_DIRECTION = 'uib-slideDirection',
-	    currentIndex = $scope.active,
+	    currentIndex = -1,
 	    currentInterval, isPlaying, bufferedTransitions = [];
+	  self.currentSlide = null;
 
 	  var destroyed = false;
 
 	  self.addSlide = function(slide, element) {
-	    slides.push({
-	      slide: slide,
-	      element: element
-	    });
-	    slides.sort(function(a, b) {
-	      return +a.slide.index - +b.slide.index;
-	    });
+	    slide.$element = element;
+	    slides.push(slide);
 	    //if this is the first slide or the slide is set to active, select it
-	    if (slide.index === $scope.active || slides.length === 1 && !angular.isNumber($scope.active)) {
+	    if (slides.length === 1 || slide.active) {
 	      if ($scope.$currentTransition) {
 	        $scope.$currentTransition = null;
 	      }
 
-	      currentIndex = slide.index;
-	      $scope.active = slide.index;
-	      setActive(currentIndex);
-	      self.select(slides[findSlideIndex(slide)]);
+	      self.select(slides[slides.length - 1]);
 	      if (slides.length === 1) {
 	        $scope.play();
 	      }
+	    } else {
+	      slide.active = false;
 	    }
 	  };
 
 	  self.getCurrentIndex = function() {
-	    for (var i = 0; i < slides.length; i++) {
-	      if (slides[i].slide.index === currentIndex) {
-	        return i;
-	      }
+	    if (self.currentSlide && angular.isDefined(self.currentSlide.index)) {
+	      return +self.currentSlide.index;
 	    }
+	    return currentIndex;
 	  };
 
 	  self.next = $scope.next = function() {
@@ -36947,7 +36929,7 @@
 	      return;
 	    }
 
-	    return self.select(slides[newIndex], 'next');
+	    return self.select(getSlideByIndex(newIndex), 'next');
 	  };
 
 	  self.prev = $scope.prev = function() {
@@ -36958,75 +36940,65 @@
 	      return;
 	    }
 
-	    return self.select(slides[newIndex], 'prev');
+	    return self.select(getSlideByIndex(newIndex), 'prev');
 	  };
 
 	  self.removeSlide = function(slide) {
-	    var index = findSlideIndex(slide);
+	    if (angular.isDefined(slide.index)) {
+	      slides.sort(function(a, b) {
+	        return +a.index > +b.index;
+	      });
+	    }
 
-	    var bufferedIndex = bufferedTransitions.indexOf(slides[index]);
+	    var bufferedIndex = bufferedTransitions.indexOf(slide);
 	    if (bufferedIndex !== -1) {
 	      bufferedTransitions.splice(bufferedIndex, 1);
 	    }
-
 	    //get the index of the slide inside the carousel
+	    var index = slides.indexOf(slide);
 	    slides.splice(index, 1);
-	    if (slides.length > 0 && currentIndex === index) {
-	      if (index >= slides.length) {
-	        currentIndex = slides.length - 1;
-	        $scope.active = currentIndex;
-	        setActive(currentIndex);
-	        self.select(slides[slides.length - 1]);
-	      } else {
-	        currentIndex = index;
-	        $scope.active = currentIndex;
-	        setActive(currentIndex);
-	        self.select(slides[index]);
+	    $timeout(function() {
+	      if (slides.length > 0 && slide.active) {
+	        if (index >= slides.length) {
+	          self.select(slides[index - 1]);
+	        } else {
+	          self.select(slides[index]);
+	        }
+	      } else if (currentIndex > index) {
+	        currentIndex--;
 	      }
-	    } else if (currentIndex > index) {
-	      currentIndex--;
-	      $scope.active = currentIndex;
-	    }
+	    });
 
-	    //clean the active value when no more slide
+	    //clean the currentSlide when no more slide
 	    if (slides.length === 0) {
-	      currentIndex = null;
-	      $scope.active = null;
+	      self.currentSlide = null;
 	      clearBufferedTransitions();
 	    }
 	  };
 
 	  /* direction: "prev" or "next" */
 	  self.select = $scope.select = function(nextSlide, direction) {
-	    var nextIndex = findSlideIndex(nextSlide.slide);
+	    var nextIndex = $scope.indexOfSlide(nextSlide);
 	    //Decide direction if it's not given
 	    if (direction === undefined) {
 	      direction = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
 	    }
 	    //Prevent this user-triggered transition from occurring if there is already one in progress
-	    if (nextSlide.slide.index !== currentIndex &&
-	      !$scope.$currentTransition) {
-	      goNext(nextSlide.slide, nextIndex, direction);
-	    } else if (nextSlide && nextSlide.slide.index !== currentIndex && $scope.$currentTransition) {
-	      bufferedTransitions.push(slides[nextIndex]);
+	    if (nextSlide && nextSlide !== self.currentSlide && !$scope.$currentTransition) {
+	      goNext(nextSlide, nextIndex, direction);
+	    } else if (nextSlide && nextSlide !== self.currentSlide && $scope.$currentTransition) {
+	      bufferedTransitions.push(nextSlide);
+	      nextSlide.active = false;
 	    }
 	  };
 
 	  /* Allow outside people to call indexOf on slides array */
 	  $scope.indexOfSlide = function(slide) {
-	    return +slide.slide.index;
+	    return angular.isDefined(slide.index) ? +slide.index : slides.indexOf(slide);
 	  };
 
 	  $scope.isActive = function(slide) {
-	    return $scope.active === slide.slide.index;
-	  };
-
-	  $scope.isPrevDisabled = function() {
-	    return $scope.active === 0 && $scope.noWrap();
-	  };
-
-	  $scope.isNextDisabled = function() {
-	    return $scope.active === slides.length - 1 && $scope.noWrap();
+	    return self.currentSlide === slide;
 	  };
 
 	  $scope.pause = function() {
@@ -37056,24 +37028,6 @@
 
 	  $scope.$watchCollection('slides', resetTransition);
 
-	  $scope.$watch('active', function(index) {
-	    if (angular.isNumber(index) && currentIndex !== index) {
-	      for (var i = 0; i < slides.length; i++) {
-	        if (slides[i].slide.index === index) {
-	          index = i;
-	          break;
-	        }
-	      }
-
-	      var slide = slides[index];
-	      if (slide) {
-	        setActive(index);
-	        self.select(slides[index]);
-	        currentIndex = index;
-	      }
-	    }
-	  });
-
 	  function clearBufferedTransitions() {
 	    while (bufferedTransitions.length) {
 	      bufferedTransitions.shift();
@@ -37081,6 +37035,9 @@
 	  }
 
 	  function getSlideByIndex(index) {
+	    if (angular.isUndefined(slides[index].index)) {
+	      return slides[index];
+	    }
 	    for (var i = 0, l = slides.length; i < l; ++i) {
 	      if (slides[i].index === index) {
 	        return slides[i];
@@ -37088,36 +37045,26 @@
 	    }
 	  }
 
-	  function setActive(index) {
-	    for (var i = 0; i < slides.length; i++) {
-	      slides[i].slide.active = i === index;
-	    }
-	  }
-
 	  function goNext(slide, index, direction) {
-	    if (destroyed) {
-	      return;
-	    }
+	    if (destroyed) { return; }
 
-	    angular.extend(slide, {direction: direction});
-	    angular.extend(slides[currentIndex].slide || {}, {direction: direction});
+	    angular.extend(slide, {direction: direction, active: true});
+	    angular.extend(self.currentSlide || {}, {direction: direction, active: false});
 	    if ($animate.enabled($element) && !$scope.$currentTransition &&
-	      slides[index].element && self.slides.length > 1) {
-	      slides[index].element.data(SLIDE_DIRECTION, slide.direction);
-	      var currentIdx = self.getCurrentIndex();
-
-	      if (angular.isNumber(currentIdx) && slides[currentIdx].element) {
-	        slides[currentIdx].element.data(SLIDE_DIRECTION, slide.direction);
+	      slide.$element && self.slides.length > 1) {
+	      slide.$element.data(SLIDE_DIRECTION, slide.direction);
+	      if (self.currentSlide && self.currentSlide.$element) {
+	        self.currentSlide.$element.data(SLIDE_DIRECTION, slide.direction);
 	      }
 
 	      $scope.$currentTransition = true;
-	      $animate.on('addClass', slides[index].element, function(element, phase) {
+	      $animate.on('addClass', slide.$element, function(element, phase) {
 	        if (phase === 'close') {
 	          $scope.$currentTransition = null;
 	          $animate.off('addClass', element);
 	          if (bufferedTransitions.length) {
-	            var nextSlide = bufferedTransitions.pop().slide;
-	            var nextIndex = nextSlide.index;
+	            var nextSlide = bufferedTransitions.pop();
+	            var nextIndex = $scope.indexOfSlide(nextSlide);
 	            var nextDirection = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
 	            clearBufferedTransitions();
 
@@ -37127,20 +37074,11 @@
 	      });
 	    }
 
-	    $scope.active = slide.index;
-	    currentIndex = slide.index;
-	    setActive(index);
+	    self.currentSlide = slide;
+	    currentIndex = index;
 
 	    //every time you change slides, reset the timer
 	    restartTimer();
-	  }
-
-	  function findSlideIndex(slide) {
-	    for (var i = 0; i < slides.length; i++) {
-	      if (slides[i].slide === slide) {
-	        return i;
-	      }
-	    }
 	  }
 
 	  function resetTimer() {
@@ -37185,7 +37123,6 @@
 	      return attrs.templateUrl || 'uib/template/carousel/carousel.html';
 	    },
 	    scope: {
-	      active: '=',
 	      interval: '=',
 	      noTransition: '=',
 	      noPause: '=',
@@ -37203,6 +37140,7 @@
 	      return attrs.templateUrl || 'uib/template/carousel/slide.html';
 	    },
 	    scope: {
+	      active: '=?',
 	      actual: '=?',
 	      index: '=?'
 	    },
@@ -37211,6 +37149,12 @@
 	      //when the scope is destroyed then remove the slide from the current slides array
 	      scope.$on('$destroy', function() {
 	        carouselCtrl.removeSlide(scope);
+	      });
+
+	      scope.$watch('active', function(active) {
+	        if (active) {
+	          carouselCtrl.select(scope);
+	        }
 	      });
 	    }
 	  };
@@ -37296,7 +37240,7 @@
 	      {
 	        key: 'yy',
 	        regex: '\\d{2}',
-	        apply: function(value) { value = +value; this.year = value < 69 ? value + 2000 : value + 1900; },
+	        apply: function(value) { this.year = +value + 2000; },
 	        formatter: function(date) {
 	          var _date = new Date();
 	          _date.setFullYear(Math.abs(date.getFullYear()));
@@ -37591,13 +37535,11 @@
 	        _format = _format.replace(match[1] + mapper.key, '');
 	      }
 
-	      var endStr = i === map.length - 1 ? _format : '';
-
 	      if (mapper.apply) {
-	        return str + mapper.apply.call(null, date) + endStr;
+	        return str + mapper.apply.call(null, date);
 	      }
 
-	      return str + endStr;
+	      return str;
 	    }, '');
 	  };
 
@@ -37711,9 +37653,8 @@
 	    return date && timezone ? convertTimezoneToLocal(date, timezone, true) : date;
 	  }
 
-	  //https://github.com/angular/angular.js/blob/622c42169699ec07fc6daaa19fe6d224e5d2f70e/src/Angular.js#L1207
+	  //https://github.com/angular/angular.js/blob/4daafd3dbe6a80d578f5a31df1bb99c77559543e/src/Angular.js#L1207
 	  function timezoneToOffset(timezone, fallback) {
-	    timezone = timezone.replace(/:/g, '');
 	    var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
 	    return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
 	  }
@@ -37726,9 +37667,8 @@
 
 	  function convertTimezoneToLocal(date, timezone, reverse) {
 	    reverse = reverse ? -1 : 1;
-	    var dateTimezoneOffset = date.getTimezoneOffset();
-	    var timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
-	    return addDateMinutes(date, reverse * (timezoneOffset - dateTimezoneOffset));
+	    var timezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
+	    return addDateMinutes(date, reverse * (timezoneOffset - date.getTimezoneOffset()));
 	  }
 	}]);
 
@@ -37747,7 +37687,7 @@
 
 	  return {
 	    restrict: 'A',
-	    compile: function(tElement, tAttrs) {
+	    compile: function (tElement, tAttrs) {
 	      var linkedScopes = [];
 	      var instances = [];
 	      var expToData = {};
@@ -37766,7 +37706,7 @@
 	          element: element
 	        });
 
-	        exps.forEach(function(exp, k) {
+	        exps.forEach(function (exp, k) {
 	          addForExp(exp, scope);
 	        });
 
@@ -37779,9 +37719,9 @@
 	        var compareWithExp = matches[2];
 	        var data = expToData[exp];
 	        if (!data) {
-	          var watchFn = function(compareWithVal) {
+	          var watchFn = function (compareWithVal) {
 	            var newActivated = null;
-	            instances.some(function(instance) {
+	            instances.some(function (instance) {
 	              var thisVal = instance.scope.$eval(onExp);
 	              if (thisVal === compareWithVal) {
 	                newActivated = instance;
@@ -37816,661 +37756,20 @@
 	        instances.splice(index, 1);
 	        if (linkedScopes.length) {
 	          var newWatchScope = linkedScopes[0];
-	          angular.forEach(expToData, function(data) {
+	          angular.forEach(expToData, function (data) {
 	            if (data.scope === removedScope) {
 	              data.watcher = newWatchScope.$watch(data.compareWithExp, data.watchFn);
 	              data.scope = newWatchScope;
 	            }
 	          });
-	        } else {
+	        }
+	        else {
 	          expToData = {};
 	        }
 	      }
 	    }
 	  };
 	}]);
-	angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.isClass'])
-
-	.value('$datepickerSuppressError', false)
-
-	.value('$datepickerLiteralWarning', true)
-
-	.constant('uibDatepickerConfig', {
-	  datepickerMode: 'day',
-	  formatDay: 'dd',
-	  formatMonth: 'MMMM',
-	  formatYear: 'yyyy',
-	  formatDayHeader: 'EEE',
-	  formatDayTitle: 'MMMM yyyy',
-	  formatMonthTitle: 'yyyy',
-	  maxDate: null,
-	  maxMode: 'year',
-	  minDate: null,
-	  minMode: 'day',
-	  ngModelOptions: {},
-	  shortcutPropagation: false,
-	  showWeeks: true,
-	  yearColumns: 5,
-	  yearRows: 4
-	})
-
-	.controller('UibDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfig', '$datepickerLiteralWarning', '$datepickerSuppressError', 'uibDateParser',
-	  function($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerLiteralWarning, $datepickerSuppressError, dateParser) {
-	  var self = this,
-	      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
-	      ngModelOptions = {},
-	      watchListeners = [],
-	      optionsUsed = !!$attrs.datepickerOptions;
-
-	  if (!$scope.datepickerOptions) {
-	    $scope.datepickerOptions = {};
-	  }
-
-	  // Modes chain
-	  this.modes = ['day', 'month', 'year'];
-
-	  [
-	    'customClass',
-	    'dateDisabled',
-	    'datepickerMode',
-	    'formatDay',
-	    'formatDayHeader',
-	    'formatDayTitle',
-	    'formatMonth',
-	    'formatMonthTitle',
-	    'formatYear',
-	    'maxDate',
-	    'maxMode',
-	    'minDate',
-	    'minMode',
-	    'showWeeks',
-	    'shortcutPropagation',
-	    'startingDay',
-	    'yearColumns',
-	    'yearRows'
-	  ].forEach(function(key) {
-	    switch (key) {
-	      case 'customClass':
-	      case 'dateDisabled':
-	        $scope[key] = $scope.datepickerOptions[key] || angular.noop;
-	        break;
-	      case 'datepickerMode':
-	        $scope.datepickerMode = angular.isDefined($scope.datepickerOptions.datepickerMode) ?
-	          $scope.datepickerOptions.datepickerMode : datepickerConfig.datepickerMode;
-	        break;
-	      case 'formatDay':
-	      case 'formatDayHeader':
-	      case 'formatDayTitle':
-	      case 'formatMonth':
-	      case 'formatMonthTitle':
-	      case 'formatYear':
-	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
-	          $interpolate($scope.datepickerOptions[key])($scope.$parent) :
-	          datepickerConfig[key];
-	        break;
-	      case 'showWeeks':
-	      case 'shortcutPropagation':
-	      case 'yearColumns':
-	      case 'yearRows':
-	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
-	          $scope.datepickerOptions[key] : datepickerConfig[key];
-	        break;
-	      case 'startingDay':
-	        if (angular.isDefined($scope.datepickerOptions.startingDay)) {
-	          self.startingDay = $scope.datepickerOptions.startingDay;
-	        } else if (angular.isNumber(datepickerConfig.startingDay)) {
-	          self.startingDay = datepickerConfig.startingDay;
-	        } else {
-	          self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
-	        }
-
-	        break;
-	      case 'maxDate':
-	      case 'minDate':
-	        $scope.$watch('datepickerOptions.' + key, function(value) {
-	          if (value) {
-	            if (angular.isDate(value)) {
-	              self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
-	            } else {
-	              if ($datepickerLiteralWarning) {
-	                $log.warn('Literal date support has been deprecated, please switch to date object usage');
-	              }
-
-	              self[key] = new Date(dateFilter(value, 'medium'));
-	            }
-	          } else {
-	            self[key] = datepickerConfig[key] ?
-	              dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) :
-	              null;
-	          }
-
-	          self.refreshView();
-	        });
-
-	        break;
-	      case 'maxMode':
-	      case 'minMode':
-	        if ($scope.datepickerOptions[key]) {
-	          $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
-	            self[key] = $scope[key] = angular.isDefined(value) ? value : datepickerOptions[key];
-	            if (key === 'minMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) < self.modes.indexOf(self[key]) ||
-	              key === 'maxMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) > self.modes.indexOf(self[key])) {
-	              $scope.datepickerMode = self[key];
-	              $scope.datepickerOptions.datepickerMode = self[key];
-	            }
-	          });
-	        } else {
-	          self[key] = $scope[key] = datepickerConfig[key] || null;
-	        }
-
-	        break;
-	    }
-	  });
-
-	  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
-
-	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
-	  if (angular.isDefined($attrs.ngDisabled)) {
-	    watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
-	      $scope.disabled = disabled;
-	      self.refreshView();
-	    }));
-	  }
-
-	  $scope.isActive = function(dateObject) {
-	    if (self.compare(dateObject.date, self.activeDate) === 0) {
-	      $scope.activeDateId = dateObject.uid;
-	      return true;
-	    }
-	    return false;
-	  };
-
-	  this.init = function(ngModelCtrl_) {
-	    ngModelCtrl = ngModelCtrl_;
-	    ngModelOptions = ngModelCtrl_.$options || datepickerConfig.ngModelOptions;
-	    if ($scope.datepickerOptions.initDate) {
-	      self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.timezone) || new Date();
-	      $scope.$watch('datepickerOptions.initDate', function(initDate) {
-	        if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
-	          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
-	          self.refreshView();
-	        }
-	      });
-	    } else {
-	      self.activeDate = new Date();
-	    }
-
-	    var date = ngModelCtrl.$modelValue ? new Date(ngModelCtrl.$modelValue) : new Date();
-	    this.activeDate = !isNaN(date) ?
-	      dateParser.fromTimezone(date, ngModelOptions.timezone) :
-	      dateParser.fromTimezone(new Date(), ngModelOptions.timezone);
-
-	    ngModelCtrl.$render = function() {
-	      self.render();
-	    };
-	  };
-
-	  this.render = function() {
-	    if (ngModelCtrl.$viewValue) {
-	      var date = new Date(ngModelCtrl.$viewValue),
-	          isValid = !isNaN(date);
-
-	      if (isValid) {
-	        this.activeDate = dateParser.fromTimezone(date, ngModelOptions.timezone);
-	      } else if (!$datepickerSuppressError) {
-	        $log.error('Datepicker directive: "ng-model" value must be a Date object');
-	      }
-	    }
-	    this.refreshView();
-	  };
-
-	  this.refreshView = function() {
-	    if (this.element) {
-	      $scope.selectedDt = null;
-	      this._refreshView();
-	      if ($scope.activeDt) {
-	        $scope.activeDateId = $scope.activeDt.uid;
-	      }
-
-	      var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
-	      date = dateParser.fromTimezone(date, ngModelOptions.timezone);
-	      ngModelCtrl.$setValidity('dateDisabled', !date ||
-	        this.element && !this.isDisabled(date));
-	    }
-	  };
-
-	  this.createDateObject = function(date, format) {
-	    var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
-	    model = dateParser.fromTimezone(model, ngModelOptions.timezone);
-	    var today = new Date();
-	    today = dateParser.fromTimezone(today, ngModelOptions.timezone);
-	    var time = this.compare(date, today);
-	    var dt = {
-	      date: date,
-	      label: dateParser.filter(date, format),
-	      selected: model && this.compare(date, model) === 0,
-	      disabled: this.isDisabled(date),
-	      past: time < 0,
-	      current: time === 0,
-	      future: time > 0,
-	      customClass: this.customClass(date) || null
-	    };
-
-	    if (model && this.compare(date, model) === 0) {
-	      $scope.selectedDt = dt;
-	    }
-
-	    if (self.activeDate && this.compare(dt.date, self.activeDate) === 0) {
-	      $scope.activeDt = dt;
-	    }
-
-	    return dt;
-	  };
-
-	  this.isDisabled = function(date) {
-	    return $scope.disabled ||
-	      this.minDate && this.compare(date, this.minDate) < 0 ||
-	      this.maxDate && this.compare(date, this.maxDate) > 0 ||
-	      $scope.dateDisabled && $scope.dateDisabled({date: date, mode: $scope.datepickerMode});
-	  };
-
-	  this.customClass = function(date) {
-	    return $scope.customClass({date: date, mode: $scope.datepickerMode});
-	  };
-
-	  // Split array into smaller arrays
-	  this.split = function(arr, size) {
-	    var arrays = [];
-	    while (arr.length > 0) {
-	      arrays.push(arr.splice(0, size));
-	    }
-	    return arrays;
-	  };
-
-	  $scope.select = function(date) {
-	    if ($scope.datepickerMode === self.minMode) {
-	      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
-	      dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
-	      dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
-	      ngModelCtrl.$setViewValue(dt);
-	      ngModelCtrl.$render();
-	    } else {
-	      self.activeDate = date;
-	      setMode(self.modes[self.modes.indexOf($scope.datepickerMode) - 1]);
-
-	      $scope.$emit('uib:datepicker.mode');
-	    }
-
-	    $scope.$broadcast('uib:datepicker.focus');
-	  };
-
-	  $scope.move = function(direction) {
-	    var year = self.activeDate.getFullYear() + direction * (self.step.years || 0),
-	        month = self.activeDate.getMonth() + direction * (self.step.months || 0);
-	    self.activeDate.setFullYear(year, month, 1);
-	    self.refreshView();
-	  };
-
-	  $scope.toggleMode = function(direction) {
-	    direction = direction || 1;
-
-	    if ($scope.datepickerMode === self.maxMode && direction === 1 ||
-	      $scope.datepickerMode === self.minMode && direction === -1) {
-	      return;
-	    }
-
-	    setMode(self.modes[self.modes.indexOf($scope.datepickerMode) + direction]);
-
-	    $scope.$emit('uib:datepicker.mode');
-	  };
-
-	  // Key event mapper
-	  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
-
-	  var focusElement = function() {
-	    self.element[0].focus();
-	  };
-
-	  // Listen for focus requests from popup directive
-	  $scope.$on('uib:datepicker.focus', focusElement);
-
-	  $scope.keydown = function(evt) {
-	    var key = $scope.keys[evt.which];
-
-	    if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
-	      return;
-	    }
-
-	    evt.preventDefault();
-	    if (!self.shortcutPropagation) {
-	      evt.stopPropagation();
-	    }
-
-	    if (key === 'enter' || key === 'space') {
-	      if (self.isDisabled(self.activeDate)) {
-	        return; // do nothing
-	      }
-	      $scope.select(self.activeDate);
-	    } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
-	      $scope.toggleMode(key === 'up' ? 1 : -1);
-	    } else {
-	      self.handleKeyDown(key, evt);
-	      self.refreshView();
-	    }
-	  };
-
-	  $scope.$on('$destroy', function() {
-	    //Clear all watch listeners on destroy
-	    while (watchListeners.length) {
-	      watchListeners.shift()();
-	    }
-	  });
-
-	  function setMode(mode) {
-	    $scope.datepickerMode = mode;
-	    $scope.datepickerOptions.datepickerMode = mode;
-	  }
-	}])
-
-	.controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-	  this.step = { months: 1 };
-	  this.element = $element;
-	  function getDaysInMonth(year, month) {
-	    return month === 1 && year % 4 === 0 &&
-	      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
-	  }
-
-	  this.init = function(ctrl) {
-	    angular.extend(ctrl, this);
-	    scope.showWeeks = ctrl.showWeeks;
-	    ctrl.refreshView();
-	  };
-
-	  this.getDates = function(startDate, n) {
-	    var dates = new Array(n), current = new Date(startDate), i = 0, date;
-	    while (i < n) {
-	      date = new Date(current);
-	      dates[i++] = date;
-	      current.setDate(current.getDate() + 1);
-	    }
-	    return dates;
-	  };
-
-	  this._refreshView = function() {
-	    var year = this.activeDate.getFullYear(),
-	      month = this.activeDate.getMonth(),
-	      firstDayOfMonth = new Date(this.activeDate);
-
-	    firstDayOfMonth.setFullYear(year, month, 1);
-
-	    var difference = this.startingDay - firstDayOfMonth.getDay(),
-	      numDisplayedFromPreviousMonth = difference > 0 ?
-	        7 - difference : - difference,
-	      firstDate = new Date(firstDayOfMonth);
-
-	    if (numDisplayedFromPreviousMonth > 0) {
-	      firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
-	    }
-
-	    // 42 is the number of days on a six-week calendar
-	    var days = this.getDates(firstDate, 42);
-	    for (var i = 0; i < 42; i ++) {
-	      days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
-	        secondary: days[i].getMonth() !== month,
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.labels = new Array(7);
-	    for (var j = 0; j < 7; j++) {
-	      scope.labels[j] = {
-	        abbr: dateFilter(days[j].date, this.formatDayHeader),
-	        full: dateFilter(days[j].date, 'EEEE')
-	      };
-	    }
-
-	    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
-	    scope.rows = this.split(days, 7);
-
-	    if (scope.showWeeks) {
-	      scope.weekNumbers = [];
-	      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
-	          numWeeks = scope.rows.length;
-	      for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
-	        scope.weekNumbers.push(
-	          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
-	      }
-	    }
-	  };
-
-	  this.compare = function(date1, date2) {
-	    var _date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
-	    var _date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
-	    _date1.setFullYear(date1.getFullYear());
-	    _date2.setFullYear(date2.getFullYear());
-	    return _date1 - _date2;
-	  };
-
-	  function getISO8601WeekNumber(date) {
-	    var checkDate = new Date(date);
-	    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
-	    var time = checkDate.getTime();
-	    checkDate.setMonth(0); // Compare with Jan 1
-	    checkDate.setDate(1);
-	    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
-	  }
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getDate();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - 7;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + 7;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
-	      this.activeDate.setMonth(month, 1);
-	      date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
-	    } else if (key === 'home') {
-	      date = 1;
-	    } else if (key === 'end') {
-	      date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
-	    }
-	    this.activeDate.setDate(date);
-	  };
-	}])
-
-	.controller('UibMonthpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  this.step = { years: 1 };
-	  this.element = $element;
-
-	  this.init = function(ctrl) {
-	    angular.extend(ctrl, this);
-	    ctrl.refreshView();
-	  };
-
-	  this._refreshView = function() {
-	    var months = new Array(12),
-	        year = this.activeDate.getFullYear(),
-	        date;
-
-	    for (var i = 0; i < 12; i++) {
-	      date = new Date(this.activeDate);
-	      date.setFullYear(year, i, 1);
-	      months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
-	    scope.rows = this.split(months, 3);
-	  };
-
-	  this.compare = function(date1, date2) {
-	    var _date1 = new Date(date1.getFullYear(), date1.getMonth());
-	    var _date2 = new Date(date2.getFullYear(), date2.getMonth());
-	    _date1.setFullYear(date1.getFullYear());
-	    _date2.setFullYear(date2.getFullYear());
-	    return _date1 - _date2;
-	  };
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getMonth();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - 3;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + 3;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
-	      this.activeDate.setFullYear(year);
-	    } else if (key === 'home') {
-	      date = 0;
-	    } else if (key === 'end') {
-	      date = 11;
-	    }
-	    this.activeDate.setMonth(date);
-	  };
-	}])
-
-	.controller('UibYearpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
-	  var columns, range;
-	  this.element = $element;
-
-	  function getStartingYear(year) {
-	    return parseInt((year - 1) / range, 10) * range + 1;
-	  }
-
-	  this.yearpickerInit = function() {
-	    columns = this.yearColumns;
-	    range = this.yearRows * columns;
-	    this.step = { years: range };
-	  };
-
-	  this._refreshView = function() {
-	    var years = new Array(range), date;
-
-	    for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
-	      date = new Date(this.activeDate);
-	      date.setFullYear(start + i, 0, 1);
-	      years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
-	        uid: scope.uniqueId + '-' + i
-	      });
-	    }
-
-	    scope.title = [years[0].label, years[range - 1].label].join(' - ');
-	    scope.rows = this.split(years, columns);
-	    scope.columns = columns;
-	  };
-
-	  this.compare = function(date1, date2) {
-	    return date1.getFullYear() - date2.getFullYear();
-	  };
-
-	  this.handleKeyDown = function(key, evt) {
-	    var date = this.activeDate.getFullYear();
-
-	    if (key === 'left') {
-	      date = date - 1;
-	    } else if (key === 'up') {
-	      date = date - columns;
-	    } else if (key === 'right') {
-	      date = date + 1;
-	    } else if (key === 'down') {
-	      date = date + columns;
-	    } else if (key === 'pageup' || key === 'pagedown') {
-	      date += (key === 'pageup' ? - 1 : 1) * range;
-	    } else if (key === 'home') {
-	      date = getStartingYear(this.activeDate.getFullYear());
-	    } else if (key === 'end') {
-	      date = getStartingYear(this.activeDate.getFullYear()) + range - 1;
-	    }
-	    this.activeDate.setFullYear(date);
-	  };
-	}])
-
-	.directive('uibDatepicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/datepicker.html';
-	    },
-	    scope: {
-	      datepickerOptions: '=?'
-	    },
-	    require: ['uibDatepicker', '^ngModel'],
-	    controller: 'UibDatepickerController',
-	    controllerAs: 'datepicker',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
-	      datepickerCtrl.init(ngModelCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibDaypicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/day.html';
-	    },
-	    require: ['^uibDatepicker', 'uibDaypicker'],
-	    controller: 'UibDaypickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0],
-	        daypickerCtrl = ctrls[1];
-
-	      daypickerCtrl.init(datepickerCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibMonthpicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/month.html';
-	    },
-	    require: ['^uibDatepicker', 'uibMonthpicker'],
-	    controller: 'UibMonthpickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var datepickerCtrl = ctrls[0],
-	        monthpickerCtrl = ctrls[1];
-
-	      monthpickerCtrl.init(datepickerCtrl);
-	    }
-	  };
-	})
-
-	.directive('uibYearpicker', function() {
-	  return {
-	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepicker/year.html';
-	    },
-	    require: ['^uibDatepicker', 'uibYearpicker'],
-	    controller: 'UibYearpickerController',
-	    link: function(scope, element, attrs, ctrls) {
-	      var ctrl = ctrls[0];
-	      angular.extend(ctrl, ctrls[1]);
-	      ctrl.yearpickerInit();
-
-	      ctrl.refreshView();
-	    }
-	  };
-	});
-
 	angular.module('ui.bootstrap.position', [])
 
 	/**
@@ -38485,11 +37784,6 @@
 	     * Do not access this variable directly, use scrollbarWidth() instead.
 	     */
 	    var SCROLLBAR_WIDTH;
-	    /**
-	     * scrollbar on body and html element in IE and Edge overlay
-	     * content and should be considered 0 width.
-	     */
-	    var BODY_SCROLLBAR_WIDTH;
 	    var OVERFLOW_REGEX = {
 	      normal: /(auto|scroll)/,
 	      hidden: /(auto|scroll|hidden)/
@@ -38500,7 +37794,6 @@
 	      secondary: /^(top|bottom|left|right|center)$/,
 	      vertical: /^(top|bottom)$/
 	    };
-	    var BODY_REGEX = /(HTML|BODY)/;
 
 	    return {
 
@@ -38512,7 +37805,7 @@
 	       * @returns {element} A HTML element.
 	       */
 	      getRawNode: function(elem) {
-	        return elem.nodeName ? elem : elem[0] || elem;
+	        return elem[0] || elem;
 	      },
 
 	      /**
@@ -38554,25 +37847,12 @@
 	      /**
 	       * Provides the scrollbar width, concept from TWBS measureScrollbar()
 	       * function in https://github.com/twbs/bootstrap/blob/master/js/modal.js
-	       * In IE and Edge, scollbar on body and html element overlay and should
-	       * return a width of 0.
 	       *
 	       * @returns {number} The width of the browser scollbar.
 	       */
-	      scrollbarWidth: function(isBody) {
-	        if (isBody) {
-	          if (angular.isUndefined(BODY_SCROLLBAR_WIDTH)) {
-	            var bodyElem = $document.find('body');
-	            bodyElem.addClass('uib-position-body-scrollbar-measure');
-	            BODY_SCROLLBAR_WIDTH = $window.innerWidth - bodyElem[0].clientWidth;
-	            BODY_SCROLLBAR_WIDTH = isFinite(BODY_SCROLLBAR_WIDTH) ? BODY_SCROLLBAR_WIDTH : 0;
-	            bodyElem.removeClass('uib-position-body-scrollbar-measure');
-	          }
-	          return BODY_SCROLLBAR_WIDTH;
-	        }
-
+	      scrollbarWidth: function() {
 	        if (angular.isUndefined(SCROLLBAR_WIDTH)) {
-	          var scrollElem = angular.element('<div class="uib-position-scrollbar-measure"></div>');
+	          var scrollElem = angular.element('<div style="position: absolute; top: -9999px; width: 50px; height: 50px; overflow: scroll;"></div>');
 	          $document.find('body').append(scrollElem);
 	          SCROLLBAR_WIDTH = scrollElem[0].offsetWidth - scrollElem[0].clientWidth;
 	          SCROLLBAR_WIDTH = isFinite(SCROLLBAR_WIDTH) ? SCROLLBAR_WIDTH : 0;
@@ -38583,57 +37863,6 @@
 	      },
 
 	      /**
-	       * Provides the padding required on an element to replace the scrollbar.
-	       *
-	       * @returns {object} An object with the following properties:
-	       *   <ul>
-	       *     <li>**scrollbarWidth**: the width of the scrollbar</li>
-	       *     <li>**widthOverflow**: whether the the width is overflowing</li>
-	       *     <li>**right**: the amount of right padding on the element needed to replace the scrollbar</li>
-	       *     <li>**rightOriginal**: the amount of right padding currently on the element</li>
-	       *     <li>**heightOverflow**: whether the the height is overflowing</li>
-	       *     <li>**bottom**: the amount of bottom padding on the element needed to replace the scrollbar</li>
-	       *     <li>**bottomOriginal**: the amount of bottom padding currently on the element</li>
-	       *   </ul>
-	       */
-	      scrollbarPadding: function(elem) {
-	        elem = this.getRawNode(elem);
-
-	        var elemStyle = $window.getComputedStyle(elem);
-	        var paddingRight = this.parseStyle(elemStyle.paddingRight);
-	        var paddingBottom = this.parseStyle(elemStyle.paddingBottom);
-	        var scrollParent = this.scrollParent(elem, false, true);
-	        var scrollbarWidth = this.scrollbarWidth(scrollParent, BODY_REGEX.test(scrollParent.tagName));
-
-	        return {
-	          scrollbarWidth: scrollbarWidth,
-	          widthOverflow: scrollParent.scrollWidth > scrollParent.clientWidth,
-	          right: paddingRight + scrollbarWidth,
-	          originalRight: paddingRight,
-	          heightOverflow: scrollParent.scrollHeight > scrollParent.clientHeight,
-	          bottom: paddingBottom + scrollbarWidth,
-	          originalBottom: paddingBottom
-	         };
-	      },
-
-	      /**
-	       * Checks to see if the element is scrollable.
-	       *
-	       * @param {element} elem - The element to check.
-	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
-	       *   default is false.
-	       *
-	       * @returns {boolean} Whether the element is scrollable.
-	       */
-	      isScrollable: function(elem, includeHidden) {
-	        elem = this.getRawNode(elem);
-
-	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
-	        var elemStyle = $window.getComputedStyle(elem);
-	        return overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX);
-	      },
-
-	      /**
 	       * Provides the closest scrollable ancestor.
 	       * A port of the jQuery UI scrollParent method:
 	       * https://github.com/jquery/jquery-ui/blob/master/ui/scroll-parent.js
@@ -38641,20 +37870,15 @@
 	       * @param {element} elem - The element to find the scroll parent of.
 	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
 	       *   default is false.
-	       * @param {boolean=} [includeSelf=false] - Should the element being passed be
-	       * included in the scrollable llokup.
 	       *
 	       * @returns {element} A HTML element.
 	       */
-	      scrollParent: function(elem, includeHidden, includeSelf) {
+	      scrollParent: function(elem, includeHidden) {
 	        elem = this.getRawNode(elem);
 
 	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
 	        var documentEl = $document[0].documentElement;
 	        var elemStyle = $window.getComputedStyle(elem);
-	        if (includeSelf && overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX)) {
-	          return elem;
-	        }
 	        var excludeStatic = elemStyle.position === 'absolute';
 	        var scrollParent = elem.parentElement || documentEl;
 
@@ -38918,7 +38142,7 @@
 	        var targetElemPos = {top: 0, left: 0, placement: ''};
 
 	        if (placement[2]) {
-	          var viewportOffset = this.viewportOffset(hostElem, appendToBody);
+	          var viewportOffset = this.viewportOffset(hostElem);
 
 	          var targetElemStyle = $window.getComputedStyle(targetElem);
 	          var adjustedSize = {
@@ -39024,17 +38248,10 @@
 	          return;
 	        }
 
-	        var arrowCss = {
-	          top: '',
-	          bottom: '',
-	          left: '',
-	          right: ''
-	        };
-
 	        placement = this.parsePlacement(placement);
 	        if (placement[1] === 'center') {
 	          // no adjustment necessary - just reset styles
-	          angular.element(arrowElem).css(arrowCss);
+	          angular.element(arrowElem).css({top: '', bottom: '', right: '', left: '', margin: ''});
 	          return;
 	        }
 
@@ -39049,6 +38266,14 @@
 	        }
 	        borderRadiusProp += '-radius';
 	        var borderRadius = $window.getComputedStyle(isTooltip ? innerElem : elem)[borderRadiusProp];
+
+	        var arrowCss = {
+	          top: 'auto',
+	          bottom: 'auto',
+	          left: 'auto',
+	          right: 'auto',
+	          margin: 0
+	        };
 
 	        switch (placement[0]) {
 	          case 'top':
@@ -39072,9 +38297,682 @@
 	    };
 	  }]);
 
-	angular.module('ui.bootstrap.datepickerPopup', ['ui.bootstrap.datepicker', 'ui.bootstrap.position'])
+	angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.isClass', 'ui.bootstrap.position'])
 
-	.value('$datepickerPopupLiteralWarning', true)
+	.value('$datepickerSuppressError', false)
+
+	.constant('uibDatepickerConfig', {
+	  datepickerMode: 'day',
+	  formatDay: 'dd',
+	  formatMonth: 'MMMM',
+	  formatYear: 'yyyy',
+	  formatDayHeader: 'EEE',
+	  formatDayTitle: 'MMMM yyyy',
+	  formatMonthTitle: 'yyyy',
+	  maxDate: null,
+	  maxMode: 'year',
+	  minDate: null,
+	  minMode: 'day',
+	  ngModelOptions: {},
+	  shortcutPropagation: false,
+	  showWeeks: true,
+	  yearColumns: 5,
+	  yearRows: 4
+	})
+
+	.controller('UibDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfig', '$datepickerSuppressError', 'uibDateParser',
+	  function($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerSuppressError, dateParser) {
+	  var self = this,
+	      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
+	      ngModelOptions = {},
+	      watchListeners = [];
+
+	  // Modes chain
+	  this.modes = ['day', 'month', 'year'];
+
+	  if ($attrs.datepickerOptions) {
+	    angular.forEach([
+	      'formatDay',
+	      'formatDayHeader',
+	      'formatDayTitle',
+	      'formatMonth',
+	      'formatMonthTitle',
+	      'formatYear',
+	      'initDate',
+	      'maxDate',
+	      'maxMode',
+	      'minDate',
+	      'minMode',
+	      'showWeeks',
+	      'shortcutPropagation',
+	      'startingDay',
+	      'yearColumns',
+	      'yearRows'
+	    ], function(key) {
+	      switch (key) {
+	        case 'formatDay':
+	        case 'formatDayHeader':
+	        case 'formatDayTitle':
+	        case 'formatMonth':
+	        case 'formatMonthTitle':
+	        case 'formatYear':
+	          self[key] = angular.isDefined($scope.datepickerOptions[key]) ? $interpolate($scope.datepickerOptions[key])($scope.$parent) : datepickerConfig[key];
+	          break;
+	        case 'showWeeks':
+	        case 'shortcutPropagation':
+	        case 'yearColumns':
+	        case 'yearRows':
+	          self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
+	            $scope.datepickerOptions[key] : datepickerConfig[key];
+	          break;
+	        case 'startingDay':
+	          if (angular.isDefined($scope.datepickerOptions.startingDay)) {
+	            self.startingDay = $scope.datepickerOptions.startingDay;
+	          } else if (angular.isNumber(datepickerConfig.startingDay)) {
+	            self.startingDay = datepickerConfig.startingDay;
+	          } else {
+	            self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
+	          }
+
+	          break;
+	        case 'maxDate':
+	        case 'minDate':
+	          if ($scope.datepickerOptions[key]) {
+	            $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
+	              if (value) {
+	                if (angular.isDate(value)) {
+	                  self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	                } else {
+	                  self[key] = new Date(dateFilter(value, 'medium'));
+	                }
+	              } else {
+	                self[key] = null;
+	              }
+
+	              self.refreshView();
+	            });
+	          } else {
+	            self[key] = datepickerConfig[key] ? dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) : null;
+	          }
+
+	          break;
+	        case 'maxMode':
+	        case 'minMode':
+	          if ($scope.datepickerOptions[key]) {
+	            $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
+	              self[key] = $scope[key] = angular.isDefined(value) ? value : datepickerOptions[key];
+	              if (key === 'minMode' && self.modes.indexOf($scope.datepickerMode) < self.modes.indexOf(self[key]) ||
+	                key === 'maxMode' && self.modes.indexOf($scope.datepickerMode) > self.modes.indexOf(self[key])) {
+	                $scope.datepickerMode = self[key];
+	              }
+	            });
+	          } else {
+	            self[key] = $scope[key] = datepickerConfig[key] || null;
+	          }
+
+	          break;
+	        case 'initDate':
+	          if ($scope.datepickerOptions.initDate) {
+	            this.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.timezone) || new Date();
+	            $scope.$watch(function() { return $scope.datepickerOptions.initDate; }, function(initDate) {
+	              if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
+	                self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
+	                self.refreshView();
+	              }
+	            });
+	          } else {
+	            this.activeDate = new Date();
+	          }
+	      }
+	    });
+	  } else {
+	    // Interpolated configuration attributes
+	    angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle'], function(key) {
+	      self[key] = angular.isDefined($attrs[key]) ? $interpolate($attrs[key])($scope.$parent) : datepickerConfig[key];
+	    });
+
+	    // Evaled configuration attributes
+	    angular.forEach(['showWeeks', 'yearRows', 'yearColumns', 'shortcutPropagation'], function(key) {
+	      self[key] = angular.isDefined($attrs[key]) ?
+	        $scope.$parent.$eval($attrs[key]) : datepickerConfig[key];
+	    });
+
+	    if (angular.isDefined($attrs.startingDay)) {
+	      self.startingDay = $scope.$parent.$eval($attrs.startingDay);
+	    } else if (angular.isNumber(datepickerConfig.startingDay)) {
+	      self.startingDay = datepickerConfig.startingDay;
+	    } else {
+	      self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
+	    }
+
+	    // Watchable date attributes
+	    angular.forEach(['minDate', 'maxDate'], function(key) {
+	      if ($attrs[key]) {
+	        watchListeners.push($scope.$parent.$watch($attrs[key], function(value) {
+	          if (value) {
+	            if (angular.isDate(value)) {
+	              self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	            } else {
+	              self[key] = new Date(dateFilter(value, 'medium'));
+	            }
+	          } else {
+	            self[key] = null;
+	          }
+
+	          self.refreshView();
+	        }));
+	      } else {
+	        self[key] = datepickerConfig[key] ? dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) : null;
+	      }
+	    });
+
+	    angular.forEach(['minMode', 'maxMode'], function(key) {
+	      if ($attrs[key]) {
+	        watchListeners.push($scope.$parent.$watch($attrs[key], function(value) {
+	          self[key] = $scope[key] = angular.isDefined(value) ? value : $attrs[key];
+	          if (key === 'minMode' && self.modes.indexOf($scope.datepickerMode) < self.modes.indexOf(self[key]) ||
+	            key === 'maxMode' && self.modes.indexOf($scope.datepickerMode) > self.modes.indexOf(self[key])) {
+	            $scope.datepickerMode = self[key];
+	          }
+	        }));
+	      } else {
+	        self[key] = $scope[key] = datepickerConfig[key] || null;
+	      }
+	    });
+
+	    if (angular.isDefined($attrs.initDate)) {
+	      this.activeDate = dateParser.fromTimezone($scope.$parent.$eval($attrs.initDate), ngModelOptions.timezone) || new Date();
+	      watchListeners.push($scope.$parent.$watch($attrs.initDate, function(initDate) {
+	        if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
+	          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
+	          self.refreshView();
+	        }
+	      }));
+	    } else {
+	      this.activeDate = new Date();
+	    }
+	  }
+
+	  $scope.datepickerMode = $scope.datepickerMode || datepickerConfig.datepickerMode;
+	  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+
+	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
+	  if (angular.isDefined($attrs.ngDisabled)) {
+	    watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
+	      $scope.disabled = disabled;
+	      self.refreshView();
+	    }));
+	  }
+
+	  $scope.isActive = function(dateObject) {
+	    if (self.compare(dateObject.date, self.activeDate) === 0) {
+	      $scope.activeDateId = dateObject.uid;
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  this.init = function(ngModelCtrl_) {
+	    ngModelCtrl = ngModelCtrl_;
+	    ngModelOptions = ngModelCtrl_.$options || datepickerConfig.ngModelOptions;
+
+	    if (ngModelCtrl.$modelValue) {
+	      this.activeDate = ngModelCtrl.$modelValue;
+	    }
+
+	    ngModelCtrl.$render = function() {
+	      self.render();
+	    };
+	  };
+
+	  this.render = function() {
+	    if (ngModelCtrl.$viewValue) {
+	      var date = new Date(ngModelCtrl.$viewValue),
+	          isValid = !isNaN(date);
+
+	      if (isValid) {
+	        this.activeDate = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      } else if (!$datepickerSuppressError) {
+	        $log.error('Datepicker directive: "ng-model" value must be a Date object');
+	      }
+	    }
+	    this.refreshView();
+	  };
+
+	  this.refreshView = function() {
+	    if (this.element) {
+	      $scope.selectedDt = null;
+	      this._refreshView();
+	      if ($scope.activeDt) {
+	        $scope.activeDateId = $scope.activeDt.uid;
+	      }
+
+	      var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	      date = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      ngModelCtrl.$setValidity('dateDisabled', !date ||
+	        this.element && !this.isDisabled(date));
+	    }
+	  };
+
+	  this.createDateObject = function(date, format) {
+	    var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	    model = dateParser.fromTimezone(model, ngModelOptions.timezone);
+	    var dt = {
+	      date: date,
+	      label: dateParser.filter(date, format),
+	      selected: model && this.compare(date, model) === 0,
+	      disabled: this.isDisabled(date),
+	      current: this.compare(date, new Date()) === 0,
+	      customClass: this.customClass(date) || null
+	    };
+
+	    if (model && this.compare(date, model) === 0) {
+	      $scope.selectedDt = dt;
+	    }
+
+	    if (self.activeDate && this.compare(dt.date, self.activeDate) === 0) {
+	      $scope.activeDt = dt;
+	    }
+
+	    return dt;
+	  };
+
+	  this.isDisabled = function(date) {
+	    return $scope.disabled ||
+	      this.minDate && this.compare(date, this.minDate) < 0 ||
+	      this.maxDate && this.compare(date, this.maxDate) > 0 ||
+	      $attrs.dateDisabled && $scope.dateDisabled({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  this.customClass = function(date) {
+	    return $scope.customClass({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  // Split array into smaller arrays
+	  this.split = function(arr, size) {
+	    var arrays = [];
+	    while (arr.length > 0) {
+	      arrays.push(arr.splice(0, size));
+	    }
+	    return arrays;
+	  };
+
+	  $scope.select = function(date) {
+	    if ($scope.datepickerMode === self.minMode) {
+	      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
+	      dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+	      dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
+	      ngModelCtrl.$setViewValue(dt);
+	      ngModelCtrl.$render();
+	    } else {
+	      self.activeDate = date;
+	      $scope.datepickerMode = self.modes[self.modes.indexOf($scope.datepickerMode) - 1];
+	    }
+	  };
+
+	  $scope.move = function(direction) {
+	    var year = self.activeDate.getFullYear() + direction * (self.step.years || 0),
+	        month = self.activeDate.getMonth() + direction * (self.step.months || 0);
+	    self.activeDate.setFullYear(year, month, 1);
+	    self.refreshView();
+	  };
+
+	  $scope.toggleMode = function(direction) {
+	    direction = direction || 1;
+
+	    if ($scope.datepickerMode === self.maxMode && direction === 1 ||
+	      $scope.datepickerMode === self.minMode && direction === -1) {
+	      return;
+	    }
+
+	    $scope.datepickerMode = self.modes[self.modes.indexOf($scope.datepickerMode) + direction];
+	  };
+
+	  // Key event mapper
+	  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
+
+	  var focusElement = function() {
+	    self.element[0].focus();
+	  };
+
+	  // Listen for focus requests from popup directive
+	  $scope.$on('uib:datepicker.focus', focusElement);
+
+	  $scope.keydown = function(evt) {
+	    var key = $scope.keys[evt.which];
+
+	    if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
+	      return;
+	    }
+
+	    evt.preventDefault();
+	    if (!self.shortcutPropagation) {
+	      evt.stopPropagation();
+	    }
+
+	    if (key === 'enter' || key === 'space') {
+	      if (self.isDisabled(self.activeDate)) {
+	        return; // do nothing
+	      }
+	      $scope.select(self.activeDate);
+	    } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
+	      $scope.toggleMode(key === 'up' ? 1 : -1);
+	    } else {
+	      self.handleKeyDown(key, evt);
+	      self.refreshView();
+	    }
+	  };
+
+	  $scope.$on("$destroy", function() {
+	    //Clear all watch listeners on destroy
+	    while (watchListeners.length) {
+	      watchListeners.shift()();
+	    }
+	  });
+	}])
+
+	.controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+	  this.step = { months: 1 };
+	  this.element = $element;
+	  function getDaysInMonth(year, month) {
+	    return month === 1 && year % 4 === 0 &&
+	      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
+	  }
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    scope.showWeeks = ctrl.showWeeks;
+	    ctrl.refreshView();
+	  };
+
+	  this.getDates = function(startDate, n) {
+	    var dates = new Array(n), current = new Date(startDate), i = 0, date;
+	    while (i < n) {
+	      date = new Date(current);
+	      dates[i++] = date;
+	      current.setDate(current.getDate() + 1);
+	    }
+	    return dates;
+	  };
+
+	  this._refreshView = function() {
+	    var year = this.activeDate.getFullYear(),
+	      month = this.activeDate.getMonth(),
+	      firstDayOfMonth = new Date(this.activeDate);
+
+	    firstDayOfMonth.setFullYear(year, month, 1);
+
+	    var difference = this.startingDay - firstDayOfMonth.getDay(),
+	      numDisplayedFromPreviousMonth = difference > 0 ?
+	        7 - difference : - difference,
+	      firstDate = new Date(firstDayOfMonth);
+
+	    if (numDisplayedFromPreviousMonth > 0) {
+	      firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
+	    }
+
+	    // 42 is the number of days on a six-week calendar
+	    var days = this.getDates(firstDate, 42);
+	    for (var i = 0; i < 42; i ++) {
+	      days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
+	        secondary: days[i].getMonth() !== month,
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.labels = new Array(7);
+	    for (var j = 0; j < 7; j++) {
+	      scope.labels[j] = {
+	        abbr: dateFilter(days[j].date, this.formatDayHeader),
+	        full: dateFilter(days[j].date, 'EEEE')
+	      };
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
+	    scope.rows = this.split(days, 7);
+
+	    if (scope.showWeeks) {
+	      scope.weekNumbers = [];
+	      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
+	          numWeeks = scope.rows.length;
+	      for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
+	        scope.weekNumbers.push(
+	          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
+	      }
+	    }
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  function getISO8601WeekNumber(date) {
+	    var checkDate = new Date(date);
+	    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+	    var time = checkDate.getTime();
+	    checkDate.setMonth(0); // Compare with Jan 1
+	    checkDate.setDate(1);
+	    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+	  }
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getDate();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 7;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 7;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setMonth(month, 1);
+	      date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
+	    } else if (key === 'home') {
+	      date = 1;
+	    } else if (key === 'end') {
+	      date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
+	    }
+	    this.activeDate.setDate(date);
+	  };
+	}])
+
+	.controller('UibMonthpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  this.step = { years: 1 };
+	  this.element = $element;
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    ctrl.refreshView();
+	  };
+
+	  this._refreshView = function() {
+	    var months = new Array(12),
+	        year = this.activeDate.getFullYear(),
+	        date;
+
+	    for (var i = 0; i < 12; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(year, i, 1);
+	      months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
+	    scope.rows = this.split(months, 3);
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getMonth();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 3;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 3;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setFullYear(year);
+	    } else if (key === 'home') {
+	      date = 0;
+	    } else if (key === 'end') {
+	      date = 11;
+	    }
+	    this.activeDate.setMonth(date);
+	  };
+	}])
+
+	.controller('UibYearpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var columns, range;
+	  this.element = $element;
+
+	  function getStartingYear(year) {
+	    return parseInt((year - 1) / range, 10) * range + 1;
+	  }
+
+	  this.yearpickerInit = function() {
+	    columns = this.yearColumns;
+	    range = this.yearRows * columns;
+	    this.step = { years: range };
+	  };
+
+	  this._refreshView = function() {
+	    var years = new Array(range), date;
+
+	    for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(start + i, 0, 1);
+	      years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = [years[0].label, years[range - 1].label].join(' - ');
+	    scope.rows = this.split(years, columns);
+	    scope.columns = columns;
+	  };
+
+	  this.compare = function(date1, date2) {
+	    return date1.getFullYear() - date2.getFullYear();
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getFullYear();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - columns;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + columns;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      date += (key === 'pageup' ? - 1 : 1) * range;
+	    } else if (key === 'home') {
+	      date = getStartingYear(this.activeDate.getFullYear());
+	    } else if (key === 'end') {
+	      date = getStartingYear(this.activeDate.getFullYear()) + range - 1;
+	    }
+	    this.activeDate.setFullYear(date);
+	  };
+	}])
+
+	.directive('uibDatepicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/datepicker.html';
+	    },
+	    scope: {
+	      datepickerMode: '=?',
+	      datepickerOptions: '=?',
+	      dateDisabled: '&',
+	      customClass: '&',
+	      shortcutPropagation: '&?'
+	    },
+	    require: ['uibDatepicker', '^ngModel'],
+	    controller: 'UibDatepickerController',
+	    controllerAs: 'datepicker',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      datepickerCtrl.init(ngModelCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibDaypicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/day.html';
+	    },
+	    require: ['^uibDatepicker', 'uibDaypicker'],
+	    controller: 'UibDaypickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        daypickerCtrl = ctrls[1];
+
+	      daypickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibMonthpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/month.html';
+	    },
+	    require: ['^uibDatepicker', 'uibMonthpicker'],
+	    controller: 'UibMonthpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        monthpickerCtrl = ctrls[1];
+
+	      monthpickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibYearpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/year.html';
+	    },
+	    require: ['^uibDatepicker', 'uibYearpicker'],
+	    controller: 'UibYearpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var ctrl = ctrls[0];
+	      angular.extend(ctrl, ctrls[1]);
+	      ctrl.yearpickerInit();
+
+	      ctrl.refreshView();
+	    }
+	  };
+	})
 
 	.constant('uibDatepickerPopupConfig', {
 	  altInputFormats: [],
@@ -39084,7 +38982,7 @@
 	  closeText: 'Done',
 	  currentText: 'Today',
 	  datepickerPopup: 'yyyy-MM-dd',
-	  datepickerPopupTemplateUrl: 'uib/template/datepickerPopup/popup.html',
+	  datepickerPopupTemplateUrl: 'uib/template/datepicker/popup.html',
 	  datepickerTemplateUrl: 'uib/template/datepicker/datepicker.html',
 	  html5Types: {
 	    date: 'yyyy-MM-dd',
@@ -39092,49 +38990,37 @@
 	    'month': 'yyyy-MM'
 	  },
 	  onOpenFocus: true,
-	  showButtonBar: true,
-	  placement: 'auto bottom-left'
+	  showButtonBar: true
 	})
 
-	.controller('UibDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$log', '$parse', '$window', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfig', '$timeout', 'uibDatepickerConfig', '$datepickerPopupLiteralWarning',
-	function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig, $datepickerPopupLiteralWarning) {
+	.controller('UibDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfig', '$timeout', 'uibDatepickerConfig',
+	function(scope, element, attrs, $compile, $parse, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig) {
 	  var cache = {},
 	    isHtml5DateInput = false;
 	  var dateFormat, closeOnDateSelection, appendToBody, onOpenFocus,
-	    datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl, scrollParentEl,
-	    ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [],
-	    timezone;
+	    datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl,
+	    ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [];
+
+	  scope.watchData = {};
 
 	  this.init = function(_ngModel_) {
 	    ngModel = _ngModel_;
-	    ngModelOptions = _ngModel_.$options;
-	    closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ?
-	      $scope.$parent.$eval($attrs.closeOnDateSelection) :
-	      datepickerPopupConfig.closeOnDateSelection;
-	    appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ?
-	      $scope.$parent.$eval($attrs.datepickerAppendToBody) :
-	      datepickerPopupConfig.appendToBody;
-	    onOpenFocus = angular.isDefined($attrs.onOpenFocus) ?
-	      $scope.$parent.$eval($attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
-	    datepickerPopupTemplateUrl = angular.isDefined($attrs.datepickerPopupTemplateUrl) ?
-	      $attrs.datepickerPopupTemplateUrl :
-	      datepickerPopupConfig.datepickerPopupTemplateUrl;
-	    datepickerTemplateUrl = angular.isDefined($attrs.datepickerTemplateUrl) ?
-	      $attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
-	    altInputFormats = angular.isDefined($attrs.altInputFormats) ?
-	      $scope.$parent.$eval($attrs.altInputFormats) :
-	      datepickerPopupConfig.altInputFormats;
+	    ngModelOptions = _ngModel_.$options || datepickerConfig.ngModelOptions;
+	    closeOnDateSelection = angular.isDefined(attrs.closeOnDateSelection) ? scope.$parent.$eval(attrs.closeOnDateSelection) : datepickerPopupConfig.closeOnDateSelection;
+	    appendToBody = angular.isDefined(attrs.datepickerAppendToBody) ? scope.$parent.$eval(attrs.datepickerAppendToBody) : datepickerPopupConfig.appendToBody;
+	    onOpenFocus = angular.isDefined(attrs.onOpenFocus) ? scope.$parent.$eval(attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
+	    datepickerPopupTemplateUrl = angular.isDefined(attrs.datepickerPopupTemplateUrl) ? attrs.datepickerPopupTemplateUrl : datepickerPopupConfig.datepickerPopupTemplateUrl;
+	    datepickerTemplateUrl = angular.isDefined(attrs.datepickerTemplateUrl) ? attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
+	    altInputFormats = angular.isDefined(attrs.altInputFormats) ? scope.$parent.$eval(attrs.altInputFormats) : datepickerPopupConfig.altInputFormats;
 
-	    $scope.showButtonBar = angular.isDefined($attrs.showButtonBar) ?
-	      $scope.$parent.$eval($attrs.showButtonBar) :
-	      datepickerPopupConfig.showButtonBar;
+	    scope.showButtonBar = angular.isDefined(attrs.showButtonBar) ? scope.$parent.$eval(attrs.showButtonBar) : datepickerPopupConfig.showButtonBar;
 
-	    if (datepickerPopupConfig.html5Types[$attrs.type]) {
-	      dateFormat = datepickerPopupConfig.html5Types[$attrs.type];
+	    if (datepickerPopupConfig.html5Types[attrs.type]) {
+	      dateFormat = datepickerPopupConfig.html5Types[attrs.type];
 	      isHtml5DateInput = true;
 	    } else {
-	      dateFormat = $attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
-	      $attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
+	      dateFormat = attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
+	      attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
 	        var newDateFormat = value || datepickerPopupConfig.datepickerPopup;
 	        // Invalidate the $modelValue to ensure that formatters re-run
 	        // FIXME: Refactor when PR is merged: https://github.com/angular/angular.js/pull/10764
@@ -39153,28 +39039,17 @@
 	      throw new Error('uibDatepickerPopup must have a date format specified.');
 	    }
 
-	    if (isHtml5DateInput && $attrs.uibDatepickerPopup) {
+	    if (isHtml5DateInput && attrs.uibDatepickerPopup) {
 	      throw new Error('HTML5 date input types do not support custom formats.');
 	    }
 
 	    // popup element used to display calendar
 	    popupEl = angular.element('<div uib-datepicker-popup-wrap><div uib-datepicker></div></div>');
-	    if (ngModelOptions) {
-	      timezone = ngModelOptions.timezone;
-	      $scope.ngModelOptions = angular.copy(ngModelOptions);
-	      $scope.ngModelOptions.timezone = null;
-	      if ($scope.ngModelOptions.updateOnDefault === true) {
-	        $scope.ngModelOptions.updateOn = $scope.ngModelOptions.updateOn ?
-	          $scope.ngModelOptions.updateOn + ' default' : 'default';
-	      }
-
-	      popupEl.attr('ng-model-options', 'ngModelOptions');
-	    } else {
-	      timezone = null;
-	    }
-
+	    scope.ngModelOptions = angular.copy(ngModelOptions);
+	    scope.ngModelOptions.timezone = null;
 	    popupEl.attr({
 	      'ng-model': 'date',
+	      'ng-model-options': 'ngModelOptions',
 	      'ng-change': 'dateSelection(date)',
 	      'template-url': datepickerPopupTemplateUrl
 	    });
@@ -39183,18 +39058,84 @@
 	    datepickerEl = angular.element(popupEl.children()[0]);
 	    datepickerEl.attr('template-url', datepickerTemplateUrl);
 
-	    if (!$scope.datepickerOptions) {
-	      $scope.datepickerOptions = {};
-	    }
-
 	    if (isHtml5DateInput) {
-	      if ($attrs.type === 'month') {
-	        $scope.datepickerOptions.datepickerMode = 'month';
-	        $scope.datepickerOptions.minMode = 'month';
+	      if (attrs.type === 'month') {
+	        datepickerEl.attr('datepicker-mode', '"month"');
+	        datepickerEl.attr('min-mode', 'month');
 	      }
 	    }
 
-	    datepickerEl.attr('datepicker-options', 'datepickerOptions');
+	    if (scope.datepickerOptions) {
+	      angular.forEach(scope.datepickerOptions, function(value, option) {
+	        // Ignore this options, will be managed later
+	        if (['minDate', 'maxDate', 'minMode', 'maxMode', 'initDate', 'datepickerMode'].indexOf(option) === -1) {
+	          datepickerEl.attr(cameltoDash(option), value);
+	        } else {
+	          datepickerEl.attr(cameltoDash(option), 'datepickerOptions.' + option);
+	        }
+	      });
+	    }
+
+	    angular.forEach(['minMode', 'maxMode', 'datepickerMode', 'shortcutPropagation'], function(key) {
+	      if (attrs[key]) {
+	        var getAttribute = $parse(attrs[key]);
+	        var propConfig = {
+	          get: function() {
+	            return getAttribute(scope.$parent);
+	          }
+	        };
+
+	        datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
+
+	        // Propagate changes from datepicker to outside
+	        if (key === 'datepickerMode') {
+	          var setAttribute = getAttribute.assign;
+	          propConfig.set = function(v) {
+	            setAttribute(scope.$parent, v);
+	          };
+	        }
+
+	        Object.defineProperty(scope.watchData, key, propConfig);
+	      }
+	    });
+
+	    angular.forEach(['minDate', 'maxDate', 'initDate'], function(key) {
+	      if (attrs[key]) {
+	        var getAttribute = $parse(attrs[key]);
+
+	        watchListeners.push(scope.$parent.$watch(getAttribute, function(value) {
+	          if (key === 'minDate' || key === 'maxDate') {
+	            if (value === null) {
+	              cache[key] = null;
+	            } else if (angular.isDate(value)) {
+	              cache[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	            } else {
+	              cache[key] = new Date(dateFilter(value, 'medium'));
+	            }
+
+	            scope.watchData[key] = value === null ? null : cache[key];
+	          } else {
+	            scope.watchData[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	          }
+	        }));
+
+	        datepickerEl.attr(cameltoDash(key), 'watchData.' + key);
+	      }
+	    });
+
+	    if (attrs.dateDisabled) {
+	      datepickerEl.attr('date-disabled', 'dateDisabled({ date: date, mode: mode })');
+	    }
+
+	    angular.forEach(['formatDay', 'formatMonth', 'formatYear', 'formatDayHeader', 'formatDayTitle', 'formatMonthTitle', 'showWeeks', 'startingDay', 'yearRows', 'yearColumns'], function(key) {
+	      if (angular.isDefined(attrs[key])) {
+	        datepickerEl.attr(cameltoDash(key), attrs[key]);
+	      }
+	    });
+
+	    if (attrs.customClass) {
+	      datepickerEl.attr('custom-class', 'customClass({ date: date, mode: mode })');
+	    }
 
 	    if (!isHtml5DateInput) {
 	      // Internal API to maintain the correct ng-invalid-[key] class
@@ -39203,58 +39144,54 @@
 	      ngModel.$parsers.unshift(parseDate);
 	      ngModel.$formatters.push(function(value) {
 	        if (ngModel.$isEmpty(value)) {
-	          $scope.date = value;
+	          scope.date = value;
 	          return value;
 	        }
 
-	        if (angular.isNumber(value)) {
-	          value = new Date(value);
+	        scope.date = dateParser.fromTimezone(value, ngModelOptions.timezone);
+
+	        if (angular.isNumber(scope.date)) {
+	          scope.date = new Date(scope.date);
 	        }
 
-	        $scope.date = dateParser.fromTimezone(value, timezone);
-
-	        return dateParser.filter($scope.date, dateFormat);
+	        return dateParser.filter(scope.date, dateFormat);
 	      });
 	    } else {
 	      ngModel.$formatters.push(function(value) {
-	        $scope.date = dateParser.fromTimezone(value, timezone);
+	        scope.date = dateParser.fromTimezone(value, ngModelOptions.timezone);
 	        return value;
 	      });
 	    }
 
 	    // Detect changes in the view from the text box
 	    ngModel.$viewChangeListeners.push(function() {
-	      $scope.date = parseDateString(ngModel.$viewValue);
+	      scope.date = parseDateString(ngModel.$viewValue);
 	    });
 
-	    $element.on('keydown', inputKeydownBind);
+	    element.on('keydown', inputKeydownBind);
 
-	    $popup = $compile(popupEl)($scope);
+	    $popup = $compile(popupEl)(scope);
 	    // Prevent jQuery cache memory leak (template is now redundant after linking)
 	    popupEl.remove();
 
 	    if (appendToBody) {
 	      $document.find('body').append($popup);
 	    } else {
-	      $element.after($popup);
+	      element.after($popup);
 	    }
 
-	    $scope.$on('$destroy', function() {
-	      if ($scope.isOpen === true) {
+	    scope.$on('$destroy', function() {
+	      if (scope.isOpen === true) {
 	        if (!$rootScope.$$phase) {
-	          $scope.$apply(function() {
-	            $scope.isOpen = false;
+	          scope.$apply(function() {
+	            scope.isOpen = false;
 	          });
 	        }
 	      }
 
 	      $popup.remove();
-	      $element.off('keydown', inputKeydownBind);
+	      element.off('keydown', inputKeydownBind);
 	      $document.off('click', documentClickBind);
-	      if (scrollParentEl) {
-	        scrollParentEl.off('scroll', positionPopup);
-	      }
-	      angular.element($window).off('resize', positionPopup);
 
 	      //Clear all watch listeners on destroy
 	      while (watchListeners.length) {
@@ -39263,124 +39200,88 @@
 	    });
 	  };
 
-	  $scope.getText = function(key) {
-	    return $scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
+	  scope.getText = function(key) {
+	    return scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
 	  };
 
-	  $scope.isDisabled = function(date) {
+	  scope.isDisabled = function(date) {
 	    if (date === 'today') {
-	      date = dateParser.fromTimezone(new Date(), timezone);
+	      date = new Date();
 	    }
 
-	    var dates = {};
-	    angular.forEach(['minDate', 'maxDate'], function(key) {
-	      if (!$scope.datepickerOptions[key]) {
-	        dates[key] = null;
-	      } else if (angular.isDate($scope.datepickerOptions[key])) {
-	        dates[key] = dateParser.fromTimezone(new Date($scope.datepickerOptions[key]), timezone);
-	      } else {
-	        if ($datepickerPopupLiteralWarning) {
-	          $log.warn('Literal date support has been deprecated, please switch to date object usage');
-	        }
-
-	        dates[key] = new Date(dateFilter($scope.datepickerOptions[key], 'medium'));
-	      }
-	    });
-
-	    return $scope.datepickerOptions &&
-	      dates.minDate && $scope.compare(date, dates.minDate) < 0 ||
-	      dates.maxDate && $scope.compare(date, dates.maxDate) > 0;
+	    return scope.watchData.minDate && scope.compare(date, cache.minDate) < 0 ||
+	        scope.watchData.maxDate && scope.compare(date, cache.maxDate) > 0;
 	  };
 
-	  $scope.compare = function(date1, date2) {
+	  scope.compare = function(date1, date2) {
 	    return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()) - new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
 	  };
 
 	  // Inner change
-	  $scope.dateSelection = function(dt) {
+	  scope.dateSelection = function(dt) {
 	    if (angular.isDefined(dt)) {
-	      $scope.date = dt;
+	      scope.date = dt;
 	    }
-	    var date = $scope.date ? dateParser.filter($scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
-	    $element.val(date);
+	    var date = scope.date ? dateParser.filter(scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
+	    element.val(date);
 	    ngModel.$setViewValue(date);
 
 	    if (closeOnDateSelection) {
-	      $scope.isOpen = false;
-	      $element[0].focus();
+	      scope.isOpen = false;
+	      element[0].focus();
 	    }
 	  };
 
-	  $scope.keydown = function(evt) {
+	  scope.keydown = function(evt) {
 	    if (evt.which === 27) {
 	      evt.stopPropagation();
-	      $scope.isOpen = false;
-	      $element[0].focus();
+	      scope.isOpen = false;
+	      element[0].focus();
 	    }
 	  };
 
-	  $scope.select = function(date, evt) {
-	    evt.stopPropagation();
-
+	  scope.select = function(date) {
 	    if (date === 'today') {
 	      var today = new Date();
-	      if (angular.isDate($scope.date)) {
-	        date = new Date($scope.date);
+	      if (angular.isDate(scope.date)) {
+	        date = new Date(scope.date);
 	        date.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
 	      } else {
 	        date = new Date(today.setHours(0, 0, 0, 0));
 	      }
 	    }
-	    $scope.dateSelection(date);
+	    scope.dateSelection(date);
 	  };
 
-	  $scope.close = function(evt) {
-	    evt.stopPropagation();
-
-	    $scope.isOpen = false;
-	    $element[0].focus();
+	  scope.close = function() {
+	    scope.isOpen = false;
+	    element[0].focus();
 	  };
 
-	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
-	  if ($attrs.ngDisabled) {
-	    watchListeners.push($scope.$parent.$watch($parse($attrs.ngDisabled), function(disabled) {
-	      $scope.disabled = disabled;
+	  scope.disabled = angular.isDefined(attrs.disabled) || false;
+	  if (attrs.ngDisabled) {
+	    watchListeners.push(scope.$parent.$watch($parse(attrs.ngDisabled), function(disabled) {
+	      scope.disabled = disabled;
 	    }));
 	  }
 
-	  $scope.$watch('isOpen', function(value) {
+	  scope.$watch('isOpen', function(value) {
 	    if (value) {
-	      if (!$scope.disabled) {
+	      if (!scope.disabled) {
+	        scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+	        scope.position.top = scope.position.top + element.prop('offsetHeight');
+
 	        $timeout(function() {
-	          positionPopup();
-
 	          if (onOpenFocus) {
-	            $scope.$broadcast('uib:datepicker.focus');
+	            scope.$broadcast('uib:datepicker.focus');
 	          }
-
 	          $document.on('click', documentClickBind);
-
-	          var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
-	          if (appendToBody || $position.parsePlacement(placement)[2]) {
-	            scrollParentEl = scrollParentEl || angular.element($position.scrollParent($element));
-	            if (scrollParentEl) {
-	              scrollParentEl.on('scroll', positionPopup);
-	            }
-	          } else {
-	            scrollParentEl = null;
-	          }
-
-	          angular.element($window).on('resize', positionPopup);
 	        }, 0, false);
 	      } else {
-	        $scope.isOpen = false;
+	        scope.isOpen = false;
 	      }
 	    } else {
 	      $document.off('click', documentClickBind);
-	      if (scrollParentEl) {
-	        scrollParentEl.off('scroll', positionPopup);
-	      }
-	      angular.element($window).off('resize', positionPopup);
 	    }
 	  });
 
@@ -39389,10 +39290,10 @@
 	  }
 
 	  function parseDateString(viewValue) {
-	    var date = dateParser.parse(viewValue, dateFormat, $scope.date);
+	    var date = dateParser.parse(viewValue, dateFormat, scope.date);
 	    if (isNaN(date)) {
 	      for (var i = 0; i < altInputFormats.length; i++) {
-	        date = dateParser.parse(viewValue, altInputFormats[i], $scope.date);
+	        date = dateParser.parse(viewValue, altInputFormats[i], scope.date);
 	        if (!isNaN(date)) {
 	          return date;
 	        }
@@ -39418,7 +39319,7 @@
 	    if (angular.isString(viewValue)) {
 	      var date = parseDateString(viewValue);
 	      if (!isNaN(date)) {
-	        return dateParser.toTimezone(date, timezone);
+	        return dateParser.toTimezone(date, ngModelOptions.timezone);
 	      }
 	    }
 
@@ -39428,7 +39329,7 @@
 	  function validator(modelValue, viewValue) {
 	    var value = modelValue || viewValue;
 
-	    if (!$attrs.ngRequired && !value) {
+	    if (!attrs.ngRequired && !value) {
 	      return true;
 	    }
 
@@ -39452,54 +39353,38 @@
 	  }
 
 	  function documentClickBind(event) {
-	    if (!$scope.isOpen && $scope.disabled) {
+	    if (!scope.isOpen && scope.disabled) {
 	      return;
 	    }
 
 	    var popup = $popup[0];
-	    var dpContainsTarget = $element[0].contains(event.target);
+	    var dpContainsTarget = element[0].contains(event.target);
 	    // The popup node may not be an element node
 	    // In some browsers (IE) only element nodes have the 'contains' function
 	    var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
-	    if ($scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
-	      $scope.$apply(function() {
-	        $scope.isOpen = false;
+	    if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
+	      scope.$apply(function() {
+	        scope.isOpen = false;
 	      });
 	    }
 	  }
 
 	  function inputKeydownBind(evt) {
-	    if (evt.which === 27 && $scope.isOpen) {
+	    if (evt.which === 27 && scope.isOpen) {
 	      evt.preventDefault();
 	      evt.stopPropagation();
-	      $scope.$apply(function() {
-	        $scope.isOpen = false;
+	      scope.$apply(function() {
+	        scope.isOpen = false;
 	      });
-	      $element[0].focus();
-	    } else if (evt.which === 40 && !$scope.isOpen) {
+	      element[0].focus();
+	    } else if (evt.which === 40 && !scope.isOpen) {
 	      evt.preventDefault();
 	      evt.stopPropagation();
-	      $scope.$apply(function() {
-	        $scope.isOpen = true;
+	      scope.$apply(function() {
+	        scope.isOpen = true;
 	      });
 	    }
 	  }
-
-	  function positionPopup() {
-	    if ($scope.isOpen) {
-	      var dpElement = angular.element($popup[0].querySelector('.uib-datepicker-popup'));
-	      var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
-	      var position = $position.positionElements($element, dpElement, placement, appendToBody);
-	      dpElement.css({top: position.top + 'px', left: position.left + 'px'});
-	      if (dpElement.hasClass('uib-position-measure')) {
-	        dpElement.removeClass('uib-position-measure');
-	      }
-	    }
-	  }
-
-	  $scope.$on('uib:datepicker.mode', function() {
-	    $timeout(positionPopup, 0, false);
-	  });
 	}])
 
 	.directive('uibDatepickerPopup', function() {
@@ -39511,7 +39396,9 @@
 	      isOpen: '=?',
 	      currentText: '@',
 	      clearText: '@',
-	      closeText: '@'
+	      closeText: '@',
+	      dateDisabled: '&',
+	      customClass: '&'
 	    },
 	    link: function(scope, element, attrs, ctrls) {
 	      var ngModel = ctrls[0],
@@ -39527,7 +39414,7 @@
 	    replace: true,
 	    transclude: true,
 	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/datepickerPopup/popup.html';
+	      return attrs.templateUrl || 'uib/template/datepicker/popup.html';
 	    }
 	  };
 	});
@@ -39564,10 +39451,10 @@
 	.service('uibDropdownService', ['$document', '$rootScope', function($document, $rootScope) {
 	  var openScope = null;
 
-	  this.open = function(dropdownScope, element) {
+	  this.open = function(dropdownScope) {
 	    if (!openScope) {
 	      $document.on('click', closeDropdown);
-	      element.on('keydown', keybindFilter);
+	      $document.on('keydown', keybindFilter);
 	    }
 
 	    if (openScope && openScope !== dropdownScope) {
@@ -39577,11 +39464,11 @@
 	    openScope = dropdownScope;
 	  };
 
-	  this.close = function(dropdownScope, element) {
+	  this.close = function(dropdownScope) {
 	    if (openScope === dropdownScope) {
 	      openScope = null;
 	      $document.off('click', closeDropdown);
-	      element.off('keydown', keybindFilter);
+	      $document.off('keydown', keybindFilter);
 	    }
 	  };
 
@@ -39614,7 +39501,6 @@
 
 	  var keybindFilter = function(evt) {
 	    if (evt.which === 27) {
-	      evt.stopPropagation();
 	      openScope.focusToggleElement();
 	      closeDropdown();
 	    } else if (openScope.isKeynavEnabled() && [38, 40].indexOf(evt.which) !== -1 && openScope.isOpen) {
@@ -39675,12 +39561,7 @@
 	  };
 
 	  this.toggle = function(open) {
-	    scope.isOpen = arguments.length ? !!open : !scope.isOpen;
-	    if (angular.isFunction(setIsOpen)) {
-	      setIsOpen(scope, scope.isOpen);
-	    }
-
-	    return scope.isOpen;
+	    return scope.isOpen = arguments.length ? !!open : !scope.isOpen;
 	  };
 
 	  // Allow other directives to watch status
@@ -39747,8 +39628,7 @@
 	    if (appendTo && self.dropdownMenu) {
 	      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
 	        css,
-	        rightalign,
-	        scrollbarWidth;
+	        rightalign;
 
 	      css = {
 	        top: pos.top + 'px',
@@ -39761,8 +39641,7 @@
 	        css.right = 'auto';
 	      } else {
 	        css.left = 'auto';
-	        scrollbarWidth = $position.scrollbarWidth(true);
-	        css.right = window.innerWidth - scrollbarWidth -
+	        css.right = window.innerWidth -
 	          (pos.left + $element.prop('offsetWidth')) + 'px';
 	      }
 
@@ -39785,15 +39664,12 @@
 	    }
 
 	    var openContainer = appendTo ? appendTo : $element;
-	    var hasOpenClass = openContainer.hasClass(appendTo ? appendToOpenClass : openClass);
 
-	    if (hasOpenClass === !isOpen) {
-	      $animate[isOpen ? 'addClass' : 'removeClass'](openContainer, appendTo ? appendToOpenClass : openClass).then(function() {
-	        if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
-	          toggleInvoker($scope, { open: !!isOpen });
-	        }
-	      });
-	    }
+	    $animate[isOpen ? 'addClass' : 'removeClass'](openContainer, appendTo ? appendToOpenClass : openClass).then(function() {
+	      if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
+	        toggleInvoker($scope, { open: !!isOpen });
+	      }
+	    });
 
 	    if (isOpen) {
 	      if (self.dropdownMenuTemplateUrl) {
@@ -39808,7 +39684,7 @@
 	      }
 
 	      scope.focusToggleElement();
-	      uibDropdownService.open(scope, $element);
+	      uibDropdownService.open(scope);
 	    } else {
 	      if (self.dropdownMenuTemplateUrl) {
 	        if (templateScope) {
@@ -39819,12 +39695,18 @@
 	        self.dropdownMenu = newEl;
 	      }
 
-	      uibDropdownService.close(scope, $element);
+	      uibDropdownService.close(scope);
 	      self.selectedOption = null;
 	    }
 
 	    if (angular.isFunction(setIsOpen)) {
 	      setIsOpen($scope, isOpen);
+	    }
+	  });
+
+	  $scope.$on('$locationChangeSuccess', function() {
+	    if (scope.getAutoClose() !== 'disabled') {
+	      scope.isOpen = false;
 	    }
 	  });
 	}])
@@ -39952,7 +39834,7 @@
 	      }
 	    };
 	  });
-	angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.position'])
+	angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap'])
 	/**
 	 * A helper, internal data structure that stores all references attached to key
 	 */
@@ -40057,8 +39939,8 @@
 	/**
 	 * A helper directive for the $modal service. It creates a backdrop element.
 	 */
-	  .directive('uibModalBackdrop', ['$animate', '$injector', '$uibModalStack',
-	  function($animate, $injector, $modalStack) {
+	  .directive('uibModalBackdrop', ['$animateCss', '$injector', '$uibModalStack',
+	  function($animateCss, $injector, $modalStack) {
 	    return {
 	      replace: true,
 	      templateUrl: 'uib/template/modal/backdrop.html',
@@ -40070,12 +39952,16 @@
 
 	    function linkFn(scope, element, attrs) {
 	      if (attrs.modalInClass) {
-	        $animate.addClass(element, attrs.modalInClass);
+	        $animateCss(element, {
+	          addClass: attrs.modalInClass
+	        }).start();
 
 	        scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
 	          var done = setIsAsync();
 	          if (scope.modalOptions.animation) {
-	            $animate.removeClass(element, attrs.modalInClass).then(done);
+	            $animateCss(element, {
+	              removeClass: attrs.modalInClass
+	            }).start().then(done);
 	          } else {
 	            done();
 	          }
@@ -40084,8 +39970,8 @@
 	    }
 	  }])
 
-	  .directive('uibModalWindow', ['$uibModalStack', '$q', '$animateCss', '$document',
-	  function($modalStack, $q, $animateCss, $document) {
+	  .directive('uibModalWindow', ['$uibModalStack', '$q', '$animate', '$animateCss', '$document',
+	  function($modalStack, $q, $animate, $animateCss, $document) {
 	    return {
 	      scope: {
 	        index: '@'
@@ -40139,20 +40025,18 @@
 
 	            scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
 	              var done = setIsAsync();
-	              $animateCss(element, {
-	                removeClass: attrs.modalInClass
-	              }).start().then(done);
+	              if ($animateCss) {
+	                $animateCss(element, {
+	                  removeClass: attrs.modalInClass
+	                }).start().then(done);
+	              } else {
+	                $animate.removeClass(element, attrs.modalInClass).then(done);
+	              }
 	            });
 	          }
 
 
 	          $q.when(animationPromise).then(function() {
-	            // Notify {@link $modalStack} that modal is rendered.
-	            var modal = $modalStack.getTop();
-	            if (modal) {
-	              $modalStack.modalRendered(modal.key);
-	            }
-
 	            /**
 	             * If something within the freshly-opened modal already has focus (perhaps via a
 	             * directive that causes focus). then no need to try and focus anything.
@@ -40174,6 +40058,12 @@
 	              }
 	            }
 	          });
+
+	          // Notify {@link $modalStack} that modal is rendered.
+	          var modal = $modalStack.getTop();
+	          if (modal) {
+	            $modalStack.modalRendered(modal.key);
+	          }
 	        });
 	      }
 	    };
@@ -40201,8 +40091,8 @@
 	  })
 
 	  .factory('$uibModalStack', ['$animate', '$animateCss', '$document',
-	    '$compile', '$rootScope', '$q', '$$multiMap', '$$stackedMap', '$uibPosition',
-	    function($animate, $animateCss, $document, $compile, $rootScope, $q, $$multiMap, $$stackedMap, $uibPosition) {
+	    '$compile', '$rootScope', '$q', '$$multiMap', '$$stackedMap',
+	    function($animate, $animateCss, $document, $compile, $rootScope, $q, $$multiMap, $$stackedMap) {
 	      var OPENED_MODAL_CLASS = 'modal-open';
 
 	      var backdropDomEl, backdropScope;
@@ -40211,20 +40101,13 @@
 	      var $modalStack = {
 	        NOW_CLOSING_EVENT: 'modal.stack.now-closing'
 	      };
-	      var topModalIndex = 0;
-	      var previousTopOpenedModal = null;
 
 	      //Modal focus behavior
-	      var tabableSelector = 'a[href], area[href], input:not([disabled]), ' +
+	      var focusableElementList;
+	      var focusIndex = 0;
+	      var tababbleSelector = 'a[href], area[href], input:not([disabled]), ' +
 	        'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
 	        'iframe, object, embed, *[tabindex], *[contenteditable=true]';
-	      var scrollbarPadding;
-
-	      function isVisible(element) {
-	        return !!(element.offsetWidth ||
-	          element.offsetHeight ||
-	          element.getClientRects().length);
-	      }
 
 	      function backdropIndex() {
 	        var topBackdropIndex = -1;
@@ -40233,12 +40116,6 @@
 	          if (openedWindows.get(opened[i]).value.backdrop) {
 	            topBackdropIndex = i;
 	          }
-	        }
-
-	        // If any backdrop exist, ensure that it's index is always
-	        // right below the top modal
-	        if (topBackdropIndex > -1 && topBackdropIndex < topModalIndex) {
-	          topBackdropIndex = topModalIndex;
 	        }
 	        return topBackdropIndex;
 	      }
@@ -40255,24 +40132,11 @@
 
 	        //clean up the stack
 	        openedWindows.remove(modalInstance);
-	        previousTopOpenedModal = openedWindows.top();
-	        if (previousTopOpenedModal) {
-	          topModalIndex = parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10);
-	        }
 
 	        removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, function() {
 	          var modalBodyClass = modalWindow.openedClass || OPENED_MODAL_CLASS;
 	          openedClasses.remove(modalBodyClass, modalInstance);
-	          var areAnyOpen = openedClasses.hasKey(modalBodyClass);
-	          appendToElement.toggleClass(modalBodyClass, areAnyOpen);
-	          if (!areAnyOpen && scrollbarPadding && scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
-	            if (scrollbarPadding.originalRight) {
-	              appendToElement.css({paddingRight: scrollbarPadding.originalRight + 'px'});
-	            } else {
-	              appendToElement.css({paddingRight: ''});
-	            }
-	            scrollbarPadding = null;
-	          }
+	          appendToElement.toggleClass(modalBodyClass, openedClasses.hasKey(modalBodyClass));
 	          toggleTopWindowClass(true);
 	        }, modalWindow.closedDeferred);
 	        checkRemoveBackdrop();
@@ -40333,7 +40197,9 @@
 	          }
 	          afterAnimating.done = true;
 
-	          $animate.leave(domEl).then(function() {
+	          $animateCss(domEl, {
+	            event: 'leave'
+	          }).start().then(function() {
 	            domEl.remove();
 	            if (closedDeferred) {
 	              closedDeferred.resolve();
@@ -40371,15 +40237,15 @@
 	              break;
 	            }
 	            case 9: {
-	              var list = $modalStack.loadFocusElementList(modal);
+	              $modalStack.loadFocusElementList(modal);
 	              var focusChanged = false;
 	              if (evt.shiftKey) {
-	                if ($modalStack.isFocusInFirstItem(evt, list) || $modalStack.isModalFocused(evt, modal)) {
-	                  focusChanged = $modalStack.focusLastFocusableElement(list);
+	                if ($modalStack.isFocusInFirstItem(evt) || $modalStack.isModalFocused(evt, modal)) {
+	                  focusChanged = $modalStack.focusLastFocusableElement();
 	                }
 	              } else {
-	                if ($modalStack.isFocusInLastItem(evt, list)) {
-	                  focusChanged = $modalStack.focusFirstFocusableElement(list);
+	                if ($modalStack.isFocusInLastItem(evt)) {
+	                  focusChanged = $modalStack.focusFirstFocusableElement();
 	                }
 	              }
 
@@ -40387,7 +40253,6 @@
 	                evt.preventDefault();
 	                evt.stopPropagation();
 	              }
-
 	              break;
 	            }
 	          }
@@ -40399,10 +40264,6 @@
 	          modalBodyClass = modal.openedClass || OPENED_MODAL_CLASS;
 
 	        toggleTopWindowClass(false);
-
-	        // Store the current top first, to determine what index we ought to use
-	        // for the current top modal
-	        previousTopOpenedModal = openedWindows.top();
 
 	        openedWindows.add(modalInstance, {
 	          deferred: modal.deferred,
@@ -40437,32 +40298,30 @@
 	          }
 	          $compile(backdropDomEl)(backdropScope);
 	          $animate.enter(backdropDomEl, appendToElement);
-	          scrollbarPadding = $uibPosition.scrollbarPadding(appendToElement);
-	          if (scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
-	            appendToElement.css({paddingRight: scrollbarPadding.right + 'px'});
-	          }
 	        }
 
-	        // Set the top modal index based on the index of the previous top modal
-	        topModalIndex = previousTopOpenedModal ? parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10) + 1 : 0;
 	        var angularDomEl = angular.element('<div uib-modal-window="modal-window"></div>');
 	        angularDomEl.attr({
 	          'template-url': modal.windowTemplateUrl,
 	          'window-class': modal.windowClass,
 	          'window-top-class': modal.windowTopClass,
 	          'size': modal.size,
-	          'index': topModalIndex,
+	          'index': openedWindows.length() - 1,
 	          'animate': 'animate'
 	        }).html(modal.content);
 	        if (modal.animation) {
 	          angularDomEl.attr('modal-animation', 'true');
 	        }
 
-	        appendToElement.addClass(modalBodyClass);
-	        $animate.enter($compile(angularDomEl)(modal.scope), appendToElement);
+	        $animate.enter($compile(angularDomEl)(modal.scope), appendToElement)
+	          .then(function() {
+	            $animate.addClass(appendToElement, modalBodyClass);
+	          });
 
 	        openedWindows.top().value.modalDomEl = angularDomEl;
 	        openedWindows.top().value.modalOpener = modalOpener;
+
+	        $modalStack.clearFocusListCache();
 	      };
 
 	      function broadcastClosing(modalWindow, resultOrReason, closing) {
@@ -40509,17 +40368,16 @@
 	        }
 	      };
 
-	      $modalStack.focusFirstFocusableElement = function(list) {
-	        if (list.length > 0) {
-	          list[0].focus();
+	      $modalStack.focusFirstFocusableElement = function() {
+	        if (focusableElementList.length > 0) {
+	          focusableElementList[0].focus();
 	          return true;
 	        }
 	        return false;
 	      };
-
-	      $modalStack.focusLastFocusableElement = function(list) {
-	        if (list.length > 0) {
-	          list[list.length - 1].focus();
+	      $modalStack.focusLastFocusableElement = function() {
+	        if (focusableElementList.length > 0) {
+	          focusableElementList[focusableElementList.length - 1].focus();
 	          return true;
 	        }
 	        return false;
@@ -40535,29 +40393,32 @@
 	        return false;
 	      };
 
-	      $modalStack.isFocusInFirstItem = function(evt, list) {
-	        if (list.length > 0) {
-	          return (evt.target || evt.srcElement) === list[0];
+	      $modalStack.isFocusInFirstItem = function(evt) {
+	        if (focusableElementList.length > 0) {
+	          return (evt.target || evt.srcElement) === focusableElementList[0];
 	        }
 	        return false;
 	      };
 
-	      $modalStack.isFocusInLastItem = function(evt, list) {
-	        if (list.length > 0) {
-	          return (evt.target || evt.srcElement) === list[list.length - 1];
+	      $modalStack.isFocusInLastItem = function(evt) {
+	        if (focusableElementList.length > 0) {
+	          return (evt.target || evt.srcElement) === focusableElementList[focusableElementList.length - 1];
 	        }
 	        return false;
+	      };
+
+	      $modalStack.clearFocusListCache = function() {
+	        focusableElementList = [];
+	        focusIndex = 0;
 	      };
 
 	      $modalStack.loadFocusElementList = function(modalWindow) {
-	        if (modalWindow) {
-	          var modalDomE1 = modalWindow.value.modalDomEl;
-	          if (modalDomE1 && modalDomE1.length) {
-	            var elements = modalDomE1[0].querySelectorAll(tabableSelector);
-	            return elements ?
-	              Array.prototype.filter.call(elements, function(element) {
-	                return isVisible(element);
-	              }) : elements;
+	        if (focusableElementList === undefined || !focusableElementList.length) {
+	          if (modalWindow) {
+	            var modalDomE1 = modalWindow.value.modalDomEl;
+	            if (modalDomE1 && modalDomE1.length) {
+	              focusableElementList = modalDomE1[0].querySelectorAll(tababbleSelector);
+	            }
 	          }
 	        }
 	      };
@@ -40644,34 +40505,25 @@
 	                  }
 	                });
 
-	                var ctrlInstance, ctrlInstantiate, ctrlLocals = {};
+	                var ctrlInstance, ctrlLocals = {};
 
 	                //controllers
 	                if (modalOptions.controller) {
 	                  ctrlLocals.$scope = modalScope;
-	                  ctrlLocals.$scope.$resolve = {};
 	                  ctrlLocals.$uibModalInstance = modalInstance;
 	                  angular.forEach(tplAndVars[1], function(value, key) {
 	                    ctrlLocals[key] = value;
-	                    ctrlLocals.$scope.$resolve[key] = value;
 	                  });
 
-	                  // the third param will make the controller instantiate later,private api
-	                  // @see https://github.com/angular/angular.js/blob/master/src/ng/controller.js#L126
-	                  ctrlInstantiate = $controller(modalOptions.controller, ctrlLocals, true, modalOptions.controllerAs);
-	                  if (modalOptions.controllerAs && modalOptions.bindToController) {
-	                    ctrlInstance = ctrlInstantiate.instance;
-	                    ctrlInstance.$close = modalScope.$close;
-	                    ctrlInstance.$dismiss = modalScope.$dismiss;
-	                    angular.extend(ctrlInstance, {
-	                      $resolve: ctrlLocals.$scope.$resolve
-	                    }, providedScope);
-	                  }
+	                  ctrlInstance = $controller(modalOptions.controller, ctrlLocals);
+	                  if (modalOptions.controllerAs) {
+	                    if (modalOptions.bindToController) {
+	                      ctrlInstance.$close = modalScope.$close;
+	                      ctrlInstance.$dismiss = modalScope.$dismiss;
+	                      angular.extend(ctrlInstance, providedScope);
+	                    }
 
-	                  ctrlInstance = ctrlInstantiate();
-
-	                  if (angular.isFunction(ctrlInstance.$onInit)) {
-	                    ctrlInstance.$onInit();
+	                    modalScope[modalOptions.controllerAs] = ctrlInstance;
 	                  }
 	                }
 
@@ -40735,7 +40587,7 @@
 	        };
 
 	        if ($attrs.itemsPerPage) {
-	          ctrl._watchers.push($scope.$parent.$watch($attrs.itemsPerPage, function(value) {
+	          ctrl._watchers.push($scope.$parent.$watch($parse($attrs.itemsPerPage), function(value) {
 	            ctrl.itemsPerPage = parseInt(value, 10);
 	            $scope.totalPages = ctrl.calculateTotalPages();
 	            ctrl.updatePage();
@@ -40856,8 +40708,7 @@
 	  var maxSize = angular.isDefined($attrs.maxSize) ? $scope.$parent.$eval($attrs.maxSize) : uibPaginationConfig.maxSize,
 	    rotate = angular.isDefined($attrs.rotate) ? $scope.$parent.$eval($attrs.rotate) : uibPaginationConfig.rotate,
 	    forceEllipses = angular.isDefined($attrs.forceEllipses) ? $scope.$parent.$eval($attrs.forceEllipses) : uibPaginationConfig.forceEllipses,
-	    boundaryLinkNumbers = angular.isDefined($attrs.boundaryLinkNumbers) ? $scope.$parent.$eval($attrs.boundaryLinkNumbers) : uibPaginationConfig.boundaryLinkNumbers,
-	    pageLabel = angular.isDefined($attrs.pageLabel) ? function(idx) { return $scope.$parent.$eval($attrs.pageLabel, {$page: idx}); } : angular.identity;
+	    boundaryLinkNumbers = angular.isDefined($attrs.boundaryLinkNumbers) ? $scope.$parent.$eval($attrs.boundaryLinkNumbers) : uibPaginationConfig.boundaryLinkNumbers;
 	  $scope.boundaryLinks = angular.isDefined($attrs.boundaryLinks) ? $scope.$parent.$eval($attrs.boundaryLinks) : uibPaginationConfig.boundaryLinks;
 	  $scope.directionLinks = angular.isDefined($attrs.directionLinks) ? $scope.$parent.$eval($attrs.directionLinks) : uibPaginationConfig.directionLinks;
 
@@ -40909,7 +40760,7 @@
 
 	    // Add page number links
 	    for (var number = startPage; number <= endPage; number++) {
-	      var page = makePage(number, pageLabel(number), number === currentPage);
+	      var page = makePage(number, number, number === currentPage);
 	      pages.push(page);
 	    }
 
@@ -41051,7 +40902,7 @@
 	  /**
 	   * This allows you to extend the set of trigger mappings available. E.g.:
 	   *
-	   *   $tooltipProvider.setTriggers( { 'openTrigger': 'closeTrigger' } );
+	   *   $tooltipProvider.setTriggers( 'openTrigger': 'closeTrigger' );
 	   */
 	  this.setTriggers = function setTriggers(triggers) {
 	    angular.extend(triggerMap, triggers);
@@ -41124,17 +40975,17 @@
 	      var startSym = $interpolate.startSymbol();
 	      var endSym = $interpolate.endSymbol();
 	      var template =
-	        '<div '+ directiveName + '-popup ' +
-	          'uib-title="' + startSym + 'title' + endSym + '" ' +
+	        '<div '+ directiveName + '-popup '+
+	          'title="' + startSym + 'title' + endSym + '" '+
 	          (options.useContentExp ?
 	            'content-exp="contentExp()" ' :
 	            'content="' + startSym + 'content' + endSym + '" ') +
-	          'placement="' + startSym + 'placement' + endSym + '" ' +
-	          'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
+	          'placement="' + startSym + 'placement' + endSym + '" '+
+	          'popup-class="' + startSym + 'popupClass' + endSym + '" '+
 	          'animation="animation" ' +
-	          'is-open="isOpen" ' +
+	          'is-open="isOpen"' +
 	          'origin-scope="origScope" ' +
-	          'class="uib-position-measure"' +
+	          'style="visibility: hidden; display: block; top: -9999px; left: -9999px;"' +
 	          '>' +
 	        '</div>';
 
@@ -41157,7 +41008,6 @@
 	            var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen']) ? $parse(attrs[prefix + 'IsOpen']) : false;
 	            var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
 	            var observers = [];
-	            var lastPlacement;
 
 	            var positionTooltip = function() {
 	              // check if tooltip exists and is not empty
@@ -41165,29 +41015,36 @@
 
 	              if (!positionTimeout) {
 	                positionTimeout = $timeout(function() {
+	                  // Reset the positioning.
+	                  tooltip.css({ top: 0, left: 0 });
+
+	                  // Now set the calculated positioning.
 	                  var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
-	                  tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px' });
+	                  tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px', visibility: 'visible' });
 
-	                  if (!tooltip.hasClass(ttPosition.placement.split('-')[0])) {
-	                    tooltip.removeClass(lastPlacement.split('-')[0]);
-	                    tooltip.addClass(ttPosition.placement.split('-')[0]);
+	                  // If the placement class is prefixed, still need
+	                  // to remove the TWBS standard class.
+	                  if (options.placementClassPrefix) {
+	                    tooltip.removeClass('top bottom left right');
 	                  }
 
-	                  if (!tooltip.hasClass(options.placementClassPrefix + ttPosition.placement)) {
-	                    tooltip.removeClass(options.placementClassPrefix + lastPlacement);
-	                    tooltip.addClass(options.placementClassPrefix + ttPosition.placement);
-	                  }
+	                  tooltip.removeClass(
+	                    options.placementClassPrefix + 'top ' +
+	                    options.placementClassPrefix + 'top-left ' +
+	                    options.placementClassPrefix + 'top-right ' +
+	                    options.placementClassPrefix + 'bottom ' +
+	                    options.placementClassPrefix + 'bottom-left ' +
+	                    options.placementClassPrefix + 'bottom-right ' +
+	                    options.placementClassPrefix + 'left ' +
+	                    options.placementClassPrefix + 'left-top ' +
+	                    options.placementClassPrefix + 'left-bottom ' +
+	                    options.placementClassPrefix + 'right ' +
+	                    options.placementClassPrefix + 'right-top ' +
+	                    options.placementClassPrefix + 'right-bottom');
 
-	                  // first time through tt element will have the
-	                  // uib-position-measure class or if the placement
-	                  // has changed we need to position the arrow.
-	                  if (tooltip.hasClass('uib-position-measure')) {
-	                    $position.positionArrow(tooltip, ttPosition.placement);
-	                    tooltip.removeClass('uib-position-measure');
-	                  } else if (lastPlacement !== ttPosition.placement) {
-	                    $position.positionArrow(tooltip, ttPosition.placement);
-	                  }
-	                  lastPlacement = ttPosition.placement;
+	                  var placement = ttPosition.placement.split('-');
+	                  tooltip.addClass(placement[0] + ' ' + options.placementClassPrefix + ttPosition.placement);
+	                  $position.positionArrow(tooltip, ttPosition.placement);
 
 	                  positionTimeout = null;
 	                }, 0, false);
@@ -41362,8 +41219,6 @@
 
 	              ttScope.popupClass = attrs[prefix + 'Class'];
 	              ttScope.placement = angular.isDefined(attrs[prefix + 'Placement']) ? attrs[prefix + 'Placement'] : options.placement;
-	              var placement = $position.parsePlacement(ttScope.placement);
-	              lastPlacement = placement[1] ? placement[0] + '-' + placement[1] : placement[0];
 
 	              var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
 	              var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
@@ -41539,7 +41394,7 @@
 	            }
 
 	            appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
-
+	            
 	            // Make sure tooltip is destroyed and removed.
 	            scope.$on('$destroy', function onDestroyTooltip() {
 	              unregisterTriggers();
@@ -41641,6 +41496,8 @@
 	        // // in TWBS, so we need the primary position.
 	        var position = $uibPosition.parsePlacement(scope.placement);
 	        element.addClass(position[0]);
+	      } else {
+	        element.addClass('top');
 	      }
 
 	      if (scope.popupClass) {
@@ -41705,7 +41562,7 @@
 	.directive('uibPopoverTemplatePopup', function() {
 	  return {
 	    replace: true,
-	    scope: { uibTitle: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+	    scope: { title: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
 	      originScope: '&' },
 	    templateUrl: 'uib/template/popover/popover-template.html'
 	  };
@@ -41720,7 +41577,7 @@
 	.directive('uibPopoverHtmlPopup', function() {
 	  return {
 	    replace: true,
-	    scope: { contentExp: '&', uibTitle: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    scope: { contentExp: '&', title: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
 	    templateUrl: 'uib/template/popover/popover-html.html'
 	  };
 	})
@@ -41734,7 +41591,7 @@
 	.directive('uibPopoverPopup', function() {
 	  return {
 	    replace: true,
-	    scope: { uibTitle: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    scope: { title: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
 	    templateUrl: 'uib/template/popover/popover.html'
 	  };
 	})
@@ -41755,7 +41612,7 @@
 	      animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
 
 	  this.bars = [];
-	  $scope.max = getMaxOrDefault();
+	  $scope.max = angular.isDefined($scope.max) ? $scope.max : progressConfig.max;
 
 	  this.addBar = function(bar, element, attrs) {
 	    if (!animate) {
@@ -41764,7 +41621,7 @@
 
 	    this.bars.push(bar);
 
-	    bar.max = getMaxOrDefault();
+	    bar.max = $scope.max;
 	    bar.title = attrs && angular.isDefined(attrs.title) ? attrs.title : 'progressbar';
 
 	    bar.$watch('value', function(value) {
@@ -41795,17 +41652,12 @@
 	    });
 	  };
 
-	  //$attrs.$observe('maxParam', function(maxParam) {
-	  $scope.$watch('maxParam', function(maxParam) {
+	  $scope.$watch('max', function(max) {
 	    self.bars.forEach(function(bar) {
-	      bar.max = getMaxOrDefault();
+	      bar.max = $scope.max;
 	      bar.recalculatePercentage();
 	    });
 	  });
-
-	  function getMaxOrDefault () {
-	    return angular.isDefined($scope.maxParam) ? $scope.maxParam : progressConfig.max;
-	  }
 	}])
 
 	.directive('uibProgress', function() {
@@ -41815,7 +41667,7 @@
 	    controller: 'UibProgressController',
 	    require: 'uibProgress',
 	    scope: {
-	      maxParam: '=?max'
+	      max: '=?'
 	    },
 	    templateUrl: 'uib/template/progressbar/progress.html'
 	  };
@@ -41844,7 +41696,7 @@
 	    controller: 'UibProgressController',
 	    scope: {
 	      value: '=',
-	      maxParam: '=?max',
+	      max: '=?',
 	      type: '@'
 	    },
 	    templateUrl: 'uib/template/progressbar/progressbar.html',
@@ -41860,13 +41712,11 @@
 	  max: 5,
 	  stateOn: null,
 	  stateOff: null,
-	  enableReset: true,
 	  titles : ['one', 'two', 'three', 'four', 'five']
 	})
 
 	.controller('UibRatingController', ['$scope', '$attrs', 'uibRatingConfig', function($scope, $attrs, ratingConfig) {
-	  var ngModelCtrl = { $setViewValue: angular.noop },
-	    self = this;
+	  var ngModelCtrl = { $setViewValue: angular.noop };
 
 	  this.init = function(ngModelCtrl_) {
 	    ngModelCtrl = ngModelCtrl_;
@@ -41882,9 +41732,7 @@
 
 	    this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
 	    this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
-	    this.enableReset = angular.isDefined($attrs.enableReset) ?
-	      $scope.$parent.$eval($attrs.enableReset) : ratingConfig.enableReset;
-	    var tmpTitles = angular.isDefined($attrs.titles) ? $scope.$parent.$eval($attrs.titles) : ratingConfig.titles;
+	    var tmpTitles = angular.isDefined($attrs.titles) ? $scope.$parent.$eval($attrs.titles) : ratingConfig.titles ;
 	    this.titles = angular.isArray(tmpTitles) && tmpTitles.length > 0 ?
 	      tmpTitles : ratingConfig.titles;
 
@@ -41911,8 +41759,7 @@
 
 	  $scope.rate = function(value) {
 	    if (!$scope.readonly && value >= 0 && value <= $scope.range.length) {
-	      var newViewValue = self.enableReset && ngModelCtrl.$viewValue === value ? 0 : value;
-	      ngModelCtrl.$setViewValue(newViewValue);
+	      ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue === value ? 0 : value);
 	      ngModelCtrl.$render();
 	    }
 	  };
@@ -41939,7 +41786,6 @@
 
 	  this.render = function() {
 	    $scope.value = ngModelCtrl.$viewValue;
-	    $scope.title = self.getTitle($scope.value - 1);
 	  };
 	}])
 
@@ -41947,7 +41793,7 @@
 	  return {
 	    require: ['uibRating', 'ngModel'],
 	    scope: {
-	      readonly: '=?readOnly',
+	      readonly: '=?',
 	      onHover: '&',
 	      onLeave: '&'
 	    },
@@ -41965,119 +41811,66 @@
 
 	.controller('UibTabsetController', ['$scope', function ($scope) {
 	  var ctrl = this,
-	    oldIndex;
-	  ctrl.tabs = [];
+	      tabs = ctrl.tabs = $scope.tabs = [];
 
-	  ctrl.select = function(index, evt) {
-	    if (!destroyed) {
-	      var previousIndex = findTabIndex(oldIndex);
-	      var previousSelected = ctrl.tabs[previousIndex];
-	      if (previousSelected) {
-	        previousSelected.tab.onDeselect({
-	          $event: evt,
-	          $selectedIndex: index
-	        });
-	        if (evt && evt.isDefaultPrevented()) {
-	          return;
-	        }
-	        previousSelected.tab.active = false;
+	  ctrl.select = function(selectedTab) {
+	    angular.forEach(tabs, function(tab) {
+	      if (tab.active && tab !== selectedTab) {
+	        tab.active = false;
+	        tab.onDeselect();
+	        selectedTab.selectCalled = false;
 	      }
-
-	      var selected = ctrl.tabs[index];
-	      if (selected) {
-	        selected.tab.onSelect({
-	          $event: evt
-	        });
-	        selected.tab.active = true;
-	        ctrl.active = selected.index;
-	        oldIndex = selected.index;
-	      } else if (!selected && angular.isDefined(oldIndex)) {
-	        ctrl.active = null;
-	        oldIndex = null;
-	      }
+	    });
+	    selectedTab.active = true;
+	    // only call select if it has not already been called
+	    if (!selectedTab.selectCalled) {
+	      selectedTab.onSelect();
+	      selectedTab.selectCalled = true;
 	    }
 	  };
 
 	  ctrl.addTab = function addTab(tab) {
-	    ctrl.tabs.push({
-	      tab: tab,
-	      index: tab.index
-	    });
-	    ctrl.tabs.sort(function(t1, t2) {
-	      if (t1.index > t2.index) {
-	        return 1;
-	      }
-
-	      if (t1.index < t2.index) {
-	        return -1;
-	      }
-
-	      return 0;
-	    });
-
-	    if (tab.index === ctrl.active || !angular.isDefined(ctrl.active) && ctrl.tabs.length === 1) {
-	      var newActiveIndex = findTabIndex(tab.index);
-	      ctrl.select(newActiveIndex);
+	    tabs.push(tab);
+	    // we can't run the select function on the first tab
+	    // since that would select it twice
+	    if (tabs.length === 1 && tab.active !== false) {
+	      tab.active = true;
+	    } else if (tab.active) {
+	      ctrl.select(tab);
+	    } else {
+	      tab.active = false;
 	    }
 	  };
 
 	  ctrl.removeTab = function removeTab(tab) {
-	    var index;
-	    for (var i = 0; i < ctrl.tabs.length; i++) {
-	      if (ctrl.tabs[i].tab === tab) {
-	        index = i;
-	        break;
-	      }
+	    var index = tabs.indexOf(tab);
+	    //Select a new tab if the tab to be removed is selected and not destroyed
+	    if (tab.active && tabs.length > 1 && !destroyed) {
+	      //If this is the last tab, select the previous tab. else, the next tab.
+	      var newActiveIndex = index === tabs.length - 1 ? index - 1 : index + 1;
+	      ctrl.select(tabs[newActiveIndex]);
 	    }
-
-	    if (ctrl.tabs[index].index === ctrl.active) {
-	      var newActiveTabIndex = index === ctrl.tabs.length - 1 ?
-	        index - 1 : index + 1 % ctrl.tabs.length;
-	      ctrl.select(newActiveTabIndex);
-	    }
-
-	    ctrl.tabs.splice(index, 1);
+	    tabs.splice(index, 1);
 	  };
-
-	  $scope.$watch('tabset.active', function(val) {
-	    if (angular.isDefined(val) && val !== oldIndex) {
-	      ctrl.select(findTabIndex(val));
-	    }
-	  });
 
 	  var destroyed;
 	  $scope.$on('$destroy', function() {
 	    destroyed = true;
 	  });
-
-	  function findTabIndex(index) {
-	    for (var i = 0; i < ctrl.tabs.length; i++) {
-	      if (ctrl.tabs[i].index === index) {
-	        return i;
-	      }
-	    }
-	  }
 	}])
 
 	.directive('uibTabset', function() {
 	  return {
 	    transclude: true,
 	    replace: true,
-	    scope: {},
-	    bindToController: {
-	      active: '=?',
+	    scope: {
 	      type: '@'
 	    },
 	    controller: 'UibTabsetController',
-	    controllerAs: 'tabset',
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/tabs/tabset.html';
-	    },
+	    templateUrl: 'uib/template/tabs/tabset.html',
 	    link: function(scope, element, attrs) {
-	      scope.vertical = angular.isDefined(attrs.vertical) ?
-	        scope.$parent.$eval(attrs.vertical) : false;
-	      scope.justified = angular.isDefined(attrs.justified) ?
-	        scope.$parent.$eval(attrs.justified) : false;
+	      scope.vertical = angular.isDefined(attrs.vertical) ? scope.$parent.$eval(attrs.vertical) : false;
+	      scope.justified = angular.isDefined(attrs.justified) ? scope.$parent.$eval(attrs.justified) : false;
 	    }
 	  };
 	})
@@ -42086,14 +41879,11 @@
 	  return {
 	    require: '^uibTabset',
 	    replace: true,
-	    templateUrl: function(element, attrs) {
-	      return attrs.templateUrl || 'uib/template/tabs/tab.html';
-	    },
+	    templateUrl: 'uib/template/tabs/tab.html',
 	    transclude: true,
 	    scope: {
+	      active: '=?',
 	      heading: '@',
-	      index: '=?',
-	      classes: '@?',
 	      onSelect: '&select', //This callback is called in contentHeadingTransclude
 	                          //once it inserts the tab's content into the dom
 	      onDeselect: '&deselect'
@@ -42103,6 +41893,12 @@
 	    },
 	    controllerAs: 'tab',
 	    link: function(scope, elm, attrs, tabsetCtrl, transclude) {
+	      scope.$watch('active', function(active) {
+	        if (active) {
+	          tabsetCtrl.select(scope);
+	        }
+	      });
+
 	      scope.disabled = false;
 	      if (attrs.disable) {
 	        scope.$parent.$watch($parse(attrs.disable), function(value) {
@@ -42110,29 +41906,9 @@
 	        });
 	      }
 
-	      if (angular.isUndefined(attrs.index)) {
-	        if (tabsetCtrl.tabs && tabsetCtrl.tabs.length) {
-	          scope.index = Math.max.apply(null, tabsetCtrl.tabs.map(function(t) { return t.index; })) + 1;
-	        } else {
-	          scope.index = 0;
-	        }
-	      }
-
-	      if (angular.isUndefined(attrs.classes)) {
-	        scope.classes = '';
-	      }
-
-	      scope.select = function(evt) {
+	      scope.select = function() {
 	        if (!scope.disabled) {
-	          var index;
-	          for (var i = 0; i < tabsetCtrl.tabs.length; i++) {
-	            if (tabsetCtrl.tabs[i].tab === scope) {
-	              index = i;
-	              break;
-	            }
-	          }
-
-	          tabsetCtrl.select(index, evt);
+	          scope.active = true;
 	        }
 	      };
 
@@ -42168,7 +41944,7 @@
 	    restrict: 'A',
 	    require: '^uibTabset',
 	    link: function(scope, elm, attrs) {
-	      var tab = scope.$eval(attrs.uibTabContentTransclude).tab;
+	      var tab = scope.$eval(attrs.uibTabContentTransclude);
 
 	      //Now our tab is ready to be transcluded: both the tab heading area
 	      //and the tab content area are loaded.  Transclude 'em both.
@@ -42192,8 +41968,7 @@
 	      node.hasAttribute('x-uib-tab-heading') ||
 	      node.tagName.toLowerCase() === 'uib-tab-heading' ||
 	      node.tagName.toLowerCase() === 'data-uib-tab-heading' ||
-	      node.tagName.toLowerCase() === 'x-uib-tab-heading' ||
-	      node.tagName.toLowerCase() === 'uib:tab-heading'
+	      node.tagName.toLowerCase() === 'x-uib-tab-heading'
 	    );
 	  }
 	});
@@ -42218,8 +41993,7 @@
 	  var selected = new Date(),
 	    watchers = [],
 	    ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl
-	    meridians = angular.isDefined($attrs.meridians) ? $scope.$parent.$eval($attrs.meridians) : timepickerConfig.meridians || $locale.DATETIME_FORMATS.AMPMS,
-	    padHours = angular.isDefined($attrs.padHours) ? $scope.$parent.$eval($attrs.padHours) : true;
+	    meridians = angular.isDefined($attrs.meridians) ? $scope.$parent.$eval($attrs.meridians) : timepickerConfig.meridians || $locale.DATETIME_FORMATS.AMPMS;
 
 	  $scope.tabindex = angular.isDefined($attrs.tabindex) ? $attrs.tabindex : 0;
 	  $element.removeAttr('tabindex');
@@ -42366,7 +42140,7 @@
 	    var hours = +$scope.hours;
 	    var valid = $scope.showMeridian ? hours > 0 && hours < 13 :
 	      hours >= 0 && hours < 24;
-	    if (!valid || $scope.hours === '') {
+	    if (!valid) {
 	      return undefined;
 	    }
 
@@ -42383,11 +42157,7 @@
 
 	  function getMinutesFromTemplate() {
 	    var minutes = +$scope.minutes;
-	    var valid = minutes >= 0 && minutes < 60;
-	    if (!valid || $scope.minutes === '') {
-	      return undefined;
-	    }
-	    return minutes;
+	    return minutes >= 0 && minutes < 60 ? minutes : undefined;
 	  }
 
 	  function getSecondsFromTemplate() {
@@ -42395,12 +42165,12 @@
 	    return seconds >= 0 && seconds < 60 ? seconds : undefined;
 	  }
 
-	  function pad(value, noPad) {
+	  function pad(value) {
 	    if (value === null) {
 	      return '';
 	    }
 
-	    return angular.isDefined(value) && value.toString().length < 2 && !noPad ?
+	    return angular.isDefined(value) && value.toString().length < 2 ?
 	      '0' + value : value.toString();
 	  }
 
@@ -42527,13 +42297,11 @@
 
 	    hoursInputEl.bind('blur', function(e) {
 	      ngModelCtrl.$setTouched();
-	      if (modelIsEmpty()) {
-	        makeValid();
-	      } else if ($scope.hours === null || $scope.hours === '') {
+	      if ($scope.hours === null || $scope.hours === '') {
 	        invalidate(true);
 	      } else if (!$scope.invalidHours && $scope.hours < 10) {
 	        $scope.$apply(function() {
-	          $scope.hours = pad($scope.hours, !padHours);
+	          $scope.hours = pad($scope.hours);
 	        });
 	      }
 	    });
@@ -42559,9 +42327,7 @@
 
 	    minutesInputEl.bind('blur', function(e) {
 	      ngModelCtrl.$setTouched();
-	      if (modelIsEmpty()) {
-	        makeValid();
-	      } else if ($scope.minutes === null) {
+	      if ($scope.minutes === null) {
 	        invalidate(undefined, true);
 	      } else if (!$scope.invalidMinutes && $scope.minutes < 10) {
 	        $scope.$apply(function() {
@@ -42584,9 +42350,7 @@
 	    };
 
 	    secondsInputEl.bind('blur', function(e) {
-	      if (modelIsEmpty()) {
-	        makeValid();
-	      } else if (!$scope.invalidSeconds && $scope.seconds < 10) {
+	      if (!$scope.invalidSeconds && $scope.seconds < 10) {
 	        $scope.$apply( function() {
 	          $scope.seconds = pad($scope.seconds);
 	        });
@@ -42646,7 +42410,7 @@
 	        hours = hours === 0 || hours === 12 ? 12 : hours % 12; // Convert 24 to 12 hour system
 	      }
 
-	      $scope.hours = keyboardChange === 'h' ? hours : pad(hours, !padHours);
+	      $scope.hours = keyboardChange === 'h' ? hours : pad(hours);
 	      if (keyboardChange !== 'm') {
 	        $scope.minutes = pad(minutes);
 	      }
@@ -42673,12 +42437,6 @@
 	    var newDate = new Date(date);
 	    newDate.setHours(dt.getHours(), dt.getMinutes(), dt.getSeconds());
 	    return newDate;
-	  }
-
-	  function modelIsEmpty() {
-	    return ($scope.hours === null || $scope.hours === '') &&
-	      ($scope.minutes === null || $scope.minutes === '') &&
-	      (!$scope.showSeconds || $scope.showSeconds && ($scope.seconds === null || $scope.seconds === ''));
 	  }
 
 	  $scope.showSpinners = angular.isDefined($attrs.showSpinners) ?
@@ -42805,10 +42563,6 @@
 	      minLength = 1;
 	    }
 
-	    originalScope.$watch(attrs.typeaheadMinLength, function (newVal) {
-	        minLength = !newVal && newVal !== 0 ? 1 : newVal;
-	    });
-
 	    //minimal wait time after last character typed before typeahead kicks-in
 	    var waitTime = originalScope.$eval(attrs.typeaheadWaitMs) || 0;
 
@@ -42820,12 +42574,6 @@
 
 	    //binding to a variable that indicates if matches are being retrieved asynchronously
 	    var isLoadingSetter = $parse(attrs.typeaheadLoading).assign || angular.noop;
-
-	    //a function to determine if an event should cause selection
-	    var isSelectEvent = attrs.typeaheadShouldSelect ? $parse(attrs.typeaheadShouldSelect) : function(scope, vals) {
-	      var evt = vals.$event;
-	      return evt.which === 13 || evt.which === 9;
-	    };
 
 	    //a callback executed when a match is selected
 	    var onSelectCallback = $parse(attrs.typeaheadOnSelect);
@@ -42901,7 +42649,6 @@
 	      element.after(inputsContainer);
 	      hintInputElem = element.clone();
 	      hintInputElem.attr('placeholder', '');
-	      hintInputElem.attr('tabindex', '-1');
 	      hintInputElem.val('');
 	      hintInputElem.css({
 	        'position': 'absolute',
@@ -43142,15 +42889,8 @@
 	        return;
 	      }
 
-	      var shouldSelect = isSelectEvent(originalScope, {$event: evt});
-
-	      /**
-	       * if there's nothing selected (i.e. focusFirst) and enter or tab is hit
-	       * or
-	       * shift + tab is pressed to bring focus to the previous element
-	       * then clear the results
-	       */
-	      if (scope.activeIdx === -1 && shouldSelect || evt.which === 9 && !!evt.shiftKey) {
+	      // if there's nothing selected (i.e. focusFirst) and enter or tab is hit, clear the results
+	      if (scope.activeIdx === -1 && (evt.which === 9 || evt.which === 13)) {
 	        resetMatches();
 	        scope.$digest();
 	        return;
@@ -43159,36 +42899,36 @@
 	      evt.preventDefault();
 	      var target;
 	      switch (evt.which) {
-	        case 27: // escape
+	        case 9:
+	        case 13:
+	          scope.$apply(function () {
+	            if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
+	              $$debounce(function() {
+	                scope.select(scope.activeIdx, evt);
+	              }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
+	            } else {
+	              scope.select(scope.activeIdx, evt);
+	            }
+	          });
+	          break;
+	        case 27:
 	          evt.stopPropagation();
 
 	          resetMatches();
-	          originalScope.$digest();
+	          scope.$digest();
 	          break;
-	        case 38: // up arrow
+	        case 38:
 	          scope.activeIdx = (scope.activeIdx > 0 ? scope.activeIdx : scope.matches.length) - 1;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
-	        case 40: // down arrow
+	        case 40:
 	          scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
 	          scope.$digest();
 	          target = popUpEl.find('li')[scope.activeIdx];
 	          target.parentNode.scrollTop = target.offsetTop;
 	          break;
-	        default:
-	          if (shouldSelect) {
-	            scope.$apply(function() {
-	              if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
-	                $$debounce(function() {
-	                  scope.select(scope.activeIdx, evt);
-	                }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
-	              } else {
-	                scope.select(scope.activeIdx, evt);
-	              }
-	            });
-	          }
 	      }
 	    });
 
@@ -43215,10 +42955,7 @@
 	        });
 	      }
 	      if (!isEditable && modelCtrl.$error.editable) {
-	        modelCtrl.$setViewValue();
-	        // Reset validity as we are clearing
-	        modelCtrl.$setValidity('editable', true);
-	        modelCtrl.$setValidity('parse', true);
+	        modelCtrl.$viewValue = '';
 	        element.val('');
 	      }
 	      hasFocus = false;
@@ -43232,7 +42969,7 @@
 	      if (element[0] !== evt.target && evt.which !== 3 && scope.matches.length !== 0) {
 	        resetMatches();
 	        if (!$rootScope.$$phase) {
-	          originalScope.$digest();
+	          scope.$digest();
 	        }
 	      }
 	    };
@@ -43439,7 +43176,7 @@
 	    "<div class=\"panel\" ng-class=\"panelClass || 'panel-default'\">\n" +
 	    "  <div role=\"tab\" id=\"{{::headingId}}\" aria-selected=\"{{isOpen}}\" class=\"panel-heading\" ng-keypress=\"toggleOpen($event)\">\n" +
 	    "    <h4 class=\"panel-title\">\n" +
-	    "      <a role=\"button\" data-toggle=\"collapse\" href aria-expanded=\"{{isOpen}}\" aria-controls=\"{{::panelId}}\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" uib-accordion-transclude=\"heading\"><span uib-accordion-header ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
+	    "      <a role=\"button\" data-toggle=\"collapse\" href aria-expanded=\"{{isOpen}}\" aria-controls=\"{{::panelId}}\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" uib-accordion-transclude=\"heading\"><span ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
 	    "    </h4>\n" +
 	    "  </div>\n" +
 	    "  <div id=\"{{::panelId}}\" aria-labelledby=\"{{::headingId}}\" aria-hidden=\"{{!isOpen}}\" role=\"tabpanel\" class=\"panel-collapse collapse\" uib-collapse=\"!isOpen\">\n" +
@@ -43470,11 +43207,11 @@
 	  $templateCache.put("uib/template/carousel/carousel.html",
 	    "<div ng-mouseenter=\"pause()\" ng-mouseleave=\"play()\" class=\"carousel\" ng-swipe-right=\"prev()\" ng-swipe-left=\"next()\">\n" +
 	    "  <div class=\"carousel-inner\" ng-transclude></div>\n" +
-	    "  <a role=\"button\" href class=\"left carousel-control\" ng-click=\"prev()\" ng-class=\"{ disabled: isPrevDisabled() }\" ng-show=\"slides.length > 1\">\n" +
+	    "  <a role=\"button\" href class=\"left carousel-control\" ng-click=\"prev()\" ng-show=\"slides.length > 1\">\n" +
 	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-left\"></span>\n" +
 	    "    <span class=\"sr-only\">previous</span>\n" +
 	    "  </a>\n" +
-	    "  <a role=\"button\" href class=\"right carousel-control\" ng-click=\"next()\" ng-class=\"{ disabled: isNextDisabled() }\" ng-show=\"slides.length > 1\">\n" +
+	    "  <a role=\"button\" href class=\"right carousel-control\" ng-click=\"next()\" ng-show=\"slides.length > 1\">\n" +
 	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-right\"></span>\n" +
 	    "    <span class=\"sr-only\">next</span>\n" +
 	    "  </a>\n" +
@@ -43483,8 +43220,7 @@
 	    "      <span class=\"sr-only\">slide {{ $index + 1 }} of {{ slides.length }}<span ng-if=\"isActive(slide)\">, currently active</span></span>\n" +
 	    "    </li>\n" +
 	    "  </ol>\n" +
-	    "</div>\n" +
-	    "");
+	    "</div>");
 	}]);
 
 	angular.module("uib/template/carousel/slide.html", []).run(["$templateCache", function($templateCache) {
@@ -43501,8 +43237,7 @@
 	    "  <uib-daypicker ng-switch-when=\"day\" tabindex=\"0\"></uib-daypicker>\n" +
 	    "  <uib-monthpicker ng-switch-when=\"month\" tabindex=\"0\"></uib-monthpicker>\n" +
 	    "  <uib-yearpicker ng-switch-when=\"year\" tabindex=\"0\"></uib-yearpicker>\n" +
-	    "</div>\n" +
-	    "");
+	    "</div>");
 	}]);
 
 	angular.module("uib/template/datepicker/day.html", []).run(["$templateCache", function($templateCache) {
@@ -43570,6 +43305,23 @@
 	    "");
 	}]);
 
+	angular.module("uib/template/datepicker/popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepicker/popup.html",
+	    "<div>\n" +
+	    "  <ul class=\"uib-datepicker-popup dropdown-menu\" dropdown-nested ng-if=\"isOpen\" ng-style=\"{top: position.top+'px', left: position.left+'px'}\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
+	    "    <li ng-transclude></li>\n" +
+	    "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
+	    "    <span class=\"btn-group pull-left\">\n" +
+	    "      <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today')\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
+	    "      <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null)\">{{ getText('clear') }}</button>\n" +
+	    "    </span>\n" +
+	    "      <button type=\"button\" class=\"btn btn-sm btn-success pull-right uib-close\" ng-click=\"close()\">{{ getText('close') }}</button>\n" +
+	    "    </li>\n" +
+	    "  </ul>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
 	angular.module("uib/template/datepicker/year.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/datepicker/year.html",
 	    "<table class=\"uib-yearpicker\" role=\"grid\" aria-labelledby=\"{{::uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
@@ -43597,23 +43349,6 @@
 	    "    </tr>\n" +
 	    "  </tbody>\n" +
 	    "</table>\n" +
-	    "");
-	}]);
-
-	angular.module("uib/template/datepickerPopup/popup.html", []).run(["$templateCache", function($templateCache) {
-	  $templateCache.put("uib/template/datepickerPopup/popup.html",
-	    "<div>\n" +
-	    "  <ul class=\"uib-datepicker-popup dropdown-menu uib-position-measure\" dropdown-nested ng-if=\"isOpen\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
-	    "    <li ng-transclude></li>\n" +
-	    "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
-	    "      <span class=\"btn-group pull-left\">\n" +
-	    "        <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today', $event)\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
-	    "        <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null, $event)\">{{ getText('clear') }}</button>\n" +
-	    "      </span>\n" +
-	    "      <button type=\"button\" class=\"btn btn-sm btn-success pull-right uib-close\" ng-click=\"close($event)\">{{ getText('close') }}</button>\n" +
-	    "    </li>\n" +
-	    "  </ul>\n" +
-	    "</div>\n" +
 	    "");
 	}]);
 
@@ -43706,7 +43441,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
 	    "      <div class=\"popover-content\" ng-bind-html=\"contentExp()\"></div>\n" +
 	    "  </div>\n" +
 	    "</div>\n" +
@@ -43722,7 +43457,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
 	    "      <div class=\"popover-content\"\n" +
 	    "        uib-tooltip-template-transclude=\"contentExp()\"\n" +
 	    "        tooltip-template-transclude-scope=\"originScope()\"></div>\n" +
@@ -43740,7 +43475,7 @@
 	    "  <div class=\"arrow\"></div>\n" +
 	    "\n" +
 	    "  <div class=\"popover-inner\">\n" +
-	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"title\" ng-if=\"title\"></h3>\n" +
 	    "      <div class=\"popover-content\" ng-bind=\"content\"></div>\n" +
 	    "  </div>\n" +
 	    "</div>\n" +
@@ -43768,17 +43503,17 @@
 
 	angular.module("uib/template/rating/rating.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/rating/rating.html",
-	    "<span ng-mouseleave=\"reset()\" ng-keydown=\"onKeydown($event)\" tabindex=\"0\" role=\"slider\" aria-valuemin=\"0\" aria-valuemax=\"{{range.length}}\" aria-valuenow=\"{{value}}\" aria-valuetext=\"{{title}}\">\n" +
+	    "<span ng-mouseleave=\"reset()\" ng-keydown=\"onKeydown($event)\" tabindex=\"0\" role=\"slider\" aria-valuemin=\"0\" aria-valuemax=\"{{range.length}}\" aria-valuenow=\"{{value}}\">\n" +
 	    "    <span ng-repeat-start=\"r in range track by $index\" class=\"sr-only\">({{ $index < value ? '*' : ' ' }})</span>\n" +
-	    "    <i ng-repeat-end ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"glyphicon\" ng-class=\"$index < value && (r.stateOn || 'glyphicon-star') || (r.stateOff || 'glyphicon-star-empty')\" ng-attr-title=\"{{r.title}}\"></i>\n" +
+	    "    <i ng-repeat-end ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"glyphicon\" ng-class=\"$index < value && (r.stateOn || 'glyphicon-star') || (r.stateOff || 'glyphicon-star-empty')\" ng-attr-title=\"{{r.title}}\" aria-valuetext=\"{{r.title}}\"></i>\n" +
 	    "</span>\n" +
 	    "");
 	}]);
 
 	angular.module("uib/template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/tabs/tab.html",
-	    "<li ng-class=\"[{active: active, disabled: disabled}, classes]\" class=\"uib-tab nav-item\">\n" +
-	    "  <a href ng-click=\"select($event)\" class=\"nav-link\" uib-tab-heading-transclude>{{heading}}</a>\n" +
+	    "<li ng-class=\"{active: active, disabled: disabled}\" class=\"uib-tab\">\n" +
+	    "  <a href ng-click=\"select()\" uib-tab-heading-transclude>{{heading}}</a>\n" +
 	    "</li>\n" +
 	    "");
 	}]);
@@ -43786,11 +43521,11 @@
 	angular.module("uib/template/tabs/tabset.html", []).run(["$templateCache", function($templateCache) {
 	  $templateCache.put("uib/template/tabs/tabset.html",
 	    "<div>\n" +
-	    "  <ul class=\"nav nav-{{tabset.type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" +
+	    "  <ul class=\"nav nav-{{type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" +
 	    "  <div class=\"tab-content\">\n" +
-	    "    <div class=\"tab-pane\"\n" +
-	    "         ng-repeat=\"tab in tabset.tabs\"\n" +
-	    "         ng-class=\"{active: tabset.active === tab.index}\"\n" +
+	    "    <div class=\"tab-pane\" \n" +
+	    "         ng-repeat=\"tab in tabs\" \n" +
+	    "         ng-class=\"{active: tab.active}\"\n" +
 	    "         uib-tab-content-transclude=\"tab\">\n" +
 	    "    </div>\n" +
 	    "  </div>\n" +
@@ -43812,15 +43547,15 @@
 	    "    </tr>\n" +
 	    "    <tr>\n" +
 	    "      <td class=\"form-group uib-time hours\" ng-class=\"{'has-error': invalidHours}\">\n" +
-	    "        <input type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td class=\"uib-separator\">:</td>\n" +
 	    "      <td class=\"form-group uib-time minutes\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
-	    "        <input type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td ng-show=\"showSeconds\" class=\"uib-separator\">:</td>\n" +
 	    "      <td class=\"form-group uib-time seconds\" ng-class=\"{'has-error': invalidSeconds}\" ng-show=\"showSeconds\">\n" +
-	    "        <input type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
 	    "      </td>\n" +
 	    "      <td ng-show=\"showMeridian\" class=\"uib-time am-pm\"><button type=\"button\" ng-class=\"{disabled: noToggleMeridian()}\" class=\"btn btn-default text-center\" ng-click=\"toggleMeridian()\" ng-disabled=\"noToggleMeridian()\" tabindex=\"{{::tabindex}}\">{{meridian}}</button></td>\n" +
 	    "    </tr>\n" +
@@ -43855,13 +43590,10 @@
 	    "</ul>\n" +
 	    "");
 	}]);
-	angular.module('ui.bootstrap.carousel').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibCarouselCss && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'); angular.$$uibCarouselCss = true; });
-	angular.module('ui.bootstrap.datepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-left,.uib-right{width:100%}</style>'); angular.$$uibDatepickerCss = true; });
-	angular.module('ui.bootstrap.position').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibPositionCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-position-measure{display:block !important;visibility:hidden !important;position:absolute !important;top:-9999px !important;left:-9999px !important;}.uib-position-scrollbar-measure{position:absolute !important;top:-9999px !important;width:50px !important;height:50px !important;overflow:scroll !important;}.uib-position-body-scrollbar-measure{overflow:scroll !important;}</style>'); angular.$$uibPositionCss = true; });
-	angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerpopupCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker-popup.dropdown-menu{display:block;float:none;margin:0;}.uib-button-bar{padding:10px 9px 2px;}</style>'); angular.$$uibDatepickerpopupCss = true; });
-	angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
-	angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
-	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
+	angular.module('ui.bootstrap.carousel').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'); });
+	angular.module('ui.bootstrap.datepicker').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-datepicker-popup.dropdown-menu{display:block;}.uib-button-bar{padding:10px 9px 2px;}</style>'); });
+	angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); });
+	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); });
 
 /***/ },
 /* 41 */
@@ -64490,14 +64222,16 @@
 	        };
 	        ErrorsInterceptor.prototype.responseError = function (rejection) {
 	            var self = Errors.ErrorsInterceptor.instance;
-	            if (rejection.data.mensajeError) {
-	                $('#errorModal .modal-body').html('<p>' + rejection.data.mensajeError + '</p>');
+	            if (self.$injector.get('$state').current.name !== 'login') {
+	                if (rejection.data.mensajeError) {
+	                    $('#errorModal .modal-body').html('<p>' + rejection.data.mensajeError + '</p>');
+	                }
+	                else {
+	                    $('#errorModal .modal-body').html('<p>Ha ocurrido un error inesperado, verificá los datos ingresados e intentá nuevamente</p>');
+	                }
+	                $('#errorModal').modal('show');
+	                return self.$q.reject(rejection);
 	            }
-	            else {
-	                $('#errorModal .modal-body').html('<p>Ha ocurrido un error inesperado, verificá los datos ingresados e intentá nuevamente</p>');
-	            }
-	            $('#errorModal').modal('show');
-	            return self.$q.reject(rejection);
 	        };
 	        return ErrorsInterceptor;
 	    })();
@@ -64585,6 +64319,9 @@
 	            controller: home_controller_ts_1.HomeController,
 	            controllerAs: 'homeCtrl',
 	            parent: 'root',
+	            params: {
+	                'fromState': null
+	            },
 	            data: {
 	                requireLogin: true
 	            }
@@ -64633,6 +64370,7 @@
 	                    setTimeout(function () {
 	                        _this.showAll();
 	                    }, 0);
+	                    _this.verifyProjects();
 	                    // if (!this.localStorageService.get('flagOnboarding') && this.$state.current.name === 'home.tree') {
 	                    //
 	                    //   var statesdemo = [
@@ -64888,7 +64626,7 @@
 	            });
 	        };
 	        HomeController.prototype.addNotification = function (data) {
-	            var formDiv = document.getElementsByTagName('alertmodal');
+	            var formDiv = document.getElementsByTagName('notification');
 	            angular.element(formDiv).remove();
 	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
 	            var referralDiv = referralDivFactory(this.$scope);
@@ -64957,6 +64695,19 @@
 	            return completeness;
 	        };
 	        ;
+	        HomeController.prototype.verifyProjects = function () {
+	            var projects = 0;
+	            this.jurisdiccion.objetivosJurisdiccionales.forEach(function (oj) {
+	                oj.objetivosOperativos.forEach(function (oo) {
+	                    projects = projects + oo.proyectos.length;
+	                });
+	            });
+	            if (projects === 0 && this.$state.current.name === 'home.tree'
+	                && ((!this.$state.params.fromState) || this.$state.params.fromState !== 'home')) {
+	                console.log(projects);
+	                this.$state.go('home');
+	            }
+	        };
 	        HomeController.prototype.goToElement = function (idElement) {
 	            $('html,body').animate({
 	                scrollTop: $("#" + idElement).offset().top }, 500);
@@ -64984,7 +64735,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/home.html';
-	var html = "<div class=\"pageContanerCustom\">\r\n    <div class=\"item page\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <h2 class=\"title-year\">Plan 2017</h2>\r\n\r\n                <excelcomponent showimport=\"true\"></excelcomponent>\r\n\r\n                <div style=\"clear:both;\"></div>\r\n                <p class=\"register\">No hay proyectos cargados a&uacute;n en el Plan 2017</p>\r\n                <div class=\"content-first-btn principalBtn\">\r\n                    <button type=\"button\" class=\"btn btn-success\" ui-sref=\"upload\">Importar proyectos de Excel</button>\r\n                    <button type=\"button\" class=\"btn btn-success\" ui-sref=\"home.tree\">Agregar proyectos en forma manual</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
+	var html = "<div class=\"pageContanerCustom\">\r\n    <div class=\"item page\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n                <h2 class=\"title-year\">Plan 2017</h2>\r\n\r\n                <excelcomponent showimport=\"true\"></excelcomponent>\r\n\r\n                <div style=\"clear:both;\"></div>\r\n                <p class=\"register\">No hay proyectos cargados a&uacute;n en el Plan 2017</p>\r\n                <div class=\"content-first-btn principalBtn\">\r\n                    <button type=\"button\" class=\"btn btn-success\" ui-sref=\"upload\">Importar proyectos de Excel</button>\r\n                    <button type=\"button\" class=\"btn btn-success\" ui-sref=\"home.tree({fromState: 'home'})\">Agregar proyectos en forma manual</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -65028,6 +64779,7 @@
 	            this.datePickerFin = {
 	                status: false
 	            };
+	            this.ejesNoCorresponde = true;
 	            var userData = this.localStorageService.get(this.currentUserKey);
 	            var user = userData;
 	            if (user) {
@@ -65077,6 +64829,9 @@
 	                    data.fechaInicio = new Date(data.fechaInicio);
 	                    data.fechaFin = new Date(data.fechaFin);
 	                    _this.currentProject = data;
+	                    if (_this.currentProject.ejesDeGobierno.length > 0) {
+	                        _this.ejesNoCorresponde = false;
+	                    }
 	                    _this.actionMove = data.estado;
 	                    _this.initValidators();
 	                    if (data.area) {
@@ -65251,9 +65006,7 @@
 	            var _this = this;
 	            if (this.fileArray.length > 0) {
 	                this.fileArray.forEach(function (file) {
-	                    _this.services.formProjectFileUploader(file, idProject, _this.jurisdiccion.idJurisdiccion).then(function (data) {
-	                        console.log(data);
-	                    });
+	                    _this.services.formProjectFileUploader(file, idProject, _this.jurisdiccion.idJurisdiccion);
 	                });
 	            }
 	        };
@@ -65321,9 +65074,8 @@
 	            this.datePickerFin.status = true;
 	        };
 	        FormProjectComponentController.prototype.clearValuesUbicacion = function (type) {
-	            if (this.currentProject.comunas) {
-	                this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
-	            }
+	            this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
+	            this.currentProject.direccion = null;
 	        };
 	        FormProjectComponentController.prototype.loadTags = function ($query) {
 	            return this.poblacionesMeta.filter(function (tag) {
@@ -65434,7 +65186,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/form-project.html';
-	var html = "<li id=\"projectFormID\">\n<div class=\"contentNewProyect\">{{formCtrl.title}}</div>\n    <div class=\"col-md-12 contentFormProyect\" id=\"alertmodalcomponent\">\n       <div class=\"col-md-3 col-sm-2 col-xs-12 pull-right\" id=\"moveprojectid\">\n            <!-- <div class=\"dropdown content-actionForm\">\n                <button disabled class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                    <i class=\"glyphicon glyphicon-transfer\" aria-hidden=\"true\"></i>\n                    <span>Cambiar estado</span>\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                    <li><a href=\"#\">Varificar</a></li>\n                    <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li>\n                </ul>\n            </div> -->\n            <div class=\"contentProgress content-actionForm\">\n                <div class=\"titleProgress\">Progreso de creación</div>\n                <div class=\"row\">\n                    <div class=\"c100 p{{formCtrl.percentForm}} centerProgress coloGreen\">\n                      <span>{{formCtrl.percentForm}}%</span>\n                      <div class=\"slice\">\n                        <div class=\"bar\"></div>\n                        <div class=\"fill\"></div>\n                      </div>\n                    </div>\n                </div>\n                <div class=\"dataProgress\">{{formCtrl.countForm}}</div>\n            </div><div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default dropdown-toggle fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                Estado: {{formCtrl.actionMove}}\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu dropEstado\" aria-labelledby=\"dropdownMenu1\">\n                    <li ng-repeat=\"status in formCtrl.moveOptions\"><a ng-click=\"formCtrl.setState(status)\">{{status}}</a></li>\n                    <!-- <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li> -->\n                </ul>\n              </div>\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"modal\" data-target=\"#moverModal\" aria-haspopup=\"true\" aria-expanded=\"true\" ng-click=\"formCtrl.moveProject()\">\n                    Mover a ...\n                    <!-- <span class=\"caret\"></span> -->\n                </button>\n            </div>\n            <div class=\"col-md-12\">\n                <hr class=\"line-inner-proyect\">\n            </div>\n\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n              <button ng-show=\"formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != null\" type=\"button\" ng-click=\"formCtrl.saveProject()\" ng-disabled=\"!formCtrl.allInputs\" class=\"btn btn-success fullButtonRight\">Guardar</button>\n              <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" ng-disabled=\"!formCtrl.allInputs\" type=\"button\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success btn-lg fullButtonRight\">Guardar y Presentar</button>\n              <button ng-if=\"formCtrl.flagForSaveDraft\" ng-show=\"formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'\" type=\"submit\" form=\"principalForm\" class=\"btn btn-default fullButtonRight\" id=\"draftButton fullButtonRight\">Guardar Borrador</button>\n              <button type=\"button\" class=\"btn btn-default fullButtonRight\" data-toggle=\"modal\" data-target=\"#cancelAlert\">Cancelar cambios</button>\n              <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" type=\"button\" class=\"btn btn-default right btnRemove fullButtonRight\" data-toggle=\"modal\" data-target=\"#projectAlert\" ng-click=\"formCtrl.deleteProject(formCtrl.currentProject.idProyecto)\">Eliminar</button>\n            </div>\n\n        </div>\n\n\n    <div class=\"col-md-9 col-sm-10 col-xs-12\">\n        <form role=\"form\" id=\"principalForm\" ng-submit=\"formCtrl.saveProject()\">\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-infoInicial\"></div>&nbsp;Información inicial\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                            <label for=\"nombre\">Nombre</label>\n                            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentProject.nombre\" required>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                            <label for=\"descripcion del proyecto\">Descripción del proyecto</label>\n                            <textarea class=\"form-control\" rows=\"3\" ng-model=\"formCtrl.currentProject.descripcion\"></textarea>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-3\">\n                            <div></div>\n                            <label for=\"meta 2017\">Meta 2017</label>\n                            <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"meta\" placeholder=\"Ej. 200\" ng-model=\"formCtrl.currentProject.meta\" maxlength=\"15\">\n                        </div>\n                        <div class=\"form-group col-md-9\">\n                            <label for=\"unidad de la meta\">Unidad de la meta</label>\n                            <input type=\"text\" class=\"form-control\" id=\"unit\" maxlength=\"512\" placeholder=\"Ingresar unidad\" ng-model=\"formCtrl.currentProject.unidadMeta\">\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-presupuesto\"></div>&nbsp;Fechas y presupuesto\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-5\">\n                            <label for=\"fecha de inicio\">Fecha de inicio</label>\n                            <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required> -->\n                            <p class=\"input-group\">\n                              <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerInicio.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required/>\n                              <span class=\"input-group-btn\">\n                                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerInicio()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                              </span>\n                            </p>\n                        </div>\n                        <div class=\"form-group col-md-5\">\n                            <label for=\"fecha de fin\">Fecha de fin</label>\n                            <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" min=\"formCtrl.currentProject.fechaInicio\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required> -->\n                            <p class=\"input-group\">\n                              <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerFin.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required />\n                              <span class=\"input-group-btn\">\n                                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerFin()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                              </span>\n                            </p>\n                        </div>\n                        <span class=\"errorForm error-date\">{{formCtrl.validDate}}</span>\n                    </div>\n                    <div ng-show=\"formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''\">\n                      <div class=\"row\">\n                        <div class=\"col-md-12\">\n                          <label class=\"titlePresupuesto\" for=\"presupuesto\">Presupuesto desglosado año por año:</label>\n                          <p class=\"reference\">Ingresá montos para calcular el total</p>\n                        </div>\n                      </div>\n                      <div class=\"row\">\n                        <div class=\"col-md-2 col-sm-3 col-xs-12 add-line\">\n                          <label for=\"año\">Año</label>\n                        </div>\n                        <div class=\"col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <label for=\"fondo solicitado GCBA\" style=\"padding-left: 24px;\">Fondo solicitado GCBA</label>\n                        </div>\n                        <div class=\"col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <label for=\"fondo de otras fuentes\" style=\"padding-left: 24px;\">Fondo de otras fuentes</label>\n                        </div>\n                      </div>\n                      <div class=\"row\" ng-repeat=\"p in formCtrl.currentProject.presupuestosPorAnio\">\n                        <div class=\"form-group col-md-2 col-sm-3 col-xs-12 add-line\">\n                          <input type=\"number\" class=\"form-control\" id=\"year\" ng-value=\"year\" ng-model=\"p.anio\" disabled=\"true\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength=\"15\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudget()\" ng-model=\"p.presupuesto\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength=\"15\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudgetOtherSources()\" ng-model=\"p.otrasFuentes\">\n                        </div>\n                      </div>\n                      <div class=\"row\">\n                        <div class=\"form-group col-md-2 col-sm-3 totalPresupuesto\">\n                          <label for=\"subtotal\">SUBTOTAL</label>\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudget\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudgetOtherSources\">\n                        </div>\n                      </div>\n                      <div class=\"row contentTotal\">\n                        <div class=\"form-group col-md-offset-4 col-md-2 col-sm-3 col-sm-offset-5 totalPresupuesto\">\n                          <label for=\"total\">TOTAL</label>\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 input\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-value=\"formCtrl.totalBudget + formCtrl.totalBudgetOtherSources\">\n                        </div>\n                      </div>\n                    </div>\n                </div>\n\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-poblacion\"></div>&nbsp;Población\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"cantidad de población impactada\">Cantidad de población impactada</label>\n                            <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"unit\" placeholder=\"Ej. 200.000\" ng-model=\"formCtrl.currentProject.poblacionAfectada\" maxlength=\"15\">\n                        </div>\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"segmento de la población impactada\">Segmento de la población impactada</label>\n                            <!-- <input type=\"text\" class=\"form-control\" id=\"type\" placeholder=\"Ej. Jubilados, Estudiantes\"> -->\n                            <tags-input ng-model=\"formCtrl.currentProject.poblacionesMeta\"\n                                        display-property=\"nombre\"\n                                        key-property=\"nombre\"\n                                        add-from-autocomplete-only=\"true\"\n                                        placeholder=\"{{formCtrl.poblacionesMetaPlaceholder}}\"\n                                        replace-spaces-with-dashes=\"false\">\n                                <auto-complete source=\"formCtrl.loadTags($query)\"\n                                               min-length=\"0\"\n                                               max-results-to-show=\"1000\"\n                                               load-on-focus=\"true\"\n                                               load-on-empty=\"true\">\n                                </auto-complete>\n                            </tags-input>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-responsabilidad\"></div>&nbsp;Responsables\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"responsable\">Responsable</label>\n                            <input type=\"text\" class=\"form-control\" id=\"responsable\" maxlength=\"512\" placeholder=\"Ingresar l&iacute;der de proyecto\" ng-model=\"formCtrl.currentProject.liderProyecto\">\n                        </div>\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"area\">Area</label>\n                            <select class=\"form-control\" ng-model=\"formCtrl.areaNombre\" ng-change=\"formCtrl.onChangeArea()\">\n                                <option ng-repeat=\"item in formCtrl.jurisdiccion.areas\"  ng-selected=\"{{item.nombre == formCtrl.nombre}}\" value=\"{{item.nombre}}\">{{item.nombre}}</option>\n                            </select>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                          <label for=\"organismos corresponsables\">Organismos corresponsables</label> <span class=\"opcional\">(Opcional)</span>\n                          <input type=\"text\" class=\"form-control\" id=\"responsable\" maxlength=\"512\" placeholder=\"Ingresar otros organismos de Ciudad, Nación, Provincia\" ng-model=\"formCtrl.currentProject.organismosCorresponsables\">\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-ubicacion\"></div>&nbsp;Ubicación\n                    <p class=\"reference\">Seleccioná el tipo de ubicación que mejor describa al proyecto.\nSi el proyecto impacta en una ubicación específica, seleccioná \"Dirección\".\nSi impacta en varias direcciones, seleccioná \"Comunas\".\nSi el proyecto no tiene una ubicación definida aún o no impacta en ningún lugar, seleccioná la opción correspondiente a cada caso.</p>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-4\">\n                            <label for=\"tipo de ubicacion\">Tipo de ubicación</label>\n                            <select class=\"form-control\" ng-change=\"formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)\" ng-model=\"formCtrl.currentProject.tipoUbicacionGeografica\">\n                                <option>Comunas</option>\n                                <option>Dirección</option>\n                                <option>Sin Definir</option>\n                                <option>No Corresponde</option>\n                            </select>\n                        </div>\n                        <div class=\"form-group col-md-8\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'\">\n                            <label for=\"direccion\">Dirección</label>\n                            <!-- <input type=\"text\" class=\"form-control\" id=\"direccion\" maxlength=\"512\" placeholder=\"Ingresar dirección\" ng-model=\"formCtrl.currentProject.direccion\"> -->\n                            <usigautocomplete></usigautocomplete>\n                        </div>\n                        <div class=\"form-group col-md-8\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'\">\n                            <label for=\"comunas\">Comunas</label>\n                            <tags-input ng-model=\"formCtrl.currentProject.comunas\"\n                                        display-property=\"nombre\"\n                                        key-property=\"nombre\"\n                                        add-from-autocomplete-only=\"true\"\n                                        placeholder=\"{{formCtrl.comunasPlaceholder}}\"\n                                        replace-spaces-with-dashes=\"false\">\n                                <auto-complete source=\"formCtrl.loadComunas($query)\"\n                                               min-length=\"0\"\n                                               max-results-to-show=\"1000\"\n                                               load-on-focus=\"true\"\n                                               load-on-empty=\"true\">\n                                </auto-complete>\n                            </tags-input>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                     <div class=\"ic-title ic-infoInicial\"></div>&nbsp;Información adicional\n                    <div class=\"form-group\">\n                        <label for=\"tipo de proyecto\">Tipo de Proyecto</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.tipoProyecto\">\n                            <label for=\"optionsRadios1\" class=\"option\">\n                                <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios1\" value=\"Nuevo\" checked ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                                Nuevo\n                            </label>\n                            <label for=\"optionsRadios2\" class=\"option\">\n                                <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios2\" value=\"Ampliación\" ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                                Ampliaci&oacute;n\n                            </label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                      <label for=\"eje de gobierno\">Eje de Gobierno</label>\n                      <p class=\"reference\">Seleccioná los ejes de gobierno de la Ciudad haciendo clic en la imagen </p>\n                        <div class=\"row\">\n                          <div class=\"contentEje eje-{{$index}}\" ng-repeat=\"eje in formCtrl.ejesDeGobierno\">\n                              <input type='checkbox' class=\"ejeCheckbox\" name='eje-{{$index}}' value='eje-{{$index}}' ng-click=\"formCtrl.checkNoSelection()\" id=\"eje-{{$index}}\" checklist-model=\"formCtrl.currentProject.ejesDeGobierno\" checklist-value=\"eje\"/>\n                              <label for=\"eje-{{$index}}\"> {{eje.nombre}} <popover data-placement=\"top\" data-content=\"{{eje.descripcion}} Ej. {{eje.ejemplos}}\" title=\"{{eje.nombre}}\"></popover></label>\n                          </div>\n                        </div>\n                        <div class=\"checkbox\">\n                            <label class=\"option\" for=\"no-selection\"><input ng-click=\"formCtrl.cleanCheckEjes()\" type=\"checkbox\" id=\"no-selection\" name=\"noSelection\" checked> No corresponde</label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"change\">Implica cambio legislativo</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.cambioLegislativo\">\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios3\" data-ng-value=\"false\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                                No\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios4\" data-ng-value=\"true\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                                S&iacute;\n                            </label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"prioridad jurisdiccional\">Prioridad Jurisdiccional</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios1\" value=\"1.Alta\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                1. Alta\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"2.Media\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                2. Media\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"3.Baja\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                3. Baja\n                            </label>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-adjuntar\"></div>&nbsp;Archivos adjuntos <span class=\"opcional\">(Opcional)</span>\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <p class=\"reference\">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>\n                        </div>\n                          <div  ng-repeat=\"file in formCtrl.fileArray\">\n                            <div class=\"col-md-12 attach\">\n                                <span>{{file.name}}</span>\n                                <i class=\"glyphicon glyphicon-remove\" ng-click=\"formCtrl.deleteFile(file)\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                            </div>\n                            <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                                <hr class=\"line-inner-proyect\">\n                            </div>\n                          </div>\n                          <div  ng-repeat=\"file in formCtrl.currentProject.archivos\">\n                            <div class=\"col-md-12 attach\">\n                                <span ng-click=\"formCtrl.getFile(file.nombre)\">{{file.nombre}}</span>\n                                <i class=\"glyphicon glyphicon-remove\" ng-click=\"formCtrl.deleteFileFromCurrent(file)\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                            </div>\n                            <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                                <hr class=\"line-inner-proyect\">\n                            </div>\n                          </div>\n                        <!-- <div class=\"col-md-12 attach\">\n                            <span>Nombre del archivo.jpg</span>\n                            <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                        </div>\n                        <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                            <hr class=\"line-inner-proyect\">\n                        </div>\n                        <div class=\"col-md-12 attach\">\n                            <span>Nombre del archivo.jpg</span>\n                            <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                        </div>\n                        <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                            <hr class=\"line-inner-proyect\">\n                        </div> -->\n                        <div class=\"col-md-12\">\n                            <input type=\"file\" id=\"inputFile\" multiple>\n                            <button id=\"buttonFile\" type=\"button\" class=\"btn btn-default\">\n                              <div class=\"icNew\" title=\"Agregar\"></div>\n                              <span>Agregar nuevo archivo</span>\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            <br />\n            <div class=\"alert alert-info\">\n                Para guardar y presentar tenes que completar todos los campos que no son opcionales.\n            </div>\n            <button ng-show=\"formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null\" type=\"submit\" ng-disabled=\"!formCtrl.allInputs\" class=\"btn btn-success\">Guardar</button>\n            <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" ng-disabled=\"!formCtrl.allInputs\" type=\"button\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success btn-lg\">Guardar y Presentar</button>\n            <button ng-if=\"formCtrl.flagForSaveDraft\" ng-show=\"formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'\" type=\"submit\" class=\"btn btn-default\" id=\"draftButton\">Guardar Borrador</button>\n            <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" type=\"button\" class=\"btn btn-default right btnRemove\" data-toggle=\"modal\" data-target=\"#projectAlert\">Eliminar</button>\n            <button type=\"button\" class=\"btn btn-default right\" data-toggle=\"modal\" data-target=\"#cancelAlert\">Cancelar cambios</button>\n        </form>\n        <alertmodal modal-id=\"projectAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Proyecto. ¿Continuar?\" on-accept=\"formCtrl.deleteProjectById(formCtrl.currentProject.idProyecto)\"></alertmodal>\n        <alertmodal modal-id=\"cancelAlert\" modal-title=\"Aviso\" modal-body=\"Se van a perder los datos ingresados. ¿Desea Continuar?\" on-accept=\"formCtrl.cancel()\"></alertmodal>\n    </div>\n\n</li>\n";
+	var html = "<li id=\"projectFormID\">\n<div class=\"contentNewProyect\">{{formCtrl.title}}</div>\n    <div class=\"col-md-12 contentFormProyect\" id=\"alertmodalcomponent\">\n       <div class=\"col-md-3 col-sm-2 col-xs-12 pull-right\" id=\"moveprojectid\">\n            <!-- <div class=\"dropdown content-actionForm\">\n                <button disabled class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                    <i class=\"glyphicon glyphicon-transfer\" aria-hidden=\"true\"></i>\n                    <span>Cambiar estado</span>\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenu1\">\n                    <li><a href=\"#\">Varificar</a></li>\n                    <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li>\n                </ul>\n            </div> -->\n            <div class=\"contentProgress content-actionForm\">\n                <div class=\"titleProgress\">Progreso de creación</div>\n                <div class=\"row\">\n                    <div class=\"c100 p{{formCtrl.percentForm}} centerProgress coloGreen\">\n                      <span>{{formCtrl.percentForm}}%</span>\n                      <div class=\"slice\">\n                        <div class=\"bar\"></div>\n                        <div class=\"fill\"></div>\n                      </div>\n                    </div>\n                </div>\n                <div class=\"dataProgress\">{{formCtrl.countForm}}</div>\n            </div><div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default dropdown-toggle fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                Estado: {{formCtrl.actionMove}}\n                    <span class=\"caret\"></span>\n                </button>\n                <ul class=\"dropdown-menu dropEstado\" aria-labelledby=\"dropdownMenu1\">\n                    <li ng-repeat=\"status in formCtrl.moveOptions\"><a ng-click=\"formCtrl.setState(status)\">{{status}}</a></li>\n                    <!-- <li><a href=\"#\">Pre aprobar</a></li>\n                    <li><a href=\"#\">Cancelar</a></li>\n                    <li><a href=\"#\">Rechazar</a></li> -->\n                </ul>\n              </div>\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n                <button class=\"btn btn-default fullButtonRight\" type=\"button\" id=\"dropdownMenu1\" data-toggle=\"modal\" data-target=\"#moverModal\" aria-haspopup=\"true\" aria-expanded=\"true\" ng-click=\"formCtrl.moveProject()\">\n                    Mover a ...\n                    <!-- <span class=\"caret\"></span> -->\n                </button>\n            </div>\n            <div class=\"col-md-12\">\n                <hr class=\"line-inner-proyect\">\n            </div>\n\n            <div class=\"dropdown content-actionForm contentButtonRight\">\n              <button ng-show=\"formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != null\" type=\"button\" ng-click=\"formCtrl.saveProject()\" ng-disabled=\"!formCtrl.allInputs\" class=\"btn btn-success fullButtonRight\">Guardar</button>\n              <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" ng-disabled=\"!formCtrl.allInputs\" type=\"button\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success btn-lg fullButtonRight\">Guardar y Presentar</button>\n              <button ng-if=\"formCtrl.flagForSaveDraft\" ng-show=\"formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'\" type=\"submit\" form=\"principalForm\" class=\"btn btn-default fullButtonRight\" id=\"draftButton fullButtonRight\">Guardar Borrador</button>\n              <button type=\"button\" class=\"btn btn-default fullButtonRight\" data-toggle=\"modal\" data-target=\"#cancelAlert\">Cancelar cambios</button>\n              <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" type=\"button\" class=\"btn btn-default right btnRemove fullButtonRight\" data-toggle=\"modal\" data-target=\"#projectAlert\" ng-click=\"formCtrl.deleteProject(formCtrl.currentProject.idProyecto)\">Eliminar</button>\n            </div>\n\n        </div>\n\n\n    <div class=\"col-md-9 col-sm-10 col-xs-12\">\n        <form role=\"form\" id=\"principalForm\" ng-submit=\"formCtrl.saveProject()\">\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-infoInicial\"></div>&nbsp;Información inicial\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                            <label for=\"nombre\">Nombre</label>\n                            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentProject.nombre\" required>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                            <label for=\"descripcion del proyecto\">Descripción del proyecto</label>\n                            <textarea class=\"form-control\" rows=\"3\" ng-model=\"formCtrl.currentProject.descripcion\"></textarea>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-3\">\n                            <div></div>\n                            <label for=\"meta 2017\">Meta 2017</label>\n                            <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"meta\" placeholder=\"Ej. 200\" ng-model=\"formCtrl.currentProject.meta\" maxlength=\"15\">\n                        </div>\n                        <div class=\"form-group col-md-9\">\n                            <label for=\"unidad de la meta\">Unidad de la meta</label>\n                            <input type=\"text\" class=\"form-control\" id=\"unit\" maxlength=\"512\" placeholder=\"Ingresar unidad\" ng-model=\"formCtrl.currentProject.unidadMeta\">\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-presupuesto\"></div>&nbsp;Fechas y presupuesto\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-5\">\n                            <label for=\"fecha de inicio\">Fecha de inicio</label>\n                            <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required> -->\n                            <p class=\"input-group\">\n                              <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerInicio.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaInicio\" ng-change=\"formCtrl.loadYears()\" required/>\n                              <span class=\"input-group-btn\">\n                                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerInicio()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                              </span>\n                            </p>\n                        </div>\n                        <div class=\"form-group col-md-5\">\n                            <label for=\"fecha de fin\">Fecha de fin</label>\n                            <!-- <input type=\"date\" class=\"form-control\" id=\"responsable\" placeholder=\"\" min=\"formCtrl.currentProject.fechaInicio\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required> -->\n                            <p class=\"input-group\">\n                              <input type=\"text\" class=\"form-control\" uib-datepicker-popup=\"dd/MM/yyyy\" is-open=\"formCtrl.datePickerFin.status\"  close-text=\"Cerrar\" current-text=\"Fecha Actual\" clear-text=\"Limpiar\" ng-model=\"formCtrl.currentProject.fechaFin\" ng-change=\"formCtrl.loadYears()\" required />\n                              <span class=\"input-group-btn\">\n                                  <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.openPickerFin()\"><i class=\"glyphicon glyphicon-calendar\"></i></button>\n                              </span>\n                            </p>\n                        </div>\n                        <span class=\"errorForm error-date\">{{formCtrl.validDate}}</span>\n                    </div>\n                    <div ng-show=\"formCtrl.currentProject.fechaInicio && formCtrl.currentProject.fechaFin && formCtrl.validDate == ''\">\n                      <div class=\"row\">\n                        <div class=\"col-md-12\">\n                          <label class=\"titlePresupuesto\" for=\"presupuesto\">Presupuesto desglosado año por año:</label>\n                          <p class=\"reference\">Ingresá montos para calcular el total</p>\n                        </div>\n                      </div>\n                      <div class=\"row\">\n                        <div class=\"col-md-2 col-sm-3 col-xs-12 add-line\">\n                          <label for=\"año\">Año</label>\n                        </div>\n                        <div class=\"col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <label for=\"fondo solicitado GCBA\" style=\"padding-left: 24px;\">Fondo solicitado GCBA</label>\n                        </div>\n                        <div class=\"col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <label for=\"fondo de otras fuentes\" style=\"padding-left: 24px;\">Fondo de otras fuentes</label>\n                        </div>\n                      </div>\n                      <div class=\"row\" ng-repeat=\"p in formCtrl.currentProject.presupuestosPorAnio\">\n                        <div class=\"form-group col-md-2 col-sm-3 col-xs-12 add-line\">\n                          <input type=\"number\" class=\"form-control\" id=\"year\" ng-value=\"year\" ng-model=\"p.anio\" disabled=\"true\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength=\"15\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudget()\" ng-model=\"p.presupuesto\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 col-xs-11 add-line\">\n                          <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength=\"15\" class=\"form-control\" id=\"meta\" ng-change=\"formCtrl.getTotalBudgetOtherSources()\" ng-model=\"p.otrasFuentes\">\n                        </div>\n                      </div>\n                      <div class=\"row\">\n                        <div class=\"form-group col-md-2 col-sm-3 totalPresupuesto\">\n                          <label for=\"subtotal\">SUBTOTAL</label>\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudget\">\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-model=\"formCtrl.totalBudgetOtherSources\">\n                        </div>\n                      </div>\n                      <div class=\"row contentTotal\">\n                        <div class=\"form-group col-md-offset-4 col-md-2 col-sm-3 col-sm-offset-5 totalPresupuesto\">\n                          <label for=\"total\">TOTAL</label>\n                        </div>\n                        <i class=\"glyphicon glyphicon-usd\" aria-hidden=\"true\"></i>\n                        <div class=\"form-group col-md-4 col-sm-5 input\">\n                          <input type=\"number\" class=\"form-control\" id=\"meta\" disabled=\"disabled\" ng-value=\"formCtrl.totalBudget + formCtrl.totalBudgetOtherSources\">\n                        </div>\n                      </div>\n                    </div>\n                </div>\n\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-poblacion\"></div>&nbsp;Población\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"cantidad de población impactada\">Cantidad de población impactada</label>\n                            <input type=\"text\" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class=\"form-control\" id=\"unit\" placeholder=\"Ej. 200.000\" ng-model=\"formCtrl.currentProject.poblacionAfectada\" maxlength=\"15\">\n                        </div>\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"segmento de la población impactada\">Segmento de la población impactada</label>\n                            <!-- <input type=\"text\" class=\"form-control\" id=\"type\" placeholder=\"Ej. Jubilados, Estudiantes\"> -->\n                            <tags-input ng-model=\"formCtrl.currentProject.poblacionesMeta\"\n                                        display-property=\"nombre\"\n                                        key-property=\"nombre\"\n                                        add-from-autocomplete-only=\"true\"\n                                        placeholder=\"{{formCtrl.poblacionesMetaPlaceholder}}\"\n                                        replace-spaces-with-dashes=\"false\">\n                                <auto-complete source=\"formCtrl.loadTags($query)\"\n                                               min-length=\"0\"\n                                               max-results-to-show=\"1000\"\n                                               load-on-focus=\"true\"\n                                               load-on-empty=\"true\">\n                                </auto-complete>\n                            </tags-input>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-responsabilidad\"></div>&nbsp;Responsables\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"responsable\">Responsable</label>\n                            <input type=\"text\" class=\"form-control\" id=\"responsable\" maxlength=\"512\" placeholder=\"Ingresar l&iacute;der de proyecto\" ng-model=\"formCtrl.currentProject.liderProyecto\">\n                        </div>\n                        <div class=\"form-group col-md-6\">\n                            <label for=\"area\">Area</label>\n                            <select class=\"form-control\" ng-model=\"formCtrl.areaNombre\" ng-change=\"formCtrl.onChangeArea()\">\n                                <option ng-repeat=\"item in formCtrl.jurisdiccion.areas\"  ng-selected=\"{{item.nombre == formCtrl.nombre}}\" value=\"{{item.nombre}}\">{{item.nombre}}</option>\n                            </select>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-12\">\n                          <label for=\"organismos corresponsables\">Organismos corresponsables</label> <span class=\"opcional\">(Opcional)</span>\n                          <input type=\"text\" class=\"form-control\" id=\"responsable\" maxlength=\"512\" placeholder=\"Ingresar otros organismos de Ciudad, Nación, Provincia\" ng-model=\"formCtrl.currentProject.organismosCorresponsables\">\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-ubicacion\"></div>&nbsp;Ubicación\n                    <p class=\"reference\">Seleccioná el tipo de ubicación que mejor describa al proyecto.\nSi el proyecto impacta en una ubicación específica, seleccioná \"Dirección\".\nSi impacta en varias direcciones, seleccioná \"Comunas\".\nSi el proyecto no tiene una ubicación definida aún o no impacta en ningún lugar, seleccioná la opción correspondiente a cada caso.</p>\n                    <div class=\"row\">\n                        <div class=\"form-group col-md-4\">\n                            <label for=\"tipo de ubicacion\">Tipo de ubicación</label>\n                            <select class=\"form-control\" ng-change=\"formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)\" ng-model=\"formCtrl.currentProject.tipoUbicacionGeografica\">\n                                <option>Comunas</option>\n                                <option>Dirección</option>\n                                <option>Sin Definir</option>\n                                <option>No Corresponde</option>\n                            </select>\n                        </div>\n                        <div class=\"form-group col-md-8\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'\">\n                            <label for=\"direccion\">Dirección</label>\n                            <!-- <input type=\"text\" class=\"form-control\" id=\"direccion\" maxlength=\"512\" placeholder=\"Ingresar dirección\" ng-model=\"formCtrl.currentProject.direccion\"> -->\n                            <usigautocomplete></usigautocomplete>\n                        </div>\n                        <div class=\"form-group col-md-8\" ng-if=\"formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'\">\n                            <label for=\"comunas\">Comunas</label>\n                            <tags-input ng-model=\"formCtrl.currentProject.comunas\"\n                                        display-property=\"nombre\"\n                                        key-property=\"nombre\"\n                                        add-from-autocomplete-only=\"true\"\n                                        placeholder=\"{{formCtrl.comunasPlaceholder}}\"\n                                        replace-spaces-with-dashes=\"false\">\n                                <auto-complete source=\"formCtrl.loadComunas($query)\"\n                                               min-length=\"0\"\n                                               max-results-to-show=\"1000\"\n                                               load-on-focus=\"true\"\n                                               load-on-empty=\"true\">\n                                </auto-complete>\n                            </tags-input>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                     <div class=\"ic-title ic-infoInicial\"></div>&nbsp;Información adicional\n                    <div class=\"form-group\">\n                        <label for=\"tipo de proyecto\">Tipo de Proyecto</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.tipoProyecto\">\n                            <label for=\"optionsRadios1\" class=\"option\">\n                                <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios1\" value=\"Nuevo\" checked ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                                Nuevo\n                            </label>\n                            <label for=\"optionsRadios2\" class=\"option\">\n                                <input type=\"radio\" name=\"optionsTipo\" id=\"optionsRadios2\" value=\"Ampliación\" ng-model=\"formCtrl.currentProject.tipoProyecto\">\n                                Ampliaci&oacute;n\n                            </label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                      <label for=\"eje de gobierno\">Eje de Gobierno</label>\n                      <p class=\"reference\">Seleccioná los ejes de gobierno de la Ciudad haciendo clic en la imagen </p>\n                        <div class=\"row\">\n                          <div class=\"contentEje eje-{{$index}}\" ng-repeat=\"eje in formCtrl.ejesDeGobierno\">\n                              <input type='checkbox' class=\"ejeCheckbox\" name='eje-{{$index}}' value='eje-{{$index}}' ng-click=\"formCtrl.checkNoSelection()\" id=\"eje-{{$index}}\" checklist-model=\"formCtrl.currentProject.ejesDeGobierno\" checklist-value=\"eje\"/>\n                              <label for=\"eje-{{$index}}\"> {{eje.nombre}} <popover data-placement=\"top\" data-content=\"{{eje.descripcion}} Ej. {{eje.ejemplos}}\" title=\"{{eje.nombre}}\"></popover></label>\n                          </div>\n                        </div>\n                        <div class=\"checkbox\">\n                            <label class=\"option\" for=\"no-selection\"><input ng-click=\"formCtrl.cleanCheckEjes()\" type=\"checkbox\" id=\"no-selection\" name=\"noSelection\" ng-checked=\"formCtrl.ejesNoCorresponde\"> No corresponde</label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"change\">Implica cambio legislativo</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.cambioLegislativo\">\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios3\" data-ng-value=\"false\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                                No\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionslegislativo\" id=\"optionsRadios4\" data-ng-value=\"true\" ng-model=\"formCtrl.currentProject.cambioLegislativo\">\n                                S&iacute;\n                            </label>\n                        </div>\n                    </div>\n                    <div class=\"form-group\">\n                        <label for=\"prioridad jurisdiccional\">Prioridad Jurisdiccional</label>\n                        <div class=\"radio\" ng-init=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios1\" value=\"1.Alta\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                1. Alta\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"2.Media\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                2. Media\n                            </label>\n                            <label class=\"option\">\n                                <input type=\"radio\" name=\"optionsPrioridad\" id=\"optionsRadios2\" value=\"3.Baja\" ng-model=\"formCtrl.currentProject.prioridadJurisdiccional\">\n                                3. Baja\n                            </label>\n                        </div>\n                    </div>\n                </div>\n            <br>\n                <div class=\"col-md-12 agrupador\">\n                    <div class=\"ic-title ic-adjuntar\"></div>&nbsp;Archivos adjuntos <span class=\"opcional\">(Opcional)</span>\n                    <div class=\"row\">\n                        <div class=\"col-md-12\">\n                            <p class=\"reference\">Promocioná tu proyecto. Contanos mejor de qué se trata y porqué debe ser priorizado.</p>\n                        </div>\n                          <div  ng-repeat=\"file in formCtrl.fileArray\">\n                            <div class=\"col-md-12 attach\">\n                                <span>{{file.name}}</span>\n                                <i class=\"glyphicon glyphicon-remove\" ng-click=\"formCtrl.deleteFile(file)\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                            </div>\n                            <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                                <hr class=\"line-inner-proyect\">\n                            </div>\n                          </div>\n                          <div  ng-repeat=\"file in formCtrl.currentProject.archivos\">\n                            <div class=\"col-md-12 attach\">\n                                <span ng-click=\"formCtrl.getFile(file.nombre)\">{{file.nombre}}</span>\n                                <i class=\"glyphicon glyphicon-remove\" ng-click=\"formCtrl.deleteFileFromCurrent(file)\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                            </div>\n                            <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                                <hr class=\"line-inner-proyect\">\n                            </div>\n                          </div>\n                        <!-- <div class=\"col-md-12 attach\">\n                            <span>Nombre del archivo.jpg</span>\n                            <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                        </div>\n                        <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                            <hr class=\"line-inner-proyect\">\n                        </div>\n                        <div class=\"col-md-12 attach\">\n                            <span>Nombre del archivo.jpg</span>\n                            <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\"></i>\n                        </div>\n                        <div class=\"col-md-6 col-sm-12 col-xs-12\">\n                            <hr class=\"line-inner-proyect\">\n                        </div> -->\n                        <div class=\"col-md-12\">\n                            <input type=\"file\" id=\"inputFile\" multiple>\n                            <button id=\"buttonFile\" type=\"button\" class=\"btn btn-default\">\n                              <div class=\"icNew\" title=\"Agregar\"></div>\n                              <span>Agregar nuevo archivo</span>\n                            </button>\n                        </div>\n                    </div>\n                </div>\n            <br />\n            <div class=\"alert alert-info\">\n                Para guardar y presentar tenes que completar todos los campos que no son opcionales.\n            </div>\n            <button ng-show=\"formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null\" type=\"submit\" ng-disabled=\"!formCtrl.allInputs\" class=\"btn btn-success\">Guardar</button>\n            <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" ng-disabled=\"!formCtrl.allInputs\" type=\"button\" ng-click=\"formCtrl.presentProject()\" class=\"btn btn-success btn-lg\">Guardar y Presentar</button>\n            <button ng-if=\"formCtrl.flagForSaveDraft\" ng-show=\"formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'\" type=\"submit\" class=\"btn btn-default\" id=\"draftButton\">Guardar Borrador</button>\n            <button ng-show=\"formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null\" type=\"button\" class=\"btn btn-default right btnRemove\" data-toggle=\"modal\" data-target=\"#projectAlert\">Eliminar</button>\n            <button type=\"button\" class=\"btn btn-default right\" data-toggle=\"modal\" data-target=\"#cancelAlert\">Cancelar cambios</button>\n        </form>\n        <alertmodal modal-id=\"projectAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Proyecto. ¿Continuar?\" on-accept=\"formCtrl.deleteProjectById(formCtrl.currentProject.idProyecto)\"></alertmodal>\n        <alertmodal modal-id=\"cancelAlert\" modal-title=\"Aviso\" modal-body=\"Se van a perder los datos ingresados. ¿Desea Continuar?\" on-accept=\"formCtrl.cancel()\"></alertmodal>\n    </div>\n\n</li>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -65657,7 +65409,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/home/form-strategic-objective.html';
-	var html = "<br ng-if=\"formCtrl.idobjetivoestrategico\">\n<div class=\"contentNewProyect\">{{formCtrl.title}}</div>\n<div id=\"grupo-level-3-3\" class=\"contentFormProyect obj-estrategico collapse in\" aria-expanded=\"true\">\n     <div class=\"col-md-12 col-sm-12 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveStrategicObjective()\">\n            <div class=\"form-group col-md-12 agrupador\">\n                <label for=\"name\">Nombre de Objetivo Estrat&eacute;gico</label>\n                <input type=\"text\" class=\"form-control form-group\" id=\"name\" maxlength=\"512\"placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentStrategicObjective.nombre\" required>\n               <div class=\"row\" ng-show=\"formCtrl.currentStrategicObjective.indicadoresEstrategicos.length > 0\">\n                    <div class=\"col-md-5 col-sm-3 col-xs-11\">\n                        <label for=\"responsable\">Nombre del Indicador <popover data-placement=\"top\" data-content=\"Debe relacionarse con el objetivo estratégico y debe contener en su formulación la unidad de análisis, forma de medición y alcance. Ej. Porcentaje de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis. \" title=\"Nombre del Indicador\"></popover></label>\n                    </div>\n                    <div class=\"col-md-6 col-sm-5 col-xs-11\">\n                        <label for=\"responsable\">Método de cálculo <popover data-placement=\"top\" data-content=\"Debe detallar cómo está calculado el indicador. Debe ser una expresión matemática definida de manera adecuada y de fácil comprensión, donde queden claras las variables utilizadas. Ej. (Sumatoria de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis/ Sumatoria del total de Hogares dentro del Barrio 31 y 31bis) *100\" title=\"Método de cálculo\"></popover></label>\n                    </div>\n                </div>\n                <div class=\"row\" ng-repeat=\"indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index\">\n                    <div class=\"form-group col-md-5 col-sm-3 col-xs-11 add-line\">\n                        <input type=\"text\" class=\"form-control\" ng-model=\"indicador.nombre\" maxlength=\"512\" placeholder=\"Ingresar nombre del indicador\">\n                    </div>\n                    <div class=\"form-group col-md-6 col-sm-5 col-xs-11 add-line\">\n                        <input type=\"text\" class=\"form-control\" ng-model=\"indicador.descripcion\" maxlength=\"512\" placeholder=\"Ingresar forma de medici&oacute;n\">\n                    </div>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\" ng-click=\"formCtrl.removeIndicador($index)\"></i>\n                    <!-- <div class=\"form-group col-md-1 col-sm-1\">\n                      <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.removeIndicador($index)\"><i class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></i></button>\n                    </div> -->\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-md-12 form-group addBtn\">\n                      <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.addIndicador()\">\n                          <div class=\"icNew\" title=\"Agregar\"></div>\n                          <span>Agregar nuevo indicador</span>\n                      </button>\n                  </div>\n                </div> \n            </div>\n\n            \n            <button type=\"submit\" class=\"btn btn-success\">Guardar Objetivo Estrat&eacute;gico</button>\n            <button class=\"btn btn-default btnRemove right\" type=\"button\" data-toggle=\"modal\" data-target=\"#strategicObjAlert\">\n                Eliminar\n            </button>\n            <button type=\"button\" class=\"btn btn-default right\" ng-click=\"formCtrl.cancelStrategicObjective()\">Cancelar cambios</button>\n        </form>\n        <alertmodal modal-id=\"strategicObjAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Objetivo Estratégico. ¿Continuar?\" on-accept=\"formCtrl.deleteStrategicObjectiveById(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)\"></alertmodal>\n    </div>\n</div>\n";
+	var html = "<br ng-if=\"formCtrl.idobjetivoestrategico\">\n<div class=\"contentNewProyect\">{{formCtrl.title}}</div>\n<div id=\"grupo-level-3-3\" class=\"contentFormProyect obj-estrategico collapse in\" aria-expanded=\"true\">\n     <div class=\"col-md-12 col-sm-12 col-xs-12\">\n        <form role=\"form\" ng-submit=\"formCtrl.saveStrategicObjective()\">\n            <div class=\"form-group col-md-12 agrupador\">\n                <label for=\"name\">Nombre de Objetivo Estrat&eacute;gico</label>\n                <input type=\"text\" class=\"form-control form-group\" id=\"name\" maxlength=\"512\"placeholder=\"Ingresar nombre\" ng-model=\"formCtrl.currentStrategicObjective.nombre\" required>\n               <div class=\"row\" ng-show=\"formCtrl.currentStrategicObjective.indicadoresEstrategicos.length > 0\">\n                    <div class=\"col-md-5 col-sm-3 col-xs-11\">\n                        <label for=\"responsable\">Nombre del Indicador <popover data-placement=\"top\" data-content=\"Debe relacionarse con el objetivo estratégico y debe contener en su formulación la unidad de análisis, forma de medición y alcance. Ej. Porcentaje de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis. \" title=\"Nombre del Indicador\"></popover></label>\n                    </div>\n                    <div class=\"col-md-6 col-sm-5 col-xs-11\">\n                        <label for=\"responsable\">Método de cálculo <popover data-placement=\"top\" data-content=\"Debe detallar cómo está calculado el indicador. Debe ser una expresión matemática definida de manera adecuada y de fácil comprensión, donde queden claras las variables utilizadas. Ej. (Sumatoria de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis/ Sumatoria del total de Hogares dentro del Barrio 31 y 31bis) *100\" title=\"Método de cálculo\"></popover></label>\n                    </div>\n                </div>\n                <div class=\"row\" ng-repeat=\"indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index\">\n                    <div class=\"form-group col-md-5 col-sm-3 col-xs-11 add-line\">\n                        <input type=\"text\" class=\"form-control\" ng-model=\"indicador.nombre\" maxlength=\"512\" placeholder=\"Ingresar nombre del indicador\" required>\n                    </div>\n                    <div class=\"form-group col-md-6 col-sm-5 col-xs-11 add-line\">\n                        <input type=\"text\" class=\"form-control\" ng-model=\"indicador.descripcion\" maxlength=\"512\" placeholder=\"Ingresar forma de medici&oacute;n\" required>\n                    </div>\n                    <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Eliminar\" ng-click=\"formCtrl.removeIndicador($index)\"></i>\n                    <!-- <div class=\"form-group col-md-1 col-sm-1\">\n                      <button type=\"button\" class=\"btn btn-default btn-presupuesto\" ng-click=\"formCtrl.removeIndicador($index)\"><i class=\"glyphicon glyphicon-minus\" aria-hidden=\"true\"></i></button>\n                    </div> -->\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-md-12 form-group addBtn\">\n                      <button type=\"button\" class=\"btn btn-default\" ng-click=\"formCtrl.addIndicador()\">\n                          <div class=\"icNew\" title=\"Agregar\"></div>\n                          <span>Agregar nuevo indicador</span>\n                      </button>\n                  </div>\n                </div>\n            </div>\n\n\n            <button type=\"submit\" class=\"btn btn-success\">Guardar Objetivo Estrat&eacute;gico</button>\n            <button class=\"btn btn-default btnRemove right\" type=\"button\" data-toggle=\"modal\" data-target=\"#strategicObjAlert\">\n                Eliminar\n            </button>\n            <button type=\"button\" class=\"btn btn-default right\" ng-click=\"formCtrl.cancelStrategicObjective()\">Cancelar cambios</button>\n        </form>\n        <alertmodal modal-id=\"strategicObjAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Objetivo Estratégico. ¿Continuar?\" on-accept=\"formCtrl.deleteStrategicObjectiveById(formCtrl.currentStrategicObjective.idObjetivoJurisdiccional)\"></alertmodal>\n    </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -65728,7 +65480,7 @@
 	            this.apiBaseUrl = config.authBaseUrl + 'api/';
 	        }
 	        GeneralServices.prototype.jurisdicciones = function () {
-	            return this.$http.get(this.apiBaseUrl + "jurisdiccion/")
+	            return this.$http.get(this.apiBaseUrl + "jurisdiccion/resumen")
 	                .then(function (response) { return response.data; })
 	                .catch(function (response) { return console.log(response.data); });
 	        };
@@ -66089,13 +65841,12 @@
 /* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(79);
+	/* WEBPACK VAR INJECTION */(function($) {__webpack_require__(79);
 	var Home;
 	(function (Home) {
-	    var selectedOption = null;
 	    function afterSelection(option) {
-	        selectedOption = option;
-	        // console.log('selected option', selectedOption);
+	        $("#autocomplete").val(option.toString());
+	        angular.element($("#autocomplete")).triggerHandler('input');
 	    }
 	    function afterGeoCoding() {
 	        // console.log("selected option", selectedOption);
@@ -66126,6 +65877,7 @@
 	})(Home || (Home = {}));
 	module.exports = Home;
 
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(46)))
 
 /***/ },
 /* 79 */
@@ -66378,11 +66130,14 @@
 	        UsersController.prototype.toggleUserState = function (user) {
 	            this.services.toggleUserState(user);
 	        };
-	        UsersController.prototype.deleteUserById = function (id) {
+	        UsersController.prototype.deleteUserById = function () {
 	            var _this = this;
-	            this.services.deleteUser(id).then(function (data) {
+	            this.services.deleteUser(this.idForDelete).then(function (data) {
 	                _this.$state.reload();
 	            });
+	        };
+	        UsersController.prototype.userForDelete = function (id) {
+	            this.idForDelete = id;
 	        };
 	        UsersController.prototype.goToElement = function (idElement) {
 	            $('html,body').animate({
@@ -66401,7 +66156,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/users/users.html';
-	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\" id=\"alertmodalcomponent\">\n        <div class=\"row\">\n          <div class=\"col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn\">\n            <button type=\"button\" class=\"btn btn-default\" ng-click=\"usersCtrl.addUser()\">\n              <div class=\"icNew\" title=\"Agregar\"></div>\n              <span>Agregar nuevo</span>\n            </button>\n          </div>\n          <div class=\"col-lg-3 col-md-4 col-sm-8 col-xs-12\">\n            <div class=\"form-group has-button contentSearch searchPage\">\n              <input type=\"text\" class=\"form-control input-md\" id=\"buttonInput2\" placeholder=\"Buscar\" ng-model=\"usersCtrl.userFilter\">\n              <button class=\"btn\">\n                <span class=\"glyphicon glyphicon-search\"></span>\n              </button>\n            </div>\n          </div>\n          <div class=\"col-md-12\">\n            <hr class=\"lineColor\">\n            <div id=\"newuser\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"table-responsive\">\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th>Nombre</th>\n            <th>Apellido</th>\n            <th>Mail</th>\n            <th class=\"colum-action\">Estado</th>\n            <th class=\"colum-action\">Editar</th>\n            <th class=\"colum-action\">Eliminar</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"user in usersCtrl.usuarios | filter: usersCtrl.userFilter\" id=\"user-{{user.idUsuario}}\">\n            <td class=\"thirdLabel\">{{user.nombre}}</td>\n            <td class=\"thirdLabel\">{{user.apellido}}</td>\n            <td>{{user.email}}</td>\n            <td>\n              <div class=\"switch\">\n                <input id=\"cmn-toggle-{{user.idUsuario}}\" class=\"cmn-toggle cmn-toggle-round\" type=\"checkbox\" ng-change=\"usersCtrl.toggleUserState(user)\"  ng-model=\"user.activo\">\n                <label for=\"cmn-toggle-{{user.idUsuario}}\"></label>\n              </div>\n            </td>\n            <td class=\"colum-action\">\n            <i class=\"icEdit\" aria-hidden=\"true\" title=\"Editar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"usersCtrl.editUser(user.idUsuario)\"></i>\n            </td>\n            <td class=\"colum-action\"><i class=\"glyphicon glyphicon-remove\" title=\"Eliminar\" aria-hidden=\"true\" data-toggle=\"modal\" data-target=\"#userAlert\" data-original-title=\"Eliminar\"></i>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <alertmodal modal-id=\"userAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Usuario. ¿Continuar?\" on-accept=\"usersCtrl.deleteUserById(user.idUsuario)\"></alertmodal>\n    </div>\n  </div>\n</div>\n";
+	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\" id=\"alertmodalcomponent\">\n        <div class=\"row\">\n          <div class=\"col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn\">\n            <button type=\"button\" class=\"btn btn-default\" ng-click=\"usersCtrl.addUser()\">\n              <div class=\"icNew\" title=\"Agregar\"></div>\n              <span>Agregar nuevo</span>\n            </button>\n          </div>\n          <div class=\"col-lg-3 col-md-4 col-sm-8 col-xs-12\">\n            <div class=\"form-group has-button contentSearch searchPage\">\n              <input type=\"text\" class=\"form-control input-md\" id=\"buttonInput2\" placeholder=\"Buscar\" ng-model=\"usersCtrl.userFilter\">\n              <button class=\"btn\">\n                <span class=\"glyphicon glyphicon-search\"></span>\n              </button>\n            </div>\n          </div>\n          <div class=\"col-md-12\">\n            <hr class=\"lineColor\">\n            <div id=\"newuser\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"table-responsive\">\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th>Nombre</th>\n            <th>Apellido</th>\n            <th>Mail</th>\n            <th class=\"colum-action\">Estado</th>\n            <th class=\"colum-action\">Editar</th>\n            <th class=\"colum-action\">Eliminar</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"user in usersCtrl.usuarios | filter: usersCtrl.userFilter\" id=\"user-{{user.idUsuario}}\">\n            <td class=\"thirdLabel\">{{user.nombre}}</td>\n            <td class=\"thirdLabel\">{{user.apellido}}</td>\n            <td>{{user.email}}</td>\n            <td>\n              <div class=\"switch\">\n                <input id=\"cmn-toggle-{{user.idUsuario}}\" class=\"cmn-toggle cmn-toggle-round\" type=\"checkbox\" ng-change=\"usersCtrl.toggleUserState(user)\"  ng-model=\"user.activo\">\n                <label for=\"cmn-toggle-{{user.idUsuario}}\"></label>\n              </div>\n            </td>\n            <td class=\"colum-action\">\n            <i class=\"icEdit\" aria-hidden=\"true\" title=\"Editar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"usersCtrl.editUser(user.idUsuario)\"></i>\n            </td>\n            <td class=\"colum-action\"><i class=\"glyphicon glyphicon-remove\" title=\"Eliminar\" aria-hidden=\"true\" data-toggle=\"modal\" data-target=\"#userAlert\" data-original-title=\"Eliminar\" ng-click=\"usersCtrl.userForDelete(user.idUsuario)\"></i>\n            </td>\n            <alertmodal modal-id=\"userAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el Usuario. ¿Continuar?\" on-accept=\"usersCtrl.deleteUserById()\"></alertmodal>\n          </tr>\n        </tbody>\n      </table>\n    </div>\n  </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -66414,10 +66169,12 @@
 	(function (Home) {
 	    var UserFormController = (function () {
 	        /*@ngInject*/
-	        function UserFormController(services, $state) {
+	        function UserFormController(services, $state, $compile, $scope) {
 	            var _this = this;
 	            this.services = services;
 	            this.$state = $state;
+	            this.$compile = $compile;
+	            this.$scope = $scope;
 	            console.log('New user form');
 	            if (!this.currentuserid) {
 	                this.title = "Nuevo usuario";
@@ -66447,6 +66204,14 @@
 	                _this.jurisdicciones = data;
 	            });
 	        }
+	        UserFormController.prototype.addNotification = function (data) {
+	            var formDiv = document.getElementsByTagName('notification');
+	            angular.element(formDiv).remove();
+	            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="' + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
+	            var referralDiv = referralDivFactory(this.$scope);
+	            var containerDiv = document.getElementById('notificationsUser');
+	            angular.element(containerDiv).append(referralDiv);
+	        };
 	        UserFormController.prototype.loadTags = function ($query) {
 	            return this.jurisdicciones.filter(function (tag) {
 	                return tag.nombre.toLowerCase().indexOf($query.toLowerCase()) !== -1;
@@ -66455,10 +66220,21 @@
 	        UserFormController.prototype.submit = function () {
 	            var _this = this;
 	            console.log(this.currentuser);
-	            (this.currentuser.idUsuario ? this.services.updateUser(this.currentuser) : this.services.saveUser(this.currentuser))
-	                .then(function (data) {
-	                _this.$state.reload();
-	            });
+	            if ((this.currentuser.roles[0].nombre === 'Operador de jurisdicción') && (this.currentuser.jurisdicciones === null || this.currentuser.jurisdicciones === undefined || this.currentuser.jurisdicciones.length === 0)) {
+	                var notificationData = {
+	                    "type": "warning",
+	                    "icon": "exclamation-sign",
+	                    "title": "Error",
+	                    "text": "Es necesario que un usuario con perfil 'Operador de jurisdicción' tenga asociada al menos una Jurisdicción." // tslint:disable-line
+	                };
+	                this.addNotification(notificationData);
+	            }
+	            else {
+	                (this.currentuser.idUsuario ? this.services.updateUser(this.currentuser) : this.services.saveUser(this.currentuser))
+	                    .then(function (data) {
+	                    _this.$state.reload();
+	                });
+	            }
 	        };
 	        UserFormController.prototype.cancel = function () {
 	            var formDiv = document.getElementsByTagName('userform');
@@ -66484,7 +66260,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/users/form-user/form-user.html';
-	var html = "<div class=\"contentNewProyect\">{{userFormCtrl.title}}</div>\n<div class=\"contentFormProyect admin\">\n  <div class=\"col-md-12 col-sm-12 col-xs-12\">\n    <form role=\"form\" ng-submit=\"userFormCtrl.submit()\">\n      <div class=\"col-md-12 col-sm-12 col-xs-12 agrupador form-group\">\n        <div class=\"row\">\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Nombre</label>\n            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.nombre\" placeholder=\"Ingresar nombre\" required>\n          </div>\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Apellido</label>\n            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.apellido\" placeholder=\"Ingresar apellido\" required>\n          </div>\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Correo electrónico</label>\n            <input type=\"email\" class=\"form-control\" id=\"mail\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.email\" placeholder=\"Ingresar mail\" required>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"form-group col-md-4\">\n            <label for=\"responsable\">Perfil</label>\n            <select class=\"form-control\" ng-model=\"userFormCtrl.currentuser.roles[0]\" ng-options=\"role.descripcion for role in userFormCtrl.roles track by role.idRol\" required>\n            </select>\n          </div>\n          <div class=\"form-group col-md-4\">\n            <label for=\"responsable\">Jurisdicción</label>\n            <tags-input ng-model=\"userFormCtrl.currentuser.jurisdicciones\"\n                        display-property=\"nombre\"\n                        key-property=\"idJurisdiccion\"\n                        add-from-autocomplete-only=\"true\"\n                        placeholder=\"Jurisdicciones\"\n                        required>\n                <auto-complete source=\"userFormCtrl.loadTags($query)\"\n                               min-length=\"1\"\n                               load-on-focus=\"true\"\n                               load-on-empty=\"true\"\n                               max-results-to-show=\"100\">\n                </auto-complete>\n            </tags-input>\n          </div>\n        </div>\n      </div>\n      <button type=\"submit\" class=\"btn btn-success\">Guardar</button>\n      <button type=\"button\" ng-click=\"userFormCtrl.cancel()\" class=\"btn btn-default right\">Cancelar cambios</button>\n    </form>\n  </div>\n</div>\n";
+	var html = "<div class=\"contentNewProyect\">{{userFormCtrl.title}}</div>\n<div class=\"contentFormProyect admin\">\n  <div class=\"col-md-12 col-sm-12 col-xs-12\">\n    <div id=\"notificationsUser\"></div>\n    <form role=\"form\" ng-submit=\"userFormCtrl.submit()\">\n      <div class=\"col-md-12 col-sm-12 col-xs-12 agrupador form-group\">\n        <div class=\"row\">\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Nombre</label>\n            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.nombre\" placeholder=\"Ingresar nombre\" required>\n          </div>\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Apellido</label>\n            <input type=\"text\" class=\"form-control\" id=\"name\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.apellido\" placeholder=\"Ingresar apellido\" required>\n          </div>\n          <div class=\"form-group col-md-4 col-sm-4 col-xs-12\">\n            <label for=\"name\">Correo electrónico</label>\n            <input type=\"email\" class=\"form-control\" id=\"mail\" maxlength=\"512\" ng-model=\"userFormCtrl.currentuser.email\" placeholder=\"Ingresar mail\" required>\n          </div>\n        </div>\n        <div class=\"row\">\n          <div class=\"form-group col-md-4\">\n            <label for=\"responsable\">Perfil</label>\n            <select class=\"form-control\" ng-model=\"userFormCtrl.currentuser.roles[0]\" ng-options=\"role.descripcion for role in userFormCtrl.roles track by role.idRol\" required>\n            </select>\n          </div>\n          <div class=\"form-group col-md-4\">\n            <label for=\"responsable\">Jurisdicción</label>\n            <tags-input ng-model=\"userFormCtrl.currentuser.jurisdicciones\"\n                        display-property=\"nombre\"\n                        key-property=\"idJurisdiccion\"\n                        add-from-autocomplete-only=\"true\"\n                        placeholder=\"Jurisdicciones\"\n                        required>\n                <auto-complete source=\"userFormCtrl.loadTags($query)\"\n                               min-length=\"1\"\n                               load-on-focus=\"true\"\n                               load-on-empty=\"true\"\n                               max-results-to-show=\"100\">\n                </auto-complete>\n            </tags-input>\n          </div>\n        </div>\n      </div>\n      <button type=\"submit\" class=\"btn btn-success\">Guardar</button>\n      <button type=\"button\" ng-click=\"userFormCtrl.cancel()\" class=\"btn btn-default right\">Cancelar cambios</button>\n    </form>\n  </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -66525,7 +66301,7 @@
 	            controllerAs: 'priorizationCtrl',
 	            parent: 'root',
 	            data: {
-	                requireLogin: false
+	                requireLogin: true
 	            }
 	        });
 	    }
@@ -66690,7 +66466,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/upload/upload.html';
-	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h2 class=\"title-year\">Plan 2017</h2>\n        <excelcomponent></excelcomponent>\n        <div style=\"clear:both;\"></div>\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n            <p class=\"title-import-excel\">Importar Excel</p>\n              <hr class=\"lineColor\">\n              <span class=\"titleProgress\"\">Paso 1 de 2</span>\n              <div class=\"progress\">\n                <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:50%\">\n                </div>\n              </div>\n              <div class=\"alert alert-info left\">Tenes que descargar el excel maestro para poder importar proyectos desde Excel\n                <excelbutton></excelbutton>\n              </div>\n              <form name=\"fileform\" ng-submit=\"uploadCtrl.submit(fileform)\">\n                  <input type=\"file\" id=\"archivoAImportar\">\n                  <div class=\"content-first-btn\">\n                    <button type=\"submit\" class=\"btn btn-success\">Continuar</button>\n                    <button type=\"button\" class=\"btn btn-default right\" ui-sref=\"home.tree\">Cancelar</button>\n                  </div>\n              </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
+	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\">\n        <h2 class=\"title-year\">Plan 2017</h2>\n        <excelcomponent></excelcomponent>\n        <div style=\"clear:both;\"></div>\n        <div class=\"row\">\n          <div class=\"col-md-12\">\n            <p class=\"title-import-excel\">Importar Excel</p>\n              <hr class=\"lineColor\">\n              <span class=\"titleProgress\">Paso 1 de 2</span>\n              <div class=\"progress\">\n                <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width:50%\">\n                </div>\n              </div>\n              <div class=\"alert alert-info left\">Tenes que descargar el excel maestro para poder importar proyectos desde Excel\n                <excelbutton></excelbutton>\n              </div>\n              <form name=\"fileform\" ng-submit=\"uploadCtrl.submit(fileform)\">\n                  <input type=\"file\" id=\"archivoAImportar\">\n                  <div class=\"content-first-btn\">\n                    <button type=\"submit\" class=\"btn btn-success\">Continuar</button>\n                    <button type=\"button\" class=\"btn btn-default right\" ui-sref=\"home.tree\">Cancelar</button>\n                  </div>\n              </form>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -67062,12 +66838,15 @@
 	                angular.element(containerDiv).append(referralDiv);
 	            }
 	        };
+	        CrossTopicsController.prototype.topicForDelete = function (id) {
+	            this.idForDelete = id;
+	        };
 	        CrossTopicsController.prototype.toggleCrossTopicState = function (crossTopic) {
 	            this.services.toggleCrossTopicState(crossTopic);
 	        };
-	        CrossTopicsController.prototype.deleteCrossTopicById = function (id) {
+	        CrossTopicsController.prototype.deleteCrossTopicById = function () {
 	            var _this = this;
-	            this.services.deleteTemaTransversal(id).then(function (data) {
+	            this.services.deleteTemaTransversal(this.idForDelete).then(function (data) {
 	                _this.$state.reload();
 	            });
 	        };
@@ -67083,7 +66862,7 @@
 /***/ function(module, exports) {
 
 	var path = '/Users/enocmontiel/Documents/Projects/Hexacta/ProyectosBA/front-end/src/cross-topics/cross-topics.html';
-	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\" id=\"alertmodalcomponent\">\n        <div class=\"row\">\n          <div class=\"col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn\">\n            <button type=\"button\" class=\"btn btn-default\" ng-click=\"crossTopicsCtrl.addCrossTopic()\">\n              <div class=\"icNew\" title=\"Agregar\"></div>\n              <span>Agregar nuevo</span>\n            </button>\n          </div>\n          <div class=\"col-lg-3 col-md-4 col-sm-8 col-xs-12\">\n            <div class=\"form-group has-button contentSearch searchPage\">\n              <input type=\"text\" class=\"form-control input-md\" id=\"buttonInput2\" placeholder=\"Buscar\" ng-model=\"crossTopicsCtrl.crossTopicsFilter\">\n              <button class=\"btn\">\n              <span class=\"glyphicon glyphicon-search\"></span>\n              </button>\n            </div>\n          </div>\n          <div class=\"col-md-12\">\n            <hr class=\"lineColor\">\n            <div id=\"newcrosstopic\">\n            </div>\n          </div>\n        </div>        \n      </div>\n    </div>\n    <div class=\"table-responsive\">\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th>Tema transversal</th>\n            <th class=\"colum-action\">Estado</th>\n            <th class=\"colum-action\">Editar</th>\n            <th class=\"colum-action\" >Eliminar</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"crossTopic in crossTopicsCtrl.crossTopics | filter: crossTopicsCtrl.crossTopicsFilter\" id=\"cross-topic-{{crossTopic.idTemaTransversal}}\">\n            <td class=\"thirdLabel\">{{crossTopic.temaTransversal}}</td>\n            <td>\n              <div class=\"switch\">\n                <input id=\"cmn-toggle-{{crossTopic.idTemaTransversal}}\" class=\"cmn-toggle cmn-toggle-round\" type=\"checkbox\" ng-change=\"crossTopicsCtrl.toggleCrossTopicState(crossTopic)\"  ng-model=\"crossTopic.activo\">\n                <label for=\"cmn-toggle-{{crossTopic.idTemaTransversal}}\"></label>\n              </div>\n            </td>\n            <td class=\"colum-action\">\n              <i class=\"icEdit\" aria-hidden=\"true\" title=\"Editar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)\"></i>\n            </td>\n            <td class=\"colum-action\">\n              <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"modal\" data-target=\"#crossTopicAlert\" data-original-title=\"Eliminar\"></i>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <alertmodal modal-id=\"crossTopicAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el tema transversal. ¿Continuar?\" on-accept=\"crossTopicsCtrl.deleteCrossTopicById(crossTopic.idTemaTransversal)\"></alertmodal>\n    </div>\n  </div>\n</div>\n";
+	var html = "<div class=\"pageContanerCustom\">\n  <div class=\"item page\">\n    <div class=\"row\">\n      <div class=\"col-md-12\" id=\"alertmodalcomponent\">\n        <div class=\"row\">\n          <div class=\"col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn\">\n            <button type=\"button\" class=\"btn btn-default\" ng-click=\"crossTopicsCtrl.addCrossTopic()\">\n              <div class=\"icNew\" title=\"Agregar\"></div>\n              <span>Agregar nuevo</span>\n            </button>\n          </div>\n          <div class=\"col-lg-3 col-md-4 col-sm-8 col-xs-12\">\n            <div class=\"form-group has-button contentSearch searchPage\">\n              <input type=\"text\" class=\"form-control input-md\" id=\"buttonInput2\" placeholder=\"Buscar\" ng-model=\"crossTopicsCtrl.crossTopicsFilter\">\n              <button class=\"btn\">\n              <span class=\"glyphicon glyphicon-search\"></span>\n              </button>\n            </div>\n          </div>\n          <div class=\"col-md-12\">\n            <hr class=\"lineColor\">\n            <div id=\"newcrosstopic\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n    <div class=\"table-responsive\">\n      <table class=\"table table-striped\">\n        <thead>\n          <tr>\n            <th>Tema transversal</th>\n            <th class=\"colum-action\">Estado</th>\n            <th class=\"colum-action\">Editar</th>\n            <th class=\"colum-action\" >Eliminar</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr ng-repeat=\"crossTopic in crossTopicsCtrl.crossTopics | filter: crossTopicsCtrl.crossTopicsFilter\" id=\"cross-topic-{{crossTopic.idTemaTransversal}}\">\n            <td class=\"thirdLabel\">{{crossTopic.temaTransversal}}</td>\n            <td>\n              <div class=\"switch\">\n                <input id=\"cmn-toggle-{{crossTopic.idTemaTransversal}}\" class=\"cmn-toggle cmn-toggle-round\" type=\"checkbox\" ng-change=\"crossTopicsCtrl.toggleCrossTopicState(crossTopic)\"  ng-model=\"crossTopic.activo\">\n                <label for=\"cmn-toggle-{{crossTopic.idTemaTransversal}}\"></label>\n              </div>\n            </td>\n            <td class=\"colum-action\">\n              <i class=\"icEdit\" aria-hidden=\"true\" title=\"Editar\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Editar\" ng-click=\"crossTopicsCtrl.editCrossTopic(crossTopic.idTemaTransversal)\"></i>\n            </td>\n            <td class=\"colum-action\">\n              <i class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" title=\"Eliminar\" data-toggle=\"modal\" data-target=\"#crossTopicAlert\" data-original-title=\"Eliminar\" ng-click=\"crossTopicsCtrl.topicForDelete(crossTopic.idTemaTransversal)\"></i>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n      <alertmodal modal-id=\"crossTopicAlert\" modal-title=\"Aviso\" modal-body=\"Se va a eliminar el tema transversal. ¿Continuar?\" on-accept=\"crossTopicsCtrl.deleteCrossTopicById()\"></alertmodal>\n    </div>\n  </div>\n</div>\n";
 	window.angular.module('ng').run(['$templateCache', function(c) { c.put(path, html) }]);
 	module.exports = path;
 
@@ -67231,7 +67010,10 @@
 	                this.$state.reload();
 	            }
 	            else {
-	                this.$state.go('home.tree');
+	                var scope = this;
+	                this.$state.reload().then(function () {
+	                    scope.$state.go('home.tree');
+	                });
 	            }
 	        };
 	        MenuController.prototype.applySearch = function () {
@@ -67519,7 +67301,7 @@
 	        /*@ngInject*/
 	        function VersionController($http) {
 	            this.$http = $http;
-	            this.versionFrontend = ("1.0.0");
+	            this.versionFrontend = ("1.1.0");
 	        }
 	        return VersionController;
 	    })();

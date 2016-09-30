@@ -6,6 +6,7 @@ module Users {
     export class UsersController {
 
       private usuarios: Usuario[];
+      private idForDelete: number;
 
       /*@ngInject*/
       constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private $scope:ng.IScope, private $compile: ng.ICompileService) {
@@ -37,10 +38,14 @@ module Users {
         this.services.toggleUserState(user);
       }
 
-      deleteUserById(id) {
-        this.services.deleteUser(id).then((data) => {
+      deleteUserById() {
+        this.services.deleteUser(this.idForDelete).then((data) => {
             this.$state.reload();
         });
+      }
+
+      userForDelete(id) {
+        this.idForDelete = id;
       }
 
       goToElement(idElement) {

@@ -6,6 +6,7 @@ module CrossTopics {
     export class CrossTopicsController {
 
       private crossTopics: TemaTransversal[];
+      private idForDelete: number;
 
       /*@ngInject*/
       constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private $scope:ng.IScope, private $compile: ng.ICompileService) {
@@ -33,12 +34,16 @@ module CrossTopics {
         }
       }
 
+      topicForDelete(id) {
+        this.idForDelete = id;
+      }
+
       toggleCrossTopicState(crossTopic) {
         this.services.toggleCrossTopicState(crossTopic);
       }
 
-      deleteCrossTopicById(id) {
-        this.services.deleteTemaTransversal(id).then((data) => {
+      deleteCrossTopicById() {
+        this.services.deleteTemaTransversal(this.idForDelete).then((data) => {
             this.$state.reload();
         });
       }

@@ -46,6 +46,7 @@ module Home {
       private datePickerFin = {
         status: false
       };
+      private ejesNoCorresponde = true;
 
       /*@ngInject*/
       constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService, private $scope:ng.IScope,
@@ -104,6 +105,9 @@ module Home {
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
               this.currentProject = data;
+              if (this.currentProject.ejesDeGobierno.length > 0) {
+                this.ejesNoCorresponde = false;
+              }
               this.actionMove = data.estado;
               this.initValidators();
               if (data.area) {
@@ -297,9 +301,7 @@ module Home {
       uploadFiles(idProject) {
         if (this.fileArray.length > 0) {
           this.fileArray.forEach((file) => {
-              this.services.formProjectFileUploader(file, idProject, this.jurisdiccion.idJurisdiccion).then((data) => {
-                console.log(data);
-              });
+              this.services.formProjectFileUploader(file, idProject, this.jurisdiccion.idJurisdiccion);
           });
         }
       }
@@ -370,9 +372,8 @@ module Home {
         }
 
       clearValuesUbicacion(type) {
-        if (this.currentProject.comunas) {
           this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
-        }
+          this.currentProject.direccion = null;
       }
 
       loadTags($query) {

@@ -14,7 +14,7 @@ module Priorization {
                 controllerAs: 'priorizationCtrl',
                 parent: 'root',
                 data: {
-                  requireLogin: false
+                  requireLogin: true
                 }
             });
     }

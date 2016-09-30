@@ -25,13 +25,15 @@ module Errors {
 
     public responseError(rejection) {
       var self = Errors.ErrorsInterceptor.instance;
-      if (rejection.data.mensajeError) {
-        (<any>$('#errorModal .modal-body')).html('<p>' + rejection.data.mensajeError + '</p>');
-      } else {
-        (<any>$('#errorModal .modal-body')).html('<p>Ha ocurrido un error inesperado, verificá los datos ingresados e intentá nuevamente</p>');
+      if (self.$injector.get('$state').current.name !== 'login') {
+        if (rejection.data.mensajeError) {
+          (<any>$('#errorModal .modal-body')).html('<p>' + rejection.data.mensajeError + '</p>');
+        } else {
+          (<any>$('#errorModal .modal-body')).html('<p>Ha ocurrido un error inesperado, verificá los datos ingresados e intentá nuevamente</p>');
+        }
+        (<any>$('#errorModal')).modal('show');
+        return self.$q.reject(rejection);
       }
-      (<any>$('#errorModal')).modal('show');
-      return self.$q.reject(rejection);
     }
 
   }

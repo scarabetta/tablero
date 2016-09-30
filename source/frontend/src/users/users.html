@@ -51,12 +51,12 @@
             <td class="colum-action">
             <i class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="usersCtrl.editUser(user.idUsuario)"></i>
             </td>
-            <td class="colum-action"><i class="glyphicon glyphicon-remove" title="Eliminar" aria-hidden="true" data-toggle="modal" data-target="#userAlert" data-original-title="Eliminar"></i>
+            <td class="colum-action"><i class="glyphicon glyphicon-remove" title="Eliminar" aria-hidden="true" data-toggle="modal" data-target="#userAlert" data-original-title="Eliminar" ng-click="usersCtrl.userForDelete(user.idUsuario)"></i>
             </td>
+            <alertmodal modal-id="userAlert" modal-title="Aviso" modal-body="Se va a eliminar el Usuario. ¿Continuar?" on-accept="usersCtrl.deleteUserById()"></alertmodal>
           </tr>
         </tbody>
       </table>
-      <alertmodal modal-id="userAlert" modal-title="Aviso" modal-body="Se va a eliminar el Usuario. ¿Continuar?" on-accept="usersCtrl.deleteUserById(user.idUsuario)"></alertmodal>
     </div>
   </div>
 </div>

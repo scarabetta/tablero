@@ -24,6 +24,9 @@ module Home {
                 controller: HomeController,
                 controllerAs: 'homeCtrl',
                 parent: 'root',
+                params: {
+                  'fromState': null,
+                },
                 data: {
                   requireLogin: true
                 }

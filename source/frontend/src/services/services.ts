@@ -25,7 +25,7 @@ module Services {
         constructor(private $http: ng.IHttpService, private $state: ng.ui.IStateService, private localStorageService:angular.local.storage.ILocalStorageService) {}
 
         jurisdicciones(): ng.IPromise<any> {
-            return this.$http.get<Jurisdiccion>(this.apiBaseUrl + "jurisdiccion/")
+            return this.$http.get<Jurisdiccion>(this.apiBaseUrl + "jurisdiccion/resumen")
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }

@@ -6,7 +6,7 @@ module Home {
 
     export class HomeController {
 
-        private jurisdiccion:Jurisdiccion[];
+        private jurisdiccion:Jurisdiccion;
         private objetivosJurisdiccionales: any;
         private idjurisdiccionKey = 'idJurisdiccionStorage';
 
@@ -34,6 +34,8 @@ module Home {
                 setTimeout(() => {
                   this.showAll();
                 }, 0);
+
+                this.verifyProjects();
 
                 // if (!this.localStorageService.get('flagOnboarding') && this.$state.current.name === 'home.tree') {
                 //
@@ -296,7 +298,7 @@ module Home {
         }
 
         addNotification(data) {
-          var formDiv = document.getElementsByTagName('alertmodal');
+          var formDiv = document.getElementsByTagName('notification');
           angular.element(formDiv).remove();
           var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="'  + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
           var referralDiv = referralDivFactory(this.$scope);
@@ -377,6 +379,20 @@ module Home {
 
           return completeness;
         };
+
+        verifyProjects() {
+          var projects = 0;
+          this.jurisdiccion.objetivosJurisdiccionales.forEach((oj) => {
+            oj.objetivosOperativos.forEach((oo) => {
+              projects = projects + oo.proyectos.length;
+            });
+          });
+          if (projects === 0 && this.$state.current.name === 'home.tree'
+            && ((!(<any>this.$state.params).fromState) || (<any>this.$state.params).fromState !== 'home')) {
+            console.log(projects);
+            this.$state.go('home');
+          }
+        }
 
         goToElement(idElement) {
             (<any>$('html,body')).animate({

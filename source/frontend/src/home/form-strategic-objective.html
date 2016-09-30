@@ -16,10 +16,10 @@
                 </div>
                 <div class="row" ng-repeat="indicador in formCtrl.currentStrategicObjective.indicadoresEstrategicos track by $index">
                     <div class="form-group col-md-5 col-sm-3 col-xs-11 add-line">
-                        <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador">
+                        <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
                     </div>
                     <div class="form-group col-md-6 col-sm-5 col-xs-11 add-line">
-                        <input type="text" class="form-control" ng-model="indicador.descripcion" maxlength="512" placeholder="Ingresar forma de medici&oacute;n">
+                        <input type="text" class="form-control" ng-model="indicador.descripcion" maxlength="512" placeholder="Ingresar forma de medici&oacute;n" required>
                     </div>
                     <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="formCtrl.removeIndicador($index)"></i>
                     <!-- <div class="form-group col-md-1 col-sm-1">
@@ -33,10 +33,10 @@
                           <span>Agregar nuevo indicador</span>
                       </button>
                   </div>
-                </div> 
+                </div>
             </div>
 
-            
+
             <button type="submit" class="btn btn-success">Guardar Objetivo Estrat&eacute;gico</button>
             <button class="btn btn-default btnRemove right" type="button" data-toggle="modal" data-target="#strategicObjAlert">
                 Eliminar

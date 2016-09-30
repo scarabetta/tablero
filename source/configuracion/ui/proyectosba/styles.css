@@ -1826,6 +1826,9 @@ div.jqi .jqititle {
 .absoluteContent {
     position: absolute;
 }
+#notificationsUser notification{
+  width: 100%;
+}
 .rect-auto,
 .c100.p51 .slice,
 .c100.p52 .slice,

@@ -2,11 +2,9 @@ import 'usig.autocompleter.full.js';
 
 module Home {
 
-    let selectedOption = null;
-
     function afterSelection(option) {
-            selectedOption = option;
-            // console.log('selected option', selectedOption);
+            (<any>$("#autocomplete")).val(option.toString());
+            angular.element((<any>$("#autocomplete"))).triggerHandler('input');
     }
 
     function afterGeoCoding() {
