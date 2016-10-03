@@ -76,6 +76,8 @@ public class JurisdiccionHandler extends AbstractBaseEventHandler {
 			} else {
 				jurisdicciones = retrieveParaUsuario(request, jurisdicciones);			
 			}
+		} else {
+			jurisdicciones = retrieveParaUsuario(request, jurisdicciones);
 		}
 		response.setJurisdicciones(jurisdicciones);
 	}

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.domain.UsuarioResumen;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.UsuarioReqMsg;
 import ar.gob.buenosaires.esb.domain.message.UsuarioRespMsg;
@@ -35,6 +36,8 @@ public class UsuarioHandler extends AbstractBaseEventHandler {
 		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveUsuarios(response, request);
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_RESUMEN)) {
+			retrieveUsuariosResumen(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
 			usuarios.add(service.createUsuario(request.getUsuario()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
@@ -58,6 +61,13 @@ public class UsuarioHandler extends AbstractBaseEventHandler {
 			usuarios = service.getUsuarios();
 		}
 		response.setUsuarios(usuarios);
+	}
+	
+	private void retrieveUsuariosResumen(final UsuarioRespMsg response, final UsuarioReqMsg request) {
+		List<UsuarioResumen> usuarios = new ArrayList<UsuarioResumen>();
+
+		usuarios = service.getAllUsuariosResumen();
+		response.setUsuariosResumen(usuarios);
 	}
 
 	@Override

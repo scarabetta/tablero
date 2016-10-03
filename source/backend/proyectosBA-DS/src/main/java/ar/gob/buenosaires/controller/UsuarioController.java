@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nimbusds.jose.JOSEException;
 
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.domain.UsuarioResumen;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.UsuarioService;
@@ -34,6 +35,11 @@ public class UsuarioController {
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody List<Usuario> getUsuarios() throws ESBException, JMSException {
 		return service.getUsuarios();
+	}
+	
+	@RequestMapping(path = "/resumen", method = RequestMethod.GET)
+	public @ResponseBody List<UsuarioResumen> getUsuariosResumen() throws ESBException, JMSException {
+		return service.getUsuariosResumen();
 	}
 
 	@RequestMapping(path = "/porToken", method = RequestMethod.GET)

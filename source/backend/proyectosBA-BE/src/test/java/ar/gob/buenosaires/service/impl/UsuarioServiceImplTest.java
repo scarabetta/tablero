@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 import ar.gob.buenosaires.dao.jpa.usuario.UsuarioJpaDao;
 import ar.gob.buenosaires.dao.jpa.usuario.UsuarioRepositoryImpl;
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.domain.UsuarioResumen;
 
 public class UsuarioServiceImplTest {
 
@@ -116,5 +117,18 @@ public class UsuarioServiceImplTest {
 		assertThat(response).isNotNull();
 		assertThat(response.getNombre()).isNotNull();
 		assertThat(response.getNombre()).isEqualTo(FAKE_NOMBRE);
+	}
+	
+	@Test
+	public void getUsuarioResumen() {
+		List<UsuarioResumen> fakeResumenUsuarios = new ArrayList<UsuarioResumen>();
+		UsuarioResumen fakeUsuarioResumen = new UsuarioResumen();
+		fakeResumenUsuarios.add(fakeUsuarioResumen);
+		
+		when(repositorio.getUsuarioJpaDao().findAllResumen()).thenReturn(fakeResumenUsuarios);
+		
+		List<UsuarioResumen> response = service.getAllUsuariosResumen();
+		assertThat(response).isNotNull();
+		assertThat(response).isNotEmpty();
 	}
 }

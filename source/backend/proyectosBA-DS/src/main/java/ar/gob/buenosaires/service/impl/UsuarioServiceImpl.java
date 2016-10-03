@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.nimbusds.jose.JOSEException;
 
 import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.domain.UsuarioResumen;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.domain.message.UsuarioReqMsg;
@@ -147,5 +148,29 @@ public class UsuarioServiceImpl implements UsuarioService {
 		user = getUsuarioByEmail(token.getSubject());
 
 		return user;
+	}
+
+	@Override
+	public List<UsuarioResumen> getUsuariosResumen() throws ESBException, JMSException {
+		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+		
+		return getUsuarioResumenFromReqMsg(reqMsg);
+	}
+	
+	private List<UsuarioResumen> getUsuarioResumenFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
+		getLogger().debug("Mensaje creado para obtener un UsuarioResumen : {}", reqMsg.toString());
+		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_RESUMEN, UsuarioRespMsg.class);
+
+		final List<UsuarioResumen> ususarios = getUsuarioResumenFromResponse(response);
+		return ususarios;
+	}
+	
+	private List<UsuarioResumen> getUsuarioResumenFromResponse(final EsbBaseMsg response) {
+		List<UsuarioResumen> ususarios = null;
+		if (response.getEventType().equalsIgnoreCase(UsuarioRespMsg.USUARIO_TYPE)) {
+			ususarios = ((UsuarioRespMsg) response).getUsuariosResumen();
+			LOGGER.debug("Obteninendo los UsuariosResumen de la respues del BUS de servicios: {}", ususarios.toString());
+		}
+		return ususarios;
 	}
 }
