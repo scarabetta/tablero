@@ -5,26 +5,24 @@
     <form role="form" ng-submit="userFormCtrl.submit()">
       <div class="col-md-12 col-sm-12 col-xs-12 agrupador form-group">
         <div class="row">
-          <div class="form-group col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group col-md-4 col-sm-6 col-xs-12">
             <label for="name">Nombre</label>
             <input type="text" class="form-control" id="name" maxlength="512" ng-model="userFormCtrl.currentuser.nombre" placeholder="Ingresar nombre" required>
           </div>
-          <div class="form-group col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group col-md-4 col-sm-6 col-xs-12">
             <label for="name">Apellido</label>
             <input type="text" class="form-control" id="name" maxlength="512" ng-model="userFormCtrl.currentuser.apellido" placeholder="Ingresar apellido" required>
           </div>
-          <div class="form-group col-md-4 col-sm-4 col-xs-12">
+          <div class="form-group col-md-4 col-sm-6 col-xs-12">
             <label for="name">Correo electrónico</label>
             <input type="email" class="form-control" id="mail" maxlength="512" ng-model="userFormCtrl.currentuser.email" placeholder="Ingresar mail" required>
           </div>
-        </div>
-        <div class="row">
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-4 col-sm-6">
             <label for="responsable">Perfil</label>
             <select class="form-control" ng-model="userFormCtrl.currentuser.roles[0]" ng-options="role.descripcion for role in userFormCtrl.roles track by role.idRol" required>
             </select>
           </div>
-          <div class="form-group col-md-4">
+          <div class="form-group col-md-4 col-sm-12">
             <label for="responsable">Jurisdicción</label>
             <tags-input ng-model="userFormCtrl.currentuser.jurisdicciones"
                         display-property="nombre"

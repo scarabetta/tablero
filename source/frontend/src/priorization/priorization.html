@@ -7,7 +7,7 @@
         <div class="col-md-12">
           <hr class="lineColor">
         </div>
-      <div class="col-md-12">
+      <div class="col-md-12 floatContent">
           <p class="title">Resumen de proyectos</p>
           <div class="alert alert-info" style="margin-bottom: 15px;">Los proyectos en estado borrador no se incluyen en la priorización por no haber sido formalmente presentados.</div>
           <div class="contet-report">
@@ -26,7 +26,7 @@
             <p>Proyectos en priorización</p>
           </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 floatContent">
           <div class="principalBtn">
             <button type="button" ng-disabled="priorizationCtrl.dataResult.EnPriorizacion === '0' && priorizationCtrl.dataResult.Verificado === '0' && priorizationCtrl.dataResult.Presentado === '0'" class="btn btn-default" ng-click="priorizationCtrl.downloadExcelPriorization()">Descargar Excel de priorización</button>
             <button type="button" class="btn btn-default" disabled>Importar proyectos</button>

@@ -185,7 +185,7 @@ module Services {
         }
 
         getUsers(): ng.IPromise<any> {
-            return this.$http.get<Usuario>(this.apiBaseUrl + "usuario/")
+            return this.$http.get<Usuario>(this.apiBaseUrl + "usuario/resumen")
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }

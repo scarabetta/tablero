@@ -10,6 +10,11 @@ module Home {
       (<any>$('#' + (<any>this.$scope).modalId)).modal('hide');
       (<any>this.$scope).onAccept();
     }
+
+    cancel() {
+      (<any>$('#' + (<any>this.$scope).modalId)).modal('hide');
+      (<any>this.$scope).onCancel();
+    }
   }
 
   /*@ngInject*/
@@ -21,7 +26,8 @@ module Home {
         modalId: '@',
         modalTitle: '@',
         modalBody: '@',
-        onAccept: '&'
+        onAccept: '&',
+        onCancel: '&'
       },
       controller: AlertController,
       controllerAs: 'alertCtrl'

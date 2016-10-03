@@ -23,7 +23,7 @@
                     <label for="InputPasword">Contraseña</label>
                   </div>
                   <div class="form-group" ng-show="loginCtrl.numberOfAttempts >= loginCtrl.maxNumberOfAttempts">
-                    <div vc-recaptcha ng-model="loginCtrl.captcha"></div>
+                    <div vc-recaptcha class="captcha" ng-model="loginCtrl.captcha"></div>
                   </div>
                   <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresá</button>
                 </form>

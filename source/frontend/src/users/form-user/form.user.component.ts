@@ -35,6 +35,7 @@ module Home {
         services.getUser(this.currentuserid).then((data) => {
           this.currentuser = data;
           console.log(this.currentuser);
+          $('#mail').prop('readonly', true);
         });
         this.title = "Modificar usuario";
       }

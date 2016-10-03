@@ -1,41 +1,41 @@
 <div class="pageContanerCustom">
   <div class="item page uploadImport">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 col-md-12">
         <span class="title-year">Plan 2017</span>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 col-md-12">
         <p class="title-import-excel">Importar Excel</p>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 col-md-12">
         <hr class="lineColor">
         <span class="titleProgress">Paso 2 de 2 </span>
         <div class="progress">
-          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
           </div>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 col-sm-12">
         <p class="">El archivo se procesó correctamente, a continuación se muestra el resumen de los proyectos procesados:</p>
       </div>
-      <div class="col-md-12" style="margin-bottom: 20px;">
+      <div class="col-md-12 col-md-12 contentListProyect">
         <div ng-show="previewCtrl.newProjects.length > 0">
-          <div class="contentDate" style="width: 100%; margin-top: 25px;">
+          <div class="titlePreviewProyect">
             <span class="previewProyect" ng-show="previewCtrl.newProjects.length == 1">{{previewCtrl.newProjects.length}} proyecto nuevo</span>
             <span class="previewProyect" ng-show="previewCtrl.newProjects.length > 1">{{previewCtrl.newProjects.length}} proyectos nuevos</span>
-            <p class="reference" style="float: left;clear: left;">Estas líneas se agregarán como nuevos proyectos en el sistema.<span class="opcional" style="font-weight:normal;">(No hay proyectos cargados previamente con esos códigos o nombres)</span></p>
+            <p class="reference">Estas líneas se agregarán como nuevos proyectos en el sistema.<span class="opcional" style="font-weight:normal;">(No hay proyectos cargados previamente con esos códigos o nombres)</span></p>
              <p class="title proyectList">PROYECTOS</p>
             <div class="contentDate">
                 <span class="title left">Inicio</span>
                 <span class="title left">Fin</span>
             </div>
           </div>
-          <div class="col-md-12 notPadding">
+          <div class="col-md-12 col-sm-12 notPadding">
             <hr class="lineContentProyect">
           </div>
-          <ul style="list-style: none;padding: 0;">
+          <ul class="floatContent listPreviewProject notPadding">
             <li class="col-md-12 notPadding" ng-repeat="project in previewCtrl.newProjects">
-              <div class="col-md-7 col-sm-6 col-xs-12 notPadding">
+              <div class="col-md-7 col-sm-12 col-xs-12 notPadding">
                 <span class="thirdLabel">{{project.nombreProyecto}}</span>
               </div>
               <div class="box-date">
@@ -63,12 +63,12 @@
                   <span class="title left">Inicio</span>
                   <span class="title left">Fin</span>
               </div>
-            <div class="col-md-12 notPadding">
+            <div class="col-md-12 col-sm-12 notPadding">
               <hr class="lineContentProyect">
             </div>
-            <ul style="list-style: none;padding: 0;">
+            <ul class="floatContent listPreviewProject notPadding">
               <li class="col-md-12 notPadding" ng-repeat="project in previewCtrl.existentProjects">
-                <div class="col-md-7 col-sm-6 col-xs-12 notPadding">
+                <div class="col-md-7 col-sm-12 col-xs-12 notPadding">
                   <span class="thirdLabel">{{project.nombreProyecto}}</span>
                 </div>
 
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12" ng-show="previewCtrl.existentProjects.length > 0">
+      <div class="col-md-12 col-sm-12"" ng-show="previewCtrl.existentProjects.length > 0">
         <div class="form-group">
           <p>Seleccioná la acción que deseás hacer:</p>
           <div class="radio" ng-init="previewCtrl.pisarProyectos">
@@ -106,7 +106,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 col-sm-12">
         <button type="button" class="btn btn-success" ng-click="previewCtrl.submit()" ng-disabled="previewCtrl.submitBtnDisabled">{{previewCtrl.submitBtnTxt | capitalize}}</button>
         <button type="button" class="btn btn-default right" ui-sref="upload">Cancelar</button>
       </div>

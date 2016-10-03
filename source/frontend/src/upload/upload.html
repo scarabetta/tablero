@@ -14,12 +14,13 @@
                 <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%">
                 </div>
               </div>
-              <div class="alert alert-info left">Tenes que descargar el excel maestro para poder importar proyectos desde Excel
+              <div class="alert alert-info left">
+                <span class="floatContent">Tenes que descargar el excel maestro para poder importar proyectos desde Excel</span>
                 <excelbutton></excelbutton>
               </div>
               <form name="fileform" ng-submit="uploadCtrl.submit(fileform)">
                   <input type="file" id="archivoAImportar">
-                  <div class="content-first-btn">
+                  <div class="content-first-btn contentUploadBtn">
                     <button type="submit" class="btn btn-success">Continuar</button>
                     <button type="button" class="btn btn-default right" ui-sref="home.tree">Cancelar</button>
                   </div>

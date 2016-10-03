@@ -2,22 +2,20 @@
   <div class="item page">
     <div class="row">
       <div class="col-md-12" id="alertmodalcomponent">
-        <div class="row">
-          <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12 addBtn">
+          <div class="addBtn left">
             <button type="button" class="btn btn-default" ng-click="crossTopicsCtrl.addCrossTopic()">
               <div class="icNew" title="Agregar"></div>
               <span>Agregar nuevo</span>
             </button>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-8 col-xs-12">
-            <div class="form-group has-button contentSearch searchPage">
-              <input type="text" class="form-control input-md" id="buttonInput2" placeholder="Buscar" ng-model="crossTopicsCtrl.crossTopicsFilter">
-              <button class="btn">
-              <span class="glyphicon glyphicon-search"></span>
-              </button>
+          <div class="searchStyle right">
+            <div class="form-group left">
+             <div class="icLupa"></div>
+              <input type="text" class="form-control input-md" id="buttonInput2" placeholder="Buscar tema transversal" ng-model="crossTopicsCtrl.crossTopicsFilter">
             </div>
+            <button type="submit" class="btn btn-default left">Buscar</button>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12 notPadding">
             <hr class="lineColor">
             <div id="newcrosstopic">
             </div>

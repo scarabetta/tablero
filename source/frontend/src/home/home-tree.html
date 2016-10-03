@@ -2,7 +2,7 @@
 <div class="pageContanerCustom">
     <div class="item page">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <h2 class="title-year">Plan 2017</h2>
 
                 <excelcomponent showimport="true"></excelcomponent>
@@ -13,10 +13,10 @@
                    Desplegar todo  <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <hr class="lineColor">
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <div id="notifications"></div>
                 <div class="content-first-btn principalBtn">
                     <!--<button type="button" class="btn btn-default" ng-click="">
@@ -31,8 +31,16 @@
 
 
                 <!-- objetivos estrategicos -->
-                    <div class="alert alert-danger" ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
-                        <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i> No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"
+                    <div class="withoutOjE" ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
+                      <div class="title titleOjEestrategico">Objetivos Estrat&eacute;gicos</div>
+                      <div id="add-strategic-objetive"></div>
+                      <button type="button" class="btn btn-default btnNew" ng-click="homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)">
+                        <span>Nuevo</span>
+                        <div class="icNew" title="Nuevo"></div>
+                      </button>
+                      <div class="alert alert-danger">
+                          <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i> No hay resultados para mostrar de su busqueda: "{{homeCtrl.search.searchText.text}}"
+                      </div>
                     </div>
                     <div ng-hide="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
                       <div class="title titleOjEestrategico">Objetivos Estrat&eacute;gicos</div>
@@ -42,13 +50,13 @@
                         <div class="icNew" title="Nuevo"></div>
                       </button>
                     </div>
-                    <div class="col-md-12 colorObjOperativo">
+                    <div class="col-md-12 col-sm-12 colorObjOperativo">
                         <ul class="content-level-1" ng-repeat="objJ in homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text">
                             <li class="firstLabel">
                                 <span id="es-{{objJ.idObjetivoJurisdiccional}}">
                                     <div class="row">
-                                        <div class="col-md-12 default-content" >
-                                            <div class="col-md-12 notPadding relativeContent">
+                                        <div class="col-md-12 col-sm-12 default-content" >
+                                            <div class="col-md-12 col-sm-12 notPadding relativeContent">
                                                 <p class="nameObj" data-toggle="collapse" href="#grupo-level-{{objJ.idObjetivoJurisdiccional}}">{{ objJ.nombre }}
                                                     <span class="icEdit absoluteContent" aria-hidden="true" title="Editar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar" ng-click="homeCtrl.editStrategicObjective(objJ.idObjetivoJurisdiccional)"></span>
                                                 </p>
@@ -81,8 +89,8 @@
                                         <li class="secondLabel" ng-repeat="objO in objJ.objetivosOperativos  | filter:homeCtrl.search.searchText.text">
                                             <span id="op-{{objO.idObjetivoOperativo}}">
                                                 <div class="row content-obj">
-                                                    <div class="col-md-12">
-                                                        <div class="col-md-12 textObjOp notPadding relativeContent">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="col-md-12 col-sm-12 textObjOp notPadding relativeContent">
                                                             <span class="nameObj" data-toggle="collapse" href="#grupo-level-2-{{objO.idObjetivoOperativo}}">{{ objO.nombre }}
                                                              <span class="icEdit absoluteContent" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="homeCtrl.editOperativeObjective(objO.idObjetivoOperativo)" data-placement="top" title="" data-original-title="Editar"></span>
                                                              </span>
@@ -117,7 +125,7 @@
                                                   <div class="contentDate">
                                                       <span class="title left">Inicio</span>
                                                       <span class="title left">Fin</span>
-                                                      <span class="title">Estado</span>
+                                                      <span class="title left">Estado</span>
                                                   </div>
                                                   <ul id="addproject">
                                                       <li class="listProject" ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
@@ -127,8 +135,11 @@
                                                           </span>
 
                                                           <div class="box-date relativeContent">
+                                                              <span class="titleMobile">Inicio: </span>
                                                               <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
+                                                              <span class="titleMobile">Fin: </span>
                                                               <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
+                                                              <span class="titleMobile estado">Estado: </span>
                                                               <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Aplazado', 'rechazadoClass' : proyecto.estado === 'Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
                                                               <i class="img-chevron-down collapsed verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i>
                                                           </div>

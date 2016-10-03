@@ -40,6 +40,8 @@ module Home {
       private fileArray = new Array<any>();
       private currentUserKey = 'currentUser';
       private flagForSaveDraft = false;
+      private previousInitDate: number;
+      private previousEndDate: number;
       private datePickerInicio = {
         status: false
       };
@@ -396,20 +398,35 @@ module Home {
           if (end < start) {
             this.validDate = "La fecha de fin debe ser mayor a la fecha de inicio";
             this.currentProject.fechaFin = null;
-          } else {
-            this.currentProject.presupuestosPorAnio = [];
-            this.totalBudget = 0;
-            this.totalBudgetOtherSources = 0;
-            for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
-              var p : Presupuesto = {
-                'anio': y,
-                'presupuesto': 0,
-                'otrasFuentes': 0
-              };
-              this.currentProject.presupuestosPorAnio.push(p);
-            }
+          } else if (this.previousEndDate !== this.currentProject.fechaFin.getFullYear() || this.previousInitDate !== this.currentProject.fechaInicio.getFullYear()) {
+              if (this.totalBudget > 0 || this.totalBudgetOtherSources > 0) {
+                (<any>$('#budgetAlert')).modal('show');
+              } else {
+                this.continueChangeBudget(start, end);
+              }
           }
         }
+      }
+
+      continueChangeBudget(start, end) {
+        this.currentProject.presupuestosPorAnio = [];
+        this.totalBudget = 0;
+        this.totalBudgetOtherSources = 0;
+        this.previousInitDate = start;
+        this.previousEndDate = end;
+        for (var y = start.getFullYear(); y <= end.getFullYear(); y++) {
+          var p : Presupuesto = {
+            'anio': y,
+            'presupuesto': 0,
+            'otrasFuentes': 0
+          };
+          this.currentProject.presupuestosPorAnio.push(p);
+        }
+      }
+
+      cancelDateUpdate() {
+        this.currentProject.fechaFin = new Date(this.previousEndDate);
+        this.currentProject.fechaInicio = new Date(this.previousInitDate);
       }
 
       getTotalBudget() {

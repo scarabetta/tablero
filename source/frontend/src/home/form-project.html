@@ -1,7 +1,7 @@
 <li id="projectFormID">
 <div class="contentNewProyect">{{formCtrl.title}}</div>
     <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
-       <div class="col-md-3 col-sm-2 col-xs-12 pull-right" id="moveprojectid">
+       <div class="col-md-3 col-sm-12 col-xs-12 pull-right contentAction" id="moveprojectid">
             <!-- <div class="dropdown content-actionForm">
                 <button disabled class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     <i class="glyphicon glyphicon-transfer" aria-hidden="true"></i>
@@ -60,7 +60,7 @@
         </div>
 
 
-    <div class="col-md-9 col-sm-10 col-xs-12">
+    <div class="col-md-9 col-sm-12 col-xs-12">
         <form role="form" id="principalForm" ng-submit="formCtrl.saveProject()">
                 <div class="col-md-12 agrupador">
                     <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial
@@ -77,12 +77,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-3 col-sm-6">
                             <div></div>
                             <label for="meta 2017">Meta 2017</label>
-                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="15">
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' class="form-control" id="meta" placeholder="Ej. 200" ng-model="formCtrl.currentProject.meta" maxlength="15">
                         </div>
-                        <div class="form-group col-md-9">
+                        <div class="form-group col-md-9 col-sm-12">
                             <label for="unidad de la meta">Unidad de la meta</label>
                             <input type="text" class="form-control" id="unit" maxlength="512" placeholder="Ingresar unidad" ng-model="formCtrl.currentProject.unidadMeta">
                         </div>
@@ -92,7 +92,7 @@
                 <div class="col-md-12 agrupador">
                     <div class="ic-title ic-presupuesto"></div>&nbsp;Fechas y presupuesto
                     <div class="row">
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-5 col-sm-6">
                             <label for="fecha de inicio">Fecha de inicio</label>
                             <!-- <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required> -->
                             <p class="input-group">
@@ -102,7 +102,7 @@
                               </span>
                             </p>
                         </div>
-                        <div class="form-group col-md-5">
+                        <div class="form-group col-md-5 col-sm-6">
                             <label for="fecha de fin">Fecha de fin</label>
                             <!-- <input type="date" class="form-control" id="responsable" placeholder="" min="formCtrl.currentProject.fechaInicio" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required> -->
                             <p class="input-group">
@@ -138,11 +138,11 @@
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
                         <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
-                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
+                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
                         <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
-                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudgetOtherSources()" ng-model="p.otrasFuentes">
+                          <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudgetOtherSources()" ng-model="p.otrasFuentes">
                         </div>
                       </div>
                       <div class="row">
@@ -174,11 +174,11 @@
                 <div class="col-md-12 agrupador">
                     <div class="ic-title ic-poblacion"></div>&nbsp;Población
                     <div class="row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label for="cantidad de población impactada">Cantidad de población impactada</label>
-                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="15">
+                            <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' class="form-control" id="unit" placeholder="Ej. 200.000" ng-model="formCtrl.currentProject.poblacionAfectada" maxlength="15">
                         </div>
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-6 col-sm-6">
                             <label for="segmento de la población impactada">Segmento de la población impactada</label>
                             <!-- <input type="text" class="form-control" id="type" placeholder="Ej. Jubilados, Estudiantes"> -->
                             <tags-input ng-model="formCtrl.currentProject.poblacionesMeta"
@@ -227,7 +227,7 @@ Si el proyecto impacta en una ubicación específica, seleccioná "Dirección".
 Si impacta en varias direcciones, seleccioná "Comunas".
 Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lugar, seleccioná la opción correspondiente a cada caso.</p>
                     <div class="row">
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-4 col-sm-6">
                             <label for="tipo de ubicacion">Tipo de ubicación</label>
                             <select class="form-control" ng-change="formCtrl.clearValuesUbicacion(formCtrl.currentProject.tipoUbicacionGeografica)" ng-model="formCtrl.currentProject.tipoUbicacionGeografica">
                                 <option>Comunas</option>
@@ -236,12 +236,12 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 <option>No Corresponde</option>
                             </select>
                         </div>
-                        <div class="form-group col-md-8" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'">
+                        <div class="form-group col-md-8 col-sm-12" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'">
                             <label for="direccion">Dirección</label>
                             <!-- <input type="text" class="form-control" id="direccion" maxlength="512" placeholder="Ingresar dirección" ng-model="formCtrl.currentProject.direccion"> -->
                             <usigautocomplete></usigautocomplete>
                         </div>
-                        <div class="form-group col-md-8" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'">
+                        <div class="form-group col-md-8 col-sm-12" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'">
                             <label for="comunas">Comunas</label>
                             <tags-input ng-model="formCtrl.currentProject.comunas"
                                         display-property="nombre"
@@ -368,7 +368,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                     </div>
                 </div>
             <br />
-            <div class="alert alert-info">
+            <div class="alert alert-info floatContent">
                 Para guardar y presentar tenes que completar todos los campos que no son opcionales.
             </div>
             <button ng-show="formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null" type="submit" ng-disabled="!formCtrl.allInputs" class="btn btn-success">Guardar</button>
@@ -379,6 +379,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
         </form>
         <alertmodal modal-id="projectAlert" modal-title="Aviso" modal-body="Se va a eliminar el Proyecto. ¿Continuar?" on-accept="formCtrl.deleteProjectById(formCtrl.currentProject.idProyecto)"></alertmodal>
         <alertmodal modal-id="cancelAlert" modal-title="Aviso" modal-body="Se van a perder los datos ingresados. ¿Desea Continuar?" on-accept="formCtrl.cancel()"></alertmodal>
+        <alertmodal modal-id="budgetAlert" modal-title="Aviso" modal-body="Vas a perder la información ingresada en los presupuestos. ¿Desea Continuar?" on-accept="formCtrl.continueChangeBudget(formCtrl.currentProject.fechaInicio, formCtrl.currentProject.fechaFin)" on-cancel="formCtrl.cancelDateUpdate()"></alertmodal>
     </div>
-
+</div>
 </li>
