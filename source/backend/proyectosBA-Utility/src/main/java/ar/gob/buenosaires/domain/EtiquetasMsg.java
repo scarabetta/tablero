@@ -5,16 +5,16 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EtiquetaResponse {
+public class EtiquetasMsg {
 
 	List<TemaTransversal> temasTransversales;
 	List<CompromisoPublico> compromisosPublicos;
 	List<OtraEtiqueta> otrasEtiquetas;
 		
-	public EtiquetaResponse() {
+	public EtiquetasMsg() {
 	}
 
-	public EtiquetaResponse(List<TemaTransversal> temasTransversales, List<CompromisoPublico> compromisosPublicos,
+	public EtiquetasMsg(List<TemaTransversal> temasTransversales, List<CompromisoPublico> compromisosPublicos,
 			List<OtraEtiqueta> otrasEtiquetas) {
 		
 		this.temasTransversales = temasTransversales;

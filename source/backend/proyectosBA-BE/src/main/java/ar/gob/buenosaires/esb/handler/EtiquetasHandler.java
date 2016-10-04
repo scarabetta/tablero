@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.gob.buenosaires.domain.EtiquetaResponse;
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.EtiquetasReqMsg;
 import ar.gob.buenosaires.esb.domain.message.EtiquetasRespMsg;
@@ -39,8 +39,13 @@ public class EtiquetasHandler extends AbstractBaseEventHandler {
 	}
 
 	private void retrieveEtiquetas(ESBEvent event, final EtiquetasRespMsg response, final EtiquetasReqMsg request) {
-		EtiquetaResponse etiquetas = new EtiquetaResponse();
-		etiquetas = service.getEtiquetas();
+		EtiquetasMsg etiquetas = new EtiquetasMsg();
+		
+		if(request.getId() != null) {
+			etiquetas = service.getEtiquetasPorProyecto(request.getId());
+		} else {
+			etiquetas = service.getEtiquetas();			
+		}
 		
 		response.setEtiquetas(etiquetas);
 		event.setObj(response);

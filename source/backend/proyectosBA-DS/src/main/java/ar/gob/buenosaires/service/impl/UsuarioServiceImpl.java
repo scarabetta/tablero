@@ -157,6 +157,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return getUsuarioResumenFromReqMsg(reqMsg);
 	}
 	
+	@Override
+	public UsuarioResumen getUsuarioResumenByEmail(final String email) throws ESBException, JMSException {
+		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+		reqMsg.setEmail(email);
+		
+		final List<UsuarioResumen> usuarios = getUsuarioResumenFromReqMsg(reqMsg);
+		return getFirstUsuarioResumenFromTheList(usuarios);
+	}
+	
 	private List<UsuarioResumen> getUsuarioResumenFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().debug("Mensaje creado para obtener un UsuarioResumen : {}", reqMsg.toString());
 		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_RESUMEN, UsuarioRespMsg.class);
@@ -172,5 +181,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 			LOGGER.debug("Obteninendo los UsuariosResumen de la respues del BUS de servicios: {}", ususarios.toString());
 		}
 		return ususarios;
+	}
+	
+	private UsuarioResumen getFirstUsuarioResumenFromTheList(final List<UsuarioResumen> usuarios) {
+		if (!usuarios.isEmpty()) {
+			return usuarios.get(0);
+		} else {
+			return null;
+		}
 	}
 }

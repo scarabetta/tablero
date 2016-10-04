@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import ar.gob.buenosaires.domain.EtiquetaResponse;
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -15,13 +15,13 @@ public class EtiquetasRespMsg extends EsbBaseMsg {
 
     public static final String ETIQUETAS_TYPE = "EtiquetasRespMsg";
         
-    private EtiquetaResponse etiquetas; 
+    private EtiquetasMsg etiquetas; 
     	
-	public EtiquetaResponse getEtiquetas() {
+	public EtiquetasMsg getEtiquetas() {
 		return etiquetas;
 	}
 
-	public void setEtiquetas(EtiquetaResponse etiquetas) {
+	public void setEtiquetas(EtiquetasMsg etiquetas) {
 		this.etiquetas = etiquetas;
 	}
 

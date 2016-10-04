@@ -104,4 +104,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	public List<UsuarioResumen> getAllUsuariosResumen() {
 		return getUsuarioDAO().findAllResumen();
 	}
+
+	@Override
+	public UsuarioResumen getUsuarioResumenPorEmail(String email) {
+		return getUsuarioDAO().findResumenByEmail(email);
+	}
 }

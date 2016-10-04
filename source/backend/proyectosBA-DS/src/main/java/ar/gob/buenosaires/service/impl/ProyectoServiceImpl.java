@@ -11,11 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import ar.gob.buenosaires.domain.AccionesProyecto;
 import ar.gob.buenosaires.domain.EstadoProyecto;
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
@@ -25,6 +23,9 @@ import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.service.ProyectoService;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ProyectoServiceImpl implements ProyectoService {
@@ -168,6 +169,23 @@ public class ProyectoServiceImpl implements ProyectoService {
 		}
 		return getProyectoFromResponse(responseProyectos);
 	}
+	
+	@Override
+	public Proyecto etiquetarProyecto(EtiquetasMsg etiquetas, String id, String email) throws ESBException, JMSException {
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+		reqMsg.setId(Long.parseLong(id));
+		reqMsg.setEtiquetas(etiquetas);
+		reqMsg.setEmailUsuario(email);
+		List<Proyecto> responseProyectos = new ArrayList<>();		
+
+		getLogger().debug("Mensaje creado para etiquetar un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_ETIQUETAR, ProyectoRespMsg.class);
+		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
+			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
+		}
+		return getProyectoFromResponse(responseProyectos);
+	
+	}
 
 	@Override
 	public Proyecto deshacerCancelacion(Proyecto proyecto, String email) throws ESBException, JMSException {
@@ -307,4 +325,5 @@ public class ProyectoServiceImpl implements ProyectoService {
 		usuario.setEmail(mailDelUsuarioDelToken);
 		return usuario;
 	}
+
 }

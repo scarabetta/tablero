@@ -11,6 +11,7 @@ import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioRepositor
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoJpaDao;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.CodigoError;
@@ -89,6 +90,19 @@ public class ProyectoServiceImpl implements ProyectoService {
 		}
 		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
 				+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
+	}
+	
+	@Override
+	public Proyecto etiquetarProyecto(Long id, EtiquetasMsg etiquetas) throws ESBException {
+		final Proyecto proyecto = repositorio.getProyectoJpaDao().findOne(id);
+		if (proyecto != null) {
+			proyecto.setCompromisosPublicos(etiquetas.getCompromisosPublicos());
+			proyecto.setTemasTransversales(etiquetas.getTemasTransversales());
+			proyecto.setOtrasEtiquetas(etiquetas.getOtrasEtiquetas());
+			return getProyectoDAO().save(proyecto);
+		} else {
+			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(), "El Proyecto con id: " + id + " no existe");
+		}
 	}
 
 	@Override

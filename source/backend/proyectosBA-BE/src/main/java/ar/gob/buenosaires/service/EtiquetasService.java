@@ -1,9 +1,11 @@
 package ar.gob.buenosaires.service;
 
-import ar.gob.buenosaires.domain.EtiquetaResponse;
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 
 public interface EtiquetasService {
 
-	EtiquetaResponse getEtiquetas();
+	EtiquetasMsg getEtiquetas();
+
+	EtiquetasMsg getEtiquetasPorProyecto(Long id);
 
 }

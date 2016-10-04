@@ -54,6 +54,8 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			updateProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CANCEL)) {
 			cancelarProyecto(event, response, request);
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_ETIQUETAR)) {
+			etiquetarProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_VERIFICAR)) {
 			verificarProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DESHACER_CANCELACION)) {
@@ -69,7 +71,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para servicio de Proyecto");
 		}
 		logResponseMessage(event, ProyectoService.class);
-	}
+	}	
 
 	private void deshacerCancelacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request)
 			throws ESBException {
@@ -172,6 +174,13 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 			throws ESBException {
 		List<Proyecto> proyectos = new ArrayList<>();
 		proyectos.add(service.updateProyecto(request.getProyecto()));
+
+		addProyectosToResponse(event, response, proyectos);
+	}
+	
+	private void etiquetarProyecto(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) throws ESBException {
+		List<Proyecto> proyectos = new ArrayList<>();
+		proyectos.add(service.etiquetarProyecto(request.getId(),request.getEtiquetas()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}

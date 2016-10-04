@@ -9,12 +9,13 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados", "idJurisdiccion", "usuario" })
+@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados", "idJurisdiccion", "usuario", "etiquetas" })
 @XmlRootElement(name = "ProyectoReqMsg")
 public class ProyectoReqMsg extends EsbBaseMsg {
 
@@ -25,6 +26,7 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 	private Proyecto proyecto;
 	private String codigo;
 	private Usuario usuario;
+	private EtiquetasMsg etiquetas;
 
 	@XmlElement(name = "estados")
 	private List<String> estados;
@@ -93,5 +95,14 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}	
+	}
+
+	public EtiquetasMsg getEtiquetas() {
+		return etiquetas;
+	}
+
+	public void setEtiquetas(EtiquetasMsg etiquetas) {
+		this.etiquetas = etiquetas;
+	}
+	
 }

@@ -24,4 +24,6 @@ public interface UsuarioService {
 
 	List<UsuarioResumen> getAllUsuariosResumen();
 
+	UsuarioResumen getUsuarioResumenPorEmail(String email);
+
 }

@@ -32,4 +32,6 @@ public interface UsuarioService {
 
 	List<UsuarioResumen> getUsuariosResumen() throws ESBException, JMSException;
 
+	UsuarioResumen getUsuarioResumenByEmail(final String email) throws ESBException, JMSException;
+
 }

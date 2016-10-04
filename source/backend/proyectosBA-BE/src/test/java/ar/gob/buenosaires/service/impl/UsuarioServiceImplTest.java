@@ -131,4 +131,19 @@ public class UsuarioServiceImplTest {
 		assertThat(response).isNotNull();
 		assertThat(response).isNotEmpty();
 	}
+	@Test
+	public void getUsuarioResumenPorEmail() {
+		UsuarioResumen fakeUsuario = createFakeUsuarioResumen();
+
+		when(repositorio.getUsuarioJpaDao().findResumenByEmail(anyString())).thenReturn(fakeUsuario);
+		UsuarioResumen response = service.getUsuarioResumenPorEmail("test");
+		assertThat(response).isNotNull();
+	}
+	
+	private UsuarioResumen createFakeUsuarioResumen() {
+		UsuarioResumen fakeUsuario = new UsuarioResumen();
+		fakeUsuario.setNombre(FAKE_NOMBRE);
+
+		return fakeUsuario;
+	}
 }

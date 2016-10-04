@@ -186,7 +186,7 @@ public class Proyecto implements Serializable {
 	@XmlElement(name = "compromisosPublicos")
 	private List<CompromisoPublico> compromisosPublicos;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinTable(name = "otras_etiquetas_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
 			@JoinColumn(name = "idetiqueta") })
 	@XmlElement(name = "otrasEtiquetas")

@@ -2,6 +2,7 @@ package ar.gob.buenosaires.service;
 
 import java.util.List;
 
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.exception.ESBException;
 
@@ -32,4 +33,6 @@ public interface ProyectoService {
 	void cancelarPriorizacionDeProyectosNoVerificados();
 
 	void iniciarPriorizacionDeProyectos();
+
+	Proyecto etiquetarProyecto(Long id, EtiquetasMsg etiquetas) throws ESBException;
 }

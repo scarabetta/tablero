@@ -28,6 +28,7 @@ public interface ESBEvent {
     public static final String ACTION_UPDATE = "UPDATE";
     public static final String ACTION_DELETE = "DELETE";
     public static final String ACTION_CANCEL = "CANCEL";
+    public static final String ACTION_ETIQUETAR = "ETIQUETAR";
     public static final String ACTION_DESHACER_CANCELACION = "DESHACER_CANCELACION";
     public static final String ACTION_VERIFICAR = "Verificar";
     public static final String ACTION_PRESENTAR = "PRESENTAR";

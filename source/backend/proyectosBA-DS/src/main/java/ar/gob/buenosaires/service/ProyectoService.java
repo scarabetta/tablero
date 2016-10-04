@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.jms.JMSException;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
+import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
-import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public interface ProyectoService {
 
@@ -64,4 +64,5 @@ public interface ProyectoService {
 
 	void updatePriorizarProyectos(String email) throws ESBException, JMSException;
 
+	Proyecto etiquetarProyecto(EtiquetasMsg etiquetas, String id, String string) throws ESBException, JMSException;	
 }

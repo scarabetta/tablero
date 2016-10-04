@@ -65,8 +65,12 @@ public class UsuarioHandler extends AbstractBaseEventHandler {
 	
 	private void retrieveUsuariosResumen(final UsuarioRespMsg response, final UsuarioReqMsg request) {
 		List<UsuarioResumen> usuarios = new ArrayList<UsuarioResumen>();
-
-		usuarios = service.getAllUsuariosResumen();
+		
+		if (request.getEmail() != null) {
+			usuarios.add(service.getUsuarioResumenPorEmail(request.getEmail()));
+		} else {
+		    usuarios.addAll(service.getAllUsuariosResumen());
+		}
 		response.setUsuariosResumen(usuarios);
 	}
 

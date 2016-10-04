@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.domain.UsuarioResumen;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.adapter.AuthenticationAdapter;
@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	}
 
 	private boolean usuarioEstaActivo(Payload payload) throws ESBException, JMSException, LoginException {
-		Usuario usuario = usuarioService.getUsuarioByEmail(payload.getEmail());
+		UsuarioResumen usuario = usuarioService.getUsuarioResumenByEmail(payload.getEmail());
 		if(usuario != null) {
 			return usuario.getActivo();			
 		}else {
