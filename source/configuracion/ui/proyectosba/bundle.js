@@ -65097,6 +65097,8 @@
 	                    data.fechaInicio = new Date(data.fechaInicio);
 	                    data.fechaFin = new Date(data.fechaFin);
 	                    _this.currentProject = data;
+	                    _this.previousInitDate = data.fechaInicio;
+	                    _this.previousEndDate = data.fechaFin;
 	                    if (_this.currentProject.ejesDeGobierno.length > 0) {
 	                        _this.ejesNoCorresponde = false;
 	                    }
@@ -67590,7 +67592,7 @@
 	        /*@ngInject*/
 	        function VersionController($http) {
 	            this.$http = $http;
-	            this.versionFrontend = ("1.2.0");
+	            this.versionFrontend = ("1.3.0");
 	        }
 	        return VersionController;
 	    })();

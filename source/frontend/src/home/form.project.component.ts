@@ -107,6 +107,8 @@ module Home {
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
               this.currentProject = data;
+              this.previousInitDate = data.fechaInicio;
+              this.previousEndDate = data.fechaFin;
               if (this.currentProject.ejesDeGobierno.length > 0) {
                 this.ejesNoCorresponde = false;
               }
