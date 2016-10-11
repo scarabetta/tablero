@@ -54,7 +54,7 @@
               <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg fullButtonRight">Guardar y Presentar</button>
               <button ng-if="formCtrl.flagForSaveDraft" ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" form="principalForm" class="btn btn-default fullButtonRight" id="draftButton fullButtonRight">Guardar Borrador</button>
               <button type="button" class="btn btn-default fullButtonRight" data-toggle="modal" data-target="#cancelAlert">Cancelar cambios</button>
-              <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" type="button" class="btn btn-default right btnRemove fullButtonRight" data-toggle="modal" data-target="#projectAlert" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">Eliminar</button>
+              <button ng-show="formCtrl.showDeleteButton()" type="button" class="btn btn-default right btnRemove fullButtonRight" data-toggle="modal" data-target="#projectAlert" ng-click="formCtrl.deleteProject(formCtrl.currentProject.idProyecto)">Eliminar</button>
             </div>
 
         </div>
@@ -374,7 +374,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
             <button ng-show="formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null" type="submit" ng-disabled="!formCtrl.allInputs" class="btn btn-success">Guardar</button>
             <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg">Guardar y Presentar</button>
             <button ng-if="formCtrl.flagForSaveDraft" ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" class="btn btn-default" id="draftButton">Guardar Borrador</button>
-            <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" type="button" class="btn btn-default right btnRemove" data-toggle="modal" data-target="#projectAlert">Eliminar</button>
+            <button ng-show="formCtrl.showDeleteButton()" type="button" class="btn btn-default right btnRemove" data-toggle="modal" data-target="#projectAlert">Eliminar</button>
             <button type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlert">Cancelar cambios</button>
         </form>
         <alertmodal modal-id="projectAlert" modal-title="Aviso" modal-body="Se va a eliminar el Proyecto. ¿Continuar?" on-accept="formCtrl.deleteProjectById(formCtrl.currentProject.idProyecto)"></alertmodal>

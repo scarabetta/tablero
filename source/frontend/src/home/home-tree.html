@@ -31,7 +31,7 @@
 
 
                 <!-- objetivos estrategicos -->
-                    <div class="withoutOjE" ng-show="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
+                    <div class="withoutOjE" ng-if="(homeCtrl.jurisdiccion.objetivosJurisdiccionales | filter:homeCtrl.search.searchText.text).length === 0">
                       <div class="title titleOjEestrategico">Objetivos Estrat&eacute;gicos</div>
                       <div id="add-strategic-objetive"></div>
                       <button type="button" class="btn btn-default btnNew" ng-click="homeCtrl.addStrategicObjective(homeCtrl.jurisdiccion.idJurisdiccion)">
@@ -132,6 +132,7 @@
                                                           <span class="thirdLabel columnRight">
                                                               <span class="nameObj" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}">{{proyecto.nombre}}  </span>
                                                               <span class="icEdit absoluteContent" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></span>
+                                                              <i class="glyphicon glyphicon-tag" style=" margin-left: 30px;" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
                                                           </span>
 
                                                           <div class="box-date relativeContent">
@@ -148,8 +149,8 @@
                                                               <p class="description">"{{proyecto.descripcion}}"</p>
                                                               <p class="description"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>
                                                           </div>
-                                                          <div class="col-md-12 col-sm-12 col-xs-12 notPadding">
-                                                              <hr class="line-inner-proyect" id="proyecto-{{proyecto.idProyecto}}">
+                                                          <div class="col-md-12 col-sm-12 col-xs-12 notPadding" id="proyecto-{{proyecto.idProyecto}}">
+                                                              <hr class="line-inner-proyect">
                                                               <div ng-if="$last && objO.proyectos.length > 0"><br></div>
                                                           </div>
                                                       </li>

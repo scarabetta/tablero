@@ -107,6 +107,7 @@ module Home {
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
               this.currentProject = data;
+              console.log(this.currentProject);
               this.previousInitDate = data.fechaInicio;
               this.previousEndDate = data.fechaFin;
               if (this.currentProject.ejesDeGobierno.length > 0) {
@@ -489,6 +490,10 @@ module Home {
           (<any>$('html,body')).animate({
             scrollTop: 0},
           500);
+      }
+
+      showDeleteButton() {
+        return this.currentProject.idProyecto && (this.currentProject.estado === 'Incompleto' || this.currentProject.estado === 'Completo' || this.currentProject.estado === null);
       }
 
     }
