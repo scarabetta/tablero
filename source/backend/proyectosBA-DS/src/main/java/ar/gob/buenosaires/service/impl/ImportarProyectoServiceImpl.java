@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.jms.JMSException;
@@ -42,7 +43,13 @@ import ar.gob.buenosaires.importador.MensajeError;
 import ar.gob.buenosaires.importador.ResultadoProcesamiento;
 import ar.gob.buenosaires.importador.proyecto.ImportadorProyectoBuilder;
 import ar.gob.buenosaires.importador.proyecto.ProyectoImportadoDTO;
+import ar.gob.buenosaires.importador.proyecto.ProyectoImportadoFallidoDTO;
 import ar.gob.buenosaires.importador.proyecto.SolapaProyecto;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectoPriorizadoBuilder;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectoPriorizadoFila;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectoPriorizadoSolapa;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectoPriorizadoValidador;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectosPriorizadosResultadoProcesamiento;
 import ar.gob.buenosaires.service.IServiceFactory;
 import ar.gob.buenosaires.service.ImportarProyectoService;
 
@@ -53,6 +60,9 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 
 	@Autowired
 	private IServiceFactory serviceFactory;
+
+	@Autowired
+	private ProyectoPriorizadoValidador validadorProyectosPriorizados;
 
 	@Autowired
 	Environment env;
@@ -195,12 +205,12 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 			resultadoProcesamiento.setNombreArchivoError(nombreArchivo);
 		} catch (FileNotFoundException | FormulaParseException | IllegalStateException e) {
 			String mensajeError = "Hubo un problema leyendo el archivo template : \n" + e.getMessage();
-			LOGGER.debug(mensajeError);
+			LOGGER.error(mensajeError);
 			e.printStackTrace();
 			resultadoProcesamiento.setErrorGenerico(mensajeError);
 		} catch (ESBException | JMSException e) {
 			String mensajeError = "Hubo un generando los combos de las celdas : \n" + e.getMessage();
-			LOGGER.debug(mensajeError);
+			LOGGER.info(mensajeError);
 			e.printStackTrace();
 			resultadoProcesamiento.setErrorGenerico(mensajeError);
 		}
@@ -348,4 +358,94 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 		}
 		return resultadoProcesamiento;
 	}
+
+	@Override
+	public ProyectosPriorizadosResultadoProcesamiento importarSolapaProyectosPriorizados(Workbook solpaAImportar,
+			String email) throws InvalidFormatException, IOException, ESBException, JMSException {
+
+		// Validamos la solapa en restrictivo para aseguranos que se importa un
+		// excel valido
+		ProyectoPriorizadoSolapa solapa = new ProyectoPriorizadoSolapa(solpaAImportar.getSheetAt(0), env);
+		ProyectosPriorizadosResultadoProcesamiento resultado = null;
+		List<String> solapaValidadaEnRestrictivo = validadorProyectosPriorizados.validarSolapaRestrictivo(solapa, email);
+		if (solapaValidadaEnRestrictivo.isEmpty()) {
+
+			resultado = new ProyectosPriorizadosResultadoProcesamiento(numeroCeldaFechaInicioProyectoPriorizado,
+					numeroCeldaFechaFinProyectoPriorizado, numeroCeldaNombreProyectoPriorizado);
+			Map<ProyectoPriorizadoFila, List<String>> filasValidadas = validadorProyectosPriorizados
+					.validarFilas(solapa);
+			ProyectoPriorizadoBuilder builder;
+			ProyectoImportadoFallidoDTO proyectoFallido;
+			boolean hayImportacionesFallidas = false;
+
+			for (ProyectoPriorizadoFila fila : filasValidadas.keySet()) {
+				if (filasValidadas.get(fila).isEmpty()) {
+					try {
+						builder = new ProyectoPriorizadoBuilder(serviceFactory);
+						builder.setIdProyecto(Double.valueOf(fila.getIdProyecto()).intValue());
+						builder.setEstadoAprobacion(fila.getEstadoAprobacion());
+						builder.setPresuAprobadoTotal(fila.getPresuAprobadoTotal());
+						builder.setPrioridadJefatura(fila.getPrioridadJefatura());
+						builder.setNombreTemasTransversal(solapa.getNombresTemaTransversalFilaHeader());
+						builder.setNombreTemasTransversalAsignados(fila.getNombresTemaTransversalAsignados());
+						resultado.agregarProyecto(builder.build(email));
+					} catch (ESBException | JMSException e) {
+						hayImportacionesFallidas = true;
+						e.printStackTrace();
+						String errorInesperado = "Hubo un problema inesperado en la fila: "
+								+ String.valueOf(fila.getNumeroFila()) + "\n" + e.getMessage();
+						LOGGER.info(errorInesperado);
+						proyectoFallido = resultado.agregarProyectoFallido(fila.getFilaOriginal(),
+								Arrays.asList(new MensajeError(MensajeError.TIPO_ERROR, errorInesperado)));
+						proyectoFallido.setIdProyecto((long) Double.parseDouble(fila.getIdProyecto()));
+					}
+				} else {
+					hayImportacionesFallidas = true;
+					List<MensajeError> errores = new ArrayList<>();
+					filasValidadas.get(fila).forEach(new Consumer<String>() {
+
+						@Override
+						public void accept(String t) {
+							errores.add(new MensajeError(MensajeError.TIPO_ERROR, t));
+
+						}
+					});
+
+					proyectoFallido = resultado.agregarProyectoFallido(fila.getFilaOriginal(), errores);
+					proyectoFallido.setIdProyecto((long) Double.parseDouble(fila.getIdProyecto()));
+				}
+			}
+			if (hayImportacionesFallidas) {
+				serviceFactory.getProyectoService().cancelarPriorizacionDeProyectos(email);
+			}
+		} else {
+			resultado = new ProyectosPriorizadosResultadoProcesamiento();
+			resultado.setErroresDeSolapa(solapaValidadaEnRestrictivo);
+		}
+		resultado.sumarTotalPresupuesto();
+		return resultado;
+	}
+
+	@Override
+	public ProyectosPriorizadosResultadoProcesamiento validarSolapaProyectosPriorizados(Workbook solpaAImportar, String userMail) {
+		ProyectosPriorizadosResultadoProcesamiento resultado = new ProyectosPriorizadosResultadoProcesamiento(
+				numeroCeldaFechaInicioProyectoPriorizado, numeroCeldaFechaFinProyectoPriorizado,
+				numeroCeldaNombreProyectoPriorizado);
+		ProyectoPriorizadoSolapa solapa = new ProyectoPriorizadoSolapa(solpaAImportar.getSheetAt(0), env);
+
+		try {
+			resultado.getErroresDeSolapaMapa().put("Error",
+					validadorProyectosPriorizados.validarSolapaRestrictivo(solapa, userMail));
+			resultado.getErroresDeSolapaMapa().put("Advertencia",
+					validadorProyectosPriorizados.validarSolapaInformativo(solapa, userMail));
+		} catch (ESBException | JMSException e) {
+			e.printStackTrace();
+			String errorInesperado = "Hubo un error inesperado al validar el Excel " + e.getMessage();
+			LOGGER.info(errorInesperado);
+			resultado.getErroresDeSolapaMapa().put("Error", Arrays.asList(errorInesperado));
+		}
+		resultado.sumarTotalPresupuesto();
+		return resultado;
+	}
+
 }

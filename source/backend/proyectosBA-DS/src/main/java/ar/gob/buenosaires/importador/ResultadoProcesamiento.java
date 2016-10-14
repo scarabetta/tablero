@@ -23,6 +23,21 @@ public class ResultadoProcesamiento {
 
 	private List<String> erroresDeSolapa = new ArrayList<>();
 
+	private int numeroCeldaFI = 20;
+
+	private int numeroCeldaFF = 21;
+
+	private int numeroCeldaNombreProyecto = 0;
+
+	public ResultadoProcesamiento() {
+	}
+
+	public ResultadoProcesamiento(final int celdaFI, final int celdaFF, final int celdaNombreProyecto) {
+		numeroCeldaFI = celdaFI;
+		numeroCeldaFF = celdaFF;
+		numeroCeldaNombreProyecto = celdaNombreProyecto;
+	}
+
 	/**
 	 * @return the erroresDeSolapa
 	 */
@@ -88,15 +103,16 @@ public class ResultadoProcesamiento {
 
 		buidProyectoDTOFromProyecto(proyectoImportadoDTO, unProyecto.getIdProyecto(), unProyecto.getNombre(),
 				unProyecto.getEstado(), unProyecto.getFechaInicio(), unProyecto.getFechaFin());
+		proyectoImportadoDTO.setImporteAprobado(unProyecto.getTotalPresupuestoAprobado());
 		getProyectoProcesados().add(proyectoImportadoDTO);
 
 	}
 
-	public void agregarProyectoFallido(Row unaFila, List<MensajeError> errores) {
+	public ProyectoImportadoFallidoDTO agregarProyectoFallido(Row unaFila, List<MensajeError> errores) {
 		ProyectoImportadoFallidoDTO unProyectoDTO = buidProyectoFallidoDTOFromProyecto(unaFila.getRowNum() + 1, errores,
 				null, unaFila);
 		getProyectoProcesados().add(unProyectoDTO);
-
+		return unProyectoDTO;
 	}
 
 	public void agregarErrorSolapa(String unError) {
@@ -108,14 +124,14 @@ public class ResultadoProcesamiento {
 			Long id, Row unaFila) {
 		String nombre, estado;
 		Date fechaInicio, fechaFin;
-		Cell celdaNombreProyecto = unaFila.getCell(0, Row.CREATE_NULL_AS_BLANK);
-		Cell celdaFi = unaFila.getCell(20, Row.CREATE_NULL_AS_BLANK);
-		Cell celdaFf = unaFila.getCell(21, Row.CREATE_NULL_AS_BLANK);
+		Cell celdaNombreProyecto = unaFila.getCell(numeroCeldaNombreProyecto, Row.CREATE_NULL_AS_BLANK);
+		Cell celdaFi = unaFila.getCell(numeroCeldaFI, Row.CREATE_NULL_AS_BLANK);
+		Cell celdaFf = unaFila.getCell(numeroCeldaFF, Row.CREATE_NULL_AS_BLANK);
 
 		estado = null;
 		nombre = SolapaProyecto.getCellStringValue(celdaNombreProyecto.getCellType(), celdaNombreProyecto);
-		fechaInicio = Cell.CELL_TYPE_NUMERIC == celdaFi.getCellType()? celdaFi.getDateCellValue(): null;
-		fechaFin = Cell.CELL_TYPE_NUMERIC == celdaFf.getCellType()? celdaFf.getDateCellValue(): null;
+		fechaInicio = Cell.CELL_TYPE_NUMERIC == celdaFi.getCellType() ? celdaFi.getDateCellValue() : null;
+		fechaFin = Cell.CELL_TYPE_NUMERIC == celdaFf.getCellType() ? celdaFf.getDateCellValue() : null;
 
 		ProyectoImportadoFallidoDTO unProyectoFallidoDTO = new ProyectoImportadoFallidoDTO();
 		buidProyectoDTOFromProyecto(unProyectoFallidoDTO, id, nombre, estado, fechaInicio, fechaFin);

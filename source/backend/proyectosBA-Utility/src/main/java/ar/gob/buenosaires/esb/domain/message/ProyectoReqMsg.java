@@ -15,7 +15,7 @@ import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "name", "proyecto", "codigo", "estados", "idJurisdiccion", "usuario", "etiquetas" })
+@XmlType(propOrder = { "id", "name", "accion", "proyecto", "codigo", "estados", "idJurisdiccion", "usuario", "etiquetas" })
 @XmlRootElement(name = "ProyectoReqMsg")
 public class ProyectoReqMsg extends EsbBaseMsg {
 
@@ -23,6 +23,7 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 
 	private Long id;
 	private String name;
+	private String accion;
 	private Proyecto proyecto;
 	private String codigo;
 	private Usuario usuario;
@@ -52,6 +53,14 @@ public class ProyectoReqMsg extends EsbBaseMsg {
 
 	public void setName(String name) {
 		this.name = name;
+	}	
+
+	public String getAccion() {
+		return accion;
+	}
+
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 
 	public Proyecto getProyecto() {

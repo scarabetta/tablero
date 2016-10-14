@@ -71,7 +71,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		reqMsg.setEmailUsuario(email);
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
-		getLogger().debug("Mensaje creado para crear un ObjetivoJurisdiccional : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear un ObjetivoJurisdiccional : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, ObjetivoJurisdiccionalRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {
 			responseObjetivosJurisdiccionales = ((ObjetivoJurisdiccionalRespMsg) response).getObjetivosJurisdiccionales();
@@ -88,7 +88,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		reqMsg.setEmailUsuario(email);
 		List<ObjetivoJurisdiccional> responseObjetivosJurisdiccionales = new ArrayList<ObjetivoJurisdiccional>();
 
-		getLogger().debug("Mensaje creado para actualizar un ObjetivoJurisdiccional : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar un ObjetivoJurisdiccional : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, ObjetivoJurisdiccionalRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {
 			responseObjetivosJurisdiccionales = ((ObjetivoJurisdiccionalRespMsg) response).getObjetivosJurisdiccionales();
@@ -104,7 +104,7 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar una Jurisdiccion : {}",reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar una Jurisdiccion : {}",reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoJurisdiccionalRespMsg.class);
 	}
 
@@ -122,8 +122,12 @@ public class ObjetivoJurisdiccionalServiceImpl implements ObjetivoJurisdiccional
 		List<ObjetivoJurisdiccional> objetivosJurisdiccionales = null;
 		if (response.getEventType().equalsIgnoreCase(ObjetivoJurisdiccionalRespMsg.OBJETIVO_JURISDICCIONAL_TYPE)) {
 			objetivosJurisdiccionales = ((ObjetivoJurisdiccionalRespMsg) response).getObjetivosJurisdiccionales();
-			LOGGER.debug("Obteninendo las jurisdicciones de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las jurisdicciones de la respues del BUS de servicios: {}",
 					objetivosJurisdiccionales.toString());
+			} else {
+				getLogger().info("Obteninendo las jurisdicciones de la respues del BUS de servicios");
+			}
 		}
 		return objetivosJurisdiccionales;
 	}

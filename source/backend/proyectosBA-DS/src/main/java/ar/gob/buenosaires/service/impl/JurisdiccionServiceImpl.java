@@ -79,7 +79,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		reqMsg.setJurisdiccion(jurisdiccion);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear una Jurisdiccion : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_CREATE, JurisdiccionRespMsg.class);
 		final List<Jurisdiccion> usuarios = getJurisdiccionFromResponse(response);
 		return getFirstJurisdiccionFromTheList(usuarios);
@@ -91,7 +91,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		reqMsg.setJurisdiccion(jurisdiccion);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar una Jurisdiccion : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_UPDATE, JurisdiccionRespMsg.class);
 		final List<Jurisdiccion> usuarios = getJurisdiccionFromResponse(response);
 		return getFirstJurisdiccionFromTheList(usuarios);
@@ -103,7 +103,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar una Jurisdiccion : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, JurisdiccionRespMsg.class);		
 	}
 	
@@ -113,7 +113,7 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para presentar todos los proyectos completos de una Jurisdiccion : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para presentar todos los proyectos completos de una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_PRESENTAR_TODOS, JurisdiccionRespMsg.class); 		
 	}
 
@@ -122,25 +122,33 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 	}
 	
 	private List<Jurisdiccion> getJurisdiccionesFromReqMsg(JurisdiccionReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una Jurisdiccion : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una Jurisdiccion : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, JurisdiccionRespMsg.class);
 
 		List<Jurisdiccion> jurisdicciones = null;
 		if (response.getEventType().equalsIgnoreCase(JurisdiccionRespMsg.JURISDICCION_TYPE)) {
 			jurisdicciones = ((JurisdiccionRespMsg) response).getJurisdicciones();
-			LOGGER.debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			} else {
+				getLogger().info("Obteninendo las jurisdicciones de la respuesta del BUS de servicios");
+			}
 		}
 		return jurisdicciones;
 	}
 
 	private List<JurisdiccionResumen> getJurisdiccionesResumenFromReqMsg(JurisdiccionReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener el resumen de jurisdicciones: {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener el resumen de jurisdicciones: {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE_RESUMEN, JurisdiccionRespMsg.class);
 		
 		List<JurisdiccionResumen> jurisdicciones = null;
 		if (response.getEventType().equalsIgnoreCase(JurisdiccionRespMsg.JURISDICCION_TYPE)) {
 			jurisdicciones = ((JurisdiccionRespMsg) response).getJurisdiccionesResumen();
-			LOGGER.debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			} else {
+				getLogger().info("Obteninendo las jurisdicciones de la respuesta del BUS de servicios");
+			}
 		}
 		return jurisdicciones;
 	}
@@ -158,7 +166,11 @@ public class JurisdiccionServiceImpl implements JurisdiccionService {
 		List<Jurisdiccion> jurisdicciones = new ArrayList<Jurisdiccion>();
 		if (response.getEventType().equalsIgnoreCase(JurisdiccionRespMsg.JURISDICCION_TYPE)) {
 			jurisdicciones = ((JurisdiccionRespMsg) response).getJurisdicciones();
-			LOGGER.debug("Obteninendo las jutisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las jutisdicciones de la respuesta del BUS de servicios: {}", jurisdicciones.toString());
+			} else {
+				getLogger().info("Obteninendo las jutisdicciones de la respuesta del BUS de servicios");
+			}
 		}
 		return jurisdicciones;
 	}

@@ -24,8 +24,8 @@ INNER JOIN objetivo_jurisdiccional oj ON oj.idJurisdiccion = j.idJurisdiccion
 INNER JOIN objetivo_operativo oop ON oop.idObjetivoJurisdiccional = oj.idObjetivoJurisdiccional
 INNER JOIN proyecto p ON p.idObjetivoOperativo = oop.idObjetivoOperativo
 LEFT JOIN area a on a.idArea = p.idArea
-where p.estado in ("verificado", "presentado")
-order by 1,2,3,4,5,6 ;
+WHERE p.estado = 'Verificado' OR p.estado = 'Presentado' OR p.estado LIKE 'En Priorizaci%'
+ORDER BY 1,2,3,4,5,6 ;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

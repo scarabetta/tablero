@@ -39,7 +39,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setTemaTransversal(temaTransversal);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear un Tema Transversal : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear un Tema Transversal : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, TemaTransversalRespMsg.class);
 		List<TemaTransversal> temasTransversales = getTemaTransversalFromResponse(response);
 		return getFirstTemaTransversalFromTheList(temasTransversales);
@@ -51,7 +51,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setTemaTransversal(temaTransversal);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar un Tema Transversal : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar un Tema Transversal : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, TemaTransversalRespMsg.class);
 		List<TemaTransversal> temasTransversales = getTemaTransversalFromResponse(response);
 		return getFirstTemaTransversalFromTheList(temasTransversales);
@@ -63,7 +63,7 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Tema Transversal : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar un Tema Transversal : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, TemaTransversalRespMsg.class);
 	}
 
@@ -77,14 +77,18 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 	}
 
 	private List<TemaTransversal> getTemaTransversalFromReqMsg(TemaTransversalReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un Tema Transversal : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener un Tema Transversal : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, TemaTransversalRespMsg.class);
 
 		List<TemaTransversal> temasTransversales = null;
 		if (response.getEventType().equalsIgnoreCase(TemaTransversalRespMsg.TEMA_TRANSVERSAL_TYPE)) {
 			temasTransversales = ((TemaTransversalRespMsg) response).getTemasTransversales();
-			LOGGER.debug("Obteninendo los temas Transversales  de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los temas Transversales  de la respuesta del BUS de servicios: {}",
 					temasTransversales .toString());
+			} else {
+				getLogger().info("Obteninendo los temas Transversales  de la respuesta del BUS de servicios");
+			}
 		}
 		return temasTransversales ;
 	}
@@ -93,7 +97,12 @@ public class TemaTransversalServiceImpl implements TemaTransversalService {
 		List<TemaTransversal> temasTransversales = null;
 		if (response.getEventType().equalsIgnoreCase(TemaTransversalRespMsg.TEMA_TRANSVERSAL_TYPE)) {
 			temasTransversales = ((TemaTransversalRespMsg) response).getTemasTransversales();
-			LOGGER.debug("Obteninendo los Temas transversales de la respues del BUS de servicios: {}", temasTransversales.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los temas Transversales  de la respuesta del BUS de servicios: {}",
+					temasTransversales .toString());
+			} else {
+				getLogger().info("Obteninendo los temas Transversales  de la respuesta del BUS de servicios");
+			}
 		}
 		return temasTransversales;
 	}

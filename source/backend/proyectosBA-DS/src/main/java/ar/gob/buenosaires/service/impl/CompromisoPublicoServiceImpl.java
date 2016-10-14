@@ -39,7 +39,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 		reqMsg.setCompromisoPublico(compromisoPublico);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear un Compromiso Publico : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear un Compromiso Publico : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, CompromisoPublicoRespMsg.class);
 		List<CompromisoPublico> compromisosPublicos = getCompromisoPublicoFromResponse(response);
 		return getFirstCompromisoPublicoFromTheList(compromisosPublicos);
@@ -51,7 +51,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 		reqMsg.setCompromisoPublico(compromisoPublico);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar un Compromiso Publico : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar un Compromiso Publico : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, CompromisoPublicoRespMsg.class);
 		List<CompromisoPublico> compromisosPublicos = getCompromisoPublicoFromResponse(response);
 		return getFirstCompromisoPublicoFromTheList(compromisosPublicos);
@@ -63,7 +63,7 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Compromiso Publico : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar un Compromiso Publico : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, CompromisoPublicoRespMsg.class);
 	}
 
@@ -77,14 +77,18 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 	}
 
 	private List<CompromisoPublico> getCompromisoPublicoFromReqMsg(CompromisoPublicoReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un Compromiso Publico : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener un Compromiso Publico : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, CompromisoPublicoRespMsg.class);
 
 		List<CompromisoPublico> compromisosPublicos = null;
 		if (response.getEventType().equalsIgnoreCase(CompromisoPublicoRespMsg.COMPROMISO_PUBLICO_TYPE)) {
 			compromisosPublicos = ((CompromisoPublicoRespMsg) response).getCompromisosPublicos();
-			LOGGER.debug("Obteninendo los Compromisos Publicos de la respues del BUS de servicios: {}",
-					compromisosPublicos.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los Compromisos Publicos de la respues del BUS de servicios: {}",
+						compromisosPublicos.toString());
+			} else {
+				getLogger().info("Obteninendo los Compromisos Publicos de la respues del BUS de servicios");
+			}
 		}
 		return compromisosPublicos;
 	}
@@ -93,7 +97,12 @@ public class CompromisoPublicoServiceImpl implements CompromisoPublicoService {
 		List<CompromisoPublico> compromisosPublicos = null;
 		if (response.getEventType().equalsIgnoreCase(CompromisoPublicoRespMsg.COMPROMISO_PUBLICO_TYPE)) {
 			compromisosPublicos = ((CompromisoPublicoRespMsg) response).getCompromisosPublicos();
-			LOGGER.debug("Obteninendo los Compromisos Publicos de la respues del BUS de servicios: {}", compromisosPublicos.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los Compromisos Publicos de la respues del BUS de servicios: {}",
+						compromisosPublicos.toString());
+			} else {
+				getLogger().info("Obteninendo los Compromisos Publicos de la respues del BUS de servicios");
+			}
 		}
 		return compromisosPublicos;
 	}

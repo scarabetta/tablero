@@ -49,4 +49,7 @@ public interface ProyectoJpaDao extends JpaRepository<Proyecto, Long> {
 			+ " where j.idJurisdiccion = :idJurisdiccion and p.nombre = :nombre")
 	Proyecto findByNombreAndIdJurisdiccion(@Param("nombre") String nombre,
 			@Param("idJurisdiccion") Long idJurisdiccion);
+
+	@Query("SELECT p FROM Proyecto p WHERE p.estado = \'En Priorización\' OR p.estado = \'Verificado\' OR p.estado = \'Presentado\'")
+	List<Proyecto> findResumenProyectosPriorizacion();
 }

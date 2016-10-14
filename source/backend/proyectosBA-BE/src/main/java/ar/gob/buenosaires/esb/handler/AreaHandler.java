@@ -31,7 +31,7 @@ public class AreaHandler extends AbstractBaseEventHandler {
 
 		final AreaRespMsg areaResponse = new AreaRespMsg();
 		event.setObj(areaResponse);
-		
+
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveAreas(event, areaResponse, areaRequest);
 		} else {
@@ -51,6 +51,8 @@ public class AreaHandler extends AbstractBaseEventHandler {
 			} else {
 				areas.add(service.getAreaPorNombreYIdJurisdiccion(request.getName(), request.getIdJurisdiccion()));
 			}
+		} else if (request.getIdJurisdiccion() != null) {
+			areas = service.getAreasPorIdJurisdiccion(request.getIdJurisdiccion());
 		} else {
 			areas = service.getAreas();
 		}

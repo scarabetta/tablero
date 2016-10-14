@@ -8,6 +8,7 @@ security.request.email=email
 security.request.password=clave
 security.request.operation=validar
 security.jwt.expirationTime.hours=4
+security.jwt.expirationTime.minutes=240
 security.jwt.issuer=proyectosBA-DS
 security.cors.mappings=/**
 security.cors.origins=*

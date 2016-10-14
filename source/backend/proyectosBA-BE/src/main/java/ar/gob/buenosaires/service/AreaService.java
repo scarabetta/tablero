@@ -9,8 +9,10 @@ public interface AreaService {
 	List<Area> getAreas();
 
 	Area getAreaPorId(Long id);
-	
+
 	List<Area> getAreasPorNombre(String nombre);
-	
+
 	Area getAreaPorNombreYIdJurisdiccion(String nombre, Long idIdJurisdiccion);
+
+	List<Area> getAreasPorIdJurisdiccion(Long idIdJurisdiccion);
 }

@@ -64,11 +64,11 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
 
     private void completeLog() {
         getLogger()
-                .debug(" completed processing event message.");
+                .debug(" Se completo el procesamiento del mensaje.");
     }
 
     private void processLog(final String origin) {
-        getLogger().debug(": processing {} message.\"", origin);
+        getLogger().debug(": Procesando {} mensaje.\"", origin);
     }
 
     /**
@@ -80,8 +80,8 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
      */
     protected void logRequestMessage(final ESBEvent event,
             final Class<?> class1) {
-        getLogger().info("Request message: {} from {} to be process by the class: {}",
-                new Object[]{event.getObj().toString(), event.getOrigin(), class1});
+        getLogger().info("Desde {} , para ser procesado por la clase: {}",
+                new Object[]{event.getOrigin(), class1});
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
     protected void logResponseMessage(final ESBEvent event,
             final Class<?> class1) {
         getLogger().info(
-                "Response message: {}  has been processed by the class: {}",
+                "Mensaje de respuesta: {} , que fue procesado por la clase: {}",
                 event.getObj().toString(), class1);
     }
 
@@ -137,6 +137,7 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
     	
     	if(!(action.startsWith(ESBEvent.ACTION_RETRIEVE))) {
 			if(email == null || StringUtils.isBlank(email)){
+				getLogger().error("Falta el usuario que esta realizando la accion en el mensaje enviado.");
 				throw new ESBException(CodigoError.FALTA_USUARIO.getCodigo(), "Falta el usuario que esta realizando la accion en el mensaje enviado.");
 			}
 			

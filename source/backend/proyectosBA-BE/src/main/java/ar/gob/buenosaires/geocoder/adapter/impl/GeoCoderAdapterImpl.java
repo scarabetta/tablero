@@ -24,7 +24,7 @@ public class GeoCoderAdapterImpl implements GeoCoderAdapter {
 			response = restTemplate.getForObject(URL_USIG + direccion + AREA_CABA + CODIFICAR,
 							GeoCoderResponse.class);
 		}catch(Exception e){
-			LOGGER.debug("Se produjo un error al obtener las coordenadas para la direccion");
+			LOGGER.error("Se produjo un error al obtener las coordenadas para la direccion");
 			e.printStackTrace();			
 		}
 		

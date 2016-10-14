@@ -21,4 +21,6 @@ public interface IServiceFactory {
 	AreaService getAreaService();
 	
 	PoblacionMetaService getPoblacionMetaService();
+
+	TemaTransversalService getTemaTransversalService();
 }

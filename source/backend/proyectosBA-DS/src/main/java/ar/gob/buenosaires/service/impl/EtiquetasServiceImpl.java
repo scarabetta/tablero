@@ -1,7 +1,5 @@
 package ar.gob.buenosaires.service.impl;
 
-import java.util.List;
-
 import javax.jms.JMSException;
 
 import org.slf4j.Logger;
@@ -10,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.gob.buenosaires.domain.EtiquetasMsg;
-import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 import ar.gob.buenosaires.esb.domain.message.EtiquetasReqMsg;
 import ar.gob.buenosaires.esb.domain.message.EtiquetasRespMsg;
-import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.service.EtiquetaService;
@@ -45,13 +41,17 @@ public class EtiquetasServiceImpl implements EtiquetaService {
 	}
 	
 	private EtiquetasMsg getEtiquetasFromReqMsg(EtiquetasReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener todas las etiquetas : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener todas las etiquetas : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, EtiquetasRespMsg.class);
 
 		EtiquetasMsg etiquetas = null;
 		if (response.getEventType().equalsIgnoreCase(EtiquetasRespMsg.ETIQUETAS_TYPE)) {
 			etiquetas = ((EtiquetasRespMsg) response).getEtiquetas();
-			LOGGER.debug("Obteninendo las etiquetas de la respues del BUS de servicios: {}", etiquetas.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las etiquetas de la respues del BUS de servicios: {}", etiquetas.toString());
+			} else {
+				getLogger().info("Obteninendo las etiquetas de la respues del BUS de servicios");
+			}
 		}
 		return etiquetas ;
 	}

@@ -42,8 +42,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		"poblacionAfectada", "liderProyecto", "area", "tipoUbicacionGeografica", "direccion", "cambioLegislativo",
 		"fechaInicio", "fechaFin", "prioridadJurisdiccional", "estado", "ejesDeGobierno", "poblacionesMeta", "comunas",
 		"codigo", "idJurisdiccion2", "idObjetivoJurisdiccional2", "idObjetivoOperativo2", "organismosCorresponsables",
-		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado", "temasTransversales", "compromisosPublicos",
-		"otrasEtiquetas" })
+		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado", "temasTransversales",
+		"compromisosPublicos", "otrasEtiquetas", "totalPresupuestoAprobado", "prioridadJefatura" })
 
 @XmlRootElement(name = "Proyecto")
 public class Proyecto implements Serializable {
@@ -80,14 +80,12 @@ public class Proyecto implements Serializable {
 	@JsonBackReference
 	private ObjetivoOperativo objetivoOperativo;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto",
-			fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "presupuestosPorAnio")
 	@JsonManagedReference(value = "proy-presu")
-	private List<PresupuestoPorAnio> presupuestosPorAnio= new ArrayList<>();
+	private List<PresupuestoPorAnio> presupuestosPorAnio = new ArrayList<>();
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto",
-			fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "archivoPoryecto")
 	@JsonManagedReference
 	private List<ArchivoProyecto> archivos = new ArrayList<>();
@@ -107,8 +105,8 @@ public class Proyecto implements Serializable {
 	@Column(name = "liderproyecto", nullable = true)
 	private String liderProyecto;
 
-	//	@Column(name = "area", nullable = true)
-	//	private String area;
+	// @Column(name = "area", nullable = true)
+	// private String area;
 
 	@Column(name = "tipoubicaciongeografica", nullable = true)
 	private String tipoUbicacionGeografica;
@@ -143,7 +141,6 @@ public class Proyecto implements Serializable {
 	@Column(name = "estado", nullable = false)
 	private String estado;
 
-	@JsonIgnore
 	@Column(name = "verificado", nullable = true, columnDefinition = "TINYINT(1)")
 	private Boolean verificado = false;
 
@@ -153,42 +150,45 @@ public class Proyecto implements Serializable {
 	@Column(name = "coordenaday", nullable = true)
 	private String coordenadaY;
 
+	@Column(name = "prioridad_jefatura", nullable = true)
+	private String prioridadJefatura;
+
+	@Column(name = "total_presu_aprobado", nullable = true)
+	private Double totalPresupuestoAprobado;
+
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "eje_de_gobierno_por_proyecto",
-	joinColumns = { @JoinColumn(name = "id_proyecto") },
-	inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
+	@JoinTable(name = "eje_de_gobierno_por_proyecto", joinColumns = {
+			@JoinColumn(name = "id_proyecto") }, inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
 	@XmlElement(name = "ejesDeGobierno")
 	private List<EjeDeGobierno> ejesDeGobierno;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "poblacion_meta_por_proyecto",
-	joinColumns = {@JoinColumn(name = "idproyecto") },
-	inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
+	@JoinTable(name = "poblacion_meta_por_proyecto", joinColumns = {
+			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
 	@XmlElement(name = "poblacionesMeta")
 	private List<PoblacionMeta> poblacionesMeta;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "comuna_por_proyecto",
-	joinColumns = { @JoinColumn(name = "idproyecto") },
-	inverseJoinColumns = { @JoinColumn(name = "idcomuna") })
+	@JoinTable(name = "comuna_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
+			@JoinColumn(name = "idcomuna") })
 	@XmlElement(name = "comunas")
 	private List<Comuna> comunas;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tema_transversal_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
-			@JoinColumn(name = "idtematransversal") })
+	@JoinTable(name = "tema_transversal_por_proyecto", joinColumns = {
+			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idtematransversal") })
 	@XmlElement(name = "temasTransversales")
 	private List<TemaTransversal> temasTransversales;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "compromiso_publico_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
-			@JoinColumn(name = "idcompromisopublico") })
+	@JoinTable(name = "compromiso_publico_por_proyecto", joinColumns = {
+			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idcompromisopublico") })
 	@XmlElement(name = "compromisosPublicos")
 	private List<CompromisoPublico> compromisosPublicos;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "otras_etiquetas_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
-			@JoinColumn(name = "idetiqueta") })
+	@JoinTable(name = "otras_etiquetas_por_proyecto", joinColumns = {
+			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idetiqueta") })
 	@XmlElement(name = "otrasEtiquetas")
 	private List<OtraEtiqueta> otrasEtiquetas;
 
@@ -321,7 +321,7 @@ public class Proyecto implements Serializable {
 	}
 
 	public String getEstado() {
-		if(estado == null){
+		if (estado == null) {
 			estado = EstadoProyecto.INCOMPLETO.getName();
 		}
 		return estado;
@@ -377,7 +377,7 @@ public class Proyecto implements Serializable {
 	}
 
 	public List<TemaTransversal> getTemasTransversales() {
-		if(temasTransversales == null){
+		if (temasTransversales == null) {
 			temasTransversales = new ArrayList<>();
 		}
 		return temasTransversales;
@@ -388,7 +388,7 @@ public class Proyecto implements Serializable {
 	}
 
 	public List<CompromisoPublico> getCompromisosPublicos() {
-		if(compromisosPublicos == null){
+		if (compromisosPublicos == null) {
 			compromisosPublicos = new ArrayList<>();
 		}
 		return compromisosPublicos;
@@ -399,7 +399,7 @@ public class Proyecto implements Serializable {
 	}
 
 	public List<OtraEtiqueta> getOtrasEtiquetas() {
-		if(otrasEtiquetas == null) {
+		if (otrasEtiquetas == null) {
 			otrasEtiquetas = new ArrayList<>();
 		}
 		return otrasEtiquetas;
@@ -453,9 +453,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public void setPresupuestosPorAnio(final List<PresupuestoPorAnio> presupuestosPorAnio) {
-		if(this.presupuestosPorAnio == null){
+		if (this.presupuestosPorAnio == null) {
 			this.presupuestosPorAnio = presupuestosPorAnio;
-		} else if(presupuestosPorAnio != null) {
+		} else if (presupuestosPorAnio != null) {
 			this.presupuestosPorAnio.clear();
 			this.presupuestosPorAnio.addAll(presupuestosPorAnio);
 		}
@@ -509,13 +509,13 @@ public class Proyecto implements Serializable {
 
 	private String validarUbicacion() {
 		if (TIPO_UBICACION_COMUNAS.equalsIgnoreCase(tipoUbicacionGeografica)) {
-			if (comunas == null || comunas.isEmpty() ){
+			if (comunas == null || comunas.isEmpty()) {
 				return EstadoProyecto.INCOMPLETO.getName();
 			}
 		} else if (TIPO_UBICACION_DIRECCION.equalsIgnoreCase(tipoUbicacionGeografica)) {
-			if (direccion == null || direccion.isEmpty()){
-				//					|| coordenadaX == null || coordenadaX.isEmpty()
-				//					|| coordenadaY == null || coordenadaY.isEmpty()) {
+			if (direccion == null || direccion.isEmpty()) {
+				// || coordenadaX == null || coordenadaX.isEmpty()
+				// || coordenadaY == null || coordenadaY.isEmpty()) {
 
 				return EstadoProyecto.INCOMPLETO.getName();
 			}
@@ -524,25 +524,51 @@ public class Proyecto implements Serializable {
 	}
 
 	private Object[] getPropiedadesAValidar() {
-		return new Object[] { getNombre(), getDescripcion(), getObjetivoOperativo(), getTipoProyecto(), getMeta(), getUnidadMeta(), getPoblacionAfectada(),
-				getLiderProyecto(), getArea(), getCambioLegislativo(), getFechaInicio(), getFechaFin(), getTipoUbicacionGeografica(),
-				getPrioridadJurisdiccional(), getEstado(), getPoblacionesMeta(), getIdObjetivoOperativo2(), getPresupuestosPorAnio() };
+		return new Object[] { getNombre(), getDescripcion(), getObjetivoOperativo(), getTipoProyecto(), getMeta(),
+				getUnidadMeta(), getPoblacionAfectada(), getLiderProyecto(), getArea(), getCambioLegislativo(),
+				getFechaInicio(), getFechaFin(), getTipoUbicacionGeografica(), getPrioridadJurisdiccional(),
+				getEstado(), getPoblacionesMeta(), getIdObjetivoOperativo2(), getPresupuestosPorAnio() };
+	}
+	
+	@JsonIgnore
+	public Double getTotalPedido() {
+		Double totalPedido = new Double(0);
+		for (PresupuestoPorAnio presu: getPresupuestosPorAnio()) {
+			totalPedido += presu.getPresupuesto();
+		}
+		return totalPedido;
 	}
 
 	public List<ArchivoProyecto> getArchivos() {
-		if(archivos == null){
+		if (archivos == null) {
 			archivos = new ArrayList<>();
 		}
 		return archivos;
 	}
 
 	public void setArchivos(final List<ArchivoProyecto> archivos) {
-		if(this.archivos == null){
+		if (this.archivos == null) {
 			this.archivos = archivos;
-		} else if (archivos != null){
+		} else if (archivos != null) {
 			this.archivos.clear();
 			this.archivos.addAll(archivos);
 		}
+	}
+
+	public String getPrioridadJefatura() {
+		return prioridadJefatura;
+	}
+
+	public void setPrioridadJefatura(String prioridadJefatura) {
+		this.prioridadJefatura = prioridadJefatura;
+	}
+
+	public Double getTotalPresupuestoAprobado() {
+		return totalPresupuestoAprobado;
+	}
+
+	public void setTotalPresupuestoAprobado(Double totalPresupuestoAprobado) {
+		this.totalPresupuestoAprobado = totalPresupuestoAprobado;
 	}
 
 }

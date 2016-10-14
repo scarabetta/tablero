@@ -150,12 +150,17 @@ public class ProyectoController {
 	public Proyecto cambiarEstadoProyecto(@RequestBody final Proyecto proyecto, @PathVariable final String action,
 			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
 			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
-		return service.cambiarEstadoProyecto(proyecto, action, DSUtils.getMailDelUsuarioDelToken(token));
+		return service.cambiarEstadoProyecto(proyecto, action.replaceAll("\\s",""), DSUtils.getMailDelUsuarioDelToken(token));
 	}
 
 	@RequestMapping(path = "/cambiarEstado/accionesPermitidas/{id}", method = RequestMethod.GET)
 	public List<String> getAccionesPermitidas(@PathVariable final String id, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
 		return service.getAccionesPermitidas(id, DSUtils.getMailDelUsuarioDelToken(token));			
+	}
+
+	@RequestMapping(path = "/prioridadesJefatura/", method = RequestMethod.GET)
+	public List<String> getPrioridadesJefatura() throws ESBException, JMSException {
+		return service.getPrioridadesJefatura();			
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)

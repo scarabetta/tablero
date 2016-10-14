@@ -92,14 +92,18 @@ public class PoblacionMetaServiceImpl implements PoblacionMetaService {
 	}
 	
 	private List<PoblacionMeta> getPoblacionesMetaFromReqMsg(PoblacionMetaReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una PoblacionMeta : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una PoblacionMeta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, PoblacionMetaRespMsg.class);
 
 		List<PoblacionMeta> poblacionMeta = null;
 		if (response.getEventType().equalsIgnoreCase(PoblacionMetaRespMsg.POBLACION_META_TYPE)) {
 			poblacionMeta = ((PoblacionMetaRespMsg) response).getPoblacionesMeta();
-			LOGGER.debug("Obteninendo las PoblacionMetaes de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las PoblacionMetaes de la respuesta del BUS de servicios: {}",
 					poblacionMeta.toString());
+			} else {
+				getLogger().info("Obteninendo las PoblacionMetaes de la respuesta del BUS de servicios");
+			}
 		}
 		return poblacionMeta;
 	}

@@ -17,6 +17,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import com.nimbusds.jose.JOSEException;
 
 import ar.gob.buenosaires.security.jwt.JWToken;
+import ar.gob.buenosaires.security.jwt.JWTokenUtils;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.security.jwt.exception.TokenExpiredException;
 
@@ -27,8 +28,18 @@ public class ResourceAuthorizationFilter extends GenericFilterBean {
 								EXPIRE_ERROR_MSG = "El Token ha expirado",
 								JWT_ERROR_MSG = "No se ha podido leer correctamente el Token",
 								JWT_INVALID_MSG = "El Token enviado es invalido",
-								SIGNATURE_ERROR_MSG ="La firma del Token es invalida";
+								SIGNATURE_ERROR_MSG ="La firma del Token es invalida",
+								NUEVO_TOKEN = "TokenRenovado";
 	
+	private int expirationTimeInMinutes;
+	private String issuer;
+
+	public ResourceAuthorizationFilter(int expirationTime, String issuer) {
+		super();
+		this.expirationTimeInMinutes = expirationTime;
+		this.issuer = issuer;
+	}
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -40,6 +51,7 @@ public class ResourceAuthorizationFilter extends GenericFilterBean {
 			if (!HttpMethod.OPTIONS.name().equals(httpRequest.getMethod())) {
 				JWToken token = new JWToken(authHeader);
 				token.validate();
+				httpResponse.addHeader(NUEVO_TOKEN, JWTokenUtils.newInstanceHS256Bearer(token.getSubject(), expirationTimeInMinutes, issuer).getToken());
 			}
 			chain.doFilter(request, response);
 		} catch (IllegalArgumentException e) {

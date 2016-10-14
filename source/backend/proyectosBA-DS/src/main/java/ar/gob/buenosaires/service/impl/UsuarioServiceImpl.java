@@ -61,7 +61,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			 reqMsg.setUsuario(usuario);
 			 reqMsg.setEmailUsuario(email);
 			 
-			 getLogger().debug("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
+			 getLogger().info("Mensaje creado para crear un Usuario : {}", reqMsg.toString());
 			 final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, UsuarioRespMsg.class);
 			 final List<Usuario> usuarios = getUsuarioFromResponse(response);
 			 return getFirstUsuarioFromTheList(usuarios);			 		
@@ -78,7 +78,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			reqMsg.setUsuario(usuario);
 			reqMsg.setEmailUsuario(email);
 	
-			getLogger().debug("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
+			getLogger().info("Mensaje creado para actualizar un Usuario : {}", reqMsg.toString());
 			final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, UsuarioRespMsg.class);
 			final List<Usuario> usuarios = getUsuarioFromResponse(response);
 			return getFirstUsuarioFromTheList(usuarios);
@@ -98,7 +98,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Usuario : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar un Usuario : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, UsuarioRespMsg.class);
 	}
 
@@ -112,7 +112,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	private List<Usuario> getUsuarioFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un Usuario : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener un Usuario : {}", reqMsg.toString());
 		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, UsuarioRespMsg.class);
 
 		final List<Usuario> ususarios = getUsuarioFromResponse(response);
@@ -123,7 +123,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		List<Usuario> ususarios = null;
 		if (response.getEventType().equalsIgnoreCase(UsuarioRespMsg.USUARIO_TYPE)) {
 			ususarios = ((UsuarioRespMsg) response).getUsuarios();
-			LOGGER.debug("Obteninendo los Usuarios de la respues del BUS de servicios: {}", ususarios.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los Usuarios de la respues del BUS de servicios: {}", ususarios.toString());
+			} else {
+				getLogger().info("Obteninendo los Usuarios de la respues del BUS de servicios");
+			}
 		}
 		return ususarios;
 	}
@@ -167,7 +171,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 	
 	private List<UsuarioResumen> getUsuarioResumenFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un UsuarioResumen : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener un UsuarioResumen : {}", reqMsg.toString());
 		final EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_RESUMEN, UsuarioRespMsg.class);
 
 		final List<UsuarioResumen> ususarios = getUsuarioResumenFromResponse(response);
@@ -178,7 +182,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		List<UsuarioResumen> ususarios = null;
 		if (response.getEventType().equalsIgnoreCase(UsuarioRespMsg.USUARIO_TYPE)) {
 			ususarios = ((UsuarioRespMsg) response).getUsuariosResumen();
-			LOGGER.debug("Obteninendo los UsuariosResumen de la respues del BUS de servicios: {}", ususarios.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los UsuariosResumen de la respues del BUS de servicios: {}", ususarios.toString());
+			} else {
+				getLogger().info("Obteninendo los UsuariosResumen de la respues del BUS de servicios");
+			}
 		}
 		return ususarios;
 	}

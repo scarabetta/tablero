@@ -400,7 +400,7 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the cantidadPoblacionImpactada
 	 */
 	public final Integer getCantidadPoblacionImpactada() {
-		return cantidadPoblacionImpactada;
+		return cantidadPoblacionImpactada != null ? cantidadPoblacionImpactada : Integer.valueOf(0);
 	}
 
 	/**
@@ -445,6 +445,9 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the presupuestosPorAnio
 	 */
 	public final List<PresupuestoPorAnio> getPresupuestosPorAnio() {
+		if(presupuestosPorAnio == null){
+			presupuestosPorAnio = new ArrayList<PresupuestoPorAnio>();
+		}
 		return presupuestosPorAnio;
 	}
 
@@ -460,6 +463,9 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the ejesDeGobierno
 	 */
 	public final List<EjeDeGobierno> getEjesDeGobierno() {
+		if(ejesDeGobierno == null){
+			ejesDeGobierno = new ArrayList<EjeDeGobierno>();
+		}
 		return ejesDeGobierno;
 	}
 
@@ -475,6 +481,9 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the poblacionesMeta
 	 */
 	public final List<PoblacionMeta> getPoblacionesMeta() {
+		if(poblacionesMeta == null){
+			poblacionesMeta = new ArrayList<PoblacionMeta>();
+		}
 		return poblacionesMeta;
 	}
 
@@ -490,6 +499,9 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the comunas
 	 */
 	public final List<Comuna> getComunas() {
+		if(comunas == null){
+			comunas = new ArrayList<Comuna>();
+		}
 		return comunas;
 	}
 

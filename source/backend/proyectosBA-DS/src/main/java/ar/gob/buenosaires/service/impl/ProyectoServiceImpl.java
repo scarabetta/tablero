@@ -3,6 +3,7 @@ package ar.gob.buenosaires.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.jms.JMSException;
 
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.gob.buenosaires.domain.AccionesProyecto;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
@@ -24,9 +27,6 @@ import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.service.ProyectoService;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 @Service
 public class ProyectoServiceImpl implements ProyectoService {
 
@@ -34,6 +34,8 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 	@Autowired
 	private EsbService esbService;
+	
+	private ObjectMapper mapper;
 
 	@Override
 	public List<Proyecto> getProyectos() throws ESBException, JMSException {
@@ -60,10 +62,9 @@ public class ProyectoServiceImpl implements ProyectoService {
 		return getProyectoFromResponse(proyectos);
 	}
 
-
 	@Override
-	public Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados)
-			throws ESBException, JMSException {
+	public Proyecto getProyectoPorNombreIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion,
+			List<String> estados) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setName(nombre);
 		reqMsg.setEstados(estados);
@@ -100,8 +101,9 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setProyecto(proyecto);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_CREATE, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para crear un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE,
+				ProyectoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
@@ -115,8 +117,9 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setProyecto(proyecto);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para presentar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_PRESENTAR, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para presentar un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_PRESENTAR,
+				ProyectoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
@@ -124,16 +127,22 @@ public class ProyectoServiceImpl implements ProyectoService {
 	}
 
 	@Override
-	public Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action, String email) throws ESBException, JMSException {
+	public Proyecto cambiarEstadoProyecto(Proyecto proyecto, String action, String email)
+			throws ESBException, JMSException {		
+		
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+		List<Proyecto> responseProyectos = new ArrayList<>();
+		reqMsg.setProyecto(proyecto);
+		reqMsg.setAccion(action);		
+		reqMsg.setEmailUsuario(email);
 
-		if(AccionesProyecto.CANCELAR.getName().equalsIgnoreCase(action)){
-			return cancelarProyecto(proyecto, email);
-		} else if(AccionesProyecto.VERIFICAR.getName().equalsIgnoreCase(action)){
-			return verificarProyecto(proyecto, email);
-		} else if(AccionesProyecto.DESHACER_CANCELACION.getName().equalsIgnoreCase(action)){
-			return deshacerCancelacion(proyecto, email);
+		getLogger().info("Mensaje creado para cancelar un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE,
+				ProyectoRespMsg.class);
+		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
+			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
-		return null;
+		return getProyectoFromResponse(responseProyectos);
 	}
 
 	@Override
@@ -142,79 +151,42 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setId(Long.parseLong(idProyecto));
 		reqMsg.setUsuario(createUsuarioConMail(userMail));
 
-		getLogger().debug("Mensaje creado para obtener las acciones para un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE_ACTIONS, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para obtener las acciones para un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_ACTIONS,
+				ProyectoRespMsg.class);
 
 		List<String> accionesPermitidas = new ArrayList<>();
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			accionesPermitidas = ((ProyectoRespMsg) response).getAccionesPermitidas();
-			LOGGER.debug("Obteninendo las acciones permitidas para los  Proyectos de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug(
+					"Obteninendo las acciones permitidas para los  Proyectos de la respues del BUS de servicios: {}",
 					accionesPermitidas.toString());
+			} else {
+				getLogger().info(
+						"Obteninendo las acciones permitidas para los  Proyectos de la respues del BUS de servicios");
+			}
 		}
 		return accionesPermitidas;
 	}
 
 	@Override
-	public Proyecto cancelarProyecto(Proyecto proyecto, String email) throws ESBException, JMSException {
-
-		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
-		List<Proyecto> responseProyectos = new ArrayList<>();
-		reqMsg.setProyecto(proyecto);
-		reqMsg.setEmailUsuario(email);
-
-		getLogger().debug("Mensaje creado para cancelar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CANCEL, ProyectoRespMsg.class);
-		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
-			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
-		}
-		return getProyectoFromResponse(responseProyectos);
-	}
-	
-	@Override
-	public Proyecto etiquetarProyecto(EtiquetasMsg etiquetas, String id, String email) throws ESBException, JMSException {
+	public Proyecto etiquetarProyecto(EtiquetasMsg etiquetas, String id, String email)
+			throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEtiquetas(etiquetas);
 		reqMsg.setEmailUsuario(email);
-		List<Proyecto> responseProyectos = new ArrayList<>();		
-
-		getLogger().debug("Mensaje creado para etiquetar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_ETIQUETAR, ProyectoRespMsg.class);
-		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
-			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
-		}
-		return getProyectoFromResponse(responseProyectos);
-	
-	}
-
-	@Override
-	public Proyecto deshacerCancelacion(Proyecto proyecto, String email) throws ESBException, JMSException {
-		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		List<Proyecto> responseProyectos = new ArrayList<>();
-		reqMsg.setProyecto(proyecto);
-		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para deshacer una cancelacion de un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DESHACER_CANCELACION, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para etiquetar un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_ETIQUETAR,
+				ProyectoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
 		return getProyectoFromResponse(responseProyectos);
-	}
 
-	@Override
-	public Proyecto verificarProyecto(Proyecto proyecto, String email) throws ESBException, JMSException {
-		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
-		List<Proyecto> responseProyectos = new ArrayList<>();
-		reqMsg.setProyecto(proyecto);
-		reqMsg.setEmailUsuario(email);
-
-		getLogger().debug("Mensaje creado para cancelar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_VERIFICAR, ProyectoRespMsg.class);
-		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
-			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
-		}
-		return getProyectoFromResponse(responseProyectos);
 	}
 
 	@Override
@@ -224,8 +196,9 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setProyecto(proyecto);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_UPDATE, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para actualizar un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE,
+				ProyectoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
 		}
@@ -238,8 +211,8 @@ public class ProyectoServiceImpl implements ProyectoService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para borrar un Proyecto : {}", reqMsg.toString());
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, ProyectoRespMsg.class);
 	}
 
 	public static Logger getLogger() {
@@ -247,14 +220,18 @@ public class ProyectoServiceImpl implements ProyectoService {
 	}
 
 	private List<Proyecto> getProyectosFromReqMsg(ProyectoReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un Proyecto : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ProyectoRespMsg.class);
+		getLogger().info("Mensaje creado para obtener un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE,
+				ProyectoRespMsg.class);
 
 		List<Proyecto> proyectos = null;
 		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
 			proyectos = ((ProyectoRespMsg) response).getProyectos();
-			LOGGER.debug("Obteninendo las Proyectos de la respues del BUS de servicios: {}",
-					proyectos.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las Proyectos de la respues del BUS de servicios: {}", proyectos.toString());
+			} else {
+				getLogger().info("Obteninendo las Proyectos de la respues del BUS de servicios");
+			}
 		}
 		return proyectos;
 	}
@@ -269,61 +246,90 @@ public class ProyectoServiceImpl implements ProyectoService {
 
 	@Override
 	public JsonNode getResumenProyectosPriorizacion() throws ESBException, JMSException {
-		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
-		List<String> estados = new ArrayList<>();
-		estados.add(EstadoProyecto.PRESENTADO.getName());
-		estados.add(EstadoProyecto.VERIFICADO.getName());
-		estados.add(EstadoProyecto.ENPRIORIZACION.getName());
-		reqMsg.setEstados(estados);
+		String responseProyectos = "";
+		JsonNode result = null;
 
-		List<Proyecto> proyectos = getProyectosFromReqMsg(reqMsg);
-		int presentado = 0, verificado = 0, enpriorizacion = 0;
-		for (Proyecto proyecto : proyectos) {
-			if(proyecto.getEstado().equalsIgnoreCase(EstadoProyecto.PRESENTADO.getName())){
-				presentado++;
-			} else if(proyecto.getEstado().equalsIgnoreCase(EstadoProyecto.VERIFICADO.getName())){
-				verificado++;
-			} else if(proyecto.getEstado().equalsIgnoreCase(EstadoProyecto.ENPRIORIZACION.getName())) {
-				enpriorizacion++;
+		getLogger().info("Mensaje creado para obtener el resumen de los proyectos a priorizar");
+		EsbBaseMsg response = esbService.sendToBus(new ProyectoReqMsg(), "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_RESUMEN_PRIORIZACION,
+				ProyectoRespMsg.class);
+		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
+			getLogger().info("Obteninendo del resumen de los proyectos a priorizar de la respuesta del BUS de servicios");
+			responseProyectos = ((ProyectoRespMsg) response).getResumenProyectosPriorizacion();
+			
+			try {
+				result = getObjectMapper().readTree(responseProyectos);
+			} catch (IOException e) {
+				getLogger().error("Se produjo un error al querer obtener el resumen de los proyectos a priorizar.", e);
+				throw new RuntimeException(e.getMessage());
 			}
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode actualObj = null;
-		try {
-			actualObj = mapper.readTree("{ \"" + EstadoProyecto.PRESENTADO.getName() + "\" : \"" + presentado +
-					"\", \"" + EstadoProyecto.VERIFICADO.getName() + "\" : \"" + verificado +
-					"\", \"EnPriorizacion\" : \"" + enpriorizacion +"\" }");
-		} catch (IOException e) {
-			getLogger().error("Se produjo un error al querer obtener el resumen de los proyectos a priorizar.", e);
-			throw new RuntimeException(e.getMessage());
-		}
+		return result;
+	}
 
-		return actualObj;
+	private ObjectMapper getObjectMapper() {
+		if(mapper == null){
+			mapper = new ObjectMapper();
+		}
+		return mapper;
 	}
 
 	@Override
 	public void cancelarPriorizacionDeProyectos(String email) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setEmailUsuario(email);
-		
-		getLogger().debug("Mensaje creado para cancelar la Priorizacion de proyectos");
-		esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_CANCELAR_PRIORIZACION, ProyectoRespMsg.class);
+
+		getLogger().info("Mensaje creado para cancelar la Priorizacion de proyectos");
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CANCELAR_PRIORIZACION, ProyectoRespMsg.class);
 	}
 
 	@Override
 	public void updatePriorizarProyectos(String email) throws ESBException, JMSException {
 		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
 		reqMsg.setEmailUsuario(email);
-		
-		getLogger().debug("Mensaje creado para inicar la Priorizacion de proyectos");
-		esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_INICIAR_PRIORIZACION, ProyectoRespMsg.class);
+
+		getLogger().info("Mensaje creado para inicar la Priorizacion de proyectos");
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_INICIAR_PRIORIZACION, ProyectoRespMsg.class);
 	}
-	
+
 	private Usuario createUsuarioConMail(String mailDelUsuarioDelToken) {
 		Usuario usuario = new Usuario();
 		usuario.setEmail(mailDelUsuarioDelToken);
 		return usuario;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Integer> getTodosLosIdsProyectosEnPriorizacion(String userMail) throws ESBException, JMSException {
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+		reqMsg.setUsuario(createUsuarioConMail(userMail));
+		reqMsg.setEmailUsuario(userMail);
+		reqMsg.setCustomStatement(
+				"select idProyecto from proyecto where estado = \"" + EstadoProyecto.ENPRIORIZACION.getName() + "\"");
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CUSTOM_STATEMENT,
+				ProyectoRespMsg.class);
+		return (List<Integer>) response.getCustomStatementResult().stream().map(s -> Integer.parseInt((String) s))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<String> getPrioridadesJefatura() throws ESBException, JMSException {
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+
+		getLogger().info("Mensaje creado para obtener las prioridades Jefatura: {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE_PRIORIDADES_JEFATURA, ProyectoRespMsg.class);
+
+		List<String> prioridadesJefatura = new ArrayList<>();
+		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
+			prioridadesJefatura = ((ProyectoRespMsg) response).getPrioridadesJefatura();
+			if (getLogger().isDebugEnabled()) {
+				getLogger().debug("Obteninendo las prioridades de Jefatura del BUS de servicios: {}",
+						prioridadesJefatura.toString());
+			} else {
+				getLogger().info("Obteninendo las prioridades de Jefatura del BUS de servicios");
+			}
+		}
+		return prioridadesJefatura;
 	}
 
 }

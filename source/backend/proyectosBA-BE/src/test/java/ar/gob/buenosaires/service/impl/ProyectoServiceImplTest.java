@@ -25,6 +25,8 @@ import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Rol;
+import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.geocoder.adapter.impl.GeoCoderAdapterImpl;
 import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
@@ -36,6 +38,7 @@ import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepositoryImpl;
 public class ProyectoServiceImplTest {
 
 	private static final String FAKE_NOMBRE = "fakeNombre";
+	private static final String SECRETARIA = "Secretaria";
 
 	@Mock
 	ProyectoJpaDao jpaDao;
@@ -99,6 +102,22 @@ public class ProyectoServiceImplTest {
 		fakeProyecto.setNombre(FAKE_NOMBRE);
 		fakeProyecto.setIdObjetivoOperativo2(new Long(1));
 		return fakeProyecto;
+	}
+	
+	private Usuario createFakeUsuario(boolean perfilSecretaria) {
+		Usuario fakeUsuario = new Usuario();
+		fakeUsuario.setNombre(FAKE_NOMBRE);
+		if (perfilSecretaria) {
+			List<Rol> roles = new ArrayList<>();
+			Rol rol = new Rol();
+			rol.setNombre(SECRETARIA);
+			roles.add(rol);
+			fakeUsuario.setRoles(roles);			
+		} else {
+			fakeUsuario.setRoles(new ArrayList<>());
+		}
+		
+		return fakeUsuario;
 	}
 
 	private ObjetivoOperativo createFakeObjetivoOperativo() {
@@ -192,16 +211,51 @@ public class ProyectoServiceImplTest {
 	@Test
 	public void updateProyecto() throws ESBException {
 		Proyecto fakeProyecto = createFakeProyecto();
+		Usuario fakeUsuario = createFakeUsuario(true);
 
 		when(repositorio.getProyectoJpaDao().save(any(Proyecto.class))).thenReturn(fakeProyecto);
 
 		when(repositorioObjetivoOperativo.getObjetivoOperativoJpaDao().findOne(anyLong())).thenReturn(
 				createFakeObjetivoOperativo());
 
-		Proyecto response = service.updateProyecto(fakeProyecto);
+		Proyecto response = service.updateProyecto(fakeProyecto, fakeUsuario);
 		assertThat(response).isNotNull();
 		assertThat(response.getNombre()).isNotNull();
 		assertThat(response.getNombre()).isEqualTo(FAKE_NOMBRE);
+	}
+	
+	@Test
+	public void updateProyectoVerificadoConOperadorJurisdiccionVuelveApresentado() throws ESBException {
+		Proyecto fakeProyecto = createFakeProyecto();
+		fakeProyecto.setVerificado(true);
+		fakeProyecto.setEstado(EstadoProyecto.VERIFICADO.getName());
+		boolean perfilSecretaria = false;
+		Usuario fakeUsuario = createFakeUsuario(perfilSecretaria);
+
+		when(repositorio.getProyectoJpaDao().save(any(Proyecto.class))).thenReturn(fakeProyecto);
+
+		when(repositorioObjetivoOperativo.getObjetivoOperativoJpaDao().findOne(anyLong())).thenReturn(
+				createFakeObjetivoOperativo());
+
+		Proyecto response = service.updateProyecto(fakeProyecto, fakeUsuario);
+		assertThat(response.getEstado()).isEqualTo(EstadoProyecto.PRESENTADO.getName());
+	}
+	
+	@Test
+	public void updateProyectoVerificadoConSecretariaSigueVerificado() throws ESBException {
+		Proyecto fakeProyecto = createFakeProyecto();
+		boolean perfilSecretaria = true;
+		fakeProyecto.setVerificado(perfilSecretaria);
+		fakeProyecto.setEstado(EstadoProyecto.VERIFICADO.getName());
+		Usuario fakeUsuario = createFakeUsuario(perfilSecretaria);
+		
+		when(repositorio.getProyectoJpaDao().save(any(Proyecto.class))).thenReturn(fakeProyecto);
+		
+		when(repositorioObjetivoOperativo.getObjetivoOperativoJpaDao().findOne(anyLong())).thenReturn(
+				createFakeObjetivoOperativo());
+		
+		Proyecto response = service.updateProyecto(fakeProyecto, fakeUsuario);
+		assertThat(response.getEstado()).isEqualTo(EstadoProyecto.VERIFICADO.getName());
 	}
 	
 	@Test

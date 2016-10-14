@@ -73,7 +73,7 @@ public abstract class AbstractProducer {
             }
         };
         this.jmsTemplate.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        getLogger().debug("enviando mensaje a un/a {} destino: {}",
+        getLogger().info("enviando mensaje a un/a {} destino: {}",
                 jmsTemplate.isPubSubDomain() ? "topic" : "queue",
                 		getDestination());
         this.jmsTemplate.send(destination, mc);
@@ -102,15 +102,14 @@ public abstract class AbstractProducer {
         event.setStatusDescription(replyMessage.getStringProperty(ESBEvent.STATUS_DESC_TAG));
         event.setErrorCode(replyMessage.getStringProperty(ESBEvent.ERROR_CODE_TAG));
         final String text = replyMessage.getText();
-        getLogger().debug("\"{}\" se recibio la respuesta para el mensaje "
-                        + "{} "
-                        + "(Thread: {}): {} ",new Object[]{
-                        "displayName",
-                        text,
-                        Thread.currentThread().getName()});
-//        final Object message = StringUtils.isBlank(text) ? ""
-//                : JMSUtil.unmarshal(replyMessage.getText(), marshaller);
-//        event.setObj(message);
+        
+        if(getLogger().isDebugEnabled()){
+        	getLogger().debug("Se recibio la respuesta para el mensaje {}, (Thread: {})",
+        			new Object[]{text, Thread.currentThread().getName()});
+        } else {
+        	getLogger().info("Se recibio la respuesta para el mensaje {},(Thread: {})",
+        			new Object[]{event.getObj().toString(), Thread.currentThread().getName()});
+        }
         event.setXml(text);
 	}
     

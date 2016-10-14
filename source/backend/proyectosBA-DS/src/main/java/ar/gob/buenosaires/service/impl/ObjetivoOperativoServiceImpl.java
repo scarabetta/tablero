@@ -71,7 +71,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		reqMsg.setEmailUsuario(email);
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 
-		getLogger().debug("Mensaje creado para crear un Objetivo Operativo : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear un Objetivo Operativo : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, ObjetivoOperativoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {
 			responseObjetivosOperativos = ((ObjetivoOperativoRespMsg) response).getObjetivosOperativos();
@@ -88,7 +88,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		reqMsg.setEmailUsuario(email);
 		List<ObjetivoOperativo> responseObjetivosOperativos = new ArrayList<ObjetivoOperativo>();
 		
-		getLogger().debug("Mensaje creado para actualizar un Objetivo Operativo : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar un Objetivo Operativo : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, ObjetivoOperativoRespMsg.class);
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {
 			responseObjetivosOperativos = ((ObjetivoOperativoRespMsg) response).getObjetivosOperativos();
@@ -103,7 +103,7 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Objetivo Operativo : {}",reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar un Objetivo Operativo : {}",reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_DELETE, ObjetivoOperativoRespMsg.class);
 	}
 
@@ -115,14 +115,18 @@ public class ObjetivoOperativoServiceImpl implements ObjetivoOperativoService {
 			ObjetivoOperativoReqMsg reqMsg) throws ESBException, JMSException {
 
 		getLogger()
-				.debug("Mensaje creado para obtener todos los Objetivos Operativoes: {}",reqMsg.toString());
+				.info("Mensaje creado para obtener todos los Objetivos Operativoes: {}",reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ObjetivoOperativoRespMsg.class);
 
 		List<ObjetivoOperativo> objetivosOperativoes = null;
 		if (response.getEventType().equalsIgnoreCase(ObjetivoOperativoRespMsg.OBJETIVO_OPERATIVO_TYPE)) {
 			objetivosOperativoes = ((ObjetivoOperativoRespMsg) response).getObjetivosOperativos();
-			LOGGER.debug("Obteninendo las jurisdicciones de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las jurisdicciones de la respuesta del BUS de servicios: {}",
 					objetivosOperativoes.toString());
+			} else {
+				getLogger().info("Obteninendo las jurisdicciones de la respuesta del BUS de servicios");
+			}
 		}
 		return objetivosOperativoes;
 	}

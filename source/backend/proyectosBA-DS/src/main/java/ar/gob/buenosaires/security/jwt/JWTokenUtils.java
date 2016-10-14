@@ -20,13 +20,13 @@ public class JWTokenUtils {
 	public static final String TOKEN_SECRET_SBA = "h2pr92mfhssy60lksrs56wer23345991";
 	private static final JWSHeader JWT_HEADER = new JWSHeader(JWSAlgorithm.HS256);
 	
-	public static JWToken newInstanceHS256Bearer(String email, int hours, String issuer) throws JOSEException {
+	public static JWToken newInstanceHS256Bearer(String email, int minutes, String issuer) throws JOSEException {
 		DateTime now = DateTime.now();
 		JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
 			     .subject(email)
 			     .issueTime(now.toDate())
 			     .notBeforeTime(now.toDate())
-			     .expirationTime(now.plusHours(hours).toDate())
+			     .expirationTime(now.plusMinutes(minutes).toDate())
 			     .issuer(issuer)
 			     .build();
 		

@@ -70,8 +70,8 @@ public abstract class AbstractConsumer implements MessageListener {
 		
 		// creamos el evento.
 		ESBEvent event = JMSUtil.constructEvent(jmsMsg);
-		getLogger().debug(" mensaje recibido " + "{} " + "(Thread: {}): {} ",
-				new Object[] { event.toString(), Thread.currentThread().getName(), s });
+		getLogger().info("Mensaje recibido {}, Fecha: {}, (Thread: {}), Mensaje: {} ",
+				new Object[] { event.toString(), new DateTime(), Thread.currentThread().getName(), s });
 		
 		// lo pasamos por lo handlers
 		passDownHandlers(event);
@@ -102,11 +102,6 @@ public abstract class AbstractConsumer implements MessageListener {
 	}
 
 	protected void responseBack(Message jmsMsg, ESBEvent event) throws JMSException {
-//		String outputText = JMSUtil.marshal(event.getObj(), marshaller);
-		
-		
-//    	XmlMapper xmlMapper = new XmlMapper();
-//    	ObjectWriter writer = xmlMapper.writer();
     	String outputText = "";
 		try {
 			outputText = writer.writeValueAsString(event.getObj());
@@ -120,10 +115,15 @@ public abstract class AbstractConsumer implements MessageListener {
 		// jms message messageId.
 		final EsbMessageCreator mc = new EsbMessageCreator(outputText, jmsMsg.getJMSMessageID(), jmsMsg, event);
 
-		// reply the message to the original destination.
-		getLogger().debug("sending response to replyToDestination \"" + "{}\" " + "(Thread: {}): {} ",
-				new Object[] { event.getReplyToDestination(), Thread.currentThread().getName(), outputText });
+		if(getLogger().isDebugEnabled()){
+			getLogger().debug("Enviando la respuesta al destino \"{}\", Fecha: {} ,(Thread: {}), {} ",
+				new Object[] { event.getReplyToDestination(), new DateTime(), Thread.currentThread().getName(), outputText });
+		} else {
+			getLogger().info("Enviando la respuesta al destino \"{}\", Fecha: {}, (Thread: {})",
+					new Object[] { event.getReplyToDestination(), new DateTime(), Thread.currentThread().getName()});
+		}
 
+		// reply the message to the original destination.
 		if (event.getReplyToDestination() != null) {
 			jmsTemplate.send(event.getReplyToDestination(), mc);
 		}
@@ -132,8 +132,8 @@ public abstract class AbstractConsumer implements MessageListener {
 	protected abstract Logger getLogger();
 
 	protected void logTextMessage(String textMessage) {
-		getLogger().info(" ----------- Message received ----------- ");
-		getLogger().info(" Recieved at: " + new DateTime() + ". Message: " + textMessage);
+		getLogger().info(" ----------- Mensaje Recibido ----------- ");
+		getLogger().info(" Fecha de recepcion: " + new DateTime() + ". Mensaje: " + textMessage);
 	}
 
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {

@@ -93,14 +93,18 @@ public class ComunaServiceImpl implements ComunaService {
 	}
 	
 	private List<Comuna> getComunasFromReqMsg(ComunaReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una Comuna : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una Comuna : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ComunaRespMsg.class);
 
 		List<Comuna> comunas = null;
 		if (response.getEventType().equalsIgnoreCase(ComunaRespMsg.COMUNA_TYPE)) {
 			comunas = ((ComunaRespMsg) response).getComunas();
-			LOGGER.debug("Obteninendo las Comunaes de la respues del BUS de servicios: {}",
-					comunas.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las Comunaes de la respues del BUS de servicios: {}",
+						comunas.toString());
+			} else {
+				getLogger().info("Obteninendo las Comunaes de la respues del BUS de servicios");
+			}
 		}
 		return comunas;
 	}

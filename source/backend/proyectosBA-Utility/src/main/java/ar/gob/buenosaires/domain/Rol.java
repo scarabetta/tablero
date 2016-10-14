@@ -44,12 +44,6 @@ public class Rol implements Serializable {
 	@Column(name = "descripcion", nullable = false)
 	private String descripcion;
 
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	@JoinTable(name = "rol_por_usuario", 
-//			joinColumns = { @JoinColumn(name = "usuario_idusuario") }, 
-//			inverseJoinColumns = { @JoinColumn(name = "rol_idrol") })
-//	@XmlElement(name = "usuarios")
-//	private List<Usuario> usuarios;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "rol", 
 			fetch = FetchType.LAZY, orphanRemoval = true)
@@ -96,12 +90,4 @@ public class Rol implements Serializable {
 			this.permisosEntidad.addAll(permisosEntidad);
 		}
 	}
-
-//	public List<Usuario> getUsuarios() {
-//		return usuarios;
-//	}
-//
-//	public void setUsuarios(final List<Usuario> usuarios) {
-//		this.usuarios = usuarios;
-//	}
 }

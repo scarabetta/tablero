@@ -83,14 +83,18 @@ public class EjeDeGobiernoServiceImpl implements EjeDeGobiernoService {
 	}
 	
 	private List<EjeDeGobierno> getEjesDeGobiernoFromReqMsg(EjeDeGobiernoReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una EjeDeGobierno : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una EjeDeGobierno : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, EjeDeGobiernoRespMsg.class);
 
 		List<EjeDeGobierno> ejesDeGobierno = null;
 		if (response.getEventType().equalsIgnoreCase(EjeDeGobiernoRespMsg.EJE_DE_GOBIERNO_TYPE)) {
 			ejesDeGobierno = ((EjeDeGobiernoRespMsg) response).getEjesDeGobierno();
-			LOGGER.debug("Obteninendo las EjeDeGobiernoes de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las EjeDeGobiernoes de la respues del BUS de servicios: {}",
 					ejesDeGobierno.toString());
+			} else {
+				getLogger().info("Obteninendo las EjeDeGobiernoes de la respues del BUS de servicios");
+			}
 		}
 		return ejesDeGobierno;
 	}

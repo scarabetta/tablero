@@ -56,9 +56,18 @@ public class AreaServiceImpl implements AreaService {
 		AreaReqMsg reqMsg = new AreaReqMsg();
 		reqMsg.setName(nombre);
 		reqMsg.setIdJurisdiccion(idJurisdiccion);
-		
+
 		List<Area> areas = getAreasFromReqMsg(reqMsg);
 		return getAreaFromResponse(areas);
+	}
+
+	@Override
+	public List<Area> getAreasByIdJurisdiccion(Long idJurisdiccion) throws ESBException, JMSException {
+		AreaReqMsg reqMsg = new AreaReqMsg();
+		reqMsg.setIdJurisdiccion(idJurisdiccion);
+
+		List<Area> areas = getAreasFromReqMsg(reqMsg);
+		return areas;
 	}
 
 	public static Logger getLogger() {
@@ -66,13 +75,18 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	private List<Area> getAreasFromReqMsg(AreaReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una Area : {}", reqMsg.toString());
-		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, AreaRespMsg.class);
+		getLogger().info("Mensaje creado para obtener una Area : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE,
+				AreaRespMsg.class);
 
 		List<Area> areas = null;
 		if (response.getEventType().equalsIgnoreCase(AreaRespMsg.AREA_TYPE)) {
 			areas = ((AreaRespMsg) response).getAreas();
-			LOGGER.debug("Obteninendo las Areas de la respues del BUS de servicios: {}", areas.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las Areas de la respues del BUS de servicios: {}", areas.toString());
+			} else {
+				getLogger().info("Obteninendo las Areas de la respues del BUS de servicios.");
+			}
 		}
 		return areas;
 	}

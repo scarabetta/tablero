@@ -36,3 +36,6 @@ esb.pooledConnecttion.brokerURL=tcp://localhost:61616
 
 ## envers
 spring.jpa.properties.org.hibernate.envers.store_data_at_delete=true
+
+#Prioridades jefatura
+proyecto.priorizado.opciones.prioridadJefatura = A+,A,B,C

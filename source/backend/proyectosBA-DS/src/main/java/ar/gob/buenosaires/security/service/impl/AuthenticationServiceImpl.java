@@ -24,8 +24,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-	@Value("${security.jwt.expirationTime.hours}")
-	private int expirationTime;
+	@Value("${security.jwt.expirationTime.minutes}")
+	private int expirationTimeInMinutes;
 
 	@Value("${security.jwt.issuer}")
 	private String issuer;
@@ -43,7 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		if (authAdapter.validUser(payload)) {
 			if(usuarioEstaActivo(payload)){
 				try {
-					token = JWTokenUtils.newInstanceHS256Bearer(payload.getEmail(), expirationTime, issuer);
+					token = JWTokenUtils.newInstanceHS256Bearer(payload.getEmail(), expirationTimeInMinutes, issuer);
 				} catch (Exception e) {
 					getLogger().info("Se ha producido un error al querer generar el token para el usuario: {}",
 							payload.getEmail());

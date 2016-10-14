@@ -34,13 +34,17 @@ public class ErrorDescripcionServiceImpl implements ErrorDescripcionService {
 	}
 	
 	private List<ErrorDescripcion> getErroresFromReqMsg(ErroresReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener todos los codigos de error: {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener todos los codigos de error: {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, ErroresRespMsg.class);
 
 		List<ErrorDescripcion> errores = null;
 		if (response.getEventType().equalsIgnoreCase(ErroresRespMsg.ERRORES_TYPE)) {
 			errores = ((ErroresRespMsg) response).getErrores();
-			LOGGER.debug("Obteninendo los codigos de error de la respues del BUS de servicios: {}", errores.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los codigos de error de la respues del BUS de servicios: {}", errores.toString());
+			} else {
+				getLogger().info("Obteninendo los codigos de error de la respues del BUS de servicios");
+			}
 		}
 		return errores;
 	}

@@ -39,7 +39,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		reqMsg.setOtraEtiqueta(otraEtiqueta);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear una etiqueta : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear una etiqueta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, OtrasEtiquetasRespMsg.class);
 		List<OtraEtiqueta> otrasEtiquetas = getOtraEtiquetaFromResponse(response);
 		return getFirstOtraEtiquetaFromTheList(otrasEtiquetas);
@@ -51,7 +51,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		reqMsg.setOtraEtiqueta(otraEtiqueta);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar una etiqueta : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar una etiqueta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, OtrasEtiquetasRespMsg.class);
 		List<OtraEtiqueta> otrasEtiquetas = getOtraEtiquetaFromResponse(response);
 		return getFirstOtraEtiquetaFromTheList(otrasEtiquetas);
@@ -63,7 +63,7 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar una etiqueta: {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar una etiqueta: {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, OtrasEtiquetasRespMsg.class);
 	}
 
@@ -77,14 +77,18 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 	}
 
 	private List<OtraEtiqueta> getOtrasEtiquetasFromReqMsg(OtrasEtiquetasReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una etiqueta : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una etiqueta : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS",ESBEvent.ACTION_RETRIEVE, OtrasEtiquetasRespMsg.class);
 
 		List<OtraEtiqueta> otrasEtiquetas = null;
 		if (response.getEventType().equalsIgnoreCase(OtrasEtiquetasRespMsg.OTRAS_ETIQUETAS_TYPE)) {
 			otrasEtiquetas = ((OtrasEtiquetasRespMsg) response).getOtrasEtiquetas();
-			LOGGER.debug("Obteninendo etiquetas  de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo etiquetas  de la respuesta del BUS de servicios: {}",
 					otrasEtiquetas .toString());
+			} else {
+				getLogger().info("Obteninendo etiquetas  de la respuesta del BUS de servicios");
+			}
 		}
 		return otrasEtiquetas;
 	}
@@ -93,7 +97,12 @@ public class OtrasEtiquetasServiceImpl implements OtrasEtiquetasService {
 		List<OtraEtiqueta> otrasEtiquetas = null;
 		if (response.getEventType().equalsIgnoreCase(OtrasEtiquetasRespMsg.OTRAS_ETIQUETAS_TYPE)) {
 			otrasEtiquetas = ((OtrasEtiquetasRespMsg) response).getOtrasEtiquetas();
-			LOGGER.debug("Obteninendo los etiquetas de la respues del BUS de servicios: {}", otrasEtiquetas.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo etiquetas  de la respuesta del BUS de servicios: {}",
+					otrasEtiquetas .toString());
+			} else {
+				getLogger().info("Obteninendo etiquetas  de la respuesta del BUS de servicios");
+			}
 		}
 		return otrasEtiquetas;
 	}

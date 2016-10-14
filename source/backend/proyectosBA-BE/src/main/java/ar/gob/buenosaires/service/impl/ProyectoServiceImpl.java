@@ -1,6 +1,10 @@
 package ar.gob.buenosaires.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.fest.util.VisibleForTesting;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +15,13 @@ import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioRepositor
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoJpaDao;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
+import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.Usuario;
+import ar.gob.buenosaires.esb.domain.ESBEvent;
+import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
@@ -23,10 +31,13 @@ import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepository;
 import ar.gob.buenosaires.service.ProyectoService;
 
 @Service
-public class ProyectoServiceImpl implements ProyectoService {
+public class ProyectoServiceImpl extends AbstractSeriviceImpl implements ProyectoService {
 
 	@Autowired
 	private ProyectoRepository repositorio;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Autowired
 	private ObjetivoOperativoRepository repositorioObjetivoOperativo;
@@ -77,21 +88,32 @@ public class ProyectoServiceImpl implements ProyectoService {
 	}
 
 	@Override
-	public Proyecto updateProyecto(final Proyecto proyecto) throws ESBException {
+	public Proyecto updateProyecto(final Proyecto proyecto, Usuario usuario) throws ESBException {
 		final ObjetivoOperativo op = repositorioObjetivoOperativo.getObjetivoOperativoJpaDao()
 				.findOne(proyecto.getIdObjetivoOperativo2());
 
 		if (op != null) {
 			proyecto.setObjetivoOperativo(op);
 			guardarCoordenadas(proyecto);
-			proyecto.setEstado(proyecto.getEstadoActualizado());
+			actualizarEstado(proyecto, usuario);
 			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
+			validarPresupuestoAprobado(proyecto);
+			validarPrioridadDeJefatura(proyecto);
 			return getProyectoDAO().save(proyecto);
 		}
 		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
-				+ proyecto.getObjetivoOperativo().getIdObjetivoOperativo() + "no existe");
+				+ proyecto.getIdObjetivoOperativo2() + " no existe");
 	}
 	
+	private void actualizarEstado(final Proyecto proyecto, Usuario usuario) {
+		if (usuario != null && EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyecto.getEstado()) && !usuario.tienePerfilSecretaria()) {
+			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
+			proyecto.setVerificado(false);
+		} else {
+			proyecto.setEstado(proyecto.getEstadoActualizado());
+		}
+	}
+		
 	@Override
 	public Proyecto etiquetarProyecto(Long id, EtiquetasMsg etiquetas) throws ESBException {
 		final Proyecto proyecto = repositorio.getProyectoJpaDao().findOne(id);
@@ -127,6 +149,46 @@ public class ProyectoServiceImpl implements ProyectoService {
 		}
 
 	}
+	
+	private void validarPresupuestoAprobado(Proyecto proyecto) throws ESBException {
+		String estadoProyecto = proyecto.getEstado();
+		List<String> estadosConPresuAprobado = Arrays.asList(
+				EstadoProyecto.PREAPROBADO.getName(),
+				EstadoProyecto.PREAPROBADO_COMPLETO.getName(),
+				EstadoProyecto.APROBADO.getName());
+
+		if (estadosConPresuAprobado.contains(estadoProyecto)) {
+			if(proyecto.getTotalPresupuestoAprobado() == null) {
+				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),"El presupuesto aprobado es obligatorio");
+			}
+						
+			if (proyecto.getTotalPresupuestoAprobado() > proyecto.getTotalPedido()) {
+				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),"El presupuesto aprobado no puede ser mayor al solicitado");
+			}
+			
+		} else {
+			proyecto.setTotalPresupuestoAprobado(null);
+		}
+	}
+	
+	private void validarPrioridadDeJefatura(Proyecto proyecto) throws ESBException {
+		String estadoProyecto = proyecto.getEstado();
+		List<String> estadosConPrioridadJefatura = Arrays.asList(
+				EstadoProyecto.DEMORADO.getName(),
+				EstadoProyecto.PREAPROBADO.getName(),
+				EstadoProyecto.RECHAZADO.getName(),
+				EstadoProyecto.PREAPROBADO_COMPLETO.getName(),
+				EstadoProyecto.APROBADO.getName());
+				
+		if (estadosConPrioridadJefatura.contains(estadoProyecto)) {
+			String prioridadJefatura = proyecto.getPrioridadJefatura();
+			if (prioridadJefatura == null || prioridadJefatura.isEmpty() ) {
+				throw new ESBException(CodigoError.PRIORIDAD_JEFATURA_INCOMPLETA.getCodigo(),"El estado " + estadoProyecto + " debe contener prioridad de jefatura");
+			}
+		}
+	}
+
+
 
 	@VisibleForTesting
 	public void setProyectoRepository(final ProyectoRepositoryImpl repo) {
@@ -181,5 +243,19 @@ public class ProyectoServiceImpl implements ProyectoService {
 	@Override
 	public Proyecto getProyectoPorNombreYIdJurisdiccion(String nombre, Long IdJurisdiccion) {
 		return getProyectoDAO().findByNombreAndIdJurisdiccion(nombre, IdJurisdiccion);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Object executeCustomStatement(ESBEvent event, ProyectoRespMsg response, String statement) {
+		List resultList = entityManager.createNativeQuery(statement).getResultList();
+		response.setCustomStatementResult(resultList);
+		event.setObj(response);
+		return event;
+	}
+
+	@Override
+	public List<Proyecto> buscarResumenProyectosPriorizacion() {
+		return getProyectoDAO().findResumenProyectosPriorizacion();
 	}
 }

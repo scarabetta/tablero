@@ -1,6 +1,5 @@
 package ar.gob.buenosaires.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.fest.util.VisibleForTesting;
@@ -38,13 +37,18 @@ public class AreaServiceImpl implements AreaService {
 		return getAreaDAO().findByNombreAndIdJurisdiccion(nombre, idIdJurisdiccion);
 	}
 
+	@Override
+	public List<Area> getAreasPorIdJurisdiccion(Long idIdJurisdiccion) {
+		return getAreaDAO().findByIdJurisdiccion(idIdJurisdiccion);
+	}
+
 	public AreaJpaDao getAreaDAO() {
 		return repositorio.getAreaJpaDao();
 	}
 
 	@VisibleForTesting
 	public void setAreaRepository(AreaRepository repo) {
-		this.repositorio = repo;
+		repositorio = repo;
 	}
 
 }

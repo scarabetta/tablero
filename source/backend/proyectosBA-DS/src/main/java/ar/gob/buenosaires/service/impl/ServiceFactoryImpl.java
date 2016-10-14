@@ -13,6 +13,7 @@ import ar.gob.buenosaires.service.ObjetivoJurisdiccionalService;
 import ar.gob.buenosaires.service.ObjetivoOperativoService;
 import ar.gob.buenosaires.service.PoblacionMetaService;
 import ar.gob.buenosaires.service.ProyectoService;
+import ar.gob.buenosaires.service.TemaTransversalService;
 import ar.gob.buenosaires.service.UsuarioService;
 
 @Component
@@ -47,7 +48,10 @@ public class ServiceFactoryImpl implements IServiceFactory {
 
 	@Autowired
 	private AreaService areaService;
-
+	
+	@Autowired
+	TemaTransversalService temaTransversalService; 
+	
 	@Override
 	public ProyectoService getProyectoService() {
 		return this.proyectoService;
@@ -96,6 +100,11 @@ public class ServiceFactoryImpl implements IServiceFactory {
 	@Override
 	public AreaService getAreaService() {
 		return areaService;
+	}
+
+	@Override
+	public TemaTransversalService getTemaTransversalService() {
+		return temaTransversalService;
 	}
 
 }

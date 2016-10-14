@@ -14,6 +14,8 @@ public class ProyectoImportadoDTO {
 
 	private String estado;
 
+	private Double importeAprobado;
+
 	/**
 	 * @return the idProyecto
 	 */
@@ -87,6 +89,14 @@ public class ProyectoImportadoDTO {
 	 */
 	public final void setEstado(String estado) {
 		this.estado = estado;
+	}
+
+	public Double getImporteAprobado() {
+		return importeAprobado;
+	}
+
+	public void setImporteAprobado(Double importeAprobado) {
+		this.importeAprobado = importeAprobado;
 	}
 
 }

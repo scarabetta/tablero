@@ -14,4 +14,6 @@ public interface AreaJpaDao extends JpaRepository<Area, Long> {
 
 	Area findByNombreAndIdJurisdiccion(String nombre, Long idIdJurisdiccion);
 
+	List<Area> findByIdJurisdiccion(Long idIdJurisdiccion);
+
 }

@@ -33,6 +33,7 @@ import ar.gob.buenosaires.esb.domain.message.ExportacionProyectoViewRespMsg;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.service.EsbService;
 import ar.gob.buenosaires.exportador.consumers.CreadorDinamicoDeColumnasConsumer;
+import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectoPriorizadoSolapa;
 import ar.gob.buenosaires.service.ExportarProyectoService;
 
 @Service
@@ -70,7 +71,7 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 			if (exportacionProyectoView.getPoblacionesMeta() != null
 					&& !exportacionProyectoView.getPoblacionesMeta().isEmpty()) {
 				exportacionProyectoView.getPoblacionesMeta().parallelStream()
-				.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
+						.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
 			}
 			filasCreadas.put(exportacionProyectoView.getIdProyecto(), nuevaFila);
 			newRoxIdx++;
@@ -84,7 +85,7 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 			if (exportacionProyectoView.getEjesDeGobierno() != null
 					&& !exportacionProyectoView.getEjesDeGobierno().isEmpty()) {
 				exportacionProyectoView.getEjesDeGobierno().parallelStream()
-				.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
+						.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
 			}
 		}
 
@@ -95,9 +96,10 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 
 			if (exportacionProyectoView.getComunas() != null && !exportacionProyectoView.getComunas().isEmpty()) {
 				exportacionProyectoView.getComunas().parallelStream()
-				.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
+						.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
 			}
 		}
+
 		for (Iterator<ExportacionProyectoView> iteratorItem = allExportacionProyectoView.iterator(); iteratorItem
 				.hasNext();) {
 			ExportacionProyectoView exportacionProyectoView = iteratorItem.next();
@@ -106,20 +108,23 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 			if (exportacionProyectoView.getTemasTransversales() != null
 					&& !exportacionProyectoView.getComunas().isEmpty()) {
 				exportacionProyectoView.getTemasTransversales().parallelStream()
-				.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
+						.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
 			}
 		}
 
-		int ultimaCelda = filasCreadas.values().parallelStream().map(row -> row.getLastCellNum()).max(Integer::compare).get();
-		CTTable ctTable = sheetAt0.getTables().get(0).getCTTable();
-		String cellRef = "A2:" + CellReference.convertNumToColString(ultimaCelda - 1)
-		+ String.valueOf(nuevaFila.getRowNum() + 1);
-		ctTable.setRef(cellRef);
-		CTAutoFilter ctAutoFilter = ctTable.getAutoFilter();
-		ctAutoFilter.setRef(cellRef);
-		ctTable.setAutoFilter(ctAutoFilter);
-		agregarCeldasCombo(sheetAt0, nuevaFila.getRowNum());
+		if (!filasCreadas.isEmpty()) {
+			ProyectoPriorizadoSolapa solapa = new ProyectoPriorizadoSolapa(sheetAt0, env);
+			int ultimaCelda = solapa.getFilaHeader().getNumeroUltimaCelda();
 
+			CTTable ctTable = sheetAt0.getTables().get(0).getCTTable();
+			String cellRef = "A2:" + CellReference.convertNumToColString(ultimaCelda - 1)
+					+ String.valueOf(nuevaFila.getRowNum() + 1);
+			ctTable.setRef(cellRef);
+			CTAutoFilter ctAutoFilter = ctTable.getAutoFilter();
+			ctAutoFilter.setRef(cellRef);
+			ctTable.setAutoFilter(ctAutoFilter);
+			agregarCeldasCombo(sheetAt0, nuevaFila.getRowNum());
+		}
 	}
 
 	private void popularCeldasFijas(XSSFRow nuevaFila, ExportacionProyectoView datos) {
@@ -150,7 +155,7 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 
 		nuevaFila.getCell(12, Row.CREATE_NULL_AS_BLANK).setCellValue(datos.getTipoProyecto());
 		nuevaFila.getCell(13, Row.CREATE_NULL_AS_BLANK)
-		.setCellValue(humanizarBoolean(datos.isImplicaCambioLegislativo()));
+				.setCellValue(humanizarBoolean(datos.isImplicaCambioLegislativo()));
 		nuevaFila.getCell(14, Row.CREATE_NULL_AS_BLANK).setCellValue(datos.getPrioridadJurisdiccional());
 
 		if (datos.getMeta() != null) {
@@ -192,20 +197,25 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 	}
 
 	private String humanizarBoolean(Boolean booleano) {
-		return booleano ? "Si" : "No";
+
+		return booleano != null && booleano ? "Si" : "No";
 	}
 
 	private List<ExportacionProyectoView> getExportacionProyectoViewFromReqMsg(ExportacionProyectoViewReqMsg reqMsg)
 			throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener una ExportacionProyectoView : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener una ExportacionProyectoView : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE,
 				ExportacionProyectoViewRespMsg.class);
 
 		List<ExportacionProyectoView> exportacionProyectoViews = null;
 		if (response.getEventType().equalsIgnoreCase(ExportacionProyectoViewRespMsg.EXPORTACION_PROYECTO_VIEW_TYPE)) {
 			exportacionProyectoViews = ((ExportacionProyectoViewRespMsg) response).getExportacionProyectoViews();
-			getLogger().debug("Obteninendo las ExportacionProyectoView de la respues del BUS de servicios: {}",
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo las ExportacionProyectoView de la respues del BUS de servicios: {}",
 					exportacionProyectoViews.toString());
+			} else {
+				getLogger().info("Obteninendo las ExportacionProyectoView de la respues del BUS de servicios");
+			}
 		}
 		return exportacionProyectoViews;
 	}

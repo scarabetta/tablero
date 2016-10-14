@@ -39,7 +39,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setRol(Rol);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para crear un Rol : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para crear un Rol : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_CREATE, RolRespMsg.class);
 		List<Rol> roles = getRolFromResponse(response);
 		return getFirstRolFromTheList(roles);
@@ -51,7 +51,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setRol(Rol);
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para actualizar un Rol : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para actualizar un Rol : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_UPDATE, RolRespMsg.class);
 		List<Rol> roles = getRolFromResponse(response);
 		return getFirstRolFromTheList(roles);
@@ -63,7 +63,7 @@ public class RolServiceImpl implements RolService {
 		reqMsg.setId(Long.parseLong(id));
 		reqMsg.setEmailUsuario(email);
 
-		getLogger().debug("Mensaje creado para borrar un Rol : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para borrar un Rol : {}", reqMsg.toString());
 		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_DELETE, RolRespMsg.class);
 	}
 
@@ -77,7 +77,7 @@ public class RolServiceImpl implements RolService {
 	}
 
 	private List<Rol> getRolFromReqMsg(RolReqMsg reqMsg) throws ESBException, JMSException {
-		getLogger().debug("Mensaje creado para obtener un Rol : {}", reqMsg.toString());
+		getLogger().info("Mensaje creado para obtener un Rol : {}", reqMsg.toString());
 		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_RETRIEVE, RolRespMsg.class);
 
 		List<Rol> ususarios = getRolFromResponse(response);
@@ -88,7 +88,11 @@ public class RolServiceImpl implements RolService {
 		List<Rol> roles = null;
 		if (response.getEventType().equalsIgnoreCase(RolRespMsg.ROL_TYPE)) {
 			roles = ((RolRespMsg) response).getRoles();
-			LOGGER.debug("Obteninendo los Roles de la respues del BUS de servicios: {}", roles.toString());
+			if(getLogger().isDebugEnabled()){
+				getLogger().debug("Obteninendo los Roles de la respues del BUS de servicios: {}", roles.toString());
+			} else {
+				getLogger().info("Obteninendo los Roles de la respues del BUS de servicios");
+			}
 		}
 		return roles;
 	}
