@@ -1,6 +1,6 @@
 {
   "name": "proyectosBA",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "repository": "ssh://git@gitlab.hexacta.com:proyectosBA/front-end.git",
   "main": "src/app.js",
   "scripts": {
@@ -38,7 +38,8 @@
     "bootstrap": "^3.3.5",
     "checklist-model": "^0.10.0",
     "file-loader": "^0.9.0",
-    "ng-tags-input": "^3.1.1"
+    "ng-tags-input": "^3.1.1",
+    "sidr": "^2.2.1"
   },
   "devDependencies": {
     "angular-animate": "^1.4.1",

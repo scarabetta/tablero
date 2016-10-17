@@ -1,8 +1,12 @@
 <!-- <onboarding-popover enabled="true" steps="homeCtrl.onboardingSteps" on-finish-callback='homeCtrl.myCallbackFunction' step-index='homeCtrl.onboardingIndex'></onboarding-popover> -->
+<sidemenu id="sidr"></sidemenu>
 <div class="pageContanerCustom">
-    <div class="item page">
+
+    <div class="item page styleMenu">
         <div class="row">
-            <div class="col-md-12 col-sm-12">
+
+            <div class="col-md-12 col-sm-12 insideClass">
+                <i class="glyphicon glyphicon-menu-hamburger menuIcon" id="simple-menu" href="#sidr" aria-hidden="true"></i>
                 <h2 class="title-year">Plan 2017</h2>
 
                 <excelcomponent showimport="true"></excelcomponent>
@@ -13,10 +17,10 @@
                    Desplegar todo  <i class="glyphicon glyphicon-chevron-down" aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12 insideClass">
                 <hr class="lineColor">
             </div>
-            <div class="col-md-12 col-sm-12">
+            <div class="col-md-12 col-sm-12 insideClass">
                 <div id="notifications"></div>
                 <div class="content-first-btn principalBtn">
                     <!--<button type="button" class="btn btn-default" ng-click="">
@@ -130,9 +134,9 @@
                                                   <ul id="addproject">
                                                       <li class="listProject" ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
                                                           <span class="thirdLabel columnRight">
-                                                              <span class="nameObj" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}">{{proyecto.nombre}}  </span>
-                                                              <span class="icEdit absoluteContent" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></span>
-                                                              <i class="glyphicon glyphicon-tag" style=" margin-left: 30px;" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
+                                                              <span class="nameObj" ng-click="homeCtrl.viewProject(proyecto.idProyecto)">{{proyecto.nombre}}  </span>
+                                                              <span class="icEdit absoluteContent" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-if="proyecto.estado !== 'En Priorización' && !(homeCtrl.rolUser === 'Operador de jurisdicción' && (proyecto.estado === 'Pre Aprobado' || proyecto.estado === 'Demorado' || proyecto.estado === 'Rechazado'))" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></span>
+                                                              <i ng-if="homeCtrl.rolUser === 'Secretaría'" class="glyphicon glyphicon-tag" style=" margin-left: 30px;" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
                                                           </span>
 
                                                           <div class="box-date relativeContent">
@@ -141,13 +145,8 @@
                                                               <span class="titleMobile">Fin: </span>
                                                               <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
                                                               <span class="titleMobile estado">Estado: </span>
-                                                              <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Aplazado', 'rechazadoClass' : proyecto.estado === 'Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
+                                                              <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Demorado', 'rechazadoClass' : proyecto.estado === 'Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
                                                               <i class="img-chevron-down collapsed verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i>
-                                                          </div>
-
-                                                          <div id="grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}" class="col-md-12 collapse">
-                                                              <p class="description">"{{proyecto.descripcion}}"</p>
-                                                              <p class="description"><span>Meta:</span>({{proyecto.meta}}) {{proyecto.unidadMeta}}</p>
                                                           </div>
                                                           <div class="col-md-12 col-sm-12 col-xs-12 notPadding" id="proyecto-{{proyecto.idProyecto}}">
                                                               <hr class="line-inner-proyect">

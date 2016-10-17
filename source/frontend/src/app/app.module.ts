@@ -61,6 +61,12 @@ $http.get(config.authBaseUrl + 'config/properties').then(
                 return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
               };
             })
+            .filter('unsafe', function($sce) { return $sce.trustAsHtml; })
+            .filter('siNo', () => {
+              return (input) => {
+                return input ? 'Si' : 'No';
+              };
+            })
             .run(routesInterceptor);
 
         angular.element(document).ready(function() {

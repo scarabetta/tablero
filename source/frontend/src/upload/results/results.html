@@ -24,7 +24,7 @@
                 </div>
                 <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Presentar todos los proyectos completos</button>
               </div>
-              </div>
+            </div>
             <p class="title proyectList">PROYECTOS</p>
               <div class="contentDate">
                   <span class="title left">Inicio</span>
@@ -63,7 +63,7 @@
             <p class="previewProyect" ng-show="resultsCtrl.incompletedProjects.length > 1">{{resultsCtrl.incompletedProjects.length}} proyectos importados con campos obligatorios incompletos</p>
             <div class="alert alert-warning" role="alert">
                   <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i>
-                  <strong>Incompleto - </strong> 
+                  <strong>Incompleto - </strong>
                   Hay proyectos importados exitosamente que tienen datos incompletos. Volvé al listado para completarlos y presentarlos.
                 </div>
 
@@ -108,7 +108,8 @@
             <img src="../../../assets/icono-xls.png"> Descargar proyectos no importados</img>
           </button></p>
             <div class="alert alert-danger" role="alert">
-                    <strong>No importado - </strong> 
+                    <i class="glyphicon glyphicon-remove-sign" aria-hidden="true"></i>
+                    <strong>No importado - </strong>
                    Descargá el archivo Excel y verificá la información y su formato. Una vez que lo hayas corregido probá importar el excel nuevamente.
                    <div style="margin-top:15px;">
                      <p>Los errores de los proyectos no importados pueden ser los siguientes:</p>
@@ -130,7 +131,7 @@
                               <li>
                                 Fecha de fin
                               </li>
-                            </ul>  
+                            </ul>
                         </li>
                         <li style="margin-bottom:5px;">La fecha de inicio debe ser del año actual o posteriores</li>
                         <li style="margin-bottom:5px;">la fecha de inicio debe ser menor a la fecha de fin</li>

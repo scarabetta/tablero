@@ -12,6 +12,7 @@ import {ObjetivoJurisdiccional} from "../models/jurisdiccion";
 import {Usuario} from "../models/jurisdiccion";
 import {Rol} from "../models/jurisdiccion";
 import {TemaTransversal} from "../models/jurisdiccion";
+import {Etiquetas} from "../models/jurisdiccion";
 
 module Services {
 
@@ -56,6 +57,18 @@ module Services {
 
         comunas(): ng.IPromise<any> {
             return this.$http.get<Comuna>(this.apiBaseUrl + "comuna/")
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        etiquetas(idproyecto): ng.IPromise<any> {
+            return this.$http.get<Etiquetas>(this.apiBaseUrl + "etiqueta/" + idproyecto)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        etiquetar(etiquetas, idproyecto): ng.IPromise<any> {
+            return this.$http.post<Etiquetas>(this.apiBaseUrl + "proyecto/etiquetar/" + idproyecto, etiquetas)
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
@@ -150,6 +163,12 @@ module Services {
 
         changeState(state, project): ng.IPromise<any> {
             return this.$http.post(this.apiBaseUrl + "proyecto/cambiarEstado/" + state, project)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getPrioridadesJefatura(): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "proyecto/prioridadesJefatura/")
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }

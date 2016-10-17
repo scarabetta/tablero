@@ -4,7 +4,7 @@
        <div class="col-md-12">
           <span class="title-year">Plan 2017</span>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12" id="notifications">
           <hr class="lineColor">
         </div>
       <div class="col-md-12 floatContent">
@@ -29,8 +29,8 @@
       <div class="col-md-12 floatContent">
           <div class="principalBtn">
             <button type="button" ng-disabled="priorizationCtrl.dataResult.EnPriorizacion === '0' && priorizationCtrl.dataResult.Verificado === '0' && priorizationCtrl.dataResult.Presentado === '0'" class="btn btn-default" ng-click="priorizationCtrl.downloadExcelPriorization()">Descargar Excel de priorización</button>
-            <button type="button" class="btn btn-default" disabled>Importar proyectos</button>
-            <button type="button" ng-disabled="priorizationCtrl.dataResult.EnPriorizacion === '0'" class="btn  btn-default right" ng-click="priorizationCtrl.cancelPriorization()">Cancelar priorización</button>
+            <button type="button" class="btn btn-default" ui-sref="priorization.upload" ng-if="priorizationCtrl.dataResult.EnPriorizacion !== '0'">Importar proyectos</button>
+            <button type="button" ng-if="priorizationCtrl.dataResult.EnPriorizacion !== '0'" class="btn  btn-default right" ng-click="priorizationCtrl.cancelPriorization()">Cancelar priorización</button>
           </div>
        </div>
     </div>

@@ -1,0 +1,76 @@
+<br>
+<div class="contentNewProyect" id="labelsTop">
+  Administrar etiquetas
+</div>
+<div id="grupo-level-3-3" class="contentFormProyect collapse in" aria-expanded="true">
+    <div class="col-md-12 col-sm-12 col-xs-12 labels">
+        <form role="form" ng-submit="formCtrl.saveLabels()">
+                <div class="form-group">
+                    <!-- <div class="containerLabels">
+                      <div class="labelStyle" ng-repeat="label in formCtrl.etiquetasFromProject.temasTransversales"><span>{{label.temaTransversal}}<a class="remove-button" ng-click="formCtrl.removeLabelTT(label)">×</a></span></div>
+                      <div class="labelStyle" ng-repeat="label in formCtrl.etiquetasFromProject.compromisosPublicos"><span>{{label.compromisoPublico}}<a class="remove-button" ng-click="formCtrl.removeLabelCP(label)">×</a></span></div>
+                      <div class="labelStyle" ng-repeat="label in formCtrl.etiquetasFromProject.otrasEtiquetas"><span>{{label.etiqueta}}<a class="remove-button" ng-click="formCtrl.removeLabelOthers(label)">×</a></span></div>
+                    </div> -->
+                    <div class="col-md-12 col-sm-12 col-xs-12 agrupador form-group">
+                     <div class="row">
+                       <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p><i class="glyphicon glyphicon-tag"></i> Etiquetas</p>
+                       </div>
+                     </div>
+                    <div class="row">
+                      <div class="form-group formLabels col-md-4 col-sm-6 col-xs-12">
+                          <label for="">TEMAS TRANSVERSALES</label>
+                          <tags-input ng-model="formCtrl.etiquetasDataToSave.temasTransversales"
+                                      display-property="temaTransversal"
+                                      key-property="temaTransversal"
+                                      add-from-autocomplete-only="true"
+                                      placeholder="{{formCtrl.ttPlaceholder}}"
+                                      replace-spaces-with-dashes="false">
+                              <auto-complete source="formCtrl.loadTT($query)"
+                                             min-length="0"
+                                             max-results-to-show="1000"
+                                             load-on-focus="true"
+                                             load-on-empty="true">
+                              </auto-complete>
+                          </tags-input>
+                      </div>
+                      <div class="form-group formLabels col-md-4 col-sm-6 col-xs-12">
+                          <label for="">COMPROMISO PÚBLICO</label>
+                          <tags-input ng-model="formCtrl.etiquetasDataToSave.compromisosPublicos"
+                                      display-property="compromisoPublico"
+                                      key-property="compromisoPublico"
+                                      add-from-autocomplete-only="true"
+                                      placeholder="{{formCtrl.cpPlaceholder}}"
+                                      replace-spaces-with-dashes="false">
+                              <auto-complete source="formCtrl.loadCP($query)"
+                                             min-length="0"
+                                             max-results-to-show="1000"
+                                             load-on-focus="true"
+                                             load-on-empty="true">
+                              </auto-complete>
+                          </tags-input>
+                      </div>
+                      <div class="form-group formLabels col-md-4 col-sm-6 col-xs-12">
+                          <label for="area">OTRA ETIQUETA</label>
+                          <tags-input ng-model="formCtrl.etiquetasDataToSave.otrasEtiquetas"
+                                      display-property="etiqueta"
+                                      key-property="etiqueta"
+                                      placeholder="{{formCtrl.othersPlaceholder}}"
+                                      replace-spaces-with-dashes="false">
+                              <auto-complete source="formCtrl.loadOthers($query)"
+                                             min-length="0"
+                                             max-results-to-show="1000"
+                                             load-on-focus="true"
+                                             load-on-empty="true">
+                              </auto-complete>
+                          </tags-input>
+                      </div>
+                    </div>
+                    </div>
+                    <br>
+                      <button type="submit" class="btn btn-success">Guardar</button>
+                      <button type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelLabelsModal">Cancelar cambios</button>
+        </form>
+    </div>
+    <alertmodal modal-id="cancelLabelsModal" modal-title="Aviso" modal-body="Se perderán los cambios realizados. ¿Continuar?" on-accept="formCtrl.cancelLabels()"></alertmodal>
+</div>

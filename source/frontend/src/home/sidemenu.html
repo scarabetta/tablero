@@ -1,0 +1,367 @@
+<div>
+  <span>FILTRAR POR:</span>
+  <ul>
+    <li ng-repeat="filter in sidemenuCtrl.filterObject">
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-{{$index}}"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-{{$index}}">{{filter.title}}</span>
+      </div>
+      <div id="grupo-{{$index}}" class="collapse in scroll">
+        <div class="checkbox" ng-repeat="option in filter.options">
+          <label for="{{option}}">
+          <input type="checkbox" id="{{option}}" name="{{option}}" checklist-model="sidemenuCtrl.filterData[filter.value]" checklist-value="option" ng-click="sidemenuCtrl.filter(filter.value)"> {{option}}
+          </label>
+        </div>
+      </div>
+    </li>
+    <!-- <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-jurisdiccion"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-jurisdiccion">Jurisdicción</span>
+      </div>
+      <div id="grupo-jurisdiccion" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-area"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-area">Área</span>
+      </div>
+      <div id="grupo-area" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-eje"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-eje">Eje de gobierno</span>
+      </div>
+      <div id="grupo-eje" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-tema"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-tema">Tema transversal </span>
+      </div>
+      <div id="grupo-tema" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-poblacion"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-poblacion">Segmentos de la población</span>
+      </div>
+      <div id="grupo-poblacion" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-prioridad"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-prioridad">Prioridad jurisdiccional</span>
+      </div>
+      <div id="grupo-prioridad" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+      </div>
+    </li>
+     <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-presupuesto"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-presupuesto">Presupuesto solicitado GCBA </span>
+      </div>
+      <div id="grupo-presupuesto" class="collapse">
+      <span class="title" data-toggle="collapse" href="#grupo-fin">Desde</span>
+        <p class="input-group">
+          <input type="text" class="form-control" required/>
+        </p>
+        <span class="title" data-toggle="collapse" href="#grupo-fin">Hasta</span>
+        <p class="input-group">
+          <input type="text" class="form-control" required/>
+        </p>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-fechas"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-fechas">Fecha</span>
+      </div>
+      <div id="grupo-fechas" class="collapse">
+      <span class="title" data-toggle="collapse" href="#grupo-fin">Fecha inicio</span>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
+          <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+        <span class="title" data-toggle="collapse" href="#grupo-fin">Fecha fin</span>
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
+          <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
+    </li>
+    <li>
+      <div>
+        <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-comunas"></i>
+        <span class="title" data-toggle="collapse" href="#grupo-comunas">Comunas</span>
+      </div>
+      <div id="grupo-comunas" class="collapse scroll">
+        <div class="checkbox">
+          <label for="borrador">
+          <input type="checkbox" id="borrador" name="aprobado"> Borrador
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="enPriorizacion">
+          <input type="checkbox" id="enPriorizacion" name="aprobado"> En priorización
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="preAprobado">
+          <input type="checkbox" id="preAprobado" name="aprobado"> Pre-Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="aprobado">
+          <input type="checkbox" id="aprobado" name="aprobado"> Aprobado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="rechazado">
+          <input type="checkbox" id="rechazado" name="rechazado"> Rechazado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+        <div class="checkbox">
+          <label for="cancelado">
+          <input type="checkbox" id="cancelado" name="cancelado"> Cancelado
+          </label>
+        </div>
+      </div>
+    </li> -->
+  </ul>
+</div>

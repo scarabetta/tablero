@@ -13,6 +13,9 @@ module Priorization {
                 controller: PriorizationController,
                 controllerAs: 'priorizationCtrl',
                 parent: 'root',
+                params: {
+                  'results': null,
+                },
                 data: {
                   requireLogin: true
                 }

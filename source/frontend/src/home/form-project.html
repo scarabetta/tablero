@@ -39,13 +39,38 @@
                     <li><a href="#">Rechazar</a></li> -->
                 </ul>
               </div>
+
+              <div ng-if="formCtrl.showEstadoBox()">
+                <div class="formEstado col-sm-12 col-xs-12">
+                  Estado
+                  <p class="reference">Completá la información para el estado seleccionado</p>
+                  <div class="form-group" ng-if="formCtrl.showPrioridadJefaturaBox()">
+                    <label for="tipo de ubicacion">Prioridad jefatura</label>
+                    <select class="form-control" ng-model="formCtrl.currentProject.prioridadJefatura" style="">
+                        <option ng-repeat="item in formCtrl.prioridadesJefatura" ng-selected="{{item === formCtrl.currentProject.prioridadJefatura}}" value="{{item}}">{{item}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group left" ng-if="formCtrl.showPresuAprobadoBox()">
+                    <label for="presupuesto">Presupuesto aprobado total</label>
+                    <input class="inputPresupuesto form-control" type="text" onkeypress="return event.charCode >= 48 &amp;&amp; event.charCode <= 57 || event.charCode === 0" maxlength="15" id="totalPresupuestoAprobado" ng-model="formCtrl.currentProject.totalPresupuestoAprobado">
+                    <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
+                  </div>
+                  <div class="alert alert-info" role="alert">Guardá los cambios para aplicar el nuevo estado</div>
+                </div>
+              </div>
+
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <hr class="line-inner-proyect">
+            </div>
+
             <div class="dropdown content-actionForm contentButtonRight">
                 <button class="btn btn-default fullButtonRight" type="button" id="dropdownMenu1" data-toggle="modal" data-target="#moverModal" aria-haspopup="true" aria-expanded="true" ng-click="formCtrl.moveProject()">
                     Mover a ...
                     <!-- <span class="caret"></span> -->
                 </button>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12 col-xs-12">
                 <hr class="line-inner-proyect">
             </div>
 
@@ -73,6 +98,7 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="descripcion del proyecto">Descripción del proyecto</label>
+                            <p class="reference">Incluí los objetivos y las características básicas del mismo</p>
                             <textarea class="form-control" rows="3" ng-model="formCtrl.currentProject.descripcion"></textarea>
                         </div>
                     </div>
@@ -122,10 +148,10 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 col-sm-3 col-xs-12 add-line">
+                        <div class="col-md-2 col-sm-2 col-xs-12 add-line">
                           <label for="año">Año</label>
                         </div>
-                        <div class="col-md-4 col-sm-5 col-xs-11 add-line">
+                        <div class="col-md-4 col-sm-4 col-xs-11 add-line">
                           <label for="fondo solicitado GCBA" style="padding-left: 24px;">Fondo solicitado GCBA</label>
                         </div>
                         <div class="col-md-4 col-sm-5 col-xs-11 add-line">
@@ -133,37 +159,37 @@
                         </div>
                       </div>
                       <div class="row" ng-repeat="p in formCtrl.currentProject.presupuestosPorAnio">
-                        <div class="form-group col-md-2 col-sm-3 col-xs-12 add-line">
+                        <div class="form-group col-md-2 col-sm-2 col-xs-12 add-line">
                           <input type="number" class="form-control" id="year" ng-value="year" ng-model="p.anio" disabled="true">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-11 add-line">
                           <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-5 col-xs-11 add-line">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-11 add-line">
                           <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudgetOtherSources()" ng-model="p.otrasFuentes">
                         </div>
                       </div>
                       <div class="row">
-                        <div class="form-group col-md-2 col-sm-3 totalPresupuesto">
+                        <div class="form-group col-md-2 col-sm-2 totalPresupuesto">
                           <label for="subtotal">SUBTOTAL</label>
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-5">
+                        <div class="form-group col-md-4 col-sm-4">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudget">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-5">
+                        <div class="form-group col-md-4 col-sm-4">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudgetOtherSources">
                         </div>
                       </div>
                       <div class="row contentTotal">
-                        <div class="form-group col-md-offset-4 col-md-2 col-sm-3 col-sm-offset-5 totalPresupuesto">
+                        <div class="form-group col-md-offset-4 col-md-2 col-sm-2 col-sm-offset-4 totalPresupuesto">
                           <label for="total">TOTAL</label>
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-5 input">
+                        <div class="form-group col-md-4 col-sm-4 input">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-value="formCtrl.totalBudget + formCtrl.totalBudgetOtherSources">
                         </div>
                       </div>
@@ -279,9 +305,9 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                       <label for="eje de gobierno">Eje de Gobierno</label>
                       <p class="reference">Seleccioná los ejes de gobierno de la Ciudad haciendo clic en la imagen </p>
                         <div class="row">
-                          <div class="contentEje eje-{{$index}}" ng-repeat="eje in formCtrl.ejesDeGobierno">
-                              <input type='checkbox' class="ejeCheckbox" name='eje-{{$index}}' value='eje-{{$index}}' ng-click="formCtrl.checkNoSelection()" id="eje-{{$index}}" checklist-model="formCtrl.currentProject.ejesDeGobierno" checklist-value="eje"/>
-                              <label for="eje-{{$index}}"> {{eje.nombre}} <popover data-placement="top" data-content="{{eje.descripcion}} Ej. {{eje.ejemplos}}" title="{{eje.nombre}}"></popover></label>
+                          <div class="contentEje eje-{{eje.idEjeDeGobierno}}" ng-repeat="eje in formCtrl.ejesDeGobierno">
+                              <input type='checkbox' class="ejeCheckbox" name='eje-{{eje.idEjeDeGobierno}}' value='eje-{{eje.idEjeDeGobierno}}' ng-click="formCtrl.checkNoSelection()" id="eje-{{eje.idEjeDeGobierno}}" checklist-model="formCtrl.currentProject.ejesDeGobierno" checklist-value="eje"/>
+                              <label for="eje-{{eje.idEjeDeGobierno}}"> {{eje.nombre}} <popover data-placement="top" data-content="{{eje.descripcion}} Ej. {{eje.ejemplos}}" title="{{eje.nombre}}"></popover></label>
                           </div>
                         </div>
                         <div class="checkbox">

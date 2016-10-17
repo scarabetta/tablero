@@ -2,11 +2,13 @@
 <div class="alert alert-{{type}} alert-block" id="alert">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <!--ok-sign / remove-sign / exclamation-sign-->
-    <i class="glyphicon glyphicon-{{icon}}" aria-hidden="true"></i>
-    <strong>{{title}} - </strong>{{text}}
+    <p>
+      <i class="glyphicon glyphicon-{{icon}}" aria-hidden="true"></i>
+      <strong>{{title}} - </strong>
+      <span ng-bind-html="text | unsafe"></span>
+    </p>
     <a style="cursor: pointer;" ng-if="gotoform" ng-click="notificationCtrl.goToCurrentForm()">{{textlink}}</a>
     <a style="cursor: pointer;" ng-if="gotoestrategico" ng-click="notificationCtrl.goToCurrentEstrategico()">{{textlink}}</a>
     <a style="cursor: pointer;" ng-if="gotooperativo" ng-click="notificationCtrl.goToCurrentOperativo()">{{textlink}}</a>
-    <br>
     <a style="cursor: pointer;" ng-if="hascallback" ng-click="notificationCtrl.callback()">{{textlink}}</a>
 </div>

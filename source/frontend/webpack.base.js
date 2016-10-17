@@ -39,7 +39,8 @@ module.exports = {
             "ng-tags-input.css" : __dirname + "/node_modules/ng-tags-input/build/ng-tags-input.css",
             "angular-animate.js" : __dirname + "/node_modules/angular-animate/angular-animate.min.js",
             "angular-validator.min.js" : __dirname + "/assets/angular-validator.min.js",
-            "pin.js" : __dirname + "/assets/jquery.pin.min.js"
+            "pin.js" : __dirname + "/assets/jquery.pin.min.js",
+            "jquery.sidr.min.js" : __dirname + "/node_modules/sidr/dist/jquery.sidr.min.js"
         }
     },
 

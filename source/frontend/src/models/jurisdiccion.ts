@@ -29,30 +29,36 @@ export interface ObjetivoOperativo {
 }
 
 export interface Proyecto {
-  "archivos": any;
-  "idProyecto": number;
-  "nombre": string;
-  "codigo": string;
-  "descripcion": string;
-  "tipoProyecto": string;
-  "meta": number;
-  "unidadMeta": string;
-  "poblacionAfectada": number;
-  "liderProyecto": string;
-  "area": Area;
-  "tipoUbicacionGeografica": string;
-  "direccion": string;
-  "cambioLegislativo": boolean;
-  "organismosCorresponsables": string;
-  "fechaInicio": Date;
-  "fechaFin": Date;
-  "prioridadJurisdiccional": string;
-  "estado": string;
-  "idObjetivoOperativo2": number;
-  "ejesDeGobierno" : EjeDeGobierno[];
-  "poblacionesMeta": PoblacionMeta[];
-  "comunas": Comuna[];
-  "presupuestosPorAnio": Presupuesto[];
+  archivos: any;
+  idProyecto: number;
+  nombre: string;
+  codigo: string;
+  descripcion: string;
+  tipoProyecto: string;
+  meta: number;
+  unidadMeta: string;
+  poblacionAfectada: number;
+  liderProyecto: string;
+  area: Area;
+  tipoUbicacionGeografica: string;
+  direccion: string;
+  cambioLegislativo: boolean;
+  organismosCorresponsables: string;
+  fechaInicio: Date;
+  fechaFin: Date;
+  prioridadJurisdiccional: string;
+  prioridadJefatura: string;
+  totalPresupuestoAprobado: number;
+  estado: string;
+  verificado: boolean;
+  temasTransversales: TemaTransversal[];
+  compromisosPublicos: CompromisoPublico[];
+  otrasEtiquetas: OtraEtiqueta[];
+  idObjetivoOperativo2: number;
+  ejesDeGobierno : EjeDeGobierno[];
+  poblacionesMeta: PoblacionMeta[];
+  comunas: Comuna[];
+  presupuestosPorAnio: Presupuesto[];
 }
 
 export interface ProyectoProcesado {
@@ -70,27 +76,27 @@ export interface IndicadorEstrategico {
 }
 
 export interface Presupuesto {
-  "anio": number;
-  "presupuesto": number;
-  "otrasFuentes": number;
+  anio: number;
+  presupuesto: number;
+  otrasFuentes: number;
 }
 
 export interface EjeDeGobierno {
-    "idEjeDeGobierno": number;
-    "nombre": string;
-    "descripcion": string;
-    "ejemplos": string;
+    idEjeDeGobierno: number;
+    nombre: string;
+    descripcion: string;
+    ejemplos: string;
 }
 
 export interface PoblacionMeta {
-    "idPoblacionMeta": number;
-    "nombre": string;
+    idPoblacionMeta: number;
+    nombre: string;
 }
 
 export interface Comuna {
-    "idComuna": number;
-    "abreviatura": string;
-    "nombre": string;
+    idComuna: number;
+    abreviatura: string;
+    nombre: string;
 }
 
 export interface Usuario {
@@ -135,4 +141,22 @@ export interface TemaTransversal {
   idTemaTransversal: number;
   temaTransversal: string;
   activo: boolean;
+  nombreParaExportacion: string;
+}
+
+export interface Etiquetas {
+  temasTransversales: TemaTransversal[];
+  compromisosPublicos: CompromisoPublico[];
+  otrasEtiquetas: OtraEtiqueta[];
+}
+
+export interface CompromisoPublico {
+  idCompromisoPublico: number;
+  compromisoPublico: string;
+  activo: boolean;
+}
+
+export interface OtraEtiqueta {
+  idEtiqueta: number;
+  etiqueta: string;
 }

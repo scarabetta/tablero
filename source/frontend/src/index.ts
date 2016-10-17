@@ -15,6 +15,7 @@ import 'ng-onboarding.js';
 import 'ng-onboarding.css';
 import 'loader.js';
 import 'pin.js';
+import 'jquery.sidr.min.js';
 require("expose?$!jquery");
 require("expose?jQuery!jquery");
 

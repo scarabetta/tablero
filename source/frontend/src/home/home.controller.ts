@@ -1,6 +1,7 @@
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
+import {Usuario} from "../models/jurisdiccion.ts";
 
 module Home {
 
@@ -9,6 +10,8 @@ module Home {
         private jurisdiccion:Jurisdiccion;
         private objetivosJurisdiccionales: any;
         private idjurisdiccionKey = 'idJurisdiccionStorage';
+        private currentUserKey = 'currentUser';
+        private rolUser: string;
 
         /*@ngInject*/
         constructor(private services:GeneralServices, private $scope:ng.IScope, private $compile: ng.ICompileService, private localStorageService:angular.local.storage.ILocalStorageService,
@@ -16,6 +19,20 @@ module Home {
           private search:Search, private $state: ng.ui.IStateService) {
 
             search.setText("");
+            var userData = this.localStorageService.get(this.currentUserKey);
+            var user = <Usuario>userData;
+            this.rolUser = user.roles[0].nombre;
+            (<any>$('#simple-menu')).sidr({
+              body: '.styleMenu',
+              onOpen: function(){
+                  (<any>$(".insideClass")).addClass('col-md-10 col-sm-10');
+                  (<any>$("sidemenu")).css( "position", "relative" );
+              },
+              onClose: function(){
+                (<any>$("sidemenu")).css( "position", "absolute" );
+                (<any>$(".insideClass")).removeClass('col-md-10 col-sm-10');
+              }
+            });
             (<any>$("document")).ready(function($){
 
                 (<any>$(window)).scroll(function () {
@@ -237,6 +254,17 @@ module Home {
           }
         }
 
+        viewProject(idProject) {
+          if (angular.element(document.getElementsByTagName('viewproject')).length) {
+              var projectTag = document.getElementsByTagName('viewproject');
+              angular.element(projectTag).remove();
+          }
+          var referralDivFactory = this.$compile( " <viewproject idproject='" + idProject + "'></viewproject> " );
+          var referralDiv = referralDivFactory(this.$scope);
+          var containerDiv = document.getElementById("proyecto-" + idProject);
+          angular.element(containerDiv).append(referralDiv);
+        }
+
         editProject(idProject) {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile( " <formproject idproject='" + idProject + "'></formproject> " );
@@ -295,6 +323,18 @@ module Home {
                   }
               });
           });
+        }
+
+        labels(idProyecto) {
+            if (!angular.element(document.getElementsByTagName('formlabels')).length) {
+              var referralDivFactory = this.$compile(" <formlabels idproyecto='" + idProyecto + "'></formlabels> ");
+              var referralDiv = referralDivFactory(this.$scope);
+              var containerDiv = document.getElementById("proyecto-" + idProyecto);
+              angular.element(containerDiv).append(referralDiv);
+              setTimeout(() => {
+                this.goToLabels();
+              }, 0);
+            }
         }
 
         addNotification(data) {
@@ -394,10 +434,8 @@ module Home {
           }
         }
 
-        goToElement(idElement) {
-            (<any>$('html,body')).animate({
-              scrollTop: $("#" + idElement).offset().top},
-            500);
+        goToLabels() {
+          (<any>$('html,body')).animate({scrollTop: $('#labelsTop').offset().top - 60}, 1000);
         }
 
         goToTop() {

@@ -32,6 +32,7 @@ module Home {
       private percentForm: number;
       private validDate: string;
       private areaNombre:string;
+      private prioridadesJefatura:string;
       private area: any;
       private moveOptions: any;
       private actionMove:string;
@@ -66,6 +67,9 @@ module Home {
           }
 
           services.poblacionMeta().then((data) => this.poblacionesMeta = data);
+          services.getPrioridadesJefatura().then((data) => {
+            this.prioridadesJefatura = data;
+          });
           services.ejesDeGobierno().then((data) => this.ejesDeGobierno = data);
           var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
           if (idJurisdiccionStorage) {
@@ -219,6 +223,20 @@ module Home {
         } else {
           (<any>$("#no-selection")).prop("checked", true);
         }
+      }
+
+      showEstadoBox() {
+        return (this.actionMove === 'Demorar' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Rechazar'
+                || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado');
+      }
+
+      showPresuAprobadoBox() {
+        return (this.actionMove === 'Pre Aprobado' || this.actionMove === 'Pre-aprobar');
+      }
+
+      showPrioridadJefaturaBox() {
+        return (this.actionMove === 'Demorar' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Rechazar'
+                || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado');
       }
 
       isEmpty(array) {
@@ -469,6 +487,11 @@ module Home {
 
       cancel() {
         var formDiv = document.getElementsByTagName('formproject');
+        angular.element(formDiv).remove();
+      }
+
+      cancelView() {
+        var formDiv = document.getElementsByTagName('viewproject');
         angular.element(formDiv).remove();
       }
 
