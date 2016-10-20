@@ -44,8 +44,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario createUsuario(Usuario usuario) {
-		return getUsuarioDAO().save(usuario);
+	public Usuario createUsuario(Usuario usuario) throws ESBException {
+		Usuario existe = getUsuarioPorEmail(usuario.getEmail());
+		if(existe == null){
+			existe = getUsuarioDAO().save(usuario);
+		} else {
+			throw new ESBException(CodigoError.USUARIO_DUPLICADO.getCodigo(), "Ya existe registrado un usuario con el E-Mail: " + usuario.getEmail());
+		}
+		return existe;
 	}
 
 	@Override

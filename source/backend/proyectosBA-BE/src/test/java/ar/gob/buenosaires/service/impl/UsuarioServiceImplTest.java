@@ -20,6 +20,7 @@ import ar.gob.buenosaires.dao.jpa.usuario.UsuarioJpaDao;
 import ar.gob.buenosaires.dao.jpa.usuario.UsuarioRepositoryImpl;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.domain.UsuarioResumen;
+import ar.gob.buenosaires.esb.exception.ESBException;
 
 public class UsuarioServiceImplTest {
 
@@ -52,7 +53,7 @@ public class UsuarioServiceImplTest {
 	}
 
 	@Test
-	public void createUsuario() {
+	public void createUsuario() throws ESBException {
 
 		Usuario fakeUsuario = createFakeUsuario();
 

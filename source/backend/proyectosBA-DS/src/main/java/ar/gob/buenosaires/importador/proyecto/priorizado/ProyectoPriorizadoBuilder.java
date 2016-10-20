@@ -88,6 +88,8 @@ public class ProyectoPriorizadoBuilder {
 	}
 
 	private void asiganarTemasTransversales(Proyecto proyecto) {
+		//Limpiamos los TT actuales asociados al Proyecto.
+		proyecto.getTemasTransversales().clear();
 		if (!nombreTemasTransversal.isEmpty() && !nombresTemaTransversalAsignados.isEmpty()) {
 			try {
 				TemaTransversalService tTservice = serviceFactory.getTemaTransversalService();

@@ -1,9 +1,12 @@
 package ar.gob.buenosaires.esb.handler;
 
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,9 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	
 	@Autowired
 	private Environment env;
+	
+	private Charset iso88591charset;
+	private CharsetEncoder encoder;
 
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
@@ -49,13 +55,15 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveProyectos(response, request);
-		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {			
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
+			validarDescripcion(request.getProyecto());
 			proyectos.add(service.createProyecto(request.getProyecto()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR)) {
 			presentarProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_ACTIONS)) {
 			retrieveActions(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
+			validarDescripcion(request.getProyecto());
 			updateProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_ETIQUETAR)) {
 			etiquetarProyecto(event, response, request);
@@ -78,6 +86,41 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		}
 		logResponseMessage(event, ProyectoService.class);
 	}	
+
+	private void validarDescripcion(Proyecto proyecto) {
+		proyecto.setDescripcion(removerCaracteresInvalidos(proyecto.getDescripcion()));
+	}
+
+	/**
+	 * Valida y remueve los caracteres que no son Latin1.
+	 * @param descripcion
+	 * @return 
+	 */
+	private String removerCaracteresInvalidos(String descripcion) {
+		Charset iso88591charset = getIso88591charset();
+		CharsetEncoder encoder = getEncoder();
+		String result = descripcion;
+		
+		if(!encoder.canEncode(descripcion)){
+			byte[] iso88591bytes = descripcion.getBytes(iso88591charset);
+			result = new String ( iso88591bytes, iso88591charset );
+		}
+		return result;
+	}
+
+	private CharsetEncoder getEncoder() {
+		if(encoder == null){
+			encoder = getIso88591charset().newEncoder();
+		}
+		return encoder;
+	}
+
+	private Charset getIso88591charset() {
+		if(iso88591charset == null){
+			iso88591charset = Charset.forName(CharEncoding.ISO_8859_1);
+		}
+		return iso88591charset;
+	}
 
 	private void getResumenProyectosPriorizacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) {
 		List<Proyecto> proyectos = service.buscarResumenProyectosPriorizacion();

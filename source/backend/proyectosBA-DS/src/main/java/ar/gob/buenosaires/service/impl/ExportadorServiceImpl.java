@@ -106,7 +106,7 @@ public class ExportadorServiceImpl implements ExportarProyectoService {
 			nuevaFila = filasCreadas.get(exportacionProyectoView.getIdProyecto());
 
 			if (exportacionProyectoView.getTemasTransversales() != null
-					&& !exportacionProyectoView.getComunas().isEmpty()) {
+					&& !exportacionProyectoView.getTemasTransversales().isEmpty()) {
 				exportacionProyectoView.getTemasTransversales().parallelStream()
 						.forEachOrdered(new CreadorDinamicoDeColumnasConsumer(sheetAt0, nuevaFila.getRowNum()));
 			}

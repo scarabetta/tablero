@@ -14,7 +14,7 @@ public interface UsuarioService {
 
 	List<Usuario> getUsuarios();
 
-	Usuario createUsuario(Usuario usuario);
+	Usuario createUsuario(Usuario usuario) throws ESBException;
 
 	Usuario updateUsuario(Usuario usuario);
 

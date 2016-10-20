@@ -57,6 +57,7 @@ public class ProyectoPriorizadoValidador {
 			problemasFila.get(fila).add(proyectosSinEstadoVacio(fila));
 			problemasFila.get(fila).add(proyectosEnEstadoRechazadoOAplazadoConPresuCero(fila));
 			problemasFila.get(fila).add(presupuestoAprobadoMayorQuePresuTotal(fila));
+			problemasFila.get(fila).add(proyectosConEstadoInvalido(fila));
 			problemasFila.get(fila).removeIf(new Predicate<String>() {
 
 				@Override
@@ -192,6 +193,23 @@ public class ProyectoPriorizadoValidador {
 
 		if (estadosAVerificar.contains(fila.getEstadoAprobacion()) && fila.getPresuAprobadoTotal() > 0) {
 			mensajeError = "El estado de aprobación no es consistente con el presupuesto aprobado total";
+		}
+		return mensajeError;
+	}
+	
+	/**
+	 * Valida que los proyects posean uno de los 3 estados validos.
+	 * @param fila
+	 * @return
+	 */
+	private String proyectosConEstadoInvalido(ProyectoPriorizadoFila fila) {
+		String mensajeError = null;
+		List<String> estadosAVerificar = Arrays.asList(EstadoProyecto.RECHAZADO.getName(),
+				EstadoProyecto.DEMORADO.getName(), EstadoProyecto.PREAPROBADO.getName());
+
+		if (StringUtils.isNotBlank(fila.getEstadoAprobacion())
+				&& !estadosAVerificar.contains(fila.getEstadoAprobacion())) {
+			mensajeError = "El estado actual: " + fila.getEstadoAprobacion() + ", no es un estado válido.";
 		}
 		return mensajeError;
 	}
