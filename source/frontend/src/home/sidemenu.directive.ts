@@ -130,6 +130,16 @@ module Home {
       };
     }
 
+    clearFilters() {
+      (<any>$(".filterCheckBox")).each(function() {
+        if ((<any>$(this)).prop("checked")) {
+          setTimeout(() => {
+            (<any>$(this)).trigger("click");
+          }, 0);
+        }
+      });
+    }
+
     filter(value) {
       var scope = this;
 

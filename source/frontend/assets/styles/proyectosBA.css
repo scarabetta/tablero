@@ -410,6 +410,10 @@ button {
 }
 .thirdLabel .nameObj {
     padding-right: 0;
+    cursor:pointer;
+    text-decoration: underline;
+    color: #58bcff;
+    float: left;
 }
 .content-level-1 li, .abm-list li, .listPreviewProject{
     list-style: none;
@@ -908,7 +912,7 @@ input[type=file] {
 .attach span {
     cursor: pointer;
     font-style: italic;
-    color: #333;
+    color:#52bbff;
     text-decoration: underline;
 }
 #buttonFile.btn-default, .addBtn .btn-default {
@@ -1683,6 +1687,7 @@ textarea {
 }
 .nameObj {
     padding-right: 50px;
+    cursor: pointer;
 }
 .slice .c100.coloGreen .bar, .c100.coloGreen .fill, .c100 .bar {
     border-color: #00a298 !important;
@@ -1736,6 +1741,11 @@ div.jqi .jqititle {
     margin-top: 10px;
     margin-right: 20px;
     font-size: 20px;
+    color: #52bbff;
+    cursor: pointer;
+}
+.menuIcon:hover {
+    opacity: .8;
 }
 
 .sidr {
@@ -1903,7 +1913,7 @@ div.jqi .jqititle {
 .sidr .scroll{
     overflow-y: scroll;
     height: auto;
-    max-height: 200px;
+    max-height: 190px;
 }
 .sidr .input-group{
     margin-bottom: 0
@@ -1927,6 +1937,8 @@ div.jqi .jqititle {
 .thirdLabel .glyphicon-tag{
     color: #58bcff;
     top: 3px!important;
+    float: left;
+    margin: 0 5px;
 }
 .thirdLabel .glyphicon-tag:hover{
     opacity: .8;
@@ -2077,8 +2089,21 @@ div.jqi .jqititle {
 .etiquetasProject{
     background: #f78600;
 }
+.formEstado p{
+    font-size: 12px;
+    color: #333;
+    margin: 0;
+}
 
 /*MEDIA QUERY*/
+@media (min-width: 1280px)
+{
+    .columnRight {
+        max-width: 600px;
+    }
+}
+
+
 @media (max-width: 1024px) {
     .alert-success button {
         float: left;

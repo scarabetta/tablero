@@ -9,11 +9,13 @@
       <div id="grupo-{{$index}}" class="collapse in scroll">
         <div class="checkbox" ng-repeat="option in filter.options">
           <label for="{{option}}">
-          <input type="checkbox" id="{{option}}" name="{{option}}" checklist-model="sidemenuCtrl.filterData[filter.value]" checklist-value="option" ng-click="sidemenuCtrl.filter(filter.value)"> {{option}}
+          <input class="filterCheckBox" type="checkbox" id="{{option}}" name="{{option}}" checklist-model="sidemenuCtrl.filterData[filter.value]" checklist-value="option" ng-click="sidemenuCtrl.filter(filter.value)"> {{option}}
           </label>
         </div>
       </div>
     </li>
+    </br>
+    <button class="btn btn-default fullButtonRight" type="button" id="clearFilters" ng-click="sidemenuCtrl.clearFilters()"> Limpiar Filtros </button>
     <!-- <li>
       <div>
         <i class="img-chevron-down verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-jurisdiccion"></i>
