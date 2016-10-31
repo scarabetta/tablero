@@ -1,12 +1,10 @@
 package ar.gob.buenosaires.esb.handler;
 
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,9 @@ import org.springframework.core.env.Environment;
 import ar.gob.buenosaires.domain.AccionesProyecto;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
+import ar.gob.buenosaires.domain.Obra;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.TipoUbicacion;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoReqMsg;
@@ -35,35 +35,33 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private Environment env;
-	
-	private Charset iso88591charset;
-	private CharsetEncoder encoder;
 
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
 
 		logRequestMessage(event, ProyectoService.class);
-		final ProyectoReqMsg request = (ProyectoReqMsg) JMSUtil.crearObjeto(getReader(ProyectoReqMsg.class), event.getXml());
+		final ProyectoReqMsg request = (ProyectoReqMsg) JMSUtil.crearObjeto(getReader(ProyectoReqMsg.class),
+				event.getXml());
 
 		final ProyectoRespMsg response = new ProyectoRespMsg();
 		event.setObj(response);
 		List<Proyecto> proyectos = new ArrayList<>();
 		response.setProyectos(proyectos);
-		
+
 		if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE)) {
 			retrieveProyectos(response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_CREATE)) {
-			validarDescripcion(request.getProyecto());
 			proyectos.add(service.createProyecto(request.getProyecto()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR)) {
 			presentarProyecto(event, response, request);
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR_DETALLE)) {
+			updateDetalleProyecto(event, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_ACTIONS)) {
 			retrieveActions(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
-			validarDescripcion(request.getProyecto());
 			updateProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_ETIQUETAR)) {
 			etiquetarProyecto(event, response, request);
@@ -82,49 +80,22 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_RESUMEN_PRIORIZACION)) {
 			getResumenProyectosPriorizacion(event, response, request);
 		} else {
-			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para servicio de Proyecto");
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(),
+					"La accion: " + event.getAction() + ", no existe para servicio de Proyecto");
 		}
 		logResponseMessage(event, ProyectoService.class);
+	}
+
+	private void updateDetalleProyecto(ESBEvent event, final ProyectoReqMsg request) throws ESBException {
+		Proyecto proyecto = request.getProyecto();
+		validarEstadoObra(proyecto);
+		proyecto.setEstado(proyecto.validarEtapaDetalle());
+		service.updateProyecto(proyecto, request.getUsuario());
 	}	
-
-	private void validarDescripcion(Proyecto proyecto) {
-		proyecto.setDescripcion(removerCaracteresInvalidos(proyecto.getDescripcion()));
-	}
-
-	/**
-	 * Valida y remueve los caracteres que no son Latin1.
-	 * @param descripcion
-	 * @return 
-	 */
-	private String removerCaracteresInvalidos(String descripcion) {
-		Charset iso88591charset = getIso88591charset();
-		CharsetEncoder encoder = getEncoder();
-		String result = descripcion;
-		
-		if(!encoder.canEncode(descripcion)){
-			byte[] iso88591bytes = descripcion.getBytes(iso88591charset);
-			result = new String ( iso88591bytes, iso88591charset );
-		}
-		return result;
-	}
-
-	private CharsetEncoder getEncoder() {
-		if(encoder == null){
-			encoder = getIso88591charset().newEncoder();
-		}
-		return encoder;
-	}
-
-	private Charset getIso88591charset() {
-		if(iso88591charset == null){
-			iso88591charset = Charset.forName(CharEncoding.ISO_8859_1);
-		}
-		return iso88591charset;
-	}
 
 	private void getResumenProyectosPriorizacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) {
 		List<Proyecto> proyectos = service.buscarResumenProyectosPriorizacion();
-		
+
 		int presentado = 0, verificado = 0, enpriorizacion = 0;
 		for (Proyecto proyecto : proyectos) {
 			if (proyecto.getEstado().equalsIgnoreCase(EstadoProyecto.PRESENTADO.getName())) {
@@ -135,15 +106,16 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				enpriorizacion++;
 			}
 		}
-		
+
 		String result = "{ \"" + EstadoProyecto.PRESENTADO.getName() + "\" : \"" + presentado + "\", \""
 				+ EstadoProyecto.VERIFICADO.getName() + "\" : \"" + verificado + "\", \"EnPriorizacion\" : \""
 				+ enpriorizacion + "\" }";
-		
+
 		response.setResumenProyectosPriorizacion(result);
 	}
 
-	private void presentarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request) throws ESBException {
+	private void presentarProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
+			throws ESBException {
 		/*
 		 * TODO temporal hasta que arreglemos el bus. Sacarlo una vez que el Bus
 		 * no nos rompa las relaciones. Sin esto falla el check que se fija si
@@ -163,7 +135,8 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				updateProyecto(event, response, request);
 			}
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(),"El proyecto debe estar completo para poder ser presentado");
+			throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(),
+					"El proyecto debe estar completo para poder ser presentado");
 		}
 	}
 
@@ -205,7 +178,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		String estado = proyectoGuardado.getEstado();
 		List<String> acciones = new ArrayList<>();
 		Usuario usuario = usuarioService.getUsuarioPorEmail(request.getUsuario().getEmail());
-		
+
 		if (usuario.tienePerfilSecretaria()) {
 			getAccionesParaSecretaria(estado, acciones);
 		} else {
@@ -218,18 +191,36 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	private void getAccionesParaSecretaria(String estado, List<String> acciones) {
 		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado)) {
-			getAccionesParaPresentado(acciones);		
+			getAccionesParaPresentado(acciones);
 		} else if (EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
-			getAccionesParaVerificado(acciones);			
+			getAccionesParaVerificado(acciones);
 		} else if (EstadoProyecto.PREAPROBADO.getName().equalsIgnoreCase(estado)) {
-			getAccionesParaPreAprobado(acciones);		
+			getAccionesParaPreAprobado(acciones);
 		} else if (EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(estado)) {
-			getAccionesParaDemorado(acciones);			
+			getAccionesParaDemorado(acciones);
 		} else if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado)) {
-			acciones.add(AccionesProyecto.DESHACER_CANCELACION.getName());		
+			acciones.add(AccionesProyecto.DESHACER_CANCELACION.getName());
 		} else if (EstadoProyecto.RECHAZADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.DESHACER_RECHAZO.getName());
+		} else if (EstadoProyecto.D_PRESENTADO.getName().equalsIgnoreCase(estado)) {
+			getAccionesParaDPresentado(acciones);
+		} else if (EstadoProyecto.APROBADO.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.HABILITAR.getName());
+		} else if (EstadoProyecto.D_RECHAZADO.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.PRESENTAR.getName());
+		} else if (EstadoProyecto.D_MODIFICABLE.getName().equalsIgnoreCase(estado)) {
+			getAccionesParaDModificable(acciones);
 		}
+	}
+
+	private void getAccionesParaDModificable(List<String> acciones) {
+		acciones.add(AccionesProyecto.PRESENTAR.getName());
+		acciones.add(AccionesProyecto.APROBAR.getName());
+	}
+
+	private void getAccionesParaDPresentado(List<String> acciones) {
+		acciones.add(AccionesProyecto.RECHAZAR.getName());
+		acciones.add(AccionesProyecto.APROBAR.getName());
 	}
 
 	private void getAccionesParaDemorado(List<String> acciones) {
@@ -251,45 +242,90 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	}
 
 	private void getAccionesParaPresentado(List<String> acciones) {
-		getAccionesParaVerificado(acciones);				
+		getAccionesParaVerificado(acciones);
 		acciones.add(AccionesProyecto.VERIFICAR.getName());
 	}
 
 	private void getAccionesParaJurisdiccion(String estado, List<String> acciones) {
-		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado) || EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(estado)
+				|| EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.CANCELAR.getName());
 		} else if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(estado)) {
 			acciones.add(AccionesProyecto.DESHACER_CANCELACION.getName());
+		} else if (EstadoProyecto.D_RECHAZADO.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.PRESENTAR.getName());
+		} else if (EstadoProyecto.D_MODIFICABLE.getName().equalsIgnoreCase(estado)) {
+			acciones.add(AccionesProyecto.PRESENTAR.getName());
 		}
 	}
 
 	private void updateProyecto(ESBEvent event, final ProyectoRespMsg response, final ProyectoReqMsg request)
 			throws ESBException {
-		List<Proyecto> proyectos = new ArrayList<>();				
+		List<Proyecto> proyectos = new ArrayList<>();
 		Usuario usuario = usuarioService.getUsuarioPorEmail(request.getEmailUsuario());
 		request.setUsuario(usuario);
-		cambiarEstadoSiCorresponde(request);		
+		cambiarEstadoSiCorresponde(request);
+		validarEstadoObra(request.getProyecto());
 		proyectos.add(service.updateProyecto(request.getProyecto(), request.getUsuario()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}
-	
-	private void etiquetarProyecto(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) throws ESBException {
+
+	private void validarEstadoObra(Proyecto proyecto) {
+		for (Obra obra : proyecto.getObras()) {
+			if(StringUtils.isNotBlank(proyecto.getPrioridadJefatura())){
+				obra.setPrioridadJefatura(proyecto.getPrioridadJefatura());
+			}
+			
+			if(StringUtils.isBlank(obra.getNombre())
+					|| StringUtils.isBlank(obra.getDescripcion())
+					|| obra.getIdSubtipoObraAux() == null
+					|| obra.getPresupuestoTotal() == null
+					|| obra.getHitos().isEmpty()
+					|| validarUbicacion(obra)){
+				obra.setEstado("incompleto");
+			} else {
+				obra.setEstado("Completo");
+			}
+		}
+	}
+
+	private boolean validarUbicacion(Obra obra) {
+		if(StringUtils.isNotBlank(obra.getTipoUbicacion())){
+			String tipo = obra.getTipoUbicacion();
+			if(tipo.equalsIgnoreCase(TipoUbicacion.DIRECCION.getName())
+					&& StringUtils.isNotBlank(obra.getDireccion())){
+				return false;
+			} else if(tipo.equalsIgnoreCase(TipoUbicacion.TRAMO.getName())
+					&& StringUtils.isNotBlank(obra.getDireccionDesde())
+					&& StringUtils.isNotBlank(obra.getDireccionDesde())){
+				return false;
+			} else if(tipo.equalsIgnoreCase(TipoUbicacion.OTRO.getName())
+					&& StringUtils.isNotBlank(obra.getDetalleUbicacion())
+					&& obra.getComuna() != null){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void etiquetarProyecto(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request)
+			throws ESBException {
 		List<Proyecto> proyectos = new ArrayList<>();
-		proyectos.add(service.etiquetarProyecto(request.getId(),request.getEtiquetas()));
+		proyectos.add(service.etiquetarProyecto(request.getId(), request.getEtiquetas()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}
-	
+
 	private void cambiarEstadoSiCorresponde(final ProyectoReqMsg request) throws ESBException {
 		String accion = request.getAccion();
-	
-		if (accion != null && ! accion.isEmpty()){
+
+		if (accion != null && !accion.isEmpty()) {
 			if (AccionesProyecto.CANCELAR.getName().equalsIgnoreCase(accion)) {
 				validarCancelarProyecto(request);
 			} else if (AccionesProyecto.DESHACER_CANCELACION.getNameSinEspacios().equalsIgnoreCase(accion)) {
 				validarDeshacerCancelacion(request);
-			} else if (AccionesProyecto.VERIFICAR.getNameSinEspacios().equalsIgnoreCase(accion)) { 
+			} else if (AccionesProyecto.VERIFICAR.getNameSinEspacios().equalsIgnoreCase(accion)) {
 				validarVerificarProyecto(request);
 			} else if (AccionesProyecto.PREAPROBAR.getNameSinEspacios().equalsIgnoreCase(accion)) {
 				validarPreAprobarProyecto(request);
@@ -303,7 +339,48 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				validarReanudarProyecto(request);
 			} else if (AccionesProyecto.DESHACER_RECHAZO.getNameSinEspacios().equalsIgnoreCase(accion)) {
 				validarDeshacerRechazoProyecto(request);
+			} else if (AccionesProyecto.APROBAR.getNameSinEspacios().equalsIgnoreCase(accion)) {
+				validarAprobarProyecto(request);
+			} else if (AccionesProyecto.HABILITAR.getNameSinEspacios().equalsIgnoreCase(accion)) {
+				validarHabilitarProyecto(request);
+			} else if (AccionesProyecto.PRESENTAR.getNameSinEspacios().equalsIgnoreCase(accion)) {
+				validarPresentarProyecto(request);
 			}
+		}
+	}
+
+	private void validarPresentarProyecto(final ProyectoReqMsg request) throws ESBException {
+		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
+
+		if (EstadoProyecto.D_RECHAZADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.D_MODIFICABLE.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+			request.getProyecto().setEstado(EstadoProyecto.D_PRESENTADO.getName());
+		} else {
+			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(),
+					"El proyecto debe estar en detalle modificable o rechazado para poder ser pasado a detalle presentado");
+		}
+	}
+
+	private void validarHabilitarProyecto(final ProyectoReqMsg request) throws ESBException {
+		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
+
+		if (EstadoProyecto.APROBADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+			request.getProyecto().setEstado(EstadoProyecto.D_MODIFICABLE.getName());
+		} else {
+			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(),
+					"El proyecto debe estar aprobado para poder ser pasado a detalle modificable");
+		}
+	}
+
+	private void validarAprobarProyecto(final ProyectoReqMsg request) throws ESBException {
+		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
+
+		if (EstadoProyecto.D_PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.D_MODIFICABLE.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+			request.getProyecto().setEstado(EstadoProyecto.APROBADO.getName());
+		} else {
+			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO_O_VERIFICADO.getCodigo(),
+					"El proyecto debe estar detalle presentado o modificado para poder ser aprobado");
 		}
 	}
 
@@ -314,82 +391,88 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				|| EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
 			request.getProyecto().setEstado(EstadoProyecto.CANCELADO.getName());
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO_O_VERIFICADO.getCodigo(), "El proyecto debe estar presentado o verificado para poder ser cancelado");
+			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO_O_VERIFICADO.getCodigo(),
+					"El proyecto debe estar presentado o verificado para poder ser cancelado");
 		}
 	}
 
-	private void validarVerificarProyecto(ProyectoReqMsg request)
-			throws ESBException {
+	private void validarVerificarProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
 
 		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
 			request.getProyecto().setEstado(EstadoProyecto.VERIFICADO.getName());
 			request.getProyecto().setVerificado(true);
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO.getCodigo(), "El proyecto debe estar presentado para poder ser verificado");
+			throw new ESBException(CodigoError.PROYECTO_NO_PRESENTADO.getCodigo(),
+					"El proyecto debe estar presentado para poder ser verificado");
 		}
 	}
-	
-	private void validarDeshacerCancelacion(ProyectoReqMsg request)
-			throws ESBException {
+
+	private void validarDeshacerCancelacion(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
 
 		if (EstadoProyecto.CANCELADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
 			setEstadoAnterior(request.getProyecto());
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_NO_CANCELADO.getCodigo(), "El proyecto debe estar cancelado para deshacer la cancelacion");
+			throw new ESBException(CodigoError.PROYECTO_NO_CANCELADO.getCodigo(),
+					"El proyecto debe estar cancelado para deshacer la cancelacion");
 		}
 	}
 
 	private void validarPreAprobarProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-			EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-			EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){			
-			
+
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+
 			request.getProyecto().setEstado(EstadoProyecto.PREAPROBADO.getName());
-			
+
 		} else {
-			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar presentado/verificado/aplazado para ser pre aprobado");
+			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(),
+					"El proyecto debe estar presentado/verificado/aplazado para ser pre aprobado");
 		}
 	}
-	
+
 	private void validarDemorarProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-			EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-			EstadoProyecto.PREAPROBADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){			
-			
+
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.PREAPROBADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+
 			request.getProyecto().setEstado(EstadoProyecto.DEMORADO.getName());
-			
+
 		} else {
-			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar presentado/verificado/pre-aprobado para ser demorado");
+			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(),
+					"El proyecto debe estar presentado/verificado/pre-aprobado para ser demorado");
 		}
 	}
-	
+
 	private void validarRechazarProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-				EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ||
-				EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){			
-			
+
+		if (EstadoProyecto.PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())
+				|| EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+
 			request.getProyecto().setEstado(EstadoProyecto.RECHAZADO.getName());
-			
+
+		} else if (EstadoProyecto.D_PRESENTADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+			request.getProyecto().setEstado(EstadoProyecto.D_RECHAZADO.getName());
 		} else {
-			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar presentado/verificado/aplazado para ser demorado");
+			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(),
+					"El proyecto debe estar presentado/verificado/aplazado para ser demorado");
 		}
 	}
-	
+
 	private void validarDeshacerPreAprobacionProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.PREAPROBADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){			
-			
+
+		if (EstadoProyecto.PREAPROBADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+
 			setEstadoAnterior(request.getProyecto());
-			
+
 		} else {
 			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar pre aprobado");
 		}
@@ -397,26 +480,26 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	private void validarReanudarProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){			
-			
+
+		if (EstadoProyecto.DEMORADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+
 			setEstadoAnterior(request.getProyecto());
-			
+
 		} else {
 			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar demorado");
 		}
 	}
-	
+
 	private void validarDeshacerRechazoProyecto(ProyectoReqMsg request) throws ESBException {
 		Proyecto proyectoGuardado = service.getProyectoPorId(request.getProyecto().getIdProyecto());
-		
-		if (EstadoProyecto.RECHAZADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado()) ){						
-			setEstadoAnterior(request.getProyecto());			
+
+		if (EstadoProyecto.RECHAZADO.getName().equalsIgnoreCase(proyectoGuardado.getEstado())) {
+			setEstadoAnterior(request.getProyecto());
 		} else {
 			throw new ESBException(CodigoError.ESTADO_INVALIDO.getCodigo(), "El proyecto debe estar rechazado");
 		}
 	}
-	
+
 	private void setEstadoAnterior(Proyecto proyecto) {
 		if (proyecto.getVerificado()) {
 			proyecto.setEstado(EstadoProyecto.VERIFICADO.getName());

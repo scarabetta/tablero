@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nimbusds.jose.JOSEException;
+
 import ar.gob.buenosaires.domain.ArchivoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
@@ -33,8 +35,6 @@ import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.ProyectoService;
 import ar.gob.buenosaires.util.DSUtils;
-
-import com.nimbusds.jose.JOSEException;
 
 @RestController
 @RequestMapping("/api/proyecto")
@@ -138,6 +138,13 @@ public class ProyectoController {
 			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
 			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
 		return service.presentarProyecto(proyecto, DSUtils.getMailDelUsuarioDelToken(token));
+	}
+	
+	@RequestMapping(path = "/presentarDetalle", method = RequestMethod.POST)
+	public Proyecto presentarDetalleProyecto(@RequestBody final Proyecto proyecto,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
+			throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		return service.presentarDetalleProyecto(proyecto, DSUtils.getMailDelUsuarioDelToken(token));
 	}
 	
 	@RequestMapping(path = "/etiquetar/{id}", method = RequestMethod.POST)

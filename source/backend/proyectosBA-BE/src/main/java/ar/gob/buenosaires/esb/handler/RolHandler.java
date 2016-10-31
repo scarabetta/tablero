@@ -14,7 +14,6 @@ import ar.gob.buenosaires.esb.domain.message.RolRespMsg;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
-import ar.gob.buenosaires.service.JurisdiccionService;
 import ar.gob.buenosaires.service.RolService;
 
 public class RolHandler extends AbstractBaseEventHandler {
@@ -31,7 +30,7 @@ public class RolHandler extends AbstractBaseEventHandler {
 
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
-		logRequestMessage(event, JurisdiccionService.class);
+		logRequestMessage(event, RolService.class);
 		final RolReqMsg request = (RolReqMsg) JMSUtil.crearObjeto(getReader(RolReqMsg.class), event.getXml());
 
 		final RolRespMsg response = new RolRespMsg();

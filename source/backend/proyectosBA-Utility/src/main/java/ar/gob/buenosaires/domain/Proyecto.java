@@ -34,6 +34,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import ar.gob.buenosaires.esb.exception.ESBException;
+
 @Entity
 @Table(name = "proyecto")
 @Audited
@@ -43,7 +45,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 		"fechaInicio", "fechaFin", "prioridadJurisdiccional", "estado", "ejesDeGobierno", "poblacionesMeta", "comunas",
 		"codigo", "idJurisdiccion2", "idObjetivoJurisdiccional2", "idObjetivoOperativo2", "organismosCorresponsables",
 		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado", "temasTransversales",
-		"compromisosPublicos", "otrasEtiquetas", "totalPresupuestoAprobado", "prioridadJefatura" })
+		"compromisosPublicos", "otrasEtiquetas", "totalPresupuestoAprobado", "prioridadJefatura", "indicadoresEstrategico",
+		"presupuestoGastosCorrientes", "presupuestoPPIObra", "presupuestoPPIMantenimiento", "presupuestoACUMAR", "presupuestosPorMes",
+		"hitos", "obras"})
 
 @XmlRootElement(name = "Proyecto")
 public class Proyecto implements Serializable {
@@ -89,6 +93,21 @@ public class Proyecto implements Serializable {
 	@XmlElement(name = "archivoPoryecto")
 	@JsonManagedReference
 	private List<ArchivoProyecto> archivos = new ArrayList<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY, orphanRemoval = true)
+	@XmlElement(name = "presupuestosPorMes")
+	@JsonManagedReference
+	private List<PresupuestoPorMes> presupuestosPorMes = new ArrayList<PresupuestoPorMes>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY, orphanRemoval = true)
+	@XmlElement(name = "hitos")
+	@JsonManagedReference(value = "proy-hito")
+	private List<HitoProyecto> hitos = new ArrayList<HitoProyecto>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY, orphanRemoval = true)
+	@XmlElement(name = "obras")
+	@JsonManagedReference(value = "proy-obra")
+	private List<Obra> obras = new ArrayList<Obra>();
 
 	@Column(name = "tipoproyecto", nullable = true)
 	private String tipoProyecto;
@@ -155,42 +174,60 @@ public class Proyecto implements Serializable {
 
 	@Column(name = "total_presu_aprobado", nullable = true)
 	private Double totalPresupuestoAprobado;
+	
+	@Column(name = "presupuestogastoscorrientes", nullable = true)
+	private Double presupuestoGastosCorrientes;
+	
+	@Column(name = "presupuestoppiobra", nullable = true)
+	private Double presupuestoPPIObra;
+	
+	@Column(name = "presupuestoppimantenimiento", nullable = true)
+	private Double presupuestoPPIMantenimiento;
+	
+	@Column(name = "presupuestoacumar", nullable = true)
+	private Double presupuestoACUMAR;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "eje_de_gobierno_por_proyecto", joinColumns = {
-			@JoinColumn(name = "id_proyecto") }, inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
+	@JoinTable(name = "eje_de_gobierno_por_proyecto", joinColumns = { @JoinColumn(name = "id_proyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "id_ejedegobierno") })
 	@XmlElement(name = "ejesDeGobierno")
 	private List<EjeDeGobierno> ejesDeGobierno;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "poblacion_meta_por_proyecto", joinColumns = {
-			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
+	@JoinTable(name = "poblacion_meta_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idpoblacionmeta") })
 	@XmlElement(name = "poblacionesMeta")
 	private List<PoblacionMeta> poblacionesMeta;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "comuna_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, inverseJoinColumns = {
-			@JoinColumn(name = "idcomuna") })
+	@JoinTable(name = "comuna_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idcomuna") })
 	@XmlElement(name = "comunas")
 	private List<Comuna> comunas;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "tema_transversal_por_proyecto", joinColumns = {
-			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idtematransversal") })
+	@JoinTable(name = "tema_transversal_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") },
+		inverseJoinColumns = { @JoinColumn(name = "idtematransversal") })
 	@XmlElement(name = "temasTransversales")
 	private List<TemaTransversal> temasTransversales;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "compromiso_publico_por_proyecto", joinColumns = {
-			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idcompromisopublico") })
+	@JoinTable(name = "compromiso_publico_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idcompromisopublico") })
 	@XmlElement(name = "compromisosPublicos")
 	private List<CompromisoPublico> compromisosPublicos;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinTable(name = "otras_etiquetas_por_proyecto", joinColumns = {
-			@JoinColumn(name = "idproyecto") }, inverseJoinColumns = { @JoinColumn(name = "idetiqueta") })
+	@JoinTable(name = "otras_etiquetas_por_proyecto", joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idetiqueta") })
 	@XmlElement(name = "otrasEtiquetas")
 	private List<OtraEtiqueta> otrasEtiquetas;
+	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idproyecto") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idindicadorestrategico") })
+	@XmlElement(name = "indicadorEstrategico")
+	private List<IndicadorEstrategico> indicadoresEstrategico;
 
 	public Long getIdProyecto() {
 		return idProyecto;
@@ -478,7 +515,7 @@ public class Proyecto implements Serializable {
 	}
 
 	@JsonIgnore
-	public String getEstadoActualizado() {
+	public String getEstadoActualizado() throws ESBException {
 		final Object[] propiedades = getPropiedadesAValidar();
 
 		if (necesitaCalcularEstado()) {
@@ -486,6 +523,158 @@ public class Proyecto implements Serializable {
 		} else {
 			return estado;
 		}
+	}
+
+	@JsonIgnore
+	public String validarEtapaDetalle() throws ESBException {
+		validarHitoDelProyecto();
+		validarPresupuestoAprobado();
+		validaHitosDeObras();
+		validarHitoUObras();
+		validarPrespuestoObras();
+		validaTodasLasObrasCompletas();
+		return EstadoProyecto.D_COMPLETO.getName();
+	}
+
+	//VAL 9
+	private void validaTodasLasObrasCompletas() throws ESBException {
+		for (Obra obra : this.getObras()) {
+			if(obra.getEstado() == null
+					|| (obra.getEstado() != null && obra.getEstado().equalsIgnoreCase("incompleto"))){
+				throw new ESBException("333", "El proyecto no debe tener obras incompletas o sin estado.");
+			}
+		}
+	}
+
+	//VAL 2
+	private void validaHitosDeObras() throws ESBException {
+		List<String> nombres = new ArrayList<String>();
+		for (Obra obra : this.getObras()) {
+			for (HitoObra hito : obra.getHitos()) {
+				//VAL 1
+				if(StringUtils.isNotBlank(hito.getNombre())
+						&& hito.getFechaInicio() != null
+						&& hito.getFechaFin() != null){
+					
+					if(nombres.contains(hito)){
+						throw new ESBException("333", "Hay Hitos repetidos con el nombre: " + hito.getNombre());
+					}
+					nombres.add(hito.getNombre());
+					
+					// VAL 3
+					validarFechaEntre(hito.getFechaInicio(), this.getFechaInicio(), this.getFechaFin());
+					validarFechaEntre(hito.getFechaFin(), this.getFechaInicio(), this.getFechaFin());
+					
+					//VAL 4
+					validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
+				} else {
+					throw new ESBException("333", "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+				}
+			}
+		}
+	}
+	
+	private void validarFechaEntre(Date fecha, Date fechaInicio, Date fechaFin) throws ESBException{
+		if(fecha.compareTo(fechaInicio) < 0
+				|| fecha.compareTo(fechaFin) > 0){
+			throw new ESBException("333", "Las fechas del hito son inconsistentes con las del proyecto (" + this.getFechaInicio() +" – " + this.getFechaFin() + ")");
+		}
+	}
+
+	// VAL 10
+	private void validarPrespuestoObras() throws ESBException {
+		Double total = Double.valueOf(0);
+		for (Obra obra : this.getObras()) {
+			if(obra.getPresupuestoTotal() != null){
+				total += obra.getPresupuestoTotal();
+			}
+		}
+		if(Double.compare(this.getTotalPresupuestoAprobado(), total) < 0){
+			throw new ESBException("333", "La suma de presupuesto de obras es de " + total.toString() + 
+					". No puede ser mayor al presupuesto aprobado del proyecto (" + this.getTotalPresupuestoAprobado().toString() + ")");
+		}
+	}
+
+	//VAL 8
+	private void validarHitoUObras() throws ESBException {
+		if(this.getHitos().isEmpty()
+				&& this.getObras().isEmpty()){
+			throw new ESBException("333", "El proyecto debe tener hitos u obras.");
+		}
+	}
+
+	private void validarPresupuestoAprobado() throws ESBException {
+		if(this.getTotalPresupuestoAprobado() != null
+				&&	(this.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoXMes()) != 0
+				|| this.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoPPI()) != 0)){
+			throw new ESBException("333", "Los totales deben ser iguales.");
+		}
+	}
+
+	private Double calcularTotalPrespuestoPPI() {
+		Double total = Double.valueOf(0);
+		
+		if(this.getPresupuestoPPIMantenimiento() != null){
+			total += this.getPresupuestoPPIMantenimiento();
+		}
+		if(this.getPresupuestoPPIObra() != null){
+			total += this.getPresupuestoPPIObra();
+		}
+		if(this.getPresupuestoACUMAR() != null){
+			total += this.getPresupuestoACUMAR();
+		}
+		if(this.getPresupuestoGastosCorrientes() != null){
+			total += this.getPresupuestoGastosCorrientes();
+		}
+		
+		return total;
+	}
+
+	private Double calcularTotalPrespuestoXMes() {
+		Double total = Double.valueOf(0);
+		
+		for (PresupuestoPorMes ppm : this.getPresupuestosPorMes()) {
+			if(ppm.getPresupuesto() != null){
+				total = Double.sum(total, ppm.getPresupuesto());
+			}
+		}
+		return total;
+	}
+
+	private void validarHitoDelProyecto() throws ESBException {
+		List<String> nombres = new ArrayList<String>();
+		for (HitoProyecto hito : getHitos()) {
+			//VAL 1
+			if(StringUtils.isNotBlank(hito.getNombre())
+					&& hito.getFechaInicio() != null
+					&& hito.getFechaFin() != null){
+				// VAL 2
+				if(nombres.contains(hito.getNombre())){
+					throw new ESBException("333", "Hay Hitos repetidos con el nombre: " + hito.getNombre());
+				}
+				nombres.add(hito.getNombre());
+				
+				// VAL 3
+				validarFechaEntre(hito.getFechaInicio(), this.getFechaInicio(), this.getFechaFin());
+				validarFechaEntre(hito.getFechaFin(), this.getFechaInicio(), this.getFechaFin());
+				
+				//VAL 4
+				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
+				
+			} else {
+				throw new ESBException("333", "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+			}
+		}
+	}
+	
+	private void validarFechaInicioContraFin(Date inicio, Date fin) throws ESBException{
+		if(inicio.compareTo(fin) > 0){
+			throw new ESBException("333", "Las fechas del hito son inconsistentes entre si (" + inicio +" – " + fin + ")");
+		}
+	}
+
+	private boolean esEtapaDetalle() {
+		return StringUtils.equals(this.getEstado(), EstadoProyecto.PREAPROBADO.getName());
 	}
 
 	private boolean necesitaCalcularEstado() {
@@ -571,4 +760,99 @@ public class Proyecto implements Serializable {
 		this.totalPresupuestoAprobado = totalPresupuestoAprobado;
 	}
 
+	public Double getPresupuestoGastosCorrientes() {
+		return presupuestoGastosCorrientes;
+	}
+
+	public void setPresupuestoGastosCorrientes(Double presupuestoGastosCorrientes) {
+		this.presupuestoGastosCorrientes = presupuestoGastosCorrientes;
+	}
+
+	public Double getPresupuestoPPIObra() {
+		return presupuestoPPIObra;
+	}
+
+	public void setPresupuestoPPIObra(Double presupuestoPPIObra) {
+		this.presupuestoPPIObra = presupuestoPPIObra;
+	}
+
+	public Double getPresupuestoPPIMantenimiento() {
+		return presupuestoPPIMantenimiento;
+	}
+
+	public void setPresupuestoPPIMantenimiento(Double presupuestoPPIMantenimiento) {
+		this.presupuestoPPIMantenimiento = presupuestoPPIMantenimiento;
+	}
+
+	public Double getPresupuestoACUMAR() {
+		return presupuestoACUMAR;
+	}
+
+	public void setPresupuestoACUMAR(Double presupuestoACUMAR) {
+		this.presupuestoACUMAR = presupuestoACUMAR;
+	}
+
+	public List<PresupuestoPorMes> getPresupuestosPorMes() {
+		if(presupuestosPorMes == null){
+			presupuestosPorMes = new ArrayList<PresupuestoPorMes>();
+		}
+		return presupuestosPorMes;
+	}
+
+	public void setPresupuestosPorMes(List<PresupuestoPorMes> presupuestosPorMes) {
+		if(this.presupuestosPorMes == null){
+			this.presupuestosPorMes = presupuestosPorMes;
+		} else if(presupuestosPorMes != null){
+			this.presupuestosPorMes.clear();
+			this.presupuestosPorMes.addAll(presupuestosPorMes);
+		}
+	}
+
+	public List<HitoProyecto> getHitos() {
+		if(hitos == null){
+			hitos = new ArrayList<HitoProyecto>();
+		}
+		return hitos;
+	}
+
+	public void setHitos(List<HitoProyecto> hitos) {
+		if(this.hitos == null){
+			this.hitos = hitos;
+		} else if(hitos != null){
+			this.hitos.clear();
+			this.hitos.addAll(hitos);
+		}
+	}
+
+	public List<Obra> getObras() {
+		if(obras == null){
+			obras = new ArrayList<Obra>();
+		}
+		return obras;
+	}
+
+	public void setObras(List<Obra> obras) {
+		if(this.obras == null){
+			this.obras = obras;
+		} else if(obras != null){
+			this.obras.clear();
+			this.obras.addAll(obras);
+		}
+	}
+
+	public List<IndicadorEstrategico> getIndicadoresEstrategico() {
+		if(indicadoresEstrategico == null){
+			indicadoresEstrategico = new ArrayList<IndicadorEstrategico>();
+		}
+		return indicadoresEstrategico;
+	}
+
+	public void setIndicadoresEstrategico(List<IndicadorEstrategico> indicadoresEstrategico) {
+		if(this.indicadoresEstrategico == null){
+			this.indicadoresEstrategico = indicadoresEstrategico;
+		} else if(indicadoresEstrategico != null){
+			this.indicadoresEstrategico.clear();
+			this.indicadoresEstrategico.addAll(indicadoresEstrategico);
+		}
+	}
 }

@@ -95,7 +95,7 @@ public class ExportacionProyectoView implements Serializable {
 	String unidadMeta;
 
 	@Column(name = "cantidadpoblacionimpactada")
-	Integer cantidadPoblacionImpactada;
+	Long cantidadPoblacionImpactada;
 
 	@Column(name = "prioridadjefatura")
 	Boolean prioridadJefatura;
@@ -399,15 +399,15 @@ public class ExportacionProyectoView implements Serializable {
 	/**
 	 * @return the cantidadPoblacionImpactada
 	 */
-	public final Integer getCantidadPoblacionImpactada() {
-		return cantidadPoblacionImpactada != null ? cantidadPoblacionImpactada : Integer.valueOf(0);
+	public final Long getCantidadPoblacionImpactada() {
+		return cantidadPoblacionImpactada != null ? cantidadPoblacionImpactada : Long.valueOf(0);
 	}
 
 	/**
 	 * @param cantidadPoblacionImpactada
 	 *            the cantidadPoblacionImpactada to set
 	 */
-	public final void setCantidadPoblacionImpactada(Integer cantidadPoblacionImpactada) {
+	public final void setCantidadPoblacionImpactada(Long cantidadPoblacionImpactada) {
 		this.cantidadPoblacionImpactada = cantidadPoblacionImpactada;
 	}
 
@@ -445,7 +445,7 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the presupuestosPorAnio
 	 */
 	public final List<PresupuestoPorAnio> getPresupuestosPorAnio() {
-		if(presupuestosPorAnio == null){
+		if (presupuestosPorAnio == null) {
 			presupuestosPorAnio = new ArrayList<PresupuestoPorAnio>();
 		}
 		return presupuestosPorAnio;
@@ -463,7 +463,7 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the ejesDeGobierno
 	 */
 	public final List<EjeDeGobierno> getEjesDeGobierno() {
-		if(ejesDeGobierno == null){
+		if (ejesDeGobierno == null) {
 			ejesDeGobierno = new ArrayList<EjeDeGobierno>();
 		}
 		return ejesDeGobierno;
@@ -481,7 +481,7 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the poblacionesMeta
 	 */
 	public final List<PoblacionMeta> getPoblacionesMeta() {
-		if(poblacionesMeta == null){
+		if (poblacionesMeta == null) {
 			poblacionesMeta = new ArrayList<PoblacionMeta>();
 		}
 		return poblacionesMeta;
@@ -499,7 +499,7 @@ public class ExportacionProyectoView implements Serializable {
 	 * @return the comunas
 	 */
 	public final List<Comuna> getComunas() {
-		if(comunas == null){
+		if (comunas == null) {
 			comunas = new ArrayList<Comuna>();
 		}
 		return comunas;
@@ -530,7 +530,7 @@ public class ExportacionProyectoView implements Serializable {
 
 		if (getPresupuestosPorAnio() != null && !getPresupuestosPorAnio().isEmpty()) {
 			for (PresupuestoPorAnio ppa : getPresupuestosPorAnio()) {
-				if (anio == ppa.getAnio()) {
+				if (ppa.getPresupuesto() != null && anio == ppa.getAnio()) {
 					importeAnioFechaInicio += ppa.getPresupuesto();
 				}
 			}
@@ -543,7 +543,9 @@ public class ExportacionProyectoView implements Serializable {
 		Double total = new Double(0);
 		if (getPresupuestosPorAnio() != null && !getPresupuestosPorAnio().isEmpty()) {
 			for (PresupuestoPorAnio ppa : getPresupuestosPorAnio()) {
-				total += ppa.getPresupuesto();
+				if(ppa.getPresupuesto() != null){
+					total += ppa.getPresupuesto();
+				}
 			}
 		}
 		return total;

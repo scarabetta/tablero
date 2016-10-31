@@ -26,7 +26,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "presupuesto_por_anio")
 @Audited
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idPresupuestoPorAnio", "proyecto", "anio", "presupuesto", "otrasFuentes", "exportacionProyectoViewPresupuestoPorAnio" })
+@XmlType(propOrder = { "idPresupuestoPorAnio", "proyecto", "anio", "presupuesto", "otrasFuentes",
+		"exportacionProyectoViewPresupuestoPorAnio", "reporteProyectosViewPresupuestoPorAnio" })
 
 @XmlRootElement(name = "PresupuestoPorAnio")
 public class PresupuestoPorAnio implements Serializable {
@@ -34,14 +35,14 @@ public class PresupuestoPorAnio implements Serializable {
 	private static final long serialVersionUID = -1770846664731989725L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idpresupuestoporanio", nullable = false)
 	private Long idPresupuestoPorAnio;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto")
 	@JsonBackReference(value = "proy-presu")
-//	@XmlTransient
+	// @XmlTransient
 	@XmlElement(name = "proyecto")
 	private Proyecto proyecto;
 
@@ -49,12 +50,20 @@ public class PresupuestoPorAnio implements Serializable {
 	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
 	@NotAudited
 	@JsonBackReference(value = "exp-presu")
-//	@XmlTransient
+	// @XmlTransient
 	@XmlElement(name = "exportacionProyectoViewPresupuestoPorAnio")
 	private ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "idproyecto", insertable = false, updatable = false)
+	@NotAudited
+	@JsonBackReference(value = "rep-presu")
+	// @XmlTransient
+	@XmlElement(name = "reporteProyectosViewPresupuestoPorAnio")
+	private ReporteProyectosView reporteProyectosViewPresupuestoPorAnio;
+
 	@Column(name = "anio")
-	private int anio;
+	private Integer anio;
 
 	@Column(name = "presupuesto")
 	private Double presupuesto;
@@ -78,11 +87,11 @@ public class PresupuestoPorAnio implements Serializable {
 		this.proyecto = proyectoPresupuestoPorAnio;
 	}
 
-	public int getAnio() {
+	public Integer getAnio() {
 		return anio;
 	}
 
-	public void setAnio(int anio) {
+	public void setAnio(Integer anio) {
 		this.anio = anio;
 	}
 
@@ -110,9 +119,11 @@ public class PresupuestoPorAnio implements Serializable {
 	}
 
 	/**
-	 * @param exportacionProyectoViewPresupuestoPorAnio the exportacionProyectoViewPresupuestoPorAnio to set
+	 * @param exportacionProyectoViewPresupuestoPorAnio
+	 *            the exportacionProyectoViewPresupuestoPorAnio to set
 	 */
-	public void setExportacionProyectoViewPresupuestoPorAnio(ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio) {
+	public void setExportacionProyectoViewPresupuestoPorAnio(
+			ExportacionProyectoView exportacionProyectoViewPresupuestoPorAnio) {
 		this.exportacionProyectoViewPresupuestoPorAnio = exportacionProyectoViewPresupuestoPorAnio;
 	}
 }

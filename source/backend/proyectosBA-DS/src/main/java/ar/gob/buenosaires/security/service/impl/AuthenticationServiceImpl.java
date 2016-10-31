@@ -50,10 +50,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 					e.printStackTrace();
 				}
 			} else {
+				getLogger().info("El usuario esta inactivo");
 				throw new ESBException(CodigoError.USUARIO_INACTIVO.getCodigo(), "El usuario esta inactivo");
 			}
 			
 		} else {
+			getLogger().info("El usuario y/o contraseña no son válidos");
 			throw new ESBException(CodigoError.PASS_INVALIDO.getCodigo(), "El usuario y/o contraseña no son válidos");
 		}
 
@@ -65,6 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		if(usuario != null) {
 			return usuario.getActivo();			
 		}else {
+			getLogger().info("El usuario no existe. Contactese con un administrador");
 			throw new ESBException(CodigoError.USUARIO_INEXISTENTE.getCodigo(),"El usuario no existe. Contactese con un administrador");
 		}
 	}

@@ -41,6 +41,9 @@ configs.key.value=captcha;6LcSLyoTAAAAAN4zBx2nuOKIUwdQ0G1ZINLiqOkG
 #Path para el archivo template para la exportacion
 exportacion.archivos.proyecto.path = /etc/pba/ds/template_exportacion_priorizacion.xlsx
 
+#Path para el archivo template para la reporte de proyectos
+exportacion.archivos.reporte.proyecto.path = /etc/pba/ds/template_reporte_proyectos.xlsx
+
 #Configuracion tamaño de archivos
 #spring.http.multipart.max-file-size=15MB
 #spring.http.multipart.max-request-size=15MB

@@ -15,10 +15,13 @@ import ar.gob.buenosaires.dao.jpa.presupuestoPorAnio.PresupuestoPorAnioRepositor
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoJpaDao;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepository;
 import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
+import ar.gob.buenosaires.dao.jpa.subtipoObra.SubtipoObraRepository;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
+import ar.gob.buenosaires.domain.Obra;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.domain.SubtipoObra;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
@@ -50,6 +53,9 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 
 	@Autowired
 	private GeoCoderService geoCoderService;
+	
+	@Autowired
+	private SubtipoObraRepository subtipoObraRepository;
 
 	@Override
 	public List<Proyecto> getProyectos() {
@@ -78,12 +84,14 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 		if (op != null) {
 			proyecto.setObjetivoOperativo(op);
 			guardarCoordenadas(proyecto);
+			guardarSubtipoObra(proyecto);
 			proyecto.setEstado(proyecto.getEstadoActualizado());
-			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
+			proyecto.setOtrasEtiquetas(
+					otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			return getProyectoDAO().save(proyecto);
 		} else {
-			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
-					+ proyecto.getIdObjetivoOperativo2() + " no existe");
+			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(),
+					"El objetivo operativo con id: " + proyecto.getIdObjetivoOperativo2() + " no existe");
 		}
 	}
 
@@ -96,8 +104,9 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 			proyecto.setObjetivoOperativo(op);
 			guardarCoordenadas(proyecto);
 			actualizarEstado(proyecto, usuario);
-			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			validarPresupuestoAprobado(proyecto);
+			guardarSubtipoObra(proyecto);
+			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			validarPrioridadDeJefatura(proyecto);
 			return getProyectoDAO().save(proyecto);
 		}
@@ -105,15 +114,33 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 				+ proyecto.getIdObjetivoOperativo2() + " no existe");
 	}
 	
-	private void actualizarEstado(final Proyecto proyecto, Usuario usuario) {
-		if (usuario != null && EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyecto.getEstado()) && !usuario.tienePerfilSecretaria()) {
+	// TODO mover esto a SubtipoObraServiceImpl
+	private void guardarSubtipoObra(Proyecto proyecto) throws ESBException {
+		if(!proyecto.getObras().isEmpty()){
+			for (Obra obra : proyecto.getObras()) {
+				if(obra.getIdSubtipoObraAux() != null){
+					SubtipoObra subtipo = subtipoObraRepository.getSubtipoObraJpaDao().findOne(obra.getIdSubtipoObraAux());
+					if(subtipo != null){
+						obra.setSubtipoObra(subtipo);
+					} else {
+						throw new ESBException("333", "El subtipo obra con id: "
+								+ obra.getIdSubtipoObraAux() + " no existe");
+					}
+				}
+			}
+		}
+	}
+
+	private void actualizarEstado(final Proyecto proyecto, Usuario usuario) throws ESBException {
+		if (usuario != null && EstadoProyecto.VERIFICADO.getName().equalsIgnoreCase(proyecto.getEstado())
+				&& !usuario.tienePerfilSecretaria()) {
 			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
 			proyecto.setVerificado(false);
 		} else {
 			proyecto.setEstado(proyecto.getEstadoActualizado());
 		}
 	}
-		
+
 	@Override
 	public Proyecto etiquetarProyecto(Long id, EtiquetasMsg etiquetas) throws ESBException {
 		final Proyecto proyecto = repositorio.getProyectoJpaDao().findOne(id);
@@ -123,7 +150,8 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 			proyecto.setOtrasEtiquetas(etiquetas.getOtrasEtiquetas());
 			return getProyectoDAO().save(proyecto);
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(), "El Proyecto con id: " + id + " no existe");
+			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(),
+					"El Proyecto con id: " + id + " no existe");
 		}
 	}
 
@@ -133,7 +161,8 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 		if (proyecto != null) {
 			getProyectoDAO().delete(proyecto);
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(), "No se encontro proyecto con id: " + id);
+			throw new ESBException(CodigoError.PROYECTO_INEXISTENTE.getCodigo(),
+					"No se encontro proyecto con id: " + id);
 		}
 	}
 
@@ -149,46 +178,46 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 		}
 
 	}
-	
+
 	private void validarPresupuestoAprobado(Proyecto proyecto) throws ESBException {
 		String estadoProyecto = proyecto.getEstado();
-		List<String> estadosConPresuAprobado = Arrays.asList(
-				EstadoProyecto.PREAPROBADO.getName(),
-				EstadoProyecto.PREAPROBADO_COMPLETO.getName(),
-				EstadoProyecto.APROBADO.getName());
+		List<String> estadosConPresuAprobado = Arrays.asList(EstadoProyecto.PREAPROBADO.getName(),
+				EstadoProyecto.D_COMPLETO.getName(), EstadoProyecto.D_INCOMPLETO.getName(),
+				EstadoProyecto.D_PRESENTADO.getName(), EstadoProyecto.D_RECHAZADO.getName(),
+				EstadoProyecto.D_MODIFICABLE.getName(), EstadoProyecto.APROBADO.getName());
 
 		if (estadosConPresuAprobado.contains(estadoProyecto)) {
-			if(proyecto.getTotalPresupuestoAprobado() == null) {
-				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),"El presupuesto aprobado es obligatorio");
+			if (proyecto.getTotalPresupuestoAprobado() == null) {
+				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),
+						"El presupuesto aprobado es obligatorio");
 			}
-						
+
 			if (proyecto.getTotalPresupuestoAprobado() > proyecto.getTotalPedido()) {
-				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),"El presupuesto aprobado no puede ser mayor al solicitado");
+				throw new ESBException(CodigoError.PRESUPUESTO_APROBADO_ERRONEO.getCodigo(),
+						"El presupuesto aprobado no puede ser mayor al solicitado");
 			}
-			
+
 		} else {
 			proyecto.setTotalPresupuestoAprobado(null);
 		}
 	}
-	
+
 	private void validarPrioridadDeJefatura(Proyecto proyecto) throws ESBException {
 		String estadoProyecto = proyecto.getEstado();
-		List<String> estadosConPrioridadJefatura = Arrays.asList(
-				EstadoProyecto.DEMORADO.getName(),
-				EstadoProyecto.PREAPROBADO.getName(),
-				EstadoProyecto.RECHAZADO.getName(),
-				EstadoProyecto.PREAPROBADO_COMPLETO.getName(),
-				EstadoProyecto.APROBADO.getName());
-				
+		List<String> estadosConPrioridadJefatura = Arrays.asList(EstadoProyecto.DEMORADO.getName(),
+				EstadoProyecto.PREAPROBADO.getName(), EstadoProyecto.RECHAZADO.getName(),
+				EstadoProyecto.D_COMPLETO.getName(), EstadoProyecto.D_INCOMPLETO.getName(),
+				EstadoProyecto.D_PRESENTADO.getName(), EstadoProyecto.D_RECHAZADO.getName(),
+				EstadoProyecto.D_MODIFICABLE.getName(), EstadoProyecto.APROBADO.getName());
+
 		if (estadosConPrioridadJefatura.contains(estadoProyecto)) {
 			String prioridadJefatura = proyecto.getPrioridadJefatura();
-			if (prioridadJefatura == null || prioridadJefatura.isEmpty() ) {
-				throw new ESBException(CodigoError.PRIORIDAD_JEFATURA_INCOMPLETA.getCodigo(),"El estado " + estadoProyecto + " debe contener prioridad de jefatura");
+			if (prioridadJefatura == null || prioridadJefatura.isEmpty()) {
+				throw new ESBException(CodigoError.PRIORIDAD_JEFATURA_INCOMPLETA.getCodigo(),
+						"El estado " + estadoProyecto + " debe contener prioridad de jefatura");
 			}
 		}
 	}
-
-
 
 	@VisibleForTesting
 	public void setProyectoRepository(final ProyectoRepositoryImpl repo) {
@@ -208,7 +237,6 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	public void setRepositorioOtrasEtiquetas(final OtrasEtiquetasRepository otrasEtiquetasRepository) {
 		this.otrasEtiquetasRepository = otrasEtiquetasRepository;
 	}
-
 
 	@VisibleForTesting
 	public void setGeoCoderService(final GeoCoderServiceImpl geoCoderServiceImpl) {
@@ -236,7 +264,8 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	}
 
 	@Override
-	public Proyecto getProyectoPorNombreYIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion, List<String> estados) {
+	public Proyecto getProyectoPorNombreYIdJurisdiccionYCiertosEstados(String nombre, Long IdJurisdiccion,
+			List<String> estados) {
 		return getProyectoDAO().findByNombreAndIdJurisdiccionAndCiertosEstados(nombre, IdJurisdiccion, estados);
 	}
 

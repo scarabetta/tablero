@@ -30,11 +30,20 @@ import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.ExportarProyectoService;
 import ar.gob.buenosaires.service.ProyectoService;
+import ar.gob.buenosaires.service.UsuarioService;
 import ar.gob.buenosaires.util.DSUtils;
 
 @RestController
 @RequestMapping("/api/exportar")
 public class ExportarProyectoController {
+
+	private static final String PROPERTY_REPORTE_PROYECTO_PATH = "exportacion.archivos.reporte.proyecto.path";
+
+	private static final String PROPERTY_EXPORTACION_PROYECTO_PATH = "exportacion.archivos.proyecto.path";
+
+	private static final String PROYECTOS_EN_PRIORIZACION_XLSX = "proyectos_en_priorizacion.xlsx";
+
+	private static final String REPORTE_PROYECTOS_XLSX = "reporte_proyectos.xlsx";
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(ExportarProyectoController.class);
 
@@ -42,8 +51,10 @@ public class ExportarProyectoController {
 	private ProyectoService proyectoService;
 
 	@Autowired
-	private ExportarProyectoService service;
+	private UsuarioService usuarioService;
 
+	@Autowired
+	private ExportarProyectoService service;
 
 	@Autowired
 	Environment env;
@@ -52,7 +63,7 @@ public class ExportarProyectoController {
 	public void exportarProyecto(HttpServletResponse response,
 			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws IOException, ESBException,
 			JMSException, ParseException, JOSEException, SignatureVerificationException {
-		FileInputStream fis = new FileInputStream(env.getProperty("exportacion.archivos.proyecto.path"));
+		FileInputStream fis = new FileInputStream(env.getProperty(PROPERTY_EXPORTACION_PROYECTO_PATH));
 		XSSFWorkbook workbook = new XSSFWorkbook(fis);
 		XSSFSheet sheetAt0 = workbook.getSheetAt(0);
 		service.generarExcel(sheetAt0);
@@ -61,8 +72,7 @@ public class ExportarProyectoController {
 		workbook.write(os);
 		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
 		response.setContentType("application/vnd.ms-excel");
-		response.setHeader("content-disposition",
-				"attachment; filename = " + "proyectos_en_priorizacion.xlsx");
+		response.setHeader("content-disposition", "attachment; filename = " + PROYECTOS_EN_PRIORIZACION_XLSX);
 
 		IOUtils.copy(is, response.getOutputStream());
 		response.flushBuffer();
@@ -72,6 +82,30 @@ public class ExportarProyectoController {
 		workbook.close();
 
 		proyectoService.updatePriorizarProyectos(DSUtils.getMailDelUsuarioDelToken(token));
+	}
+
+	@RequestMapping(path = "/proyectos/reporte", method = RequestMethod.GET)
+	public void reporteProyectos(HttpServletResponse response,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws IOException, ESBException,
+			JMSException, ParseException, JOSEException, SignatureVerificationException {
+
+		FileInputStream fis = new FileInputStream(env.getProperty(PROPERTY_REPORTE_PROYECTO_PATH));
+		XSSFWorkbook workbook = new XSSFWorkbook(fis);
+		XSSFSheet sheetAt0 = workbook.getSheetAt(0);
+		service.generarExcelReporte(sheetAt0, DSUtils.getMailDelUsuarioDelToken(token));
+
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		workbook.write(os);
+		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+		response.setContentType("application/vnd.ms-excel");
+		response.setHeader("content-disposition", "attachment; filename = " + REPORTE_PROYECTOS_XLSX);
+
+		IOUtils.copy(is, response.getOutputStream());
+		response.flushBuffer();
+		os.close();
+		is.close();
+		fis.close();
+		workbook.close();
 	}
 
 	@RequestMapping(path = "resumenProyectos", method = RequestMethod.GET)

@@ -32,6 +32,7 @@ public interface ESBEvent {
     public static final String ACTION_CANCEL = "CANCEL";
     public static final String ACTION_ETIQUETAR = "ETIQUETAR";
     public static final String ACTION_PRESENTAR = "PRESENTAR";
+    public static final String ACTION_PRESENTAR_DETALLE = "PRESENTAR_DETALLE";
     public static final String ACTION_PRESENTAR_TODOS = "PRESENTAR_TODOS";
     public static final String ACTION_CANCELAR_PRIORIZACION = "CANCELAR_PRIORIZACION";
     public static final String ACTION_INICIAR_PRIORIZACION = "INICIAR_PRIORIZACION";

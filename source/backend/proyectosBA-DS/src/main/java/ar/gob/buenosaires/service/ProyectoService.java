@@ -63,4 +63,6 @@ public interface ProyectoService {
 	Proyecto etiquetarProyecto(EtiquetasMsg etiquetas, String id, String string) throws ESBException, JMSException;
 
 	List<String> getPrioridadesJefatura() throws ESBException, JMSException;
+
+	Proyecto presentarDetalleProyecto(Proyecto proyecto, String mailDelUsuarioDelToken) throws ESBException, JMSException;
 }

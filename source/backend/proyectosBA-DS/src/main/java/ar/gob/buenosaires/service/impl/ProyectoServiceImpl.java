@@ -332,4 +332,20 @@ public class ProyectoServiceImpl implements ProyectoService {
 		return prioridadesJefatura;
 	}
 
+	@Override
+	public Proyecto presentarDetalleProyecto(Proyecto proyecto, String mailDelUsuarioDelToken) throws ESBException, JMSException {
+		ProyectoReqMsg reqMsg = new ProyectoReqMsg();
+		List<Proyecto> responseProyectos = new ArrayList<>();
+		reqMsg.setProyecto(proyecto);
+		reqMsg.setEmailUsuario(mailDelUsuarioDelToken);
+
+		getLogger().info("Mensaje creado para presentar el Detalle un Proyecto : {}", reqMsg.toString());
+		EsbBaseMsg response = esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_PRESENTAR_DETALLE,
+				ProyectoRespMsg.class);
+		if (response.getEventType().equalsIgnoreCase(ProyectoRespMsg.PROYECTO_TYPE)) {
+			responseProyectos = ((ProyectoRespMsg) response).getProyectos();
+		}
+		return getProyectoFromResponse(responseProyectos);
+	}
+
 }

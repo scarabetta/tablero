@@ -17,11 +17,15 @@ import ar.gob.buenosaires.esb.handler.ExportacionProyectoViewHandler;
 import ar.gob.buenosaires.esb.handler.JurisdiccionHandler;
 import ar.gob.buenosaires.esb.handler.ObjetivoJurisdiccionalHandler;
 import ar.gob.buenosaires.esb.handler.ObjetivoOperativoHandler;
+import ar.gob.buenosaires.esb.handler.ObraHandler;
 import ar.gob.buenosaires.esb.handler.OtrasEtiquetasHandler;
 import ar.gob.buenosaires.esb.handler.PoblacionMetaHandler;
+import ar.gob.buenosaires.esb.handler.PresupuestoPorMesHandler;
 import ar.gob.buenosaires.esb.handler.ProyectoHandler;
+import ar.gob.buenosaires.esb.handler.ReporteProyectosViewHandler;
 import ar.gob.buenosaires.esb.handler.RolHandler;
 import ar.gob.buenosaires.esb.handler.TemaTransversalHandler;
+import ar.gob.buenosaires.esb.handler.TipoObraHandler;
 import ar.gob.buenosaires.esb.handler.UsuarioHandler;
 
 @Configuration
@@ -144,5 +148,33 @@ public class SpringConfigEsb {
 		ExportacionProyectoViewHandler exportacionProyectoViewHandlerHandler = new ExportacionProyectoViewHandler();
 		((EsbServer)consumer).addHandler(exportacionProyectoViewHandlerHandler);
 		return exportacionProyectoViewHandlerHandler;
+	}
+	
+	@Bean
+	public ObraHandler getObraHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		ObraHandler obraHandler = new ObraHandler();
+		((EsbServer)consumer).addHandler(obraHandler);
+		return obraHandler;
+	}
+	
+	@Bean
+	public TipoObraHandler getTipoObraHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		TipoObraHandler obraHandler = new TipoObraHandler();
+		((EsbServer)consumer).addHandler(obraHandler);
+		return obraHandler;
+	}
+	
+	@Bean
+	public PresupuestoPorMesHandler getPresupuestoPorMesHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		PresupuestoPorMesHandler presupuestoPorMesHandler = new PresupuestoPorMesHandler();
+		((EsbServer)consumer).addHandler(presupuestoPorMesHandler);
+		return presupuestoPorMesHandler;
+	}
+
+	@Bean
+	public ReporteProyectosViewHandler getReporteProyectosViewHandler(@Qualifier("EsbServerPBA") EsbConsumer consumer){
+		ReporteProyectosViewHandler reporteProyectosViewHandlerHandler = new ReporteProyectosViewHandler();
+		((EsbServer)consumer).addHandler(reporteProyectosViewHandlerHandler);
+		return reporteProyectosViewHandlerHandler;
 	}
 }
