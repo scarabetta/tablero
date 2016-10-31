@@ -132,8 +132,8 @@
                                                   <ul id="addproject">
                                                       <li class="listProject" ng-repeat="proyecto in objO.proyectos | filter:homeCtrl.search.searchText.text">
                                                           <span class="thirdLabel columnRight">
-                                                              <span class="nameObj" ng-click="homeCtrl.viewProject(proyecto.idProyecto)">{{proyecto.nombre}}  </span>
-                                                              <span class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-if="proyecto.estado !== 'En Priorización' && !(homeCtrl.rolUser === 'Operador de jurisdicción' && (proyecto.estado === 'Demorado' || proyecto.estado === 'Rechazado'))" ng-click="homeCtrl.editProject(proyecto.idProyecto)" data-placement="top" title="" data-original-title="Editar"></span>
+                                                              <span class="nameObj" ng-click="homeCtrl.viewProject(proyecto)">{{proyecto.nombre}}  </span>
+                                                              <span class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-if="homeCtrl.canEdit(proyecto)" ng-click="homeCtrl.editProject(proyecto)" data-placement="top" title="" data-original-title="Editar"></span>
                                                               <i ng-if="homeCtrl.rolUser === 'Secretaría'" class="glyphicon glyphicon-tag" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
                                                           </span>
 

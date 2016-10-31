@@ -12,6 +12,8 @@ module Home {
         private idjurisdiccionKey = 'idJurisdiccionStorage';
         private currentUserKey = 'currentUser';
         private rolUser: string;
+        private userOperador: boolean;
+        private userSecretaria: boolean;
 
         /*@ngInject*/
         constructor(private services:GeneralServices, private $scope:ng.IScope, private $compile: ng.ICompileService, private localStorageService:angular.local.storage.ILocalStorageService,
@@ -22,6 +24,16 @@ module Home {
             var userData = this.localStorageService.get(this.currentUserKey);
             var user = <Usuario>userData;
             this.rolUser = user.roles[0].nombre;
+            if (user) {
+              user.roles.forEach((rol) => {
+                  if (rol.nombre === "Operador de jurisdicción") {
+                    this.userOperador = true;
+                  }
+                  if (rol.nombre === "Secretaría") {
+                    this.userSecretaria = true;
+                  }
+              });
+            }
             (<any>$('#simple-menu')).sidr({
               body: '.styleMenu',
               onOpen: function(){
@@ -254,23 +266,30 @@ module Home {
           }
         }
 
-        viewProject(idProject) {
+        viewProject(proyecto) {
           if (angular.element(document.getElementsByTagName('viewproject')).length) {
               var projectTag = document.getElementsByTagName('viewproject');
               angular.element(projectTag).remove();
           }
-          var referralDivFactory = this.$compile( " <viewproject idproject='" + idProject + "'></viewproject> " );
+          var referralDivFactory = this.$compile( " <viewproject idproject='" + proyecto.idProyecto + "'></viewproject> " );
           var referralDiv = referralDivFactory(this.$scope);
-          var containerDiv = document.getElementById("proyecto-" + idProject);
+          var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
           angular.element(containerDiv).append(referralDiv);
         }
 
-        editProject(idProject) {
+        editProject(proyecto) {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile( " <formproject idproject='" + idProject + "'></formproject> " );
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById("proyecto-" + idProject);
-            angular.element(containerDiv).append(referralDiv);
+            let estado = proyecto.estado;
+            if ((this.userOperador && (estado === 'Completo' || estado === 'Incompleto' || estado === 'Presentado' || estado === 'Verificado' || estado === 'Cancelado'))
+            || (this.userSecretaria && (estado === 'Presentado' || estado === 'Verificado' || estado === 'Rechazado' || estado === 'Cancelado' || estado === 'Demorado'
+            || estado === 'Pre Aprobado' || estado === 'Completo' || estado === 'Incompleto' || estado === 'Aprobado' || estado === 'Modificable'))) {
+              var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "'></formproject> " );
+              var referralDiv = referralDivFactory(this.$scope);
+              var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
+              angular.element(containerDiv).append(referralDiv);
+            } else {
+              this.viewProject(proyecto);
+            }
           } else {
             var notificationData = {
               "type" : "warning",
@@ -447,6 +466,11 @@ module Home {
           this.services.presentAllProject(this.localStorageService.get(this.idjurisdiccionKey)).then((data) => {
             this.$state.reload();
           });
+        }
+
+        canEdit(proyecto) {
+          return proyecto.estado !== 'En Priorización' && !(this.rolUser === 'Operador de jurisdicción'
+          && (proyecto.estado === 'Demorado' || proyecto.estado === 'Rechazado'));
         }
 
     }

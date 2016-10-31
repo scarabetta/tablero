@@ -7,6 +7,7 @@ import {HitoObra} from "../../models/jurisdiccion";
 import {Obra} from "../../models/jurisdiccion";
 import {Expediente} from "../../models/jurisdiccion";
 import {PresupuestoPorAnioObra} from "../../models/jurisdiccion";
+//import {Jurisdiccion} from "../../models/jurisdiccion";
 const template = require('./project-obra.html');
 
 module Home {

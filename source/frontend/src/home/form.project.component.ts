@@ -51,6 +51,8 @@ module Home {
       private datePickersFin = [];
       private monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+      private userOperador:boolean;
+      private userSecretaria:boolean;
 
       private datePickerInicio = {
         status: false
@@ -72,6 +74,10 @@ module Home {
             user.roles.forEach((rol) => {
                 if (rol.nombre === "Operador de jurisdicción") {
                   this.flagForSaveDraft = true;
+                  this.userOperador = true;
+                }
+                if (rol.nombre === "Secretaría") {
+                  this.userSecretaria = true;
                 }
             });
           }
@@ -148,7 +154,7 @@ module Home {
                     ['Plan plurianual de Inversión Mantenimiento', this.currentProject.presupuestoPPIMantenimiento ? this.currentProject.presupuestoPPIMantenimiento : '0'],
                     ['Plan plurianual de Inversión ACUMAR', this.currentProject.presupuestoACUMAR ? this.currentProject.presupuestoACUMAR : '0']
                   ];
-              if (data.presupuestosPorMes) {
+              if (data.presupuestosPorMes.length > 0) {
                 scope.curve = [];
                 data.presupuestosPorMes.forEach(function(entry) {
                   var newMonth = scope.returnMonthForTable(entry);
@@ -379,12 +385,13 @@ module Home {
       }
 
       showEstadoBox() {
-        return (this.actionMove === 'Demorar' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Rechazar'
-                || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado');
+        return this.showPresuAprobadoBox() || this.showPrioridadJefaturaBox();
       }
 
       showPresuAprobadoBox() {
-        return (this.actionMove === 'Pre Aprobado' || this.actionMove === 'Pre-aprobar');
+        return (this.actionMove === 'Pre Aprobado' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Aprobado' || this.actionMove === 'Aprobar'
+                || this.actionMove === 'D. Completo' || this.actionMove === 'D. Incompleto' || this.actionMove === 'D. Presentado' || this.actionMove === 'D. Rechazado'
+                || this.actionMove === 'D. Modificable');
       }
 
       showPrioridadJefaturaBox() {
@@ -729,6 +736,13 @@ module Home {
 
       showDeleteButton() {
         return this.currentProject.idProyecto && (this.currentProject.estado === 'Incompleto' || this.currentProject.estado === 'Completo' || this.currentProject.estado === null);
+      }
+
+      showDetailsTab() {
+        return (this.userOperador && (this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Completo'
+        || this.currentProject.estado === 'Incompleto' || this.currentProject.estado === 'Rechazado' || this.currentProject.estado === 'Modificable'))
+        || (this.userSecretaria && (this.currentProject.estado === 'Presentado' || this.currentProject.estado === 'Aprobado'
+        || this.currentProject.estado === 'Modificable'));
       }
 
     }
