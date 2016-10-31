@@ -18,7 +18,6 @@ module Home {
       } else {
         services.getTemaTransversal(this.currentcrosstopicid).then((data) => {
           this.currentCrossTopic = data;
-          console.log(this.currentCrossTopic);
         });
         this.title = "Modificar tema transversal";
       }

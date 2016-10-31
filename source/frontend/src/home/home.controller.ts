@@ -25,12 +25,12 @@ module Home {
             (<any>$('#simple-menu')).sidr({
               body: '.styleMenu',
               onOpen: function(){
-                  (<any>$(".insideClass")).addClass('col-md-10 col-sm-10');
+                  (<any>$(".insideClass")).addClass('col-md-10 col-sm-9');
                   (<any>$("sidemenu")).css( "position", "relative" );
               },
               onClose: function(){
                 (<any>$("sidemenu")).css( "position", "absolute" );
-                (<any>$(".insideClass")).removeClass('col-md-10 col-sm-10');
+                (<any>$(".insideClass")).removeClass('col-md-10 col-sm-9');
               }
             });
             (<any>$("document")).ready(function($){
@@ -429,7 +429,6 @@ module Home {
           });
           if (projects === 0 && this.$state.current.name === 'home.tree'
             && ((!(<any>this.$state.params).fromState) || (<any>this.$state.params).fromState !== 'home')) {
-            console.log(projects);
             this.$state.go('home');
           }
         }

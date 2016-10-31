@@ -13,7 +13,6 @@ module Upload {
         /*@ngInject*/
         constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private localStorageService:angular.local.storage.ILocalStorageService,
           private $compile: ng.ICompileService, private $scope:ng.IScope, private $http: ng.IHttpService) {
-          console.log('upload');
           this.importURL = config.authBaseUrl + 'api/importar/proyecto/priorizado';
           this.idJurisdiccion = JSON.stringify(this.localStorageService.get(this.idjurisdiccionKey));
         }
@@ -28,22 +27,18 @@ module Upload {
             headers: {'Content-Type': undefined}
           })
           .then((response) => {
-            console.log(response);
             this.nombreArchivoError = (<any>response.data).nombreArchivoError;
             this.importProjects();
-          })
-          .catch((response) => console.log(response.data));
+          });
         }
 
         importProjects() {
           this.$http.get(this.importURL + "/" +  this.nombreArchivoError + "/" + this.idJurisdiccion)
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
                 this.$state.go('priorization', {'results': response.data});
             }
-          })
-          .catch((response) => console.log(response.data));
+          });
         }
 
     }

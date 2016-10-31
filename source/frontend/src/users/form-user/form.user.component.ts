@@ -16,7 +16,6 @@ module Home {
 
     /*@ngInject*/
     constructor(private services:GeneralServices, private $state:ng.ui.IStateService, private $compile: ng.ICompileService, private $scope:ng.IScope) {
-      console.log('New user form');
 
       if (!this.currentuserid) {
         this.title = "Nuevo usuario";
@@ -34,7 +33,6 @@ module Home {
       } else {
         services.getUser(this.currentuserid).then((data) => {
           this.currentuser = data;
-          console.log(this.currentuser);
           $('#mail').prop('readonly', true);
         });
         this.title = "Modificar usuario";
@@ -63,7 +61,6 @@ module Home {
     }
 
     submit() {
-      console.log(this.currentuser);
       if ((this.currentuser.roles[0].nombre === 'Operador de jurisdicción') && (this.currentuser.jurisdicciones === null || this.currentuser.jurisdicciones === undefined || this.currentuser.jurisdicciones.length === 0)) {// tslint:disable-line
         var notificationData = {
           "type" : "warning",

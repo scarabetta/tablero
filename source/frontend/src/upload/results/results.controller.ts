@@ -30,13 +30,7 @@ module Results {
             this.incompletedProjects = this.results.proyectoProcesados.filter((project) => {
               return (project.estado === "Incompleto");
             });
-
-            console.log(this.completedProjects);
-            console.log(this.incompletedProjects);
-            console.log(this.wrongProjects);
-
             this.errorURL = config.authBaseUrl + 'api/importar/download/error';
-            console.log(this.errorURL);
             this.idJurisdiccion = JSON.stringify(this.localStorageService.get(this.idjurisdiccionKey));
           }
 
@@ -56,14 +50,11 @@ module Results {
       }());
 
       downloadErrorsFile() {
-        console.log('Descargando archivo');
-
         this.$http.get(this.errorURL + "/" + this.results.nombreArchivoError + "/" + this.idJurisdiccion, {
           transformRequest: angular.identity,
           headers: {'Content-Type': undefined},
           responseType:'arraybuffer'
         }).then((response) => {
-          console.log(response);
            var addZero = function(i) {
              if (i < 10) {
                  i = "0" + i;
@@ -79,8 +70,7 @@ module Results {
            var fileName = 'PIG_ProyectosNoImportados_' + year + month + day
                            + '_' + hour + minutes + '.xlsx';
            this.saveData(response.data, fileName);
-        })
-        .catch((response) => console.log(response.data));
+        });
 
       }
   }

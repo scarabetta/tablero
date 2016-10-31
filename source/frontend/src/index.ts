@@ -16,6 +16,13 @@ import 'ng-onboarding.css';
 import 'loader.js';
 import 'pin.js';
 import 'jquery.sidr.min.js';
+import 'usig.autocompleter.full.js';
+import 'usig.autocompleter.dialog.css';
+import 'usig.recorridos.js';
+import 'usig.mapainteractivo.js';
+import 'handsontable.full.css';
+import 'handsontable.full.js';
+import 'ngHandsontable.js';
 require("expose?$!jquery");
 require("expose?jQuery!jquery");
 

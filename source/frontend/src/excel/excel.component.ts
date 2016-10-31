@@ -28,6 +28,11 @@ module App {
        });
     }
 
+    downloadAllProjects() {
+       this.services.downloadAllProjects().then((data) => {
+          this.saveData(data, 'PIG_Proyectos.xlsx');
+       });
+    }
   }
 
   export let excelComponent = {

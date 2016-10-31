@@ -10,8 +10,6 @@ module Priorization {
       /*@ngInject*/
       constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private $scope:ng.IScope, private $compile: ng.ICompileService) {
         this.results = (<any>$state.params).results;
-        console.log($state.params);
-        console.log(this.results);
         this.showNotifications();
         services.getValuesPriorization().then((data) => {
           this.dataResult = data;
@@ -60,21 +58,17 @@ module Priorization {
           this.results.proyectoProcesados.forEach((p) => {
             if (p.mensajeErrores && p.mensajeErrores.length > 0) {
               projectsWithErrors++;
-              console.log(projectsWithErrors);
             }
           });
           if (this.results.erroresDeSolapa.length > 0 || projectsWithErrors > 0 || this.results.errorGenerico) {
-            console.log('Hay errores');
             this.showErrorNotification();
           }
-          console.log('into showNotifications');
           this.results.proyectoProcesados.forEach((p) => {
             if (p.estado === "Pre Aprobado") {
               approvedProjects++;
             }
           });
           if (approvedProjects > 0 && this.results.importeAprobado) {
-            console.log('No hay errores');
             this.showOkNotification(approvedProjects, this.results.importeAprobado);
           }
         }
@@ -103,7 +97,6 @@ module Priorization {
           }
         });
         errores = errores + "</ul>";
-        console.log(errores);
         var notificationDataIncompleto = {
           "type" : "warning",
           "icon" : "exclamation-sign",

@@ -26,6 +26,9 @@ module.exports = {
             "circle": __dirname + "/assets/styles/circle.css",
             "BAstrap.css": __dirname + "/assets/styles/bastrap3/bastrap.css",
             "usig.autocompleter.full.js": __dirname + "/assets/usig-3.1/usig.AutoCompleterFull.min.js",
+            "usig.autocompleter.dialog.css": __dirname + "/assets/usig-3.1/css/usig.AutoCompleterDialog.bootstrap.css",
+            "usig.recorridos.js": __dirname + "/assets/usig-3.1/usig.RecorridosFull.min.js",
+            "usig.mapainteractivo.js": __dirname + "/assets/usig-3.1/usig.MapaInteractivo.min.js",
             "angular-touch.js" : __dirname + "/node_modules/angular-touch/angular-touch.min.js",
             "angular-carousel.js" : __dirname + "/assets/angular-carousel/angular-carousel.js",
             "angular-carousel.css" : __dirname + "/assets/angular-carousel/angular-carousel.css",
@@ -40,7 +43,10 @@ module.exports = {
             "angular-animate.js" : __dirname + "/node_modules/angular-animate/angular-animate.min.js",
             "angular-validator.min.js" : __dirname + "/assets/angular-validator.min.js",
             "pin.js" : __dirname + "/assets/jquery.pin.min.js",
-            "jquery.sidr.min.js" : __dirname + "/node_modules/sidr/dist/jquery.sidr.min.js"
+            "jquery.sidr.min.js" : __dirname + "/node_modules/sidr/dist/jquery.sidr.min.js",
+            "handsontable.full.css" : __dirname + "/node_modules/handsontable/dist/handsontable.full.css",
+            "handsontable.full.js" : __dirname + "/node_modules/handsontable/dist/handsontable.full.js",
+            "ngHandsontable.js" : __dirname + "/node_modules/ng-handsontable/dist/ngHandsontable.min.js"
         }
     },
 
@@ -67,7 +73,9 @@ module.exports = {
             jQuery: 'jquery',
             $: 'jquery',
             jquery: 'jquery',
-            _: 'lodash'
+            _: 'lodash',
+            Handsontable: 'handsontable',
+            numbro: 'numbro'
         }),
         new CopyWebpackPlugin([
             {from: "assets/usig-3.1/images", to: "images"},

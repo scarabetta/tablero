@@ -1,5 +1,7 @@
 <li id="projectFormID">
 <div class="contentNewProyect">{{formCtrl.title}}</div>
+<uib-tabset active="activeFormProyect" >
+  <uib-tab index="0" heading="Información inicial">
     <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
        <div class="col-md-3 col-sm-12 col-xs-12 pull-right contentAction" id="moveprojectid">
             <!-- <div class="dropdown content-actionForm">
@@ -16,6 +18,7 @@
                 </ul>
             </div> -->
             <div class="contentProgress content-actionForm">
+            <div class="formProgressTitle">Información inicial</div>
                 <div class="titleProgress">Progreso de creación</div>
                 <div class="row">
                     <div class="c100 p{{formCtrl.percentForm}} centerProgress coloGreen">
@@ -148,48 +151,48 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-2 col-sm-2 col-xs-12 add-line">
+                        <div class="col-md-2 col-sm-2 col-xs-3 add-line">
                           <label for="año">Año</label>
                         </div>
-                        <div class="col-md-4 col-sm-4 col-xs-11 add-line">
+                        <div class="col-md-4 col-sm-4 col-xs-4 add-line">
                           <label for="fondo solicitado GCBA" style="padding-left: 24px;">Fondo solicitado GCBA</label>
                         </div>
-                        <div class="col-md-4 col-sm-5 col-xs-11 add-line">
+                        <div class="col-md-4 col-sm-5 col-xs-4 add-line">
                           <label for="fondo de otras fuentes" style="padding-left: 24px;">Fondo de otras fuentes</label>
                         </div>
                       </div>
                       <div class="row" ng-repeat="p in formCtrl.currentProject.presupuestosPorAnio">
-                        <div class="form-group col-md-2 col-sm-2 col-xs-12 add-line">
+                        <div class="form-group col-md-2 col-sm-2 col-xs-3 add-line">
                           <input type="number" class="form-control" id="year" ng-value="year" ng-model="p.anio" disabled="true">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-4 col-xs-11 add-line">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-4 add-line">
                           <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudget()" ng-model="p.presupuesto">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-4 col-xs-11 add-line">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-4 add-line">
                           <input type="text" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="15" class="form-control" id="meta" ng-change="formCtrl.getTotalBudgetOtherSources()" ng-model="p.otrasFuentes">
                         </div>
                       </div>
                       <div class="row">
-                        <div class="form-group col-md-2 col-sm-2 totalPresupuesto">
+                        <div class="form-group col-md-2 col-sm-2 col-xs-3 totalPresupuesto">
                           <label for="subtotal">SUBTOTAL</label>
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-4">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-4">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudget">
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-4">
+                        <div class="form-group col-md-4 col-sm-4 col-xs-4">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="formCtrl.totalBudgetOtherSources">
                         </div>
                       </div>
                       <div class="row contentTotal">
-                        <div class="form-group col-md-offset-4 col-md-2 col-sm-2 col-sm-offset-4 totalPresupuesto">
+                        <div class="form-group col-md-offset-4 col-md-2 col-sm-2  col-xs-3 col-sm-offset-4 totalPresupuesto">
                           <label for="total">TOTAL</label>
                         </div>
                         <i class="glyphicon glyphicon-usd" aria-hidden="true"></i>
-                        <div class="form-group col-md-4 col-sm-4 input">
+                        <div class="form-group col-md-4 col-sm-4  col-xs-8 input">
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-value="formCtrl.totalBudget + formCtrl.totalBudgetOtherSources">
                         </div>
                       </div>
@@ -265,7 +268,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                         <div class="form-group col-md-8 col-sm-12" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Dirección'">
                             <label for="direccion">Dirección</label>
                             <!-- <input type="text" class="form-control" id="direccion" maxlength="512" placeholder="Ingresar dirección" ng-model="formCtrl.currentProject.direccion"> -->
-                            <usigautocomplete></usigautocomplete>
+                            <usigautocomplete model="formCtrl.currentProject.direccion"></usigautocomplete>
                         </div>
                         <div class="form-group col-md-8 col-sm-12" ng-if="formCtrl.currentProject.tipoUbicacionGeografica == 'Comunas'">
                             <label for="comunas">Comunas</label>
@@ -407,5 +410,180 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
         <alertmodal modal-id="cancelAlert" modal-title="Aviso" modal-body="Se van a perder los datos ingresados. ¿Desea Continuar?" on-accept="formCtrl.cancel()"></alertmodal>
         <alertmodal modal-id="budgetAlert" modal-title="Aviso" modal-body="Vas a perder la información ingresada en los presupuestos. ¿Desea Continuar?" on-accept="formCtrl.continueChangeBudget(formCtrl.currentProject.fechaInicio, formCtrl.currentProject.fechaFin)" on-cancel="formCtrl.cancelDateUpdate()"></alertmodal>
     </div>
-</div>
+  </div>
+  </uib-tab>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <uib-tab index="1" heading="Información detallada">
+    <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
+       <div class="col-md-3 col-sm-12 col-xs-12 pull-right contentAction" id="obraprojectid">
+            <div class="contentProgress content-actionForm">
+            <div class="formProgressTitle">Información detallada</div>
+                <!-- <div class="titleProgress">Progreso de creación</div>
+                <div class="row">
+                    <div class="c100 p{{formCtrl.percentForm}} centerProgress coloGreen">
+                      <span>{{formCtrl.percentForm}}%</span>
+                      <div class="slice">
+                        <div class="bar"></div>
+                        <div class="fill"></div>
+                      </div>
+                    </div>
+                </div>
+                <div class="dataProgress">{{formCtrl.countForm}}</div> -->
+            </div><div class="dropdown content-actionForm contentButtonRight">
+                <button class="btn btn-default dropdown-toggle fullButtonRight" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Estado: {{formCtrl.actionMove}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropEstado" aria-labelledby="dropdownMenu1">
+                    <li ng-repeat="status in formCtrl.moveOptions"><a ng-click="formCtrl.setState(status)">{{status}}</a></li>
+                    <!-- <li><a href="#">Pre aprobar</a></li>
+                    <li><a href="#">Cancelar</a></li>
+                    <li><a href="#">Rechazar</a></li> -->
+                </ul>
+              </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <hr class="line-inner-proyect">
+            </div>
+
+            <div class="dropdown content-actionForm contentButtonRight">
+              <button type="button" ng-click="formCtrl.saveDataDetailPresent()" class="btn btn-success btn-lg fullButtonRight">Guardar y Presentar</button>
+              <button type="button" ng-click="formCtrl.saveDataDetailDraft()" form="principalForm" class="btn btn-default fullButtonRight" id="draftButton fullButtonRight">Guardar Borrador</button>
+              <button type="button" class="btn btn-default fullButtonRight"  data-toggle="modal" data-target="#cancelAlertDetail">Cancelar cambios</button>
+            </div>
+
+        </div>
+
+
+    <div class="col-md-9 col-sm-12 col-xs-12">
+        <form role="form" id="principalForm" ng-submit="formCtrl.saveProject()" class="contentDetailProject">
+                <div class="col-md-12 agrupador">
+                    <div class="ic-title ic-caminoCritico"></div>&nbsp;Camino crítico: Hitos y Obras
+                    <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive gridContent">
+                          <div class="obrasList">
+                            <div class="itemObra" ng-repeat="obra in formCtrl.currentProject.obras" data-toggle="modal" data-target="#obraModal" ng-click="formCtrl.editObra(obra.idObra)">
+                              <span>{{obra.nombre}}</span>
+                            </div>
+                          </div>
+                          <table class="table tableContentForm">
+                            <thead>
+                              <tr>
+                                <th>Hito</th>
+                                <th>Inicio</th>
+                                <th>Fin</th>
+                                <!-- <th>Estado</th> -->
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-if="formCtrl.currentProject.hitos && formCtrl.currentProject.hitos.length > 0" ng-repeat="hito in formCtrl.currentProject.hitos track by $index">
+                                <td><input type="text" class="form-control" id="name" maxlength="512" required="" ng-model="hito.nombre"></td>
+                                <td>
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" required/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerInicio($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" required/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerFin($index)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div class="dropdown">
+                                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownAction" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
+                                  </button>
+                                  <ul class="dropdown-menu" aria-labelledby="dropdownAction">
+                                    <!-- <li><a href="">Agrupar con...</a></li>
+                                    <li><a href="">Dependiente de...</a></li> -->
+                                    <li><a ng-click="formCtrl.removeHito($index)">Eliminar</a></li>
+                                  </ul>
+                                </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                            <button id="buttonHito" type="button" class="btn btn-default" data-toggle="modal" data-target="#hitoModal" ng-click="formCtrl.addHito()">
+                              <div class="icNew" title="Agregar"></div>
+                              <span>Nuevo hito</span>
+                            </button>
+                             <button id="buttonObra" type="button" class="btn btn-default" data-toggle="modal" data-target="#obraModal" ng-click="formCtrl.addObra()">
+                              <div class="icNew" title="Agregar"></div>
+                              <span>Nueva obra</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <br>
+                <div class="col-md-12 agrupador">
+                    <div class="ic-title ic-presupuesto"></div>&nbsp;Presupuesto
+                    <p class="reference">Podés copiar y pegar muchos desde Excel en un solo paso. </p>
+                    <p class="reference">Si seleccionás en Excel varias celdas que estén una debajo de la otra, las copias y pegás sobre cualquier de los siguientes casilleros, se distribuirán a partir  de ese casillero hacia abajo. </p>
+                    <div class="row">
+                    <div class="typeTableContainer col-md-6 col-sm-12 col-xs-12">
+                    <label for="direccion">TIPO DE GASTO (TOTAL DEL PROYECTO)</label>
+                      <div class="titleTable"></div>
+                      <hot-table col-headers="true" row-headers="true" datarows="formCtrl.type" column-summary="formCtrl.columnSummary" hot-id="type">
+                        <hot-column width="250" read-only></hot-column>
+                        <hot-column width="100"></hot-column>
+                      </hot-table>
+                    </div>
+
+                    <div class="typeTableContainer col-md-6 col-sm-12 col-xs-12">
+                    <label for="direccion">CURVA DE INVERSIÓN</label>
+                      <div class="titleTable"></div>
+                      <hot-table col-headers="true" row-headers="true" datarows="formCtrl.curve" column-summary="formCtrl.columnSummary" hot-id="curve">
+                        <hot-column width="150" read-only></hot-column>
+                        <hot-column width="100"></hot-column>
+                      </hot-table>
+                    </div>
+                    </div>
+                </div>
+            <br>
+            <button type="button" ng-click="formCtrl.saveDataDetailPresent()" class="btn btn-success btn-lg">Guardar y Presentar</button>
+            <button type="button" ng-click="formCtrl.saveDataDetailDraft()" class="btn btn-default" id="draftButton">Guardar Borrador</button>
+            <button  type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlertDetail">Cancelar cambios</button>
+        </form>
+
+        <alertmodal modal-id="cancelAlertDetail" modal-title="Aviso" modal-body="Se van a perder los datos ingresados. ¿Desea Continuar?" on-accept="formCtrl.cancel()"></alertmodal>
+    </div>
+  </div>
+
+
+  </uib-tab>
+</uib-tabset>
 </li>

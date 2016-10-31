@@ -59,6 +59,13 @@ export interface Proyecto {
   poblacionesMeta: PoblacionMeta[];
   comunas: Comuna[];
   presupuestosPorAnio: Presupuesto[];
+  presupuestoGastosCorrientes: number;
+  presupuestoPPIObra: number;
+  presupuestoPPIMantenimiento: number;
+  presupuestoACUMAR: number;
+  presupuestosPorMes: PresupuestoPorMes[];
+  hitos: HitoProyecto[];
+  obras: Obra[];
 }
 
 export interface ProyectoProcesado {
@@ -71,8 +78,19 @@ export interface ProyectoProcesado {
 
 export interface IndicadorEstrategico {
   idIndicadorEstrategico: number;
+  ObjetivoJurisdiccional: ObjetivoJurisdiccional;
+  metas: Meta[];
+  medicionesHistoricas: MedicionHistorica[];
+  semaforizaciones: Semaforizacion[];
   nombre: string;
   descripcion: string;
+  metodoCalculo: string;
+  tipoIndicador: string;
+  sentido: string;
+  frecuencia: string;
+  formatoNumero: string;
+  unidadDeMedida: string;
+  estado: string;
 }
 
 export interface Presupuesto {
@@ -159,4 +177,141 @@ export interface CompromisoPublico {
 export interface OtraEtiqueta {
   idEtiqueta: number;
   etiqueta: string;
+}
+
+export interface ArchivoAdjuntoObra {
+  idArchivoObra: number;
+  obra: Obra;
+  nombre: string;
+  descripcion: string;
+  fuente: string;
+  fecha: Date;
+}
+
+export interface Expediente {
+  idExpediente: number;
+  obra: Obra;
+  descripcion: string;
+  sigla: string;
+  numero: number;
+  anio: number;
+}
+
+export interface HitoObra {
+  idHito: number;
+  obra: Obra;
+  nombre: string;
+  fechaInicio: Date;
+  fechaFin: Date;
+  estado: string;
+  esImportante: boolean;
+}
+
+export interface HitoProyecto {
+  idHito: number;
+  proyecto: Proyecto;
+  hitoPadre: HitoProyecto;
+  hitosHijos: HitoProyecto[];
+  hitoPredecesor: HitoProyecto;
+  fechaInicio: Date;
+  fechaFin: Date;
+  estado: string;
+  presupuesto: number;
+  nombre: string;
+}
+
+export interface MedicionHistorica {
+  idMedicionHistoricaIndicador: number;
+  indicadorEstrategico: IndicadorEstrategico;
+  anio: number;
+  medicion: string;
+}
+
+export interface Meta {
+  idMeta: number;
+  indicadorEstrategico: IndicadorEstrategico;
+  anio: number;
+  meta: string;
+  origen: string;
+  referente: string;
+  metodoRecoleccion: string;
+  sistemaRecoleccion: string;
+  pesoRelativo: number;
+  justificacionparametrointernacional: number;
+  justificacionParametroNac: number;
+  justificacionResultadoHistorico: number;
+  justificacionPresupuesto: number;
+  justificacionInstituciones: number;
+}
+
+export interface Obra {
+  idObra: number;
+  idSubtipoObraAux:number;
+  proyecto: Proyecto;
+  subtipoObra: SubtipoObra;
+  expedientes: Expediente[];
+  presupuestosPorAnio: PresupuestoPorAnioObra[];
+  archivosAdjuntos: ArchivoAdjuntoObra[];
+  hitos: HitoObra[];
+  estado: string;
+  nombre: string;
+  descripcion: string;
+  referenteEjecucion: string;
+  presupuestoTotal: number;
+  tipoUbicacion: string;
+  direccion: string;
+  direccionDesde: string;
+  direccionHasta: string;
+  detalleUbicacion: string;
+  usigSeccion: string;
+  usigManzana: string;
+  usigParcela: string;
+  usigBarrio: string;
+  usigUtiu: string;
+  usigDistritoEscolar: string;
+  usigAreaHospitalaria: string;
+  usigComisaria: string;
+  usigTransporteCercano: string;
+  usigCPU: string;
+  comuna: Comuna;
+  prioridadJefatura: string;
+  informacionRelevamiento: string;
+  publicableTableroElectronico: number;
+  direccionUnidad: string;
+}
+
+export interface PresupuestoPorAnioObra {
+  idPresupuestoPorAnio: number;
+  obra: Obra;
+  anio: number;
+  presupuesto: number;
+}
+
+export interface PresupuestoPorMes {
+  idPresupuestoPorMes: number;
+  proyecto: Proyecto;
+  anio: number;
+  mes: number;
+  presupuesto: number;
+}
+
+export interface Semaforizacion {
+  idIndicadorSemaforo: number;
+  indicadorEstrategico: IndicadorEstrategico;
+  anio: number;
+  mes: number;
+  valor: string;
+}
+
+export interface SubtipoObra {
+  idSubtipoObra: number;
+  tipoObra: TipoObra;
+  nombre: string;
+  obras: Obra[];
+}
+
+export interface TipoObra {
+  idTipoObra: number;
+  nombre: string;
+  subtiposObra: SubtipoObra[];
 }

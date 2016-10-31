@@ -9,6 +9,7 @@ import {Comuna} from "../models/jurisdiccion.ts";
 import {Presupuesto} from "../models/jurisdiccion.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
 import {Usuario} from "../models/jurisdiccion.ts";
+import {HitoProyecto} from "../models/jurisdiccion.ts";
 const template = require('./form-project.html');
 
 module Home {
@@ -43,9 +44,18 @@ module Home {
       private flagForSaveDraft = false;
       private previousInitDate: number;
       private previousEndDate: number;
+      private type = new Array<any>();
+      private curve = new Array<any>();
+      private monthsFromProject = new Array<any>();
+      private datePickersInicio = [];
+      private datePickersFin = [];
+      private monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
+
       private datePickerInicio = {
         status: false
       };
+
       private datePickerFin = {
         status: false
       };
@@ -53,7 +63,7 @@ module Home {
 
       /*@ngInject*/
       constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService, private $scope:ng.IScope,
-        private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService) {
+        private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService, private hotRegisterer:any) {
           // (<any>$(".pull-right")).pin({containerSelector: ".contentFormProyect"});
 
           var userData = this.localStorageService.get(this.currentUserKey);
@@ -100,7 +110,14 @@ module Home {
                 "presupuestosPorAnio": null,
                 "ejesDeGobierno": null,
                 "poblacionesMeta":null,
-                "comunas": null
+                "comunas": null,
+                "presupuestoGastosCorrientes": null,
+                "presupuestoPPIObra": null,
+                "presupuestoPPIMantenimiento": null,
+                "presupuestoACUMAR": null,
+                "presupuestosPorMes": null,
+                "hitos": null,
+                "obras": null,
               };
 
           delete this.currentProject.idProyecto;
@@ -108,14 +125,35 @@ module Home {
           if (this.idproject) {
             this.title = 'Modificar Proyecto';
             services.getProject(this.idproject).then((data) => {
+              var scope = this;
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
+
+              this.monthsFromProject = this.getMonthsFromDates(data.fechaInicio, data.fechaFin);
+              this.monthsFromProject.forEach(function(entry) {
+                var monthArray = [];
+                monthArray.push(entry);
+                monthArray.push('0');
+                scope.curve.push(monthArray);
+              }, this);
               this.currentProject = data;
-              console.log(this.currentProject);
               this.previousInitDate = data.fechaInicio;
               this.previousEndDate = data.fechaFin;
               if (this.currentProject.ejesDeGobierno.length > 0) {
                 this.ejesNoCorresponde = false;
+              }
+              this.type = [
+                    ['Gasto corriente', this.currentProject.presupuestoGastosCorrientes ? this.currentProject.presupuestoGastosCorrientes : '0'],
+                    ['Plan plurianual de Inversión Obra', this.currentProject.presupuestoPPIObra ? this.currentProject.presupuestoPPIObra : '0'],
+                    ['Plan plurianual de Inversión Mantenimiento', this.currentProject.presupuestoPPIMantenimiento ? this.currentProject.presupuestoPPIMantenimiento : '0'],
+                    ['Plan plurianual de Inversión ACUMAR', this.currentProject.presupuestoACUMAR ? this.currentProject.presupuestoACUMAR : '0']
+                  ];
+              if (data.presupuestosPorMes) {
+                scope.curve = [];
+                data.presupuestosPorMes.forEach(function(entry) {
+                  var newMonth = scope.returnMonthForTable(entry);
+                  scope.curve.push(newMonth);
+                });
               }
               this.actionMove = data.estado;
               this.initValidators();
@@ -132,8 +170,15 @@ module Home {
                 this.moveOptions = data;
               });
             });
+
           } else {
             this.title = 'Nuevo Proyecto';
+            this.type = [
+                  ['Gasto corriente', '0'],
+                  ['Plan plurianual de Inversión Obra', '0'],
+                  ['Plan plurianual de Inversión Mantenimiento', '0'],
+                  ['Plan plurianual de Inversión ACUMAR', '0']
+                ];
             this.initValidators();
               services.comunas().then((data) => {
                 this.comunas = data;
@@ -192,11 +237,104 @@ module Home {
 
           });
 
-      };
+      }
+
+      initializePickers() {
+        this.currentProject.hitos.forEach((h) => {
+          this.datePickersInicio.push({ "status": false });
+          this.datePickersFin.push({ "status": false });
+        });
+      }
 
       deleteFile(file) {
         var index = this.fileArray.indexOf(file);
         this.fileArray.splice(index, 1);
+      }
+
+      returnMonthForTable(item) {
+        var monthWithYear = this.monthNames[item.mes] + " " + item.anio;
+        var cell = [monthWithYear, item.presupuesto];
+        return cell;
+      }
+
+      saveDataDetailPresent() {
+        var listBudget = [];
+        var scope = this;
+        var curveInstance = this.hotRegisterer.getInstance("curve");
+        var dataCurve = curveInstance.getData();
+
+        var typeInstance = this.hotRegisterer.getInstance("type");
+        var dataType = typeInstance.getData();
+
+        dataCurve.forEach(function(entry) {
+          var budget = {
+            "idProyectoAux": scope.idproject,
+            "anio": entry[0].split(/(\s+)/)[2],
+            "mes": scope.monthNames.indexOf(entry[0].split(/(\s+)/)[0]),
+            "presupuesto": entry[1]
+          };
+          listBudget.push(budget);
+        });
+
+        dataType.forEach(function(entry) {
+          if (entry[0] === "Gasto corriente") {
+            scope.currentProject.presupuestoGastosCorrientes = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión Obra") {
+            scope.currentProject.presupuestoPPIObra = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión Mantenimiento") {
+            scope.currentProject.presupuestoPPIMantenimiento = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión ACUMAR") {
+            scope.currentProject.presupuestoACUMAR = entry[1];
+          }
+        });
+
+        this.currentProject.presupuestosPorMes = listBudget;
+        this.services.presentProjectDetail(this.currentProject).then((data) => {
+            this.$state.reload();
+         });
+      }
+
+      saveDataDetailDraft() {
+        var listBudget = [];
+        var scope = this;
+        var curveInstance = this.hotRegisterer.getInstance("curve");
+        var dataCurve = curveInstance.getData();
+
+        var typeInstance = this.hotRegisterer.getInstance("type");
+        var dataType = typeInstance.getData();
+
+        dataCurve.forEach(function(entry) {
+          var budget = {
+            "idProyectoAux": scope.idproject,
+            "anio": entry[0].split(/(\s+)/)[2],
+            "mes": scope.monthNames.indexOf(entry[0].split(/(\s+)/)[0]),
+            "presupuesto": entry[1]
+          };
+          listBudget.push(budget);
+        });
+
+        dataType.forEach(function(entry) {
+          if (entry[0] === "Gasto corriente") {
+            scope.currentProject.presupuestoGastosCorrientes = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión Obra") {
+            scope.currentProject.presupuestoPPIObra = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión Mantenimiento") {
+            scope.currentProject.presupuestoPPIMantenimiento = entry[1];
+          }
+          if (entry[0] === "Plan plurianual de Inversión ACUMAR") {
+            scope.currentProject.presupuestoACUMAR = entry[1];
+          }
+        });
+
+        this.currentProject.presupuestosPorMes = listBudget;
+        this.services.updateProject(this.currentProject).then((data) => {
+            this.$state.reload();
+         });
       }
 
       deleteFileFromCurrent(file) {
@@ -215,6 +353,21 @@ module Home {
       setState(state) {
         this.changingStateFlag = true;
         this.actionMove = state;
+      }
+
+      getMonthsFromDates(initDate, endDate) {
+
+        var arr = [];
+
+        var fromYear =  initDate.getFullYear();
+        var toYear =  endDate.getFullYear();
+        var diffYear = (12 * (toYear - fromYear)) + endDate.getMonth();
+
+        for (var i = initDate.getMonth(); i <= diffYear; i++) {
+            arr.push(this.monthNames[i % 12] + " " + Math.floor(fromYear + ( i / 12)));
+        }
+
+        return arr;
       }
 
       checkNoSelection() {
@@ -394,11 +547,10 @@ module Home {
 
       openPickerInicio() {
            this.datePickerInicio.status = true;
-       }
-
-       openPickerFin() {
-            this.datePickerFin.status = true;
-        }
+      }
+      openPickerFin() {
+        this.datePickerFin.status = true;
+      }
 
       clearValuesUbicacion(type) {
           this.currentProject.comunas.splice(0, this.currentProject.comunas.length);
@@ -484,6 +636,60 @@ module Home {
         var referralDivFactory = this.$compile(" <moveproject currentproject='formCtrl.currentProject' jurisdiccion='formCtrl.jurisdiccion'></moveproject> ");
         var referralDiv = referralDivFactory(this.$scope);
         var containerDiv = document.getElementById('moveprojectid');
+        angular.element(containerDiv).append(referralDiv);
+      }
+
+      addHito() {
+        this.currentProject.hitos.push(<HitoProyecto>{
+          "idHito": null,
+          "proyecto": null,
+          "hitoPadre": null,
+          "hitosHijos": [],
+          "hitoPredecesor": null,
+          "fechaInicio": null,
+          "fechaFin": null,
+          "estado": "No iniciado",
+          "presupuesto": 0,
+        });
+        this.datePickersInicio.push({ "status": false });
+        this.datePickersFin.push({ "status": false });
+      }
+
+      removeHito(index) {
+        if (index > -1) {
+          this.currentProject.hitos.splice(index, 1);
+          this.datePickersInicio.splice(index, 1);
+          this.datePickersFin.splice(index, 1);
+        }
+      }
+
+      handlePickerInicio(index) {
+        this.datePickersInicio[index].status = !this.datePickersInicio[index].status;
+      }
+
+      handlePickerFin(index) {
+        this.datePickersFin[index].status = !this.datePickersFin[index].status;
+      }
+
+      addObra() {
+        if (angular.element(document.getElementsByTagName('obraproject')).length) {
+            var obraTag = document.getElementsByTagName('obraproject');
+            angular.element(obraTag).remove();
+        }
+        var referralDivFactory = this.$compile(" <obraproject currentproject='formCtrl.currentProject'></obraproject> ");
+        var referralDiv = referralDivFactory(this.$scope);
+        var containerDiv = document.getElementById('obraprojectid');
+        angular.element(containerDiv).append(referralDiv);
+      }
+
+      editObra(idObra) {
+        if (angular.element(document.getElementsByTagName('obraproject')).length) {
+            var obraTag = document.getElementsByTagName('obraproject');
+            angular.element(obraTag).remove();
+        }
+        var referralDivFactory = this.$compile(" <obraproject currentproject='formCtrl.currentProject' currentobraid='" + idObra + "'></obraproject> ");
+        var referralDiv = referralDivFactory(this.$scope);
+        var containerDiv = document.getElementById('obraprojectid');
         angular.element(containerDiv).append(referralDiv);
       }
 

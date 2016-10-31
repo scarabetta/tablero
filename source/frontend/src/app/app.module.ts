@@ -38,7 +38,7 @@ let $http: any = initInjector.get('$http');
 $http.get(config.authBaseUrl + 'config/properties').then(
     function (response) {
         let configModule = angular.module('config', []).constant('urlsConfig', response.data);
-        angular.module('app', ['ui.router', 'ui.bootstrap', 'ngAnimate', 'vcRecaptcha', 'ngFileUpload', 'angularValidator',
+        angular.module('app', ['ui.router', 'ui.bootstrap', 'ngAnimate', 'vcRecaptcha', 'ngFileUpload', 'angularValidator', 'ngHandsontable',
         'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home, login, users,
         priorization, crossTopics, upload, preview, results, configModule.name])
             .config(routes)

@@ -32,6 +32,9 @@ module Auth {
 
     public response(response) {
       var self = Auth.AuthInterceptor.instance;
+      if (response.headers('TokenRenovado')) {
+        self.localStorageService.set(self.tokenKey, response.headers('TokenRenovado'));
+      }
       (<any>$).LoadingOverlay("hide");
       return response || self.$q.when(response);
     }
@@ -41,6 +44,7 @@ module Auth {
       (<any>$).LoadingOverlay("hide");
       if (rejection.status === 401 || rejection.status === 400) {
         self.$injector.get('$state').go('login');
+        return self.$q.defer().promise;
       }
       return self.$q.reject(rejection);
     }

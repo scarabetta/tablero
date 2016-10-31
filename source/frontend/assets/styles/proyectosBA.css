@@ -33,8 +33,8 @@
     src: url('/fonts/Montserrat-UltraLight.otf');
 }
 
-
 /*ESTILOS*/
+
 body {
     background-color: #111!important;
     height: 100%;
@@ -140,15 +140,15 @@ button {
     position: absolute;
 }
 .containerLabels {
-  margin-bottom: 15px;
-  float: left;
+    margin-bottom: 15px;
+    float: left;
 }
-.labels .agrupador{
+.labels .agrupador {
     float: left!important;
 }
 
-
 /*LOGIN*/
+
 .login .panel-default {
     width: 660px;
     margin: 0 auto;
@@ -180,7 +180,7 @@ button {
     color: #fff!important;
     box-shadow: 0 0 0px 1000px #58bcff inset;
     -webkit-box-shadow: 0 0 0px 1000px #58bcff inset;
-    -moz-box-shadow:0 0 0px 1000px #58bcff inset;
+    -moz-box-shadow: 0 0 0px 1000px #58bcff inset;
     font-size: 20px;
     font-family: 'Montserrat-UltraLight';
 }
@@ -241,6 +241,7 @@ button {
 }
 
 /*NAVBAR*/
+
 .navbar {
     margin-bottom: 0!important;
     background-color: #fff!important;
@@ -248,7 +249,7 @@ button {
 .navbar-nav {
     font-size: 13px;
 }
-.navbar-nav li{
+.navbar-nav li {
     cursor: pointer;
 }
 .navbar-primary {
@@ -291,13 +292,13 @@ button {
 .navbar-form.navbar-right {
     margin: 7px 15px 0 15px
 }
-.navbar-form .form-control, .navbar-form .form-control:focus, .searchStyle .form-control, .searchStyle .form-control:focus{
+.navbar-form .form-control, .navbar-form .form-control:focus, .searchStyle .form-control, .searchStyle .form-control:focus {
     width: 195px!important;
     border: none;
     color: #000!important;
     background: none;
     box-shadow: none;
-    -moz-box-shadow:none;
+    -moz-box-shadow: none;
     border-bottom: 1px solid #000;
     border-radius: 0;
 }
@@ -321,6 +322,7 @@ button {
 }
 
 /*JUMBOTRON*/
+
 .jumbotron {
     background-image: url(../imgVector.png);
     padding-bottom: 0!important;
@@ -387,9 +389,21 @@ button {
     width: 80%;
     margin: 0 auto;
 }
-
-
-
+.obrasList {
+    margin-top: 15px;
+}
+.itemObra {
+    cursor: pointer;
+    height: 35px;
+    background: #e6e6e6;
+    border: 1px solid #cccccc;
+    margin-bottom: 0px !important;
+    text-transform: uppercase;
+    color: #6c6c6c;
+    font-size: 12px;
+    font-weight: bold !important;
+    padding: 8px;
+}
 .nameYear {
     margin-top: 0;
     margin-bottom: 5px;
@@ -406,16 +420,19 @@ button {
     font-weight: bold;
 }
 .thirdLabel .icEdit {
-    float: left;
+    display: inline-block;
+    top: 4px;
+    position: relative;
 }
 .thirdLabel .nameObj {
     padding-right: 0;
-    cursor:pointer;
+    cursor: pointer;
     text-decoration: underline;
-    color: #58bcff;
-    float: left;
+    color: #215093;
+    /*color: #58bcff;*/
+    /*float: left;*/
 }
-.content-level-1 li, .abm-list li, .listPreviewProject{
+.content-level-1 li, .abm-list li, .listPreviewProject {
     list-style: none;
 }
 .listProject {
@@ -593,16 +610,16 @@ input[type=file] {
     clear: left;
     margin: 0;
 }
-.uploadImport .contentListProyect{
+.uploadImport .contentListProyect {
     margin-bottom: 20px;
 }
 .uploadImport .reference .opcional {
     font-weight: normal;
 }
-.uploadImport .progress-bar{
-    width:100%
+.uploadImport .progress-bar {
+    width: 100%
 }
-.uploadImport .titlePreviewProyect{
+.uploadImport .titlePreviewProyect {
     width: 100%;
     margin-top: 25px;
 }
@@ -615,22 +632,24 @@ input[type=file] {
     font-size: 23px;
     margin: 35px 0 10px 0;
 }
-.resultImport .previewProyect img{
+.resultImport .previewProyect img {
     width: 20px;
     float: left;
 }
-.resultImport hr{
+.resultImport hr {
     margin: 5px 0;
 }
 .lineContentProyect {
     margin: 5px 0;
 }
-.contentDate, .box-date {
-    float: right;
-    width: 325px;
-}
 .contentDate {
+    float: right;
+    width: 300px;
     padding-top: 5px;
+}
+.box-date {
+    float: right;
+    width: 300px;
 }
 .contentDate .title, .box-date .date {
     width: 95px;
@@ -662,6 +681,7 @@ input[type=file] {
 }
 .menuExcel .caret {
     background-image: url(../desplegar.png);
+    background-repeat: no-repeat;
     position: absolute;
     width: 20px!important;
     height: 15px!important;
@@ -912,10 +932,10 @@ input[type=file] {
 .attach span {
     cursor: pointer;
     font-style: italic;
-    color:#52bbff;
+    color: #52bbff;
     text-decoration: underline;
 }
-#buttonFile.btn-default, .addBtn .btn-default {
+#buttonFile.btn-default, .addBtn .btn-default, #buttonObra.btn-default, #buttonHito.btn-default {
     background: none!important;
     border: none;
     padding: 15px 0;
@@ -989,7 +1009,7 @@ input[type=file] {
     padding: 5px 15px;
     font-weight: 300;
 }
-.dropdown-menu.dropEstado a{
+.dropdown-menu.dropEstado a {
     cursor: pointer;
 }
 .multi-column-dropdown {
@@ -1044,18 +1064,20 @@ input[type=file] {
 }
 
 /* start 'enter' transition on main view */
+
 main.ng-enter {
     /* transition on enter for .5s */
     transition: .8s;
     /* start with opacity 0 (invisible) */
     opacity: 0;
 }
+
 /* end 'enter' transition on main view */
+
 main.ng-enter-active {
     /* end with opacity 1 (fade in) */
     opacity: 1;
 }
-
 .pageContanerCustom {
     width: 100%;
     margin: auto;
@@ -1139,12 +1161,21 @@ tags-input .tags {
 .ic-title.ic-poblacion {
     background-image: url(../ic-poblacion.png);
 }
-#buttonFile .icNew, .addBtn .icNew {
+.ic-title.ic-caminoCritico {
+    background-image: url(../ic-caminoCritico.png);
+}
+.ic-title.ic-expediente {
+    background-image: url(../ic-expediente.png);
+}
+.ic-title.ic-fechas {
+    background-image: url(../ic-fechas.png);
+}
+#buttonFile .icNew, .addBtn .icNew, #buttonObra .icNew, .addBtn .icNew, #buttonHito .icNew, .addBtn .icNew {
     float: left;
     left: -4px;
     position: relative;
 }
-#buttonFile span, .addBtn span {
+#buttonFile span, .addBtn span, #buttonObra span, #buttonHito span {
     top: 3px;
     position: relative;
 }
@@ -1180,9 +1211,11 @@ tags-input .tags {
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
 /*.contentButtonRight {
     width: 85% !important;
 }*/
+
 .fullButtonRight {
     width: 100% !important;
 }
@@ -1315,6 +1348,7 @@ th {
 }
 
 /*Estilos toogle*/
+
 input.cmn-toggle-round+label {
     padding: 2px;
     width: 49px;
@@ -1361,8 +1395,6 @@ input.cmn-toggle-round:checked+label:after {
     outline: none;
     user-select: none;
 }
-
-
 .whiteColor {
     color: #fff !important;
 }
@@ -1507,7 +1539,7 @@ input.cmn-toggle-round:checked+label:after {
     color: #666;
     font-size: 12px!important;
 }
-.contentFormProyect{
+.contentFormProyect {
     background: #fff;
     border: 2px solid #e8e8e8;
     padding: 15px 0!important;
@@ -1565,7 +1597,7 @@ input.cmn-toggle-round:checked+label:after {
     margin-top: 6px;
     margin-right: 4px;
 }
-#moverModal .modal-body a{
+#moverModal .modal-body a {
     cursor: pointer;
 }
 .contentButtonRight button {
@@ -1727,13 +1759,13 @@ div.jqi .jqititle {
     color: #fff!important;
     border-bottom-right-radius: 6px!important;
 }
-.pagePriorizacion .principalBtn > button{
+.pagePriorizacion .principalBtn>button {
     margin-right: 15px;
 }
-.captcha > div {
+.captcha>div {
     margin: 0 auto;
 }
-.captcha{
+.captcha {
     padding: 0 0 15px 0;
 }
 .menuIcon {
@@ -1747,7 +1779,6 @@ div.jqi .jqititle {
 .menuIcon:hover {
     opacity: .8;
 }
-
 .sidr {
     display: block;
     position: absolute;
@@ -1808,18 +1839,15 @@ div.jqi .jqititle {
     display: block;
     margin: 0 0 15px;
     padding: 0;
-    border-top: 1px solid #dfdfdf;
-    border-bottom: 1px solid white;
+    border-top: 1px solid #b5b5b5;
 }
 .sidr ul li {
     display: block;
     margin: 0;
     line-height: 48px;
-    border-top: 1px solid white;
-    border-bottom: 1px solid #dfdfdf;
+    border-bottom: 1px solid #b5b5b5;
     margin-top: 15px;
 }
-
 .sidr ul li:hover, .sidr ul li.active, .sidr ul li.sidr-class-active {
     border-top: 0;
     line-height: 49px;
@@ -1892,13 +1920,14 @@ div.jqi .jqititle {
     position: relative !important;
 }
 .sidr-open {
-    left: 5% !important;
+    left: 0 !important;
 }
 .sidr .title {
     text-transform: none;
     font-size: 14px;
     padding: 0;
     line-height: 25px;
+    font-weight: normal;
 }
 .sidr .verticalCenter {
     position: relative;
@@ -1906,19 +1935,20 @@ div.jqi .jqititle {
     right: 0;
     margin-top: 0;
 }
-.sidr label, .sidr .checkbox{
+.sidr label, .sidr .checkbox {
     line-height: 20px;
     text-transform: none;
+    color: #333;
 }
-.sidr .scroll{
-    overflow-y: scroll;
+.sidr .scroll {
+    overflow-y: auto;
     height: auto;
-    max-height: 190px;
+    max-height: 210px;
 }
-.sidr .input-group{
+.sidr .input-group {
     margin-bottom: 0
 }
-.sidr .btn-default{
+.sidr .btn-default {
     top: -7px;
 }
 .sidr .input-group .form-control {
@@ -1932,26 +1962,35 @@ div.jqi .jqititle {
     border-radius: 4px!important;
     width: 188px
 }
+.contentFilter {
+    padding: 15px;
+    background: #e8e8e8;
+    border-radius: 6px;
+}
+.contentFilter span {
+    font-weight: bold;
+}
 
 /*ETIQUETAS*/
-.thirdLabel .glyphicon-tag{
+
+.thirdLabel .glyphicon-tag {
     color: #58bcff;
-    top: 3px!important;
-    float: left;
+    top: 0!important;
+    /*float: left;*/
     margin: 0 5px;
 }
-.thirdLabel .glyphicon-tag:hover{
+.thirdLabel .glyphicon-tag:hover {
     opacity: .8;
 }
 .labelStyle {
-  float: left;
-  border-radius: 5px;
-  margin: 0px 5px 5px 0;
-  padding: 5px;
-  background: #ee801f;
-  color: #fff;
+    float: left;
+    border-radius: 5px;
+    margin: 0px 5px 5px 0;
+    padding: 5px;
+    background: #ee801f;
+    color: #fff;
 }
-.labelStyle span{
+.labelStyle span {
     font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .labelStyle .remove-button {
@@ -1970,7 +2009,8 @@ div.jqi .jqititle {
 }
 
 /*Estado*/
-.formEstado{
+
+.formEstado {
     background: #f5f5f5;
     padding: 15px;
     font-size: 22px;
@@ -1979,94 +2019,98 @@ div.jqi .jqititle {
     float: left;
     margin: 15px 0;
 }
-.formEstado .inputPresupuesto{
+.formEstado .inputPresupuesto {
     float: right;
     width: 90%;
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-.formEstado .glyphicon-usd{
+.formEstado .glyphicon-usd {
     float: left;
-    color:#666;
+    color: #666;
     font-size: 12px;
 }
 .formEstado .form-control {
     -webkit-box-shadow: none;
     box-shadow: none;
 }
-.formEstado .alert-info{
+.formEstado .alert-info {
     float: left;
     font-size: 12px;
     margin-bottom: 0;
 }
 
 /*VISTA PROYECTO*/
-.viewProject .agrupador p{
+
+.viewProject .agrupador p {
     font-size: 12px;
-    color:#333;
+    color: #333;
     margin: 0;
 }
-.contentClear{
+.contentClear {
     clear: left;
 }
 .viewEje {
-    height: 160px;
-    width: 118px;
+    width: 50px;
     display: inline-block;
     padding: 0 0 0 0px;
     text-align: center;
-    padding-top: 124px;
+    padding-top: 55px;
     font-family: "OpenSans", Helvetica, Arial, sans-serif;
     text-transform: capitalize;
 }
 .viewProject .eje-1 {
     background: url("../imgEjes/disfrute.png") no-repeat;
+    background-size: 50px;
 }
-.viewProject .eje-2{
+.viewProject .eje-2 {
     background: url("../imgEjes/escalaHumana.png") no-repeat;
+    background-size: 50px;
 }
 .viewProject .eje-3 {
     background: url("../imgEjes/integracion.png") no-repeat;
+    background-size: 50px;
 }
 .viewProject .eje-4 {
     background: url("../imgEjes/creatividad.png") no-repeat;
+    background-size: 50px;
 }
 .viewProject .glyphicon-usd {
     top: 3px !important;
 }
-.viewProject .totalPresupuesto{
+.viewProject .totalPresupuesto {
     margin-bottom: 0;
     text-align: left;
 }
-.viewProject .subtotal{
+.viewProject .subtotal {
     padding-top: 7px!important;
     margin-bottom: 0;
     font-weight: bold;
 }
-.viewProject .contentTotal .subtotal{
+.viewProject .contentTotal .subtotal {
     padding-bottom: 7px;
 }
 .viewProject .contentTotal i {
     left: 0;
     top: 5px!important;
 }
-.viewProject .contentTotal p{
+.viewProject .contentTotal p {
     font-size: 16px;
 }
-.viewProject .contentTotal{
+.viewProject .contentTotal {
     background: #e2e2e2;
     padding: 0;
     width: 100%;
     float: left;
     clear: left;
 }
-.textLink{
+.textLink {
     text-decoration: underline;
     font-style: italic;
     color: #58bcff!important;
     cursor: pointer;
 }
-.contentEtiquetas{
+.contentEtiquetas {
     background: #52bbff;
     border: none;
     color: #fff;
@@ -2079,31 +2123,286 @@ div.jqi .jqititle {
     line-height: 25px;
     border-radius: 4px;
 }
-.estateView .estateClass{
+.estateView .estateClass {
     float: none;
     margin-left: 15px;
 }
-.estateView{
+.estateView {
     text-align: center;
 }
-.etiquetasProject{
+.etiquetasProject {
     background: #f78600;
 }
-.formEstado p{
+.formEstado p {
     font-size: 12px;
     color: #333;
     margin: 0;
 }
+.formViewEtiquetas {
+    background: #f5f5f5;
+    padding: 15px;
+    float: left!important;
+    border-radius: 6px;
+    color: #52bbff;
+    margin: 15px 0;
+}
+.formViewEtiquetas:first-child {
+    margin-top: 0;
+}
+.formViewEtiquetas .containerLabels {
+    margin-bottom: 0;
+}
+.nameProjectView {
+    background: #58bcff;
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-size: 18px;
+}
+.nameProjectView p {
+    margin: 0;
+}
+.descriptionView {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+}
+.dateView {
+    background: #58bcff;
+    text-align: center;
+    padding: 5px 5px 15px 5px;
+    border-radius: 4px;
+    margin: 10px 0 0 0;
+}
+.dateView label, .dateView p {
+    color: #fff!important;
+}
+.nameBoxView {
+    background: #58bcff;
+    padding: 5px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #fff;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-family: "OpenSansBold", Helvetica, Arial, sans-serif;
+    width: 100%
+}
+.nameBoxView p {
+    margin: 0;
+}
+.borderContent {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.viewProject .agrupador .textoDestacado, .viewProject .agrupador .prioridadContent p, .formEstado .textoDestacado {
+    font-size: 20px;
+    color: #52bbff;
+}
+.prioridadContent {
+    background: #e0e0e0;
+    border-radius: 4px;
+    border: 1px solid #cacaca;
+    padding: 15px;
+    text-align: center;
+    margin-top: 15px;
+}
+.contentFlex {
+    display: flex;
+}
+.contentFlex .agrupador {
+    width: 100%;
+}
+.firstContent {
+    padding-top: 0;
+}
+.secondContent .agrupador {
+    min-height: 141px;
+}
+.contentFlexRow {
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row wrap;
+    -webkit-flex-flow: row wrap;
+}
+.contentFlexBg {
+    background: whitesmoke;
+    width: 100%;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/*tabs*/
+
+.nav-tabs {
+    background: #e8e8e8;
+    border-bottom: 1px solid #cecece!important;
+    -webkit-box-shadow: inset 0px -10px 0px -4px rgba(227, 227, 227, 1);
+    -moz-box-shadow: inset 0px -10px 0px -4px rgba(227, 227, 227, 1);
+    box-shadow: inset 0px -10px 0px -4px rgb(222, 222, 222);
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
+    border-color: #e8e8e8 #e8e8e8 transparent!important;
+}
+.tab-content .contentFormProyect {
+    border-top: 2px solid #fff;
+}
+#projectFormID .nav-tabs>li>a:hover, .nav-tabs>li>a:focus {
+    text-decoration: none;
+    background-color: #e5e5e5;
+    color: #888;
+    border-color: #d6d6d6!important;
+    border-bottom: none;
+}
+.uib-tab a {
+    text-transform: uppercase;
+    color: #6c6c6c;
+    font-size: 12px;
+}
+.contentDetailProject #buttonFile.btn-default, #buttonObra.btn-default, #buttonHito.btn-default {
+    padding: 15px 15px 0 0;
+}
+.formProgressTitle {
+    color: #b3b3b3;
+    font-size: 14px;
+    text-align: center;
+}
+.agrupador .tableContentForm .btn-default i {
+    font-size: 14px!important;
+}
+
+/*Modal detalle obra*/
+
+.modal-dialog.modalDetalleInfo {
+    width: 1000px;
+}
+.modalDetalleInfo table, .tableContentForm {
+    margin-bottom: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.modal-dialog.modalDetalleInfo .table-responsive {
+    min-height: .01%;
+    overflow-x: inherit;
+}
+.modalDetalleInfo td, .tableContentForm td {
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ccc;
+}
+.modalDetalleInfo thead, .tableContentForm thead {
+    background: #e6e6e6;
+}
+.gridContent {
+    overflow-x: inherit!important;
+}
+.modalDetalleInfo .radio {
+    margin: 0;
+}
+.modalDetalleInfo .glyphicon-remove {
+    top: 30px;
+}
+.refItem p {
+    font-weight: bold;
+    font-size: 16px;
+}
+.refItem .glyphicon-ok-sign {
+    float: right;
+    color: #00a298;
+}
+.refItem .glyphicon-exclamation-sign {
+    float: right;
+    color: #c3c3c3;
+}
+.refItem .ic-title {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 5px;
+}
+.refItem .ic-title.ic-modal-info {
+    background-image: url(../ic-modal-info.png);
+}
+.refItem .ic-title.ic-modal-fechas {
+    background-image: url(../ic-modal-fechas.png);
+}
+.refItem .ic-title.ic-modal-presupuesto {
+    background-image: url(../ic-modal-presupuesto.png);
+}
+.refItem .ic-title.ic-modal-ubicacion {
+    background-image: url(../ic-modal-ubicacion.png);
+}
+.refItem .ic-title.ic-modal-expediente {
+    background-image: url(../ic-modal-expediente.png);
+}
+.refItem li {
+    margin: 15px 0;
+}
+.iconTable {
+    text-align: center;
+    vertical-align: middle!important;
+}
+.iconTable .glyphicon-remove {
+    top: inherit;
+}
+.linkModal {
+    text-decoration: none;
+    color: #333;
+}
+.linkModal:hover {
+    text-decoration: none;
+}
+.nameLinkModal, .nameLinkModal:hover {
+    color: #52bbff;
+    text-decoration: none;
+}
+
+/*Tablas excel*/
+
+#curva1, #tipodegasto1 {}
+.tablacurvainversion {
+    border: 1px solid green;
+    background: #f5f5f5;
+    width: 262px;
+    height: 674px;
+}
+.handsontable {
+    font: 13px sans-serif;
+}
+
+/* All headers */
+
+.handsontable th {
+    background-color: #e6e6e6;
+}
+
+/* Row headers */
+
+.ht_clone_left th {
+    background-color: #e6e6e6;
+}
+
+/* Column headers */
+
+.ht_clone_top th {
+    background-color: #e6e6e6;
+}
+.handsontable .wtHider {
+    max-height: 100%!important;
+    height: auto!important;
+    color: #333;
+}
+.handsontable .current.area.highlight {
+    background-color: #f3f3f3!important;
+}
 
 /*MEDIA QUERY*/
-@media (min-width: 1280px)
-{
+
+@media (min-width: 1280px) {
     .columnRight {
         max-width: 600px;
     }
 }
-
-
 @media (max-width: 1024px) {
     .alert-success button {
         float: left;
@@ -2112,36 +2411,35 @@ div.jqi .jqititle {
     .container.contentApp, .pageContanerCustom .item, .jumbotron .containerTop {
         width: 90vw!important;
     }
-    .navbar-form.navbar-right{
+    .navbar-form.navbar-right {
         float: left!important;
         clear: left;
         margin: 0;
         padding: 15px 0;
     }
-    .floatContent{
+    .floatContent {
         float: left;
         width: 100%;
     }
     .navbar .separador {
         display: none;
     }
-    excelbutton{
+    excelbutton {
         float: left;
         padding-top: 15px;
     }
-    .contentUploadBtn{
+    .contentUploadBtn {
         width: 100%
     }
-    .contentUploadBtn .btn-success{
+    .contentUploadBtn .btn-success {
         float: left;
     }
-    .contentUploadBtn .btn-default{
+    .contentUploadBtn .btn-default {
         float: right!important;
     }
     .columnRight {
         max-width: 350px;
     }
-
 }
 @media (max-width: 990px) {
     .alert-warning {
@@ -2160,14 +2458,14 @@ div.jqi .jqititle {
         float: left;
         width: 100%;
     }
-      .box-date {
+    .box-date {
         float: left;
         width: 100%;
     }
     .uploadImport .box-date {
         width: 100%;
     }
-    .box-date .date{
+    .box-date .date {
         padding-top: 0;
         padding-left: 10px;
     }
@@ -2191,11 +2489,14 @@ div.jqi .jqititle {
         margin-right: 10px;
     }
     .columnRight {
-    width: 100%;
-    max-width: 100%;
+        width: 100%;
+        max-width: 100%;
+    }
+    .modal-dialog.modalDetalleInfo {
+        max-width: 600px;
+        margin: 0 auto;
     }
 }
-
 @media (max-width: 768px) {
     .title-total, .totalPresupuesto {
         text-align: left;
@@ -2240,18 +2541,21 @@ div.jqi .jqititle {
     .viewProject .glyphicon-usd {
         left: 0;
     }
-    .contentAction{
+    .contentAction {
         margin-bottom: 20px;
     }
     .contentEje input[type=checkbox]+label {
         width: 116px!important;
     }
-    .contentTotal .totalPresupuesto{
+    .contentTotal .totalPresupuesto {
         text-align: right;
         padding-right: 0;
     }
-    .contentTotal .glyphicon-usd{
-        left:15px;
+    .contentTotal .glyphicon-usd {
+        left: 15px;
+    }
+    .colorObjOperativo {
+        float: left;
     }
 }
 @media screen and (min-width: 768px) {

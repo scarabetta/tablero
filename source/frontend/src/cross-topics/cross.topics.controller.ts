@@ -25,7 +25,6 @@ module CrossTopics {
       }
 
       editCrossTopic(id) {
-        console.log(id);
         if (!angular.element(document.getElementsByTagName('crosstopicform')).length) {
           var referralDivFactory = this.$compile(" <crosstopicform currentcrosstopicid='" + id + "'></crosstopicform> ");
           var referralDiv = referralDivFactory(this.$scope);

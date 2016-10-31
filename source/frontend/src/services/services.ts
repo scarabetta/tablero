@@ -8,6 +8,8 @@ import {EjeDeGobierno} from "../models/jurisdiccion";
 import {Comuna} from "../models/jurisdiccion";
 import {Proyecto} from "../models/jurisdiccion";
 import {ObjetivoOperativo} from "../models/jurisdiccion";
+import {Obra} from "../models/jurisdiccion";
+import {TipoObra} from "../models/jurisdiccion";
 import {ObjetivoJurisdiccional} from "../models/jurisdiccion";
 import {Usuario} from "../models/jurisdiccion";
 import {Rol} from "../models/jurisdiccion";
@@ -79,6 +81,12 @@ module Services {
                 .catch((response) => console.log(response.data));
         }
 
+        downloadAllProjects(): ng.IPromise<any> {
+            return this.$http.get(this.apiBaseUrl + "exportar/proyectos/reporte", {responseType:'arraybuffer'})
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
         saveProject(project): ng.IPromise<any> {
             project.fechaInicio = new Date(project.fechaInicio);
             project.fechaFin = new Date(project.fechaFin);
@@ -103,6 +111,14 @@ module Services {
             project.fechaInicio = new Date(project.fechaInicio);
             project.fechaFin = new Date(project.fechaFin);
             return this.$http.put(this.apiBaseUrl + "proyecto/", project)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        presentProjectDetail(project): ng.IPromise<any> {
+            project.fechaInicio = new Date(project.fechaInicio);
+            project.fechaFin = new Date(project.fechaFin);
+            return this.$http.post(this.apiBaseUrl + "proyecto/presentarDetalle", project)
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
@@ -355,6 +371,18 @@ module Services {
           this.localStorageService.remove(this.tokenKey);
           this.localStorageService.remove(this.idjurisdiccionKey);
           this.$state.go('login');
+        }
+
+        tiposDeObra(): ng.IPromise<any> {
+            return this.$http.get<TipoObra>(this.apiBaseUrl + "tipoObra/")
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
+
+        getObra(idObra): ng.IPromise<any> {
+            return this.$http.get<Obra>(this.apiBaseUrl + "obra/" + idObra)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
         }
     }
 
