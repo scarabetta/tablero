@@ -17,11 +17,23 @@
       </div>
       <div class="dropdown content-actionForm estateView">
         <span>Estado:</span>
-        <span class="estateClass ng-binding verificadoClass" ng-class="{'completoClass' : proyecto.estado === 'Completo', 'incompletoClass' : proyecto.estado === 'Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Demorado', 'rechazadoClass' : proyecto.estado === 'Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{formCtrl.currentProject.estado}}</span>
+        <span class="estateClass ng-binding" ng-class="{'completoClass' : formCtrl.currentProject.estado === 'Completo', 'incompletoClass' : formCtrl.currentProject.estado === 'Incompleto', 'presentadoClass' : formCtrl.currentProject.estado === 'Presentado', 'verificadoClass' : formCtrl.currentProject.estado === 'Verificado', 'canceladoClass' : formCtrl.currentProject.estado === 'Cancelado', 'preAprobadoClass' : formCtrl.currentProject.estado === 'Pre Aprobado', 'aprobadoClass' : formCtrl.currentProject.estado === 'Aprobado', 'aplazadoClass' : formCtrl.currentProject.estado === 'Demorado', 'rechazadoClass' : formCtrl.currentProject.estado === 'Rechazado', 'enPriorizacionClass' : formCtrl.currentProject.estado === 'En Priorización'}">{{formCtrl.currentProject.estado}}</span>
       </div>
       <div class="col-md-12">
         <hr class="line-inner-proyect">
       </div>
+      <div class="formEstado col-sm-12 col-xs-12">
+        Estado
+        <div class="form-group">
+          <label for="tipo de ubicacion">Prioridad jefatura</label>
+          <p>{{formCtrl.currentProject.prioridadJefatura}}</p>
+        </div>
+        <div class="form-group">
+          <label for="presupuesto">Presupuesto aprobado total</label>
+          <p><i ng-if="formCtrl.currentProject.totalPresupuestoAprobado" class="glyphicon glyphicon-usd" aria-hidden="true"></i> {{formCtrl.currentProject.totalPresupuestoAprobado}} </p>
+        </div>
+      </div>
+
       <div class="dropdown content-actionForm contentButtonRight">
         <!--<button type="button" class="btn btn-default fullButtonRight">Modificar proyecto</button>-->
         <button type="button" class="btn btn-default fullButtonRight" ng-click="formCtrl.cancelView()">Cerrar</button>
@@ -202,9 +214,11 @@
               <label for="direccion">Dirección</label>
               <p>{{formCtrl.currentProject.direccion}}</p>
             </div>
-            <div class="form-group col-md-8 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
+            <div class="col-md-8 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
               <label for="direccion">Comunas</label>
-              <p ng-repeat="label in formCtrl.currentProject.comunas">{{label.nombre}}</p>
+            </div>
+            <div class="form-group col-md-8 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
+              <div class="contentEtiquetas" ng-repeat="label in formCtrl.currentProject.comunas">{{label.nombre}}</div>
             </div>
           </div>
         </div>

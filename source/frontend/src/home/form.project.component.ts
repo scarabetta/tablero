@@ -295,18 +295,23 @@ module Home {
         var scope = this;
         if (this.changingStateFlag) {
           this.services.changeState(this.actionMove, this.currentProject).then((data) => {
-            scope.$state.reload().then(function() {
-                var notificationData = {
-                  "type" : "success",
-                  "icon" : "ok-sign",
-                  "title" : "Ok",
-                  "text" : "El proyecto se guardó con éxito." // tslint:disable-line
-                };
-                scope.addNotification(notificationData);
-            });
+            if (data.idProyecto) {
+              this.uploadFiles(data.idProyecto);
+              scope.$state.reload().then(function() {
+                  var notificationData = {
+                    "type" : "success",
+                    "icon" : "ok-sign",
+                    "title" : "Ok",
+                    "text" : "El proyecto se guardó con éxito." // tslint:disable-line
+                  };
+                  scope.addNotification(notificationData);
+              });
+          }
           });
         } else {
           this.services.presentProject(this.currentProject).then((data) => {
+            if (data.idProyecto) {
+              this.uploadFiles(data.idProyecto);
               scope.$state.reload().then(function() {
                   var notificationData = {
                     "type" : "success",
@@ -316,6 +321,7 @@ module Home {
                   };
                   scope.addNotification(notificationData);
               });
+            }
           });
         }
 
@@ -447,7 +453,7 @@ module Home {
 
       cancelDateUpdate() {
         this.currentProject.fechaFin = new Date(this.previousEndDate);
-        this.currentProject.fechaInicio = new Date(this.previousInitDate);
+         this.currentProject.fechaInicio = new Date(this.previousInitDate);
       }
 
       getTotalBudget() {
