@@ -1629,6 +1629,9 @@ input.cmn-toggle-round:checked+label:after {
     left: 15px;
     bottom: -15px;
 }
+.bottom-align {
+    bottom: -50px;
+}
 #projectFormID {
     margin-top: 15px;
 }
@@ -2302,6 +2305,11 @@ div.jqi .jqititle {
 .modalDetalleInfo .glyphicon-remove {
     top: 30px;
 }
+
+.modalDetalleInfo .glyphicon-expediente {
+    top: -3px;
+}
+
 .refItem p {
     font-weight: bold;
     font-size: 16px;
@@ -2562,6 +2570,10 @@ div.jqi .jqititle {
     .jumbotron h1, .jumbotron .h1 {
         font-size: 35px !important;
     }
+}
+
+#OpenLayers_Control_PanZoomBarUSIG_5{
+    display: none;
 }
 .rect-auto,
 .c100.p51 .slice,

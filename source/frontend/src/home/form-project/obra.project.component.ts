@@ -7,7 +7,6 @@ import {HitoObra} from "../../models/jurisdiccion";
 import {Obra} from "../../models/jurisdiccion";
 import {Expediente} from "../../models/jurisdiccion";
 import {PresupuestoPorAnioObra} from "../../models/jurisdiccion";
-//import {Jurisdiccion} from "../../models/jurisdiccion";
 const template = require('./project-obra.html');
 
 module Home {
@@ -21,34 +20,37 @@ module Home {
     private recorrido:any;
     private mapa:any;
     private tipoUbicacion:string;
-    private currentobraid: number;
     private totalBudget:number;
     private datePickersInicio = [];
     private datePickersFin = [];
-    private currentObra: Obra;
+    private currentobra: Obra;
     private tiposObra: TipoObra[];
     private selectedSubTipo:SubtipoObra;
+    private validHito: string;
+    private isNewObra: boolean;
 
     /*@ngInject*/
     constructor( private $compile: ng.ICompileService, private $scope:ng.IScope, private services:GeneralServices) {
-
+      this.validHito = "";
       services.comunas().then((data) => {
         this.comunas = data;
       });
       services.tiposDeObra().then((data) => {
         this.tiposObra = data;
       });
-      if (!this.currentobraid) {
+      if (!this.currentobra) {
+        this.isNewObra = true;
         this.createNewObra();
         this.initializeBudget();
         this.initializePickers();
       } else {
-        this.fetchObra();
+        this.isNewObra = false;
       }
       services.comunas().then((data) => {
         this.comunas = data;
       });
       let self = this;
+      this.tipoUbicacion = 'direccion';
       let optsRecorridos = {
         tipo: 'pie',
         gml: true
@@ -123,14 +125,14 @@ module Home {
     }
 
     initializePickers() {
-      this.currentObra.hitos.forEach((h) => {
+      this.currentobra.hitos.forEach((h) => {
         this.datePickersInicio.push({  "status": false });
         this.datePickersFin.push({ "status": false });
       });
     }
 
     createNewObra() {
-      this.currentObra = <Obra> {
+      this.currentobra = <Obra> {
         "idObra": null,
         "proyecto": null,
         "subtipoObra": null,
@@ -190,49 +192,50 @@ module Home {
         "comuna": null,
         "prioridadJefatura": null,
         "informacionRelevamiento": null,
-        "publicableTableroElectronico": null,
+        "publicableTableroCiudadano": null,
         "direccionUnidad": null
       };
     }
 
-    fetchObra() {
-      this.currentproject.obras.forEach((obra) => {
-          if (obra.idObra === this.currentobraid) {
-            this.currentObra = obra;
-            this.initializeBudget();
-            this.initializePickers();
-          }
-      });
-    }
-
     saveObra() {
-      this.currentObra.subtipoObra = this.selectedSubTipo;
-      this.currentObra.presupuestoTotal = this.totalBudget;
+      this.currentobra.subtipoObra = this.selectedSubTipo;
+      this.currentobra.presupuestoTotal = this.totalBudget;
       this.validarUbicacion();
 
-      if (this.currentobraid) {
+      if (!this.isNewObra) {
         for (var y = 0; y < this.currentproject.obras.length; y++) {
-          if (this.currentproject.obras[y].idObra === this.currentobraid) {
-            this.currentproject.obras[y] = this.currentObra;
+          if (this.currentproject.obras[y].idObra === this.currentobra.idObra) {
+            this.currentproject.obras[y] = this.currentobra;
           }
         }
       } else {
-        this.currentproject.obras.push(this.currentObra);
+        this.currentproject.obras.push(this.currentobra);
       }
-      this.closeModal();
+      (<any>$('#obraModal')).modal('hide');
     }
 
     validarUbicacion() {
-      this.currentObra.tipoUbicacion = this.tipoUbicacion;
-      if (this.currentObra.tipoUbicacion === 'tramo') {
-        this.currentObra.direccionDesde = this.currentObra.direccion;
-        this.currentObra.direccion = '';
+      this.currentobra.tipoUbicacion = this.tipoUbicacion;
+      if (this.currentobra.tipoUbicacion === 'tramo') {
+        this.currentobra.direccionDesde = this.currentobra.direccion;
+        this.currentobra.direccion = '';
+      }
+    }
+
+    validateHitoName() {
+      this.validHito = "";
+      for (var y = 0; y < this.currentobra.hitos.length; y++) {
+        for (var j = 0; j < this.currentobra.hitos.length; j++) {
+          if (this.currentobra.hitos[y].nombre === this.currentobra.hitos[j].nombre && y !== j) {
+            this.validHito = "Los nombres de hito no pueden estar repetidos";
+          }
+        }
       }
     }
 
     removeObra() {
       for (var y = 0; y < this.currentproject.obras.length; y++) {
-        if (this.currentproject.obras[y].idObra === this.currentobraid) {
+        if (this.currentproject.obras[y].idObra === this.currentobra.idObra) {
           this.currentproject.obras.splice(y, 1);
         }
       }
@@ -250,10 +253,10 @@ module Home {
     }
 
     initializeBudget() {
-      if (!this.currentObra.presupuestosPorAnio) {
-        this.currentObra.presupuestosPorAnio = new Array<PresupuestoPorAnioObra>();
+      if (!this.currentobra.presupuestosPorAnio) {
+        this.currentobra.presupuestosPorAnio = new Array<PresupuestoPorAnioObra>();
         this.currentproject.presupuestosPorAnio.forEach((p) => {
-          this.currentObra.presupuestosPorAnio.push(<PresupuestoPorAnioObra> {
+          this.currentobra.presupuestosPorAnio.push(<PresupuestoPorAnioObra> {
             "idPresupuestoPorAnio": null,
             "anio": p.anio,
             "presupuesto": 0,
@@ -266,24 +269,24 @@ module Home {
 
     getTotalBudget() {
       this.totalBudget = 0;
-      this.currentObra.presupuestosPorAnio.forEach((p) => {
+      this.currentobra.presupuestosPorAnio.forEach((p) => {
           this.totalBudget += Number(p.presupuesto);
         });
     }
 
     addExpediente() {
-      if (!this.currentObra.expedientes) {
-        this.currentObra.expedientes = new Array<Expediente>();
+      if (!this.currentobra.expedientes) {
+        this.currentobra.expedientes = new Array<Expediente>();
       }
-      this.currentObra.expedientes.push(<Expediente>{});
+      this.currentobra.expedientes.push(<Expediente>{});
     }
 
     removeExpediente(index) {
-      this.currentObra.expedientes.splice(index, 1);
+      this.currentobra.expedientes.splice(index, 1);
     }
 
     addHito() {
-      this.currentObra.hitos.push(<HitoObra>  {
+      this.currentobra.hitos.push(<HitoObra>  {
           "idHito": null,
           "obra": null,
           "nombre": null,
@@ -297,7 +300,7 @@ module Home {
     }
 
     removeHito(index) {
-      this.currentObra.hitos.splice(index, 1);
+      this.currentobra.hitos.splice(index, 1);
       this.datePickersInicio.splice(index, 1);
       this.datePickersFin.splice(index, 1);
     }
@@ -315,7 +318,7 @@ module Home {
   export let obraProjectComponent = {
     bindings: {
         currentproject: '<',
-        currentobraid: '='
+        currentobra: '<'
     },
       templateUrl: template,
       controller: ObraProjectController,

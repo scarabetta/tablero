@@ -10,6 +10,7 @@ import {Presupuesto} from "../models/jurisdiccion.ts";
 import {Jurisdiccion} from "../models/jurisdiccion.ts";
 import {Usuario} from "../models/jurisdiccion.ts";
 import {HitoProyecto} from "../models/jurisdiccion.ts";
+import {Obra} from "../models/jurisdiccion.ts";
 const template = require('./form-project.html');
 
 module Home {
@@ -53,6 +54,7 @@ module Home {
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
       private userOperador:boolean;
       private userSecretaria:boolean;
+      private currentObra: Obra;
 
       private datePickerInicio = {
         status: false
@@ -689,12 +691,13 @@ module Home {
         angular.element(containerDiv).append(referralDiv);
       }
 
-      editObra(idObra) {
+      editObra(obra) {
+        this.currentObra = obra;
         if (angular.element(document.getElementsByTagName('obraproject')).length) {
             var obraTag = document.getElementsByTagName('obraproject');
             angular.element(obraTag).remove();
         }
-        var referralDivFactory = this.$compile(" <obraproject currentproject='formCtrl.currentProject' currentobraid='" + idObra + "'></obraproject> ");
+        var referralDivFactory = this.$compile(" <obraproject currentproject='formCtrl.currentProject' currentobra='formCtrl.currentObra'></obraproject> ");
         var referralDiv = referralDivFactory(this.$scope);
         var containerDiv = document.getElementById('obraprojectid');
         angular.element(containerDiv).append(referralDiv);
@@ -738,12 +741,21 @@ module Home {
         return this.currentProject.idProyecto && (this.currentProject.estado === 'Incompleto' || this.currentProject.estado === 'Completo' || this.currentProject.estado === null);
       }
 
-      showDetailsTab() {
-        return (this.userOperador && (this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Completo'
-        || this.currentProject.estado === 'Incompleto' || this.currentProject.estado === 'Rechazado' || this.currentProject.estado === 'Modificable'))
-        || (this.userSecretaria && (this.currentProject.estado === 'Presentado' || this.currentProject.estado === 'Aprobado'
-        || this.currentProject.estado === 'Modificable'));
+      showInformacionInicial() {
+        let estado = this.currentProject.estado;
+        return estado === null || (this.userOperador && (estado === 'Completo' || estado === 'Incompleto' || estado === 'Presentado' || estado === 'Verificado' || estado === 'Cancelado'))
+            || (this.userSecretaria && (estado === 'Presentado' || estado === 'Verificado' || estado === 'Rechazado' || estado === 'Cancelado' || estado === 'Demorado'
+            || estado === 'Pre Aprobado' || estado === 'D. Completo' || estado === 'D. Incompleto' || estado === 'D. Presentado' || estado === 'D. Rechazado'
+            || estado === 'Aprobado' || estado === 'D. Modificable'));
       }
+
+      showDetailsTab() {
+        return (this.userOperador && (this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'D. Completo'
+        || this.currentProject.estado === 'D. Incompleto' || this.currentProject.estado === 'D. Rechazado' || this.currentProject.estado === 'D. Modificable'))
+        || (this.userSecretaria && (this.currentProject.estado === 'D. Presentado' || this.currentProject.estado === 'Aprobado'
+        || this.currentProject.estado === 'D. Modificable'));
+      }
+
 
     }
 

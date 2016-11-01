@@ -82,6 +82,7 @@ export interface IndicadorEstrategico {
   metas: Meta[];
   medicionesHistoricas: MedicionHistorica[];
   semaforizaciones: Semaforizacion[];
+  proyectos: Proyecto[];
   nombre: string;
   descripcion: string;
   metodoCalculo: string;
@@ -218,6 +219,7 @@ export interface HitoProyecto {
   estado: string;
   presupuesto: number;
   nombre: string;
+  esImportante: boolean;
 }
 
 export interface MedicionHistorica {
@@ -276,7 +278,7 @@ export interface Obra {
   comuna: Comuna;
   prioridadJefatura: string;
   informacionRelevamiento: string;
-  publicableTableroElectronico: number;
+  publicableTableroCiudadano: boolean;
   direccionUnidad: string;
 }
 
@@ -293,6 +295,7 @@ export interface PresupuestoPorMes {
   anio: number;
   mes: number;
   presupuesto: number;
+  idProyectoAux: number;
 }
 
 export interface Semaforizacion {

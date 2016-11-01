@@ -10,11 +10,6 @@
           <div class="col-md-3 col-sm-12 col-xs-12 refItem">
             <p>Datos por ingresar</p>
             <ul>
-              <!-- <li><a class="linkModal" href="#info"><div class="ic-title ic-modal-info"></div> Información inicial <i class="glyphicon glyphicon-ok-sign" aria-hidden="true"></i></a></li>
-              <li><a class="linkModal" href="#fechas"><div class="ic-title ic-modal-fechas"></div> Fechas/Hitos <i class="glyphicon glyphicon-ok-sign" aria-hidden="true"></i></a></li>
-              <li><a class="linkModal" href="#presupuesto"><div class="ic-title ic-modal-presupuesto"></div> Presupuesto <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i></a></li>
-              <li><a class="linkModal" href="#ubicacion"><div class="ic-title ic-modal-ubicacion"></div> Ubicación <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i></a></li>
-              <li><a class="linkModal" href="#expediente"><div class="ic-title ic-modal-expediente"></div> Expedientes <i class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></i></a></li> -->
 
               <li><a class="linkModal" href="#info"><div class="ic-title ic-modal-info"></div> Información inicial </a></li>
               <li><a class="linkModal" href="#fechas"><div class="ic-title ic-modal-fechas"></div> Fechas/Hitos </a></li>
@@ -24,20 +19,20 @@
             </ul>
           </div>
           <div class="col-md-9 col-sm-12 col-xs-12">
-               <form role="form">
+               <form role="form" ng-submit="obraCtrl.saveObra()">
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="info">
                     <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial de la Obra
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentObra.nombre" placeholder="Ingresar nombre" required>
+                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentobra.nombre" placeholder="Ingresar nombre" required >
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="descripcion de la obra">Descripción de la obra</label>
-                            <textarea class="form-control" rows="3" ng-model="obraCtrl.currentObra.descripcion"></textarea>
+                            <textarea class="form-control" rows="3" ng-model="obraCtrl.currentobra.descripcion"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -57,7 +52,7 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="referentes">Referentes de ejecución</label>
-                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentObra.referenteEjecucion" value="{{obraCtrl.currentObra.referenteEjecucion}}" placeholder="Ingresar nombre del referente" required>
+                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentobra.referenteEjecucion" value="{{obraCtrl.currentobra.referenteEjecucion}}" placeholder="Ingresar nombre del referente" >
                         </div>
                     </div>
                     </a>
@@ -79,11 +74,11 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr ng-repeat="hito in obraCtrl.currentObra.hitos">
-                                <td><input type="text" class="form-control" ng-model="hito.nombre" ng-disabled="hito.nombre === 'AnteProyecto' || hito.nombre === 'Licitacion' || hito.nombre === 'Ejecucion'" required/></td>
+                              <tr ng-repeat="hito in obraCtrl.currentobra.hitos">
+                                <td><input type="text" class="form-control" ng-model="hito.nombre" maxlength="512" ng-change="obraCtrl.validateHitoName()" ng-disabled="hito.nombre === 'AnteProyecto' || hito.nombre === 'Licitacion' || hito.nombre === 'Ejecucion'" /></td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersInicio[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersInicio[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="obraCtrl.handlePickerInicio($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -91,7 +86,7 @@
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="obraCtrl.handlePickerFin($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -99,47 +94,12 @@
                                 </td>
                                 <td class="iconTable"><i class="glyphicon glyphicon-remove" title="Eliminar" ng-if="hito.nombre !== 'AnteProyecto' && hito.nombre !== 'Licitacion' && hito.nombre !== 'Ejecucion'" aria-hidden="true" ng-click="obraCtrl.removeHito($index)"></i></td>
                               </tr>
-                              <!-- <tr>
-                                <td>Licitación y adjudicación</td>
-                                <td>
-                                  <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickerInicioLicitacion.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="obraCtrl.currentproject.fechaInicio" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="obraCtrl.openPickerInicioLicitacion()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickerFinLicitacion.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="obraCtrl.currentproject.fechaInicio" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="obraCtrl.openPickerFinLicitacion()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                  </p>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>Ejecución</td>
-                                <td>
-                                  <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickerInicioEjecucion.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="obraCtrl.currentproject.fechaInicio" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="obraCtrl.openPickerInicioEjecucion()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                  </p>
-                                </td>
-                                <td>
-                                  <p class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickerFinEjecucion.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="obraCtrl.currentproject.fechaInicio" required/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="obraCtrl.openPickerFinEjecucion()"><i class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                  </p>
-                                </td>
-                              </tr> -->
                             </tbody>
                           </table>
                         </div>
+                      </div>
+                      <div class="col-md-12">
+                        <span class="errorForm error-date bottom-align">{{obraCtrl.validHito}}</span>
                       </div>
                       <div class="col-md-12">
                             <button id="buttonHito" type="button" class="btn btn-default" ng-click="obraCtrl.addHito()">
@@ -162,7 +122,7 @@
                           <label for="fondo solicitado GCBA" style="padding-left: 24px;">Fondo solicitado</label>
                         </div>
                       </div>
-                      <div ng-repeat="p in obraCtrl.currentObra.presupuestosPorAnio">
+                      <div ng-repeat="p in obraCtrl.currentobra.presupuestosPorAnio">
                         <div class="row">
                           <div class="form-group col-md-2 col-sm-2 col-xs-4 add-line">
                             <input type="text" class="form-control" id="year" disabled="true" value="{{p.anio}}">
@@ -192,40 +152,32 @@
                       <div class="form-group col-md-12">
                           <label for="tipo de proyecto">Tipo de ubicación</label>
                           <div class="radio">
-                              <label for="optionsRadios1" class="option">
-                                  <input type="radio" name="tipoUbicacion" ng-model="obraCtrl.tipoUbicacion" ng-value="'direccion'" ng-init="obraCtrl.tipoUbicacion = 'direccion'"/>
-                                  Dirección
-                              </label>
-                              <label for="optionsRadios2" class="option">
-                                  <input type="radio" name="tipoUbicacion2" ng-model="obraCtrl.tipoUbicacion" ng-value="'tramo'"/>
-                                  Tramo
-                              </label>
-                              <label for="optionsRadios3" class="option">
-                                  <input type="radio" name="tipoUbicacion3" ng-model="obraCtrl.tipoUbicacion" ng-value="'otro'"/>
-                                  Otro
-                              </label>
+                            <select ng-model="obraCtrl.tipoUbicacion">
+                              <option value="direccion">Dirección</option>
+                              <option value="tramo">Tramo</option>
+                              <option value="otro">Otro</option>
+                            </select>
                           </div>
-
                       </div>
                       <div class="form-group col-md-6" ng-hide="obraCtrl.tipoUbicacion === 'otro'">
                         <label for="referentes">Dirección o intersección origen</label>
-                        <input type="text" class="form-control" ng-model="obraCtrl.currentObra.direccion" id="direccionOrigen" name="direccion" maxlength="512" placeholder="Ingresar dirección" required="">
+                        <input type="text" class="form-control" ng-model="obraCtrl.currentobra.direccion" id="direccionOrigen" name="direccion" maxlength="512" placeholder="Ingresar dirección" >
                       </div>
                       <div class="form-group col-md-6" ng-hide="obraCtrl.tipoUbicacion === 'otro' || obraCtrl.tipoUbicacion === 'tramo'">
                         <label for="referentes">Piso/Depto/otro <span class="opcional">(Opcional)</span></label>
-                        <input type="text" class="form-control" ng-model="obraCtrl.currentObra.detalleUbicacion" id="pisoOrigen" maxlength="512" placeholder="Ingresar número" required="">
+                        <input type="text" class="form-control" ng-model="obraCtrl.currentobra.detalleUbicacion" id="pisoOrigen" maxlength="512" placeholder="Ingresar número">
                       </div>
                       <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'tramo'">
                         <label for="referentes">Dirección o intersección destino</label>
-                        <input type="text" class="form-control" id="direccionDestino" ng-model="obraCtrl.currentObra.direccionHasta" name="direccion" maxlength="512" placeholder="Ingresar dirección" required="">
+                        <input type="text" class="form-control" id="direccionDestino" ng-model="obraCtrl.currentobra.direccionHasta" name="direccion" maxlength="512" placeholder="Ingresar dirección" >
                       </div>
                       <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'otro'">
                         <label for="referentes">Detalle de ubicación</label>
-                        <textarea class="form-control" placeholder="Ingresar detalle de ubicación" ng-model="obraCtrl.currentObra.detalleUbicacion" required=""></textarea>
+                        <textarea class="form-control" placeholder="Ingresar detalle de ubicación" ng-model="obraCtrl.currentobra.detalleUbicacion" ></textarea>
                       </div>
                       <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'otro'">
                           <label for="comunas">Comunas</label>
-                          <select class="form-control" ng-model="obraCtrl.currentObra.comuna"
+                          <select class="form-control" ng-model="obraCtrl.currentobra.comuna"
                             ng-options="item as item.nombre for item in obraCtrl.comunas">
                           </select>
                       </div>
@@ -237,25 +189,35 @@
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="expediente">
                     <div class="ic-title ic-expediente"></div>&nbsp;Expedientes <span class="opcional">(Opcional)</span>
-                    <div class="row" ng-repeat="expediente in obraCtrl.currentObra.expedientes">
+                      <div class="row">
                       <div class="form-group col-md-5 col-sm-12 col-xs-12">
                         <label for="referentes">Descripción</label>
-                        <input type="text" class="form-control" id="descripcion" ng-model="expediente.descripcion" maxlength="512" placeholder="Ingresar descripcion" required="">
                       </div>
                       <div class="form-group col-md-2 col-xs-3 col-xs-3">
                         <label for="referentes">Sigla</label>
-                        <input type="text" class="form-control" id="sigla" maxlength="512" placeholder="" required="" ng-model="expediente.sigla">
                       </div>
                       <div class="form-group col-md-2 col-xs-3 col-xs-3">
                         <label for="referentes">Numero</label>
-                        <input type="text" class="form-control" id="sigla" maxlength="512" placeholder="" required="" ng-model="expediente.numero">
                       </div>
                       <div class="form-group col-md-2 col-xs-3 col-xs-3">
                         <label for="referentes">Año</label>
-                        <input type="text" class="form-control" id="sigla" maxlength="512" placeholder="" required="" ng-model="expediente.anio">
                       </div>
-                        <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="obraCtrl.removeExpediente($index)"></i>
                     </div>
+                    <div class="row" ng-repeat="expediente in obraCtrl.currentobra.expedientes">
+                    <div class="form-group col-md-5 col-sm-12 col-xs-12">
+                      <input type="text" class="form-control" id="descripcion" ng-model="expediente.descripcion" maxlength="512" placeholder="Ingresar descripcion">
+                    </div>
+                    <div class="form-group col-md-2 col-xs-3 col-xs-3">
+                      <input type="text" class="form-control" id="sigla" maxlength="20" placeholder="" ng-model="expediente.sigla">
+                    </div>
+                    <div class="form-group col-md-2 col-xs-3 col-xs-3">
+                      <input type="text" class="form-control" id="sigla" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="10" placeholder="" ng-model="expediente.numero">
+                    </div>
+                    <div class="form-group col-md-2 col-xs-3 col-xs-3">
+                      <input type="text" class="form-control" id="sigla" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' maxlength="4" placeholder="" ng-model="expediente.anio">
+                    </div>
+                      <i class="glyphicon glyphicon-remove glyphicon-expediente " aria-hidden="true" title="Eliminar" data-toggle="tooltip" data-placement="top" title="" data-original-title="Eliminar" ng-click="obraCtrl.removeExpediente($index)"></i>
+                  </div>
                     <div class="row">
                       <div class="col-md-12">
                             <button id="buttonHito" type="button" class="btn btn-default"  ng-click="obraCtrl.addExpediente()">
@@ -267,7 +229,7 @@
                     </a>
                 </div>
                 <br>
-            <button type="button" class="btn btn-success btn-lg" data-dismiss="modal" ng-click="obraCtrl.saveObra()">Guardar obra</button>
+            <button type="submit" class="btn btn-success btn-lg" ng-disabled="obraCtrl.validHito !==''">Guardar obra</button>
             <button type="button" class="btn btn-default right btnRemove" data-dismiss="modal" ng-click="obraCtrl.removeObra()" ng-if="obraCtrl.currentobraid">Eliminar</button>
             <button type="button" class="btn btn-default right" ng-click="obraCtrl.closeModal()" data-dismiss="modal"  >Cancelar cambios</button>
 

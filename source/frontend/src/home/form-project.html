@@ -1,7 +1,7 @@
 <li id="projectFormID">
 <div class="contentNewProyect">{{formCtrl.title}}</div>
 <uib-tabset active="activeFormProyect" >
-  <uib-tab index="0" heading="Información inicial">
+  <uib-tab index="0" heading="Información inicial" ng-if="formCtrl.showInformacionInicial()">
     <div class="col-md-12 contentFormProyect" id="alertmodalcomponent">
        <div class="col-md-3 col-sm-12 col-xs-12 pull-right contentAction" id="moveprojectid">
             <!-- <div class="dropdown content-actionForm">
@@ -486,7 +486,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                     <div class="col-md-12">
                         <div class="table-responsive gridContent">
                           <div class="obrasList">
-                            <div class="itemObra" ng-repeat="obra in formCtrl.currentProject.obras" data-toggle="modal" data-target="#obraModal" ng-click="formCtrl.editObra(obra.idObra)">
+                            <div class="itemObra" ng-repeat="obra in formCtrl.currentProject.obras" data-toggle="modal" data-target="#obraModal" ng-click="formCtrl.editObra(obra)">
                               <span>{{obra.nombre}}</span>
                             </div>
                           </div>

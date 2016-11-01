@@ -279,17 +279,10 @@ module Home {
 
         editProject(proyecto) {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
-            let estado = proyecto.estado;
-            if ((this.userOperador && (estado === 'Completo' || estado === 'Incompleto' || estado === 'Presentado' || estado === 'Verificado' || estado === 'Cancelado'))
-            || (this.userSecretaria && (estado === 'Presentado' || estado === 'Verificado' || estado === 'Rechazado' || estado === 'Cancelado' || estado === 'Demorado'
-            || estado === 'Pre Aprobado' || estado === 'Completo' || estado === 'Incompleto' || estado === 'Aprobado' || estado === 'Modificable'))) {
-              var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "'></formproject> " );
-              var referralDiv = referralDivFactory(this.$scope);
-              var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
-              angular.element(containerDiv).append(referralDiv);
-            } else {
-              this.viewProject(proyecto);
-            }
+            var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "'></formproject> " );
+            var referralDiv = referralDivFactory(this.$scope);
+            var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
+            angular.element(containerDiv).append(referralDiv);
           } else {
             var notificationData = {
               "type" : "warning",
