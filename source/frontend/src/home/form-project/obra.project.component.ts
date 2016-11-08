@@ -19,19 +19,35 @@ module Home {
     private destino:any;
     private recorrido:any;
     private mapa:any;
-    private tipoUbicacion:string;
     private totalBudget:number;
     private datePickersInicio = [];
     private datePickersFin = [];
+    private editableHitosName = [];
     private currentobra: Obra;
+    private currentObraNombre: string;
     private tiposObra: TipoObra[];
+    private selectedTipo: TipoObra;
     private selectedSubTipo:SubtipoObra;
-    private validHito: string;
+    private selectedTipoId: number;
+    private selectedComunaId:number;
+    private validHitoNombre: string;
+    private validHitoFecha: string;
+    private validHitoFechaProyecto: string;
+    private validObraNombre: string;
+    private validDireccionNormalizada: string;
+    private validDireccionDesdeNormalizada: string;
+    private validDireccionHastaNormalizada: string;
     private isNewObra: boolean;
 
     /*@ngInject*/
-    constructor( private $compile: ng.ICompileService, private $scope:ng.IScope, private services:GeneralServices) {
-      this.validHito = "";
+    constructor( private $compile: ng.ICompileService, private $scope:ng.IScope, private $timeout:ng.ITimeoutService, private services:GeneralServices) {
+      this.validHitoNombre = "";
+      this.validHitoFecha = "";
+      this.validHitoFechaProyecto = "";
+      this.validObraNombre = "";
+      this.validDireccionNormalizada = "";
+      this.validDireccionDesdeNormalizada = "";
+      this.validDireccionHastaNormalizada = "";
       services.comunas().then((data) => {
         this.comunas = data;
       });
@@ -41,93 +57,195 @@ module Home {
       if (!this.currentobra) {
         this.isNewObra = true;
         this.createNewObra();
-        this.initializeBudget();
-        this.initializePickers();
       } else {
         this.isNewObra = false;
+        this.currentobra = JSON.parse(JSON.stringify(this.currentobra));
+        this.currentObraNombre = this.currentobra.nombre;
+        this.initializeTipoObra();
+        if (this.currentobra.comuna) {
+          this.selectedComunaId = this.currentobra.comuna.idComuna;
+        }
       }
+
+      this.initializeBudget();
+      this.initializePickers();
+      this.initializeEditables();
+
       services.comunas().then((data) => {
         this.comunas = data;
       });
       let self = this;
-      this.tipoUbicacion = 'direccion';
-      let optsRecorridos = {
-        tipo: 'pie',
-        gml: true
-      };
-      (<any>usig).Recorridos.init(optsRecorridos);
-      let buscarRecorridos = function(){
-        if (!self.origen || !self.destino) {
-          return;
-        }
-        (<any>usig).Recorridos.buscarRecorridos(self.origen, self.destino, function(opciones){
-          if (self.recorrido) {
-            self.mapa.borrarRecorrido(self.recorrido);
+      $timeout(function(){
+        let optsRecorridos = {
+          tipo: 'pie',
+          gml: true
+        };
+        (<any>usig).Recorridos.init(optsRecorridos);
+        let buscarRecorridos = function(){
+          if (!self.origen || !self.destino) {
+            return;
           }
-          self.recorrido = opciones[0];
-          self.mapa.mostrarRecorrido(self.recorrido);
-        });
-      };
-      new usig.AutoCompleter('direccionOrigen', {
-        debug: false,
-        rootUrl: '../',
-        onReady: function() {
-          (<any>$('#direccionOrigen')).val('').removeAttr('disabled').focus();
-        },
-        afterSelection: function(option) {
-          if (option instanceof usig.Direccion || option instanceof (<any>usig).inventario.Objeto) {
-            self.origen = option;
-          }
-        },
-        afterGeoCoding: function(pt) {
-          if (pt instanceof usig.Punto) {
-            if (self.origen instanceof usig.Direccion) {
-              self.origen.setCoordenadas(pt);
+          (<any>usig).Recorridos.buscarRecorridos(self.origen, self.destino, function(opciones){
+            if (self.recorrido) {
+              self.mapa.borrarRecorrido(self.recorrido);
             }
-            if (self.tipoUbicacion === 'direccion') {
+            self.recorrido = opciones[0];
+            self.mapa.mostrarRecorrido(self.recorrido);
+          });
+        };
+        this.direccionAutocompleter = new usig.AutoCompleter('direccion', {
+          debug: false,
+          rootUrl: '../',
+          onInputChange: function(input) {
+            if (self.currentobra.tipoUbicacion === 'direccion') {
+              if (input !== '') {
+                self.validDireccionNormalizada = "La direccion debe estar normalizada";
+              } else {
+                self.validDireccionNormalizada = "";
+              }
+              self.validDireccionDesdeNormalizada = '';
+              self.validDireccionHastaNormalizada = '';
+            }
+          },
+          afterSelection: function(option) {
+            if (option instanceof usig.Direccion || option instanceof (<any>usig).inventario.Objeto) {
+              self.origen = option;
+              self.currentobra.direccion = option.toString();
+            }
+          },
+          afterGeoCoding: function(pt) {
+            self.validDireccionNormalizada = "";
+            self.$scope.$apply();
+            if (pt instanceof usig.Punto) {
+              if (self.origen instanceof usig.Direccion) {
+                self.origen.setCoordenadas(pt);
+              }
               if (self.recorrido) {
                 self.mapa.borrarRecorrido(self.recorrido);
               }
               self.mapa.addMarker(self.origen, true, function(ev, place, popup) {
                 popup.show();
               });
-            } else if (self.tipoUbicacion === 'tramo') {
+            }
+          }
+        });
+        new usig.AutoCompleter('direccionDesde', {
+          debug: false,
+          rootUrl: '../',
+          onInputChange: function(input) {
+            if (self.currentobra.tipoUbicacion === 'tramo') {
+              if (input !== '') {
+                self.validDireccionDesdeNormalizada = "La direccion debe estar normalizada";
+              } else {
+                self.validDireccionDesdeNormalizada = "";
+              }
+              self.validDireccionNormalizada = '';
+            }
+          },
+          afterSelection: function(option) {
+            if (option instanceof usig.Direccion || option instanceof (<any>usig).inventario.Objeto) {
+              self.origen = option;
+              self.currentobra.direccionDesde = option.toString();
+            }
+          },
+          afterGeoCoding: function(pt) {
+            self.validDireccionDesdeNormalizada = "";
+            self.$scope.$apply();
+            if (pt instanceof usig.Punto) {
+              if (self.origen instanceof usig.Direccion) {
+                self.origen.setCoordenadas(pt);
+              }
               buscarRecorridos();
             }
           }
-        }
-      });
-      new usig.AutoCompleter('direccionDestino', {
-        debug: false,
-        rootUrl: '../',
-        onReady: function() {
-          (<any>$('#direccionDestino')).val('').removeAttr('disabled');
-        },
-        afterSelection: function(option) {
-          if (option instanceof usig.Direccion || option instanceof (<any>usig).inventario.Objeto) {
-            self.destino = option;
-          }
-        },
-        afterGeoCoding: function(pt) {
-          if (pt instanceof usig.Punto) {
-            if (self.destino instanceof usig.Direccion) {
-              self.destino.setCoordenadas(pt);
+        });
+        new usig.AutoCompleter('direccionHasta', {
+          debug: false,
+          rootUrl: '../',
+          onInputChange: function(input) {
+            if (self.currentobra.tipoUbicacion === 'tramo') {
+              if (input !== '') {
+                self.validDireccionHastaNormalizada = "La direccion debe estar normalizada";
+              } else {
+                self.validDireccionHastaNormalizada = "";
+              }
+              self.validDireccionNormalizada = '';
             }
-            if (self.tipoUbicacion === 'tramo') {
+          },
+          afterSelection: function(option) {
+            if (option instanceof usig.Direccion || option instanceof (<any>usig).inventario.Objeto) {
+              self.destino = option;
+              self.currentobra.direccionHasta = option.toString();
+            }
+          },
+          afterGeoCoding: function(pt) {
+            self.validDireccionHastaNormalizada = "";
+            self.$scope.$apply();
+            if (pt instanceof usig.Punto) {
+              if (self.destino instanceof usig.Direccion) {
+                self.destino.setCoordenadas(pt);
+              }
               buscarRecorridos();
             }
           }
-        }
+        });
+        (<any>$('#mapa')).css('width', 700).css('height', 250);
+        self.mapa = new usig.MapaInteractivo('mapa', {
+          rootUrl: '../',
+          onReady: function(){
+            if (self.currentobra.direccion) {
+              self.mapa.addMarker(self.currentobra.direccion, true, function(ev, place, popup) {
+                    popup.show();
+              });
+            }
+          }});
       });
-
-      (<any>$('#mapa')).css('width', 700).css('height', 450);
-      this.mapa = new usig.MapaInteractivo('mapa', { rootUrl: '../'	});
     }
 
     initializePickers() {
       this.currentobra.hitos.forEach((h) => {
         this.datePickersInicio.push({  "status": false });
         this.datePickersFin.push({ "status": false });
+      });
+    }
+
+    initializeEditables() {
+      this.currentobra.hitos.forEach((h) => {
+        if (h.nombre === 'AnteProyecto' || h.nombre === 'Licitacion' || h.nombre === 'Ejecucion') {
+          this.editableHitosName.push({"editable": false});
+        } else {
+          this.editableHitosName.push({"editable": true});
+        }
+      });
+    }
+
+    initializeTipoObra() {
+      if (this.currentobra.idSubtipoObraAux) {
+        this.services.getTipoObraFromSubtipo(this.currentobra.idSubtipoObraAux).then((data) => {
+          this.selectedTipo = data;
+          this.selectedTipo.subtiposObra.forEach((s) => {
+            if (s.idSubtipoObra === this.currentobra.idSubtipoObraAux) {
+              this.selectedSubTipo = s;
+              this.selectedTipoId = this.selectedTipo.idTipoObra;
+            }
+          });
+        });
+      }
+    }
+
+    changedTipo() {
+      this.tiposObra.forEach((t) => {
+        if (t.idTipoObra === this.selectedTipoId) {
+          this.selectedTipo = t;
+        }
+      });
+    }
+
+    changedComuna() {
+      this.comunas.forEach((c) => {
+        if (c.idComuna === this.selectedComunaId) {
+          this.currentobra.comuna = c;
+        }
       });
     }
 
@@ -193,18 +311,23 @@ module Home {
         "prioridadJefatura": null,
         "informacionRelevamiento": null,
         "publicableTableroCiudadano": null,
-        "direccionUnidad": null
+        "direccionUnidad": null,
+        "fechaInicio": null,
+        "fechaFin": null
       };
     }
 
     saveObra() {
       this.currentobra.subtipoObra = this.selectedSubTipo;
       this.currentobra.presupuestoTotal = this.totalBudget;
-      this.validarUbicacion();
+      if (this.selectedSubTipo) {
+        this.currentobra.idSubtipoObraAux = this.selectedSubTipo.idSubtipoObra;
+      }
+      this.guardarFechaIniYFin();
 
       if (!this.isNewObra) {
         for (var y = 0; y < this.currentproject.obras.length; y++) {
-          if (this.currentproject.obras[y].idObra === this.currentobra.idObra) {
+          if (this.currentproject.obras[y].nombre === this.currentObraNombre) {
             this.currentproject.obras[y] = this.currentobra;
           }
         }
@@ -214,23 +337,70 @@ module Home {
       (<any>$('#obraModal')).modal('hide');
     }
 
-    validarUbicacion() {
-      this.currentobra.tipoUbicacion = this.tipoUbicacion;
-      if (this.currentobra.tipoUbicacion === 'tramo') {
-        this.currentobra.direccionDesde = this.currentobra.direccion;
-        this.currentobra.direccion = '';
+    guardarFechaIniYFin() {
+      var fechaIni = this.obtenerMenorInicio();
+      var fechaFin = this.obtenerMayorFin();
+      if (!fechaFin) {
+        fechaFin = fechaIni;
       }
+      if (!fechaIni) {
+        fechaIni = fechaFin;
+      }
+      this.currentobra.fechaInicio = fechaIni;
+      this.currentobra.fechaFin = fechaFin;
     }
 
-    validateHitoName() {
-      this.validHito = "";
+    obtenerMenorInicio() {
+      var arrayFechasIni = new Array();
+      this.currentobra.hitos.forEach((h) => {
+        if (h.fechaInicio) {
+          arrayFechasIni.push(h.fechaInicio);
+        }
+      });
+      var fechas = this.sortDates(arrayFechasIni);
+      return fechas[0];
+    }
+
+    obtenerMayorFin() {
+      var arrayFechasFin = new Array();
+      this.currentobra.hitos.forEach((h) => {
+        if (h.fechaFin) {
+          arrayFechasFin.push(h.fechaFin);
+        }
+      });
+      var fechas = this.sortDates(arrayFechasFin);
+      return fechas[fechas.length - 1];
+    }
+
+    sortDates(datesArray) {
+      datesArray.sort();
+      return datesArray;
+    }
+
+    validateHitoNames() {
+      this.validHitoNombre = "";
       for (var y = 0; y < this.currentobra.hitos.length; y++) {
         for (var j = 0; j < this.currentobra.hitos.length; j++) {
           if (this.currentobra.hitos[y].nombre === this.currentobra.hitos[j].nombre && y !== j) {
-            this.validHito = "Los nombres de hito no pueden estar repetidos";
+            this.validHitoNombre = "Los nombres de hito no pueden estar repetidos";
           }
         }
       }
+    }
+
+    validateObraName() {
+      this.validObraNombre = "";
+      this.currentproject.obras.forEach((t) => {
+        if (t.nombre === this.currentobra.nombre) {
+          if (!this.isNewObra) {
+            if (this.currentobra.idObra !== t.idObra) {
+              this.validObraNombre = "Ya hay otra obra con el mismo nombre";
+            }
+          } else {
+            this.validObraNombre = "Ya hay otra obra con el mismo nombre";
+          }
+        }
+      });
     }
 
     removeObra() {
@@ -297,12 +467,15 @@ module Home {
         });
       this.datePickersInicio.push({  "status": false });
       this.datePickersFin.push({ "status": false });
+      this.editableHitosName.push({  "editable": true });
     }
 
     removeHito(index) {
       this.currentobra.hitos.splice(index, 1);
       this.datePickersInicio.splice(index, 1);
       this.datePickersFin.splice(index, 1);
+      this.validateDates();
+      this.validateHitoNames();
     }
 
     handlePickerInicio(index) {
@@ -311,6 +484,32 @@ module Home {
 
     handlePickerFin(index) {
       this.datePickersFin[index].status = !this.datePickersFin[index].status;
+    }
+
+    validateDates() {
+      this.validHitoFechaProyecto = "";
+      this.validHitoFecha = "";
+      this.currentobra.hitos.forEach((p) => {
+        var fechaIni = p.fechaInicio;
+        var fechaFin = p.fechaFin;
+        if (fechaIni && fechaFin) {
+          if (fechaIni > fechaFin) {
+            this.validHitoFecha = "La fecha de fin debe ser posterior a la fecha de inicio";
+          }
+        }
+        if (fechaIni) {
+          if (fechaIni < this.currentproject.fechaInicio) {
+            this.validHitoFechaProyecto = "Las fechas son incosistentes con las del proyecto (" +  this.currentproject.fechaInicio.toLocaleDateString() + " - "
+              + this.currentproject.fechaFin.toLocaleDateString() + ")";
+          }
+        }
+        if (fechaFin) {
+          if (fechaFin > this.currentproject.fechaFin) {
+            this.validHitoFechaProyecto = "Las fechas son incosistentes con las del proyecto (" + this.currentproject.fechaInicio.toLocaleDateString() + " - "
+              + this.currentproject.fechaFin.toLocaleDateString() + ")";
+          }
+        }
+      });
     }
 
   }

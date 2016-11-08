@@ -280,6 +280,8 @@ export interface Obra {
   informacionRelevamiento: string;
   publicableTableroCiudadano: boolean;
   direccionUnidad: string;
+  fechaInicio: Date;
+  fechaFin: Date;
 }
 
 export interface PresupuestoPorAnioObra {

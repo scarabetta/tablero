@@ -73,18 +73,14 @@
           <div class="ic-title ic-presupuesto"></div>
           &nbsp;Fechas y presupuesto
           <div class="row">
-            <div class="col-md-3 col-sm-6">
               <div class="dateView">
                 <label for="fecha de inicio">Fecha de inicio</label>
                 <p>{{formCtrl.currentProject.fechaInicio | date:'MM/dd/yyyy'}}</p>
               </div>
-            </div>
-            <div class="col-md-3 col-sm-6">
               <div class="dateView">
                 <label for="fecha de fin">Fecha de fin</label>
                 <p>{{formCtrl.currentProject.fechaFin | date:'MM/dd/yyyy'}}</p>
               </div>
-            </div>
           </div>
           <div>
             <div class="row">
@@ -159,7 +155,8 @@
         </div>
         <br>
         <div class="row contentFlex">
-          <div class="col-md-6 col-md-12 contentFlexRow">
+          <div class="col-md-6 col-sm-12 contentFlexRow">
+            <div class="contentFlexBg">
           <div class="nameBoxView">
             <p>Indicadores / Meta</p>
           </div>
@@ -171,12 +168,13 @@
               </div>
               <div class="col-md-12 col-sm-12">
                 <label for="unidad de la meta">Unidad de la meta</label>
-                <p>{{formCtrl.currentProject.unidadMeta}}</p>
+                <p class="textBold">{{formCtrl.currentProject.unidadMeta}}</p>
               </div>
             </div>
         </div>
         </div>
-        <div class="col-md-6 col-md-12 contentFlexRow">
+        </div>
+        <div class="col-md-6 col-sm-12 contentFlexRow">
         <div class="contentFlexBg">
         <div class="nameBoxView">
           <p>Eje de gobierno</p>
@@ -193,7 +191,7 @@
           </div>
         <br>
         <div class="row contentFlex">
-        <div class="col-md-6 col-md-12 contentFlex">
+        <div class="col-md-6 col-sm-12 contentFlex">
         <div class="agrupador ">
           <div class="ic-title ic-poblacion"></div>
           &nbsp;Población
@@ -214,7 +212,7 @@
         </div>
         </div>
 
-        <div class="col-md-6 col-md-12 contentFlex">
+        <div class="col-md-6 col-sm-12 contentFlex">
         <div class="agrupador">
           <div class="ic-title ic-ubicacion"></div>
           &nbsp;Ubicación
@@ -223,14 +221,14 @@
               <label for="tipo de ubicacion">Tipo de ubicación</label>
               <p>{{formCtrl.currentProject.tipoUbicacionGeografica}}</p>
             </div>
-            <div class="col-md-12 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Dirección'">
-              <label for="direccion">Dirección</label>
+            <div class="col-md-12 col-sm-12 contentClear contentDirection" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Dirección'">
+              <!-- <label for="direccion">Dirección</label>-->
               <p>{{formCtrl.currentProject.direccion}}</p>
             </div>
-            <div class="col-md-12 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
+            <!--<div class="col-md-12 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
               <label for="direccion">Comunas</label>
-            </div>
-            <div class="col-md-12 col-sm-12 contentClear" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
+            </div>-->
+            <div class="col-md-12 col-sm-12 contentClear contentDirection" ng-if="formCtrl.currentProject.tipoUbicacionGeografica === 'Comunas'">
               <div class="contentEtiquetas" ng-repeat="label in formCtrl.currentProject.comunas">{{label.nombre}}</div>
             </div>
           </div>
@@ -239,7 +237,7 @@
         </div>
         <br>
         <div class="row contentFlex">
-        <div class="col-md-6 col-md-12 contentFlex">
+        <div class="col-md-6 col-sm-12 contentFlex">
          <div class="agrupador">
           <div class="ic-title ic-responsabilidad"></div>
           &nbsp;Responsables
@@ -262,7 +260,7 @@
         </div>
         </div>
 
-        <div class="col-md-6 col-md-12 contentFlex">
+        <div class="col-md-6 col-sm-12 contentFlex">
           <div class="agrupador">
           <div class="ic-title ic-infoInicial"></div>
           &nbsp;Información adicional

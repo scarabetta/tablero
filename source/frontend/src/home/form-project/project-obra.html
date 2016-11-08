@@ -26,8 +26,13 @@
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentobra.nombre" placeholder="Ingresar nombre" required >
+                            <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentobra.nombre" placeholder="Ingresar nombre" ng-change="obraCtrl.validateObraName()" required >
                         </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <p class="errorForm modal-obra">{{obraCtrl.validObraNombre}}</p>
+                      </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
@@ -38,8 +43,8 @@
                     <div class="row">
                       <div class="form-group col-md-6 col-sm-12">
                         <label for="tipo de obra">Tipo de obra</label>
-                        <select class="form-control" ng-model="obraCtrl.selectedTipo"
-                          ng-options="item as item.nombre for item in obraCtrl.tiposObra">
+                        <select class="form-control" ng-model="obraCtrl.selectedTipoId"
+                          ng-options="item.idTipoObra as item.nombre for item in obraCtrl.tiposObra" ng-change="obraCtrl.changedTipo()">
                         </select>
                       </div>
                       <div class="form-group col-md-6 col-sm-12">
@@ -75,10 +80,10 @@
                             </thead>
                             <tbody>
                               <tr ng-repeat="hito in obraCtrl.currentobra.hitos">
-                                <td><input type="text" class="form-control" ng-model="hito.nombre" maxlength="512" ng-change="obraCtrl.validateHitoName()" ng-disabled="hito.nombre === 'AnteProyecto' || hito.nombre === 'Licitacion' || hito.nombre === 'Ejecucion'" /></td>
+                                <td><input type="text" class="form-control" ng-model="hito.nombre" maxlength="512" ng-change="obraCtrl.validateHitoNames()" ng-disabled="!obraCtrl.editableHitosName[$index].editable" required/></td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersInicio[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" />
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersInicio[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" ng-change="obraCtrl.validateDates()" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="obraCtrl.handlePickerInicio($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -86,20 +91,24 @@
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" />
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="obraCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" ng-change="obraCtrl.validateDates()" />
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="obraCtrl.handlePickerFin($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
                                   </div>
                                 </td>
-                                <td class="iconTable"><i class="glyphicon glyphicon-remove" title="Eliminar" ng-if="hito.nombre !== 'AnteProyecto' && hito.nombre !== 'Licitacion' && hito.nombre !== 'Ejecucion'" aria-hidden="true" ng-click="obraCtrl.removeHito($index)"></i></td>
+                                <td class="iconTable"><i class="glyphicon glyphicon-remove" title="Eliminar" ng-if="obraCtrl.editableHitosName[$index].editable" aria-hidden="true" ng-click="obraCtrl.removeHito($index)"></i></td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <span class="errorForm error-date bottom-align">{{obraCtrl.validHito}}</span>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <p class="errorForm modal-obra">{{obraCtrl.validHitoNombre}}</p>
+                          <p class="errorForm  modal-obra">{{obraCtrl.validHitoFecha}}</p>
+                          <p class="errorForm  modal-obra">{{obraCtrl.validHitoFechaProyecto}}</p>
                       </div>
                       <div class="col-md-12">
                             <button id="buttonHito" type="button" class="btn btn-default" ng-click="obraCtrl.addHito()">
@@ -149,39 +158,58 @@
                 <a class="nameLinkModal" name="ubicacion">
                   <div class="ic-title ic-ubicacion"></div>&nbsp;Ubicación
                     <div class="row">
-                      <div class="form-group col-md-12">
-                          <label for="tipo de proyecto">Tipo de ubicación</label>
-                          <div class="radio">
-                            <select ng-model="obraCtrl.tipoUbicacion">
-                              <option value="direccion">Dirección</option>
-                              <option value="tramo">Tramo</option>
-                              <option value="otro">Otro</option>
-                            </select>
-                          </div>
+
+                      <div class="col-md-12 col-sm-12">
+                        <label for="tipo de proyecto">Tipo de ubicación</label>
                       </div>
-                      <div class="form-group col-md-6" ng-hide="obraCtrl.tipoUbicacion === 'otro'">
+                      <div class="form-group col-md-6 col-sm-12">
+                        <select class="form-control" ng-model="obraCtrl.currentobra.tipoUbicacion">
+                          <option value="direccion">Dirección</option>
+                          <option value="tramo">Tramo</option>
+                          <option value="otro">Otro</option>
+                        </select>
+                      </div>
+                      </div>
+
+                      <div class="row">
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'direccion'">
                         <label for="referentes">Dirección o intersección origen</label>
-                        <input type="text" class="form-control" ng-model="obraCtrl.currentobra.direccion" id="direccionOrigen" name="direccion" maxlength="512" placeholder="Ingresar dirección" >
+                        <input type="text" class="form-control" ng-model="obraCtrl.currentobra.direccion" id="direccion" name="direccion" maxlength="512" placeholder="Ingresar dirección" >
                       </div>
-                      <div class="form-group col-md-6" ng-hide="obraCtrl.tipoUbicacion === 'otro' || obraCtrl.tipoUbicacion === 'tramo'">
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'direccion'">
                         <label for="referentes">Piso/Depto/otro <span class="opcional">(Opcional)</span></label>
                         <input type="text" class="form-control" ng-model="obraCtrl.currentobra.detalleUbicacion" id="pisoOrigen" maxlength="512" placeholder="Ingresar número">
                       </div>
-                      <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'tramo'">
+                      <div class="form-group col-md-12" ng-show="obraCtrl.currentobra.tipoUbicacion === 'direccion'">
+                        <p class="errorForm modal-obra">{{obraCtrl.validDireccionNormalizada}}</p>
+                      </div>
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'tramo'">
+                        <label for="referentes">Dirección o intersección origen</label>
+                        <input type="text" class="form-control" id="direccionDesde" ng-model="obraCtrl.currentobra.direccionDesde" name="direccionDesde" maxlength="512" placeholder="Ingresar dirección" >
+                      </div>
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'tramo'">
                         <label for="referentes">Dirección o intersección destino</label>
-                        <input type="text" class="form-control" id="direccionDestino" ng-model="obraCtrl.currentobra.direccionHasta" name="direccion" maxlength="512" placeholder="Ingresar dirección" >
+                        <input type="text" class="form-control" id="direccionHasta" ng-model="obraCtrl.currentobra.direccionHasta" name="direccionHasta" maxlength="512" placeholder="Ingresar dirección" >
                       </div>
-                      <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'otro'">
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'tramo'">
+                        <p class="errorForm modal-obra">{{obraCtrl.validDireccionDesdeNormalizada}}</p>
+                      </div>
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'tramo'">
+                        <p class="errorForm modal-obra">{{obraCtrl.validDireccionHastaNormalizada}}</p>
+                      </div>
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'otro'">
                         <label for="referentes">Detalle de ubicación</label>
-                        <textarea class="form-control" placeholder="Ingresar detalle de ubicación" ng-model="obraCtrl.currentobra.detalleUbicacion" ></textarea>
+                        <textarea class="form-control" placeholder="Ingresar detalle de ubicación" maxlength="512" ng-model="obraCtrl.currentobra.detalleUbicacion" ></textarea>
                       </div>
-                      <div class="form-group col-md-6" ng-show="obraCtrl.tipoUbicacion === 'otro'">
+                      <div class="form-group col-md-6" ng-show="obraCtrl.currentobra.tipoUbicacion === 'otro'">
                           <label for="comunas">Comunas</label>
-                          <select class="form-control" ng-model="obraCtrl.currentobra.comuna"
-                            ng-options="item as item.nombre for item in obraCtrl.comunas">
+                          <select class="form-control" ng-model="obraCtrl.selectedComunaId"
+                            ng-options="item.idComuna as item.nombre for item in obraCtrl.comunas" ng-change="obraCtrl.changedComuna()">
                           </select>
                       </div>
-                      <div class="col-md-12" id="mapa"></div>
+                      <div class="col-md-12">
+                        <div class="col-md-12" id="mapa"></div>
+                      </div>
                     </div>
                     </a>
                   </div>
@@ -189,7 +217,7 @@
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="expediente">
                     <div class="ic-title ic-expediente"></div>&nbsp;Expedientes <span class="opcional">(Opcional)</span>
-                      <div class="row">
+                      <div class="row" ng-if="obraCtrl.currentobra.expedientes.length > 0">
                       <div class="form-group col-md-5 col-sm-12 col-xs-12">
                         <label for="referentes">Descripción</label>
                       </div>
@@ -229,7 +257,7 @@
                     </a>
                 </div>
                 <br>
-            <button type="submit" class="btn btn-success btn-lg" ng-disabled="obraCtrl.validHito !==''">Guardar obra</button>
+            <button type="submit" class="btn btn-success btn-lg" ng-disabled="obraCtrl.validHitoNombre !=='' || obraCtrl.validHitoFechaProyecto !=='' || obraCtrl.validHitoFecha !=='' || obraCtrl.validObraNombre !=='' || obraCtrl.validDireccionNormalizada !=='' || obraCtrl.validDireccionDesdeNormalizada !=='' || obraCtrl.validDireccionHastaNormalizada !=='' ">Guardar obra</button>
             <button type="button" class="btn btn-default right btnRemove" data-dismiss="modal" ng-click="obraCtrl.removeObra()" ng-if="obraCtrl.currentobraid">Eliminar</button>
             <button type="button" class="btn btn-default right" ng-click="obraCtrl.closeModal()" data-dismiss="modal"  >Cancelar cambios</button>
 

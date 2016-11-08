@@ -91,43 +91,59 @@ module Home {
           });
 
           scope.allProjects.forEach((project) => {
-            allStates.push(project.estado);
-            if (project.area) {
+            if (this.isNotOnArray(project.estado, allStates)) {
+              allStates.push(project.estado);
+            }
+            if (project.area && this.isNotOnArray(project.area.nombre, allAreas)) {
               allAreas.push(project.area.nombre);
             }
-            if (project.ejesDeGobierno) {
+            if (project.ejesDeGobierno ) {
               project.ejesDeGobierno.forEach((eje) => {
-                allEjes.push(eje.nombre);
+                if (this.isNotOnArray(eje.nombre, allEjes)) {
+                  allEjes.push(eje.nombre);
+                }
               });
             }
             if (project.temasTransversales) {
               project.temasTransversales.forEach((tema) => {
-                allTemas.push(tema.temaTransversal);
+                if (this.isNotOnArray(tema.temaTransversal, allTemas)) {
+                  allTemas.push(tema.temaTransversal);
+                }
               });
             }
             if (project.poblacionesMeta) {
               project.poblacionesMeta.forEach((poblacion) => {
-                allPoblaciones.push(poblacion.nombre);
+                if (this.isNotOnArray(poblacion.nombre, allPoblaciones)) {
+                  allPoblaciones.push(poblacion.nombre);
+                }
               });
             }
             if (project.prioridadJurisdiccional) {
-              allPrioridad.push(project.prioridadJurisdiccional);
+              if (this.isNotOnArray(project.prioridadJurisdiccional, allPrioridad)) {
+                allPrioridad.push(project.prioridadJurisdiccional);
+              }
             }
             if (project.comunas) {
               project.comunas.forEach((comuna) => {
-                allComunas.push(comuna.nombre);
+                if (this.isNotOnArray(comuna.nombre, allComunas)) {
+                  allComunas.push(comuna.nombre);
+                }
               });
             }
           });
-          scope.filterObject[0].options = (<any>$).unique( allStates );
-          scope.filterObject[1].options = (<any>$).unique( allAreas );
-          scope.filterObject[2].options = (<any>$).unique( allEjes );
-          scope.filterObject[3].options = (<any>$).unique( allTemas );
-          scope.filterObject[4].options = (<any>$).unique( allPoblaciones );
-          scope.filterObject[5].options = (<any>$).unique( allPrioridad );
-          scope.filterObject[6].options = (<any>$).unique( allComunas );
+          scope.filterObject[0].options = allStates;
+          scope.filterObject[1].options = allAreas;
+          scope.filterObject[2].options = allEjes;
+          scope.filterObject[3].options = allTemas;
+          scope.filterObject[4].options = allPoblaciones;
+          scope.filterObject[5].options = allPrioridad;
+          scope.filterObject[6].options = allComunas;
         });
       };
+    }
+
+    isNotOnArray(prop, array) {
+      return (<any>$).inArray(prop, array) === -1;
     }
 
     clearFilters() {
@@ -144,7 +160,7 @@ module Home {
       var scope = this;
 
       if (scope.filterData[value].length === 0) {
-          delete scope.filterData[value];
+        delete scope.filterData[value];
       }
 
       scope.jurisdiccion.objetivosJurisdiccionales.forEach((oj, i) => {
@@ -155,10 +171,10 @@ module Home {
 
           if (Object.keys(scope.filterData).length === 0) {
 
-              projectFromFilter = [];
-              scope.jurisdiccion.objetivosJurisdiccionales[i].objetivosOperativos[j].proyectos.forEach((pj, k) => {
-                  projectFromFilter.push(pj);
-              });
+            projectFromFilter = [];
+            scope.jurisdiccion.objetivosJurisdiccionales[i].objetivosOperativos[j].proyectos.forEach((pj, k) => {
+              projectFromFilter.push(pj);
+            });
 
           } else {
 

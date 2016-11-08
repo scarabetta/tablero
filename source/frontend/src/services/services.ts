@@ -384,6 +384,12 @@ module Services {
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
         }
+
+        getTipoObraFromSubtipo(idSubtipoObra): ng.IPromise<any> {
+            return this.$http.get<TipoObra>(this.apiBaseUrl + "tipoObra/subtipo/" + idSubtipoObra)
+                .then((response) => response.data)
+                .catch((response) => console.log(response.data));
+        }
     }
 
 }

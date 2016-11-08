@@ -279,7 +279,7 @@ module Home {
 
         editProject(proyecto) {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "'></formproject> " );
+            var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "' estadoproject='" + proyecto.estado + "'></formproject> " );
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
             angular.element(containerDiv).append(referralDiv);
@@ -462,8 +462,9 @@ module Home {
         }
 
         canEdit(proyecto) {
-          return proyecto.estado !== 'En Priorización' && !(this.rolUser === 'Operador de jurisdicción'
-          && (proyecto.estado === 'Demorado' || proyecto.estado === 'Rechazado'));
+          return proyecto.estado !== 'En Priorización' && proyecto.estado !== 'Borrador' && proyecto.estado !== 'Pre Aprobado Completo'
+          && !(this.rolUser === 'Operador de jurisdicción' && (proyecto.estado === 'Demorado' || proyecto.estado === 'Rechazado' || proyecto.estado === 'Aprobado'
+          || proyecto.estado === 'D. Presentado')) && !(this.rolUser === 'Secretaría' && (proyecto.estado === 'Completo' || proyecto.estado === 'Incompleto'));
         }
 
     }
