@@ -27,6 +27,7 @@ module Home {
       private comunasPlaceholder = 'Comunas';
       private idobjetivo: number;
       private idproject: number;
+      private estadoproject: string;
       private allInputs: boolean;
       private jurisdiccion: Jurisdiccion;
       private idjurisdiccionKey = 'idJurisdiccionStorage';
@@ -50,11 +51,29 @@ module Home {
       private monthsFromProject = new Array<any>();
       private datePickersInicio = [];
       private datePickersFin = [];
+      private datePickersHijosInicio = [];
+      private datePickersHijosFin = [];
       private monthNames = [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ];
       private userOperador:boolean;
       private userSecretaria:boolean;
       private currentObra: Obra;
+      private rowHeaders: boolean;
+      private colHeaders: boolean;
+      private savePresentTxt: string;
+      // private settings = {
+      //   contextMenu: [
+      //     'row_above', 'row_below', 'remove_row'
+      //   ]
+      // };
+      // private columnSummary = [
+      //   {
+      //     destinationRow: 4,
+      //     destinationColumn: 1,
+      //     type: 'sum',
+      //     forceNumeric: true
+      //   }
+      // ];
 
       private datePickerInicio = {
         status: false
@@ -63,13 +82,21 @@ module Home {
       private datePickerFin = {
         status: false
       };
+
+      private datePickerHijoInicio = {
+        status: false
+      };
+
+      private datePickerHijoFin = {
+        status: false
+      };
+
       private ejesNoCorresponde = true;
 
       /*@ngInject*/
       constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService, private $scope:ng.IScope,
         private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService, private hotRegisterer:any) {
           // (<any>$(".pull-right")).pin({containerSelector: ".contentFormProyect"});
-
           var userData = this.localStorageService.get(this.currentUserKey);
           var user = <Usuario>userData;
           if (user) {
@@ -134,6 +161,7 @@ module Home {
             this.title = 'Modificar Proyecto';
             services.getProject(this.idproject).then((data) => {
               var scope = this;
+
               data.fechaInicio = new Date(data.fechaInicio);
               data.fechaFin = new Date(data.fechaFin);
 
@@ -145,16 +173,21 @@ module Home {
                 scope.curve.push(monthArray);
               }, this);
               this.currentProject = data;
+
               this.previousInitDate = data.fechaInicio;
               this.previousEndDate = data.fechaFin;
               if (this.currentProject.ejesDeGobierno.length > 0) {
                 this.ejesNoCorresponde = false;
               }
+              this.initializeDetailButtonsText();
+              this.rowHeaders = true;
+              this.colHeaders = true;
               this.type = [
                     ['Gasto corriente', this.currentProject.presupuestoGastosCorrientes ? this.currentProject.presupuestoGastosCorrientes : '0'],
                     ['Plan plurianual de Inversión Obra', this.currentProject.presupuestoPPIObra ? this.currentProject.presupuestoPPIObra : '0'],
                     ['Plan plurianual de Inversión Mantenimiento', this.currentProject.presupuestoPPIMantenimiento ? this.currentProject.presupuestoPPIMantenimiento : '0'],
                     ['Plan plurianual de Inversión ACUMAR', this.currentProject.presupuestoACUMAR ? this.currentProject.presupuestoACUMAR : '0']
+                    // ['SUBTOTAL TIPO DE GASTO', '0']
                   ];
               if (data.presupuestosPorMes.length > 0) {
                 scope.curve = [];
@@ -196,7 +229,6 @@ module Home {
               this.changingStateFlag = false;
           }
 
-
           $scope.$watch('formCtrl.currentProject', (newVal, oldVal) => {
             var emptyCount = 0;
             this.validators.forEach((validator) => {
@@ -226,31 +258,42 @@ module Home {
           }, (value) => {
             this.poblacionesMetaPlaceholder = value > 0 ? '' : 'Ej. Jubilados, Estudiantes';
           });
+      }
 
-          (<any>$("#buttonFile")).click(function() {
-              $("#inputFile").click();
-          });
+      initializeDetailButtonsText() {
+        if (this.currentProject.estado === 'D. Completo' || this.currentProject.estado === 'D. Incompleto' || this.currentProject.estado === 'Pre Aprobado') {
+            this.savePresentTxt = "Guardar y presentar";
+        } else if (this.currentProject.estado === 'D. Presentado' || this.currentProject.estado === 'D. Rechazado' || this.currentProject.estado === 'D. Modificable' ||
+                    this.currentProject.estado === 'Aprobado') {
+          this.savePresentTxt = "Guardar";
+        }
+      }
 
-          var scope = this;
+      uploadFile() {
+        var scope = this;
+        <any>($("#inputFile")).click();
 
-          (<any>$( "#inputFile" )).change(function() {
-            var i = 0,
-                files = this.files,
-                len = files.length;
+        <any>($("#inputFile")).change(function() {
+          var i = 0,
+              files = this.files,
+              len = files.length;
 
-            for (; i < len; i++) {
-                scope.fileArray.push(files[i]);
-                scope.$scope.$apply();
-            }
+          for (; i < len; i++) {
+              scope.fileArray.push(files[i]);
+              scope.$scope.$apply();
+          }
 
-          });
-
+        });
       }
 
       initializePickers() {
         this.currentProject.hitos.forEach((h) => {
           this.datePickersInicio.push({ "status": false });
           this.datePickersFin.push({ "status": false });
+          h.hitosHijos.forEach((h) => {
+            this.datePickersHijosInicio.push({ "status": false });
+            this.datePickersHijosFin.push({ "status": false });
+          });
         });
       }
 
@@ -301,7 +344,9 @@ module Home {
 
         this.currentProject.presupuestosPorMes = listBudget;
         this.services.presentProjectDetail(this.currentProject).then((data) => {
+          if (!data.codigoError) {
             this.$state.reload();
+          }
          });
       }
 
@@ -341,7 +386,9 @@ module Home {
 
         this.currentProject.presupuestosPorMes = listBudget;
         this.services.updateProject(this.currentProject).then((data) => {
+          if (!data.codigoError) {
             this.$state.reload();
+          }
          });
       }
 
@@ -393,12 +440,14 @@ module Home {
       showPresuAprobadoBox() {
         return (this.actionMove === 'Pre Aprobado' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Aprobado' || this.actionMove === 'Aprobar'
                 || this.actionMove === 'D. Completo' || this.actionMove === 'D. Incompleto' || this.actionMove === 'D. Presentado' || this.actionMove === 'D. Rechazado'
-                || this.actionMove === 'D. Modificable');
+                || this.actionMove === 'D. Modificable' || this.actionMove === 'Presentar' || this.actionMove === 'Habilitar');
       }
 
       showPrioridadJefaturaBox() {
         return (this.actionMove === 'Demorar' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Rechazar'
-                || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado');
+                || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado'
+                || this.actionMove === 'D. Completo' || this.actionMove === 'D. Incompleto' || this.actionMove === 'D. Presentado' || this.actionMove === 'D. Rechazado'
+                || this.actionMove === 'D. Modificable' || this.actionMove === 'Presentar' || this.actionMove === 'Habilitar');
       }
 
       isEmpty(array) {
@@ -555,10 +604,16 @@ module Home {
       }
 
       openPickerInicio() {
-           this.datePickerInicio.status = true;
+        this.datePickerInicio.status = true;
       }
       openPickerFin() {
         this.datePickerFin.status = true;
+      }
+      openPickerHijoInicio() {
+        this.datePickerHijoInicio.status = true;
+      }
+      openPickerHijoFin() {
+        this.datePickerHijoFin.status = true;
       }
 
       clearValuesUbicacion(type) {
@@ -664,6 +719,30 @@ module Home {
         this.datePickersFin.push({ "status": false });
       }
 
+      subHito(index) {
+        this.currentProject.hitos[index].hitosHijos.push(<HitoProyecto>{
+          "idHito": null,
+          "proyecto": null,
+          "hitoPadre": null,
+          "hitosHijos": [],
+          "hitoPredecesor": null,
+          "fechaInicio": null,
+          "fechaFin": null,
+          "estado": "No iniciado",
+          "presupuesto": 0,
+        });
+        this.datePickersHijosInicio.push({ "status": false });
+        this.datePickersHijosFin.push({ "status": false });
+      }
+
+      removeSubHito(subhito, hito) {
+        if (subhito > -1) {
+          this.currentProject.hitos[hito].hitosHijos.splice(subhito, 1);
+          this.datePickersHijosInicio.splice(subhito, 1);
+          this.datePickersHijosFin.splice(subhito, 1);
+        }
+      }
+
       removeHito(index) {
         if (index > -1) {
           this.currentProject.hitos.splice(index, 1);
@@ -678,6 +757,14 @@ module Home {
 
       handlePickerFin(index) {
         this.datePickersFin[index].status = !this.datePickersFin[index].status;
+      }
+
+      handlePickerHijoInicio(index) {
+        this.datePickersHijosInicio[index].status = !this.datePickersHijosInicio[index].status;
+      }
+
+      handlePickerHijoFin(index) {
+        this.datePickersHijosFin[index].status = !this.datePickersHijosFin[index].status;
       }
 
       addObra() {
@@ -701,6 +788,12 @@ module Home {
         var referralDiv = referralDivFactory(this.$scope);
         var containerDiv = document.getElementById('obraprojectid');
         angular.element(containerDiv).append(referralDiv);
+      }
+
+      removeObra(index) {
+        if (index > -1) {
+          this.currentProject.obras.splice(index, 1);
+        }
       }
 
       changeOperativeObjective(id) {
@@ -742,27 +835,28 @@ module Home {
       }
 
       showInformacionInicial() {
-        let estado = this.currentProject.estado;
-        return estado === null || (this.userOperador && (estado === 'Completo' || estado === 'Incompleto' || estado === 'Presentado' || estado === 'Verificado' || estado === 'Cancelado'))
+        let estado = this.estadoproject;
+        return  estado === undefined || (this.userOperador && (estado === 'Completo' || estado === 'Incompleto' || estado === 'Presentado' || estado === 'Verificado' || estado === 'Cancelado'))
             || (this.userSecretaria && (estado === 'Presentado' || estado === 'Verificado' || estado === 'Rechazado' || estado === 'Cancelado' || estado === 'Demorado'
             || estado === 'Pre Aprobado' || estado === 'D. Completo' || estado === 'D. Incompleto' || estado === 'D. Presentado' || estado === 'D. Rechazado'
             || estado === 'Aprobado' || estado === 'D. Modificable'));
       }
 
       showDetailsTab() {
-        return (this.userOperador && (this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'D. Completo'
-        || this.currentProject.estado === 'D. Incompleto' || this.currentProject.estado === 'D. Rechazado' || this.currentProject.estado === 'D. Modificable'))
-        || (this.userSecretaria && (this.currentProject.estado === 'D. Presentado' || this.currentProject.estado === 'Aprobado'
-        || this.currentProject.estado === 'D. Modificable'));
+        let estado = this.estadoproject;
+        return (this.userOperador && (estado === 'Pre Aprobado' || estado === 'D. Completo'
+        || estado === 'D. Incompleto' || estado === 'D. Rechazado' || estado === 'D. Modificable'))
+        || (this.userSecretaria && (estado === 'D. Presentado' || estado === 'Aprobado'
+        || estado === 'D. Modificable'));
       }
-
 
     }
 
     export let formProjectComponent = {
         bindings: {
             idobjetivo: '=',
-            idproject: '='
+            idproject: '=',
+            estadoproject: '@'
         },
         templateUrl: template,
         controller: FormProjectComponentController,

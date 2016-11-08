@@ -1,36 +1,128 @@
 /*FUENTE*/
 
 @font-face {
-    font-family: Montserrat-Bold;
-    src: url('/fonts/Montserrat-Bold.otf');
+    font-family: 'montserratblack';
+    src: url('fonts/montserrat-black-webfont.eot');
+    src: url('fonts/montserrat-black-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-black-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-black-webfont.woff') format('woff'),
+         url('fonts/montserrat-black-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-black-webfont.svg#montserratblack') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-Black;
-    src: url('/fonts/Montserrat-Black.otf');
+    font-family: 'montserratbold';
+    src: url('fonts/montserrat-bold-webfont.eot');
+    src: url('fonts/montserrat-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-bold-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-bold-webfont.woff') format('woff'),
+         url('fonts/montserrat-bold-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-bold-webfont.svg#montserratbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-ExtraBold;
-    src: url('/fonts/Montserrat-ExtraBold.otf');
+    font-family: 'montserratextra_bold';
+    src: url('fonts/montserrat-extrabold-webfont.eot');
+    src: url('fonts/montserrat-extrabold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-extrabold-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-extrabold-webfont.woff') format('woff'),
+         url('fonts/montserrat-extrabold-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-extrabold-webfont.svg#montserratextra_bold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+ 
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-Hairline;
-    src: url('/fonts/Montserrat-Hairline.otf');
+    font-family: 'montserrathairline';
+    src: url('fonts/montserrat-hairline-webfont.eot');
+    src: url('fonts/montserrat-hairline-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-hairline-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-hairline-webfont.woff') format('woff'),
+         url('fonts/montserrat-hairline-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-hairline-webfont.svg#montserrathairline') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-Light;
-    src: url('/fonts/Montserrat-Light.otf');
+    font-family: 'montserratlight';
+    src: url('fonts/montserrat-light-webfont.eot');
+    src: url('fonts/montserrat-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-light-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-light-webfont.woff') format('woff'),
+         url('fonts/montserrat-light-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-light-webfont.svg#montserratlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-Regular;
-    src: url('/fonts/Montserrat-Regular.otf');
+    font-family: 'montserratregular';
+    src: url('fonts/montserrat-regular-webfont.eot');
+    src: url('fonts/montserrat-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-regular-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-regular-webfont.woff') format('woff'),
+         url('fonts/montserrat-regular-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-regular-webfont.svg#montserratregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-SemiBold;
-    src: url('/fonts/Montserrat-SemiBold.otf');
+    font-family: 'montserratsemi_bold';
+    src: url('fonts/montserrat-semibold-webfont.eot');
+    src: url('fonts/montserrat-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-semibold-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-semibold-webfont.woff') format('woff'),
+         url('fonts/montserrat-semibold-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-semibold-webfont.svg#montserratsemi_bold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
+
+
+
+
 @font-face {
-    font-family: Montserrat-UltraLight;
-    src: url('/fonts/Montserrat-UltraLight.otf');
+    font-family: 'montserratultra_light';
+    src: url('fonts/montserrat-ultralight-webfont.eot');
+    src: url('fonts/montserrat-ultralight-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/montserrat-ultralight-webfont.woff2') format('woff2'),
+         url('fonts/montserrat-ultralight-webfont.woff') format('woff'),
+         url('fonts/montserrat-ultralight-webfont.ttf') format('truetype'),
+         url('fonts/montserrat-ultralight-webfont.svg#montserratultra_light') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }
 
 /*ESTILOS*/
@@ -38,7 +130,7 @@
 body {
     background-color: #111!important;
     height: 100%;
-    font-family: 'Montserrat-Light'!important;
+    font-family: 'montserratlight'!important;
 }
 html {
     background-color: #fff;
@@ -163,7 +255,7 @@ button {
     color: #fff;
 }
 .login .panel-default>.panel-heading p {
-    font-family: 'Montserrat-Bold';
+    font-family: 'montserratbold';
 }
 .login .panel-body {
     background: none;
@@ -182,7 +274,7 @@ button {
     -webkit-box-shadow: 0 0 0px 1000px #58bcff inset;
     -moz-box-shadow: 0 0 0px 1000px #58bcff inset;
     font-size: 20px;
-    font-family: 'Montserrat-UltraLight';
+    font-family: 'montserratultra_light';
 }
 .login .form-control:focus {
     border: none;
@@ -209,14 +301,14 @@ button {
     text-align: center;
     width: 100%;
     color: #fff;
-    font-family: 'Montserrat-UltraLight';
+    font-family: 'montserratultra_light';
 }
 .login .hello {
     color: #fff;
     font-size: 70px;
     font-weight: bold;
     margin-bottom: 0;
-    font-family: 'Montserrat-SemiBold';
+    font-family: 'montserratsemi_bold';
 }
 .login .tab-content {
     padding: 70px 0;
@@ -455,6 +547,13 @@ button {
 }
 .obj-estrategico {
     margin-top: 0;
+}
+.contentObjOp{
+    /*float: left;*/
+    margin-right: 20px;
+}
+.contentObjOp .nameObj {
+    padding-right: 0;
 }
 .name-btn {
     font-size: 11px;
@@ -1406,6 +1505,9 @@ input.cmn-toggle-round:checked+label:after {
     color: #a94442;
     font-size: 12px;
 }
+.errorForm.modal-obra {
+    line-height: 15px;
+}
 .contentEje input[type=checkbox] {
     display: none;
 }
@@ -1505,7 +1607,8 @@ input.cmn-toggle-round:checked+label:after {
 .columnRight {
     float: left;
     width: 100%;
-    max-width: 400px;
+    /*max-width: 400px;*/
+    max-width: 55%;
     padding-top: 5px;
 }
 .suggestion-list {
@@ -2042,9 +2145,15 @@ div.jqi .jqititle {
     font-size: 12px;
     margin-bottom: 0;
 }
+.textBold{
+    font-weight: bold;
+    font-size: 14px!important;
+}
 
 /*VISTA PROYECTO*/
-
+.viewProject .contentDirection {
+    margin-top: 15px;
+}
 .viewProject .agrupador p {
     font-size: 12px;
     color: #333;
@@ -2173,9 +2282,11 @@ div.jqi .jqititle {
 .dateView {
     background: #58bcff;
     text-align: center;
-    padding: 5px 5px 15px 5px;
+    padding:0 5px 8px 5px;
     border-radius: 4px;
-    margin: 10px 0 0 0;
+    width: 140px;
+    margin: 15px;
+    float: left;
 }
 .dateView label, .dateView p {
     color: #fff!important;
@@ -2234,6 +2345,12 @@ div.jqi .jqititle {
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
+.viewProject .textoDestacado .glyphicon-usd {
+    font-size: 14px;
+    color: #52bbff;
+    top: 8px !important;
+}
+
 
 /*tabs*/
 
@@ -2272,6 +2389,9 @@ div.jqi .jqititle {
 }
 .agrupador .tableContentForm .btn-default i {
     font-size: 14px!important;
+}
+.actionHito{
+    cursor: pointer;
 }
 
 /*Modal detalle obra*/
@@ -2367,6 +2487,14 @@ div.jqi .jqititle {
 
 /*Tablas excel*/
 
+.obraTitle {
+    margin-left: 5px;
+}
+
+.obraHitoTitle {
+    margin-left: 30px;
+}
+
 #curva1, #tipodegasto1 {}
 .tablacurvainversion {
     border: 1px solid green;
@@ -2404,11 +2532,26 @@ div.jqi .jqititle {
     background-color: #f3f3f3!important;
 }
 
+
+
+/*Mapa*/
+.modalDetalleInfo .olMap{
+    /*height: 250px!important;*/
+    width: 100%!important;
+}
+
+
 /*MEDIA QUERY*/
 
 @media (min-width: 1280px) {
     .columnRight {
-        max-width: 600px;
+        /*max-width: 600px;*/
+        max-width: 65%;
+    }
+}
+@media (min-width: 1680px) {
+    .columnRight {
+        max-width: 75%;
     }
 }
 @media (max-width: 1024px) {

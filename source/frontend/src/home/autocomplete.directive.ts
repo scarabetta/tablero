@@ -7,24 +7,29 @@ module Home {
             angular.element((<any>$("#autocomplete"))).triggerHandler('input');
     }
 
+    function afterGeoCoding() {
+            // console.log("selected option", selectedOption);
+            // console.log("selected option string", selectedOption.toString());
+
+    }
+
     /*@ngInject*/
     export function usigAutocompleteDirective() {
         return {
             restrict: 'E',
             scope: {
-                size: '@',
-                model: '=',
-                idinput: "@"
+                size: '@'
             },
-            template: `<input type="text" size="40" class="form-control text" name="idinput" id="idinput" title="Ingresar dirección" ng-model="model">`,
+            template: `<input type="text" size="40" class="form-control text" name="autocomplete" id="autocomplete" title="Ingresar dirección" ng-model="$parent.formCtrl.currentProject.direccion">`,
             link: (scope, element, attrs) => {
-              var id = attrs.idinput;
+
                 /* tslint:disable:no-unused-expression */
-                new usig.AutoCompleter(id, {
+                new usig.AutoCompleter('autocomplete', {
                     debug: true,
                     rootUrl: '../',
                     skin: 'bootstrap',
-                    afterSelection: afterSelection
+                    afterSelection: afterSelection,
+                    afterGeoCoding: (pt) => afterGeoCoding()
                 });
                 /* tslint:enable */
 
