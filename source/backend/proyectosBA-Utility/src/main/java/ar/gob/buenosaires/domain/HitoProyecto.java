@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idHito", "proyecto", "hitoPadre", "hitosHijos", "hitoPredecesor", "nombre", "fechaInicio", 
-		"fechaFin", "estado", "presupuesto", "esImportante" })
+		"fechaFin", "estado", "presupuesto", "esImportante", "idHitoPadreAux", "idProyectoAux"})
 @XmlRootElement(name = "HitoProyecto")
 public class HitoProyecto implements Serializable {
 
@@ -40,29 +41,25 @@ public class HitoProyecto implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@OneToOne
-//	@JoinColumn(name = "idhito", referencedColumnName = "idhito", nullable = false)
 	@Column(name = "idhito", nullable = false)
 	private Long idHito;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idproyecto")
 	@JsonBackReference(value = "proy-hito")
-	@XmlElement(name = "proyecto")
 	private Proyecto proyecto;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idpadre")
 	@JsonBackReference(value = "padre-hijo")
-	@XmlElement(name = "hitoPadre")
 	private HitoProyecto hitoPadre;
 	
-	@OneToMany(mappedBy = "hitoPadre")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "hitoPadre", fetch = FetchType.LAZY)
 	@JsonManagedReference(value = "padre-hijo")
 	@XmlElement(name = "hitosHijos")
 	private List<HitoProyecto> hitosHijos;
 	
-	@OneToOne//(mappedBy="idHito")
+	@OneToOne
 	@JoinColumn(name = "idhitopredecesor")
 	private HitoProyecto hitoPredecesor;
 	
@@ -83,7 +80,13 @@ public class HitoProyecto implements Serializable {
 	
 	@Column(name = "presupuesto")
 	private Double presupuesto;
+	
+	@Column(name = "idhitopadreaux")
+	private Long idHitoPadreAux;
 
+	@Column(name = "idproyectoaux")
+	private Long idProyectoAux;
+	
 	public Long getIdHito() {
 		return idHito;
 	}
@@ -165,6 +168,9 @@ public class HitoProyecto implements Serializable {
 	}
 
 	public Double getPresupuesto() {
+		if(presupuesto == null){
+			presupuesto = new Double(0);
+		}
 		return presupuesto;
 	}
 
@@ -178,5 +184,21 @@ public class HitoProyecto implements Serializable {
 
 	public void setEsImportante(Boolean esImportante) {
 		this.esImportante = esImportante;
+	}
+
+	public Long getIdHitoPadreAux() {
+		return idHitoPadreAux;
+	}
+
+	public void setIdHitoPadreAux(Long idHitoPadreAux) {
+		this.idHitoPadreAux = idHitoPadreAux;
+	}
+
+	public Long getIdProyectoAux() {
+		return idProyectoAux;
+	}
+
+	public void setIdProyectoAux(Long idProyectoAux) {
+		this.idProyectoAux = idProyectoAux;
 	}
 }

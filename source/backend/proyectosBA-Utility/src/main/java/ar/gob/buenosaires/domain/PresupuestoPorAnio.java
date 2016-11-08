@@ -96,6 +96,9 @@ public class PresupuestoPorAnio implements Serializable {
 	}
 
 	public Double getPresupuesto() {
+		if(presupuesto == null){
+			presupuesto = new Double(0);
+		}
 		return presupuesto;
 	}
 
@@ -104,6 +107,9 @@ public class PresupuestoPorAnio implements Serializable {
 	}
 
 	public Double getOtrasFuentes() {
+		if(otrasFuentes == null){
+			otrasFuentes = new Double(0);
+		}
 		return otrasFuentes;
 	}
 

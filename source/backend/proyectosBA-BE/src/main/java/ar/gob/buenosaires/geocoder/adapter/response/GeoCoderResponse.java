@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GeoCoderResponse {
-	
+
 	List<DireccionNormalizada> direccionesNormalizadas;
-	
-	
-	public GeoCoderResponse() { }
+
+	public GeoCoderResponse() {
+	}
 
 	public GeoCoderResponse(List<DireccionNormalizada> direccionesNormalizadas) {
 		this.direccionesNormalizadas = direccionesNormalizadas;
@@ -20,9 +20,8 @@ public class GeoCoderResponse {
 		return direccionesNormalizadas;
 	}
 
-	public void setDireccionesNormalizadas(
-			List<DireccionNormalizada> direccionesNormalizadas) {
+	public void setDireccionesNormalizadas(List<DireccionNormalizada> direccionesNormalizadas) {
 		this.direccionesNormalizadas = direccionesNormalizadas;
-	}	
-	
+	}
+
 }

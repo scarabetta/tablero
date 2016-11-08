@@ -1,0 +1,1 @@
+UPDATE proyecto p SET p.direccion = null WHERE p.tipoUbicacionGeografica <> 'Dirección';

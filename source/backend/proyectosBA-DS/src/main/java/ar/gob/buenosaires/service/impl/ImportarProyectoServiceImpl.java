@@ -384,7 +384,7 @@ public class ImportarProyectoServiceImpl implements ImportarProyectoService {
 						builder = new ProyectoPriorizadoBuilder(serviceFactory);
 						builder.setIdProyecto(Double.valueOf(fila.getIdProyecto()).intValue());
 						builder.setEstadoAprobacion(fila.getEstadoAprobacion());
-						builder.setPresuAprobadoTotal(fila.getPresuAprobadoTotal());
+						builder.setPresuAprobadoTotal(fila.getPresuAprobadoTotal()!= null?fila.getPresuAprobadoTotal(): new Double(0));
 						builder.setPrioridadJefatura(fila.getPrioridadJefatura());
 						builder.setNombreTemasTransversal(solapa.getNombresTemaTransversalFilaHeader());
 						builder.setNombreTemasTransversalAsignados(fila.getNombresTemaTransversalAsignados());

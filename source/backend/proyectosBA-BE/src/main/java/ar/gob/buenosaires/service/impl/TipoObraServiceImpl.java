@@ -44,6 +44,11 @@ public class TipoObraServiceImpl implements TipoObraService {
 	public TipoObra getTipoObraPorId(Long id) {
 		return getTipoObraJpaDao().findOne(id);
 	}
+	
+	@Override
+	public TipoObra getTipoObraPorSubtipoObra(Long subtipoObraId) {
+		return getTipoObraJpaDao().findBySubtipoObra(subtipoObraId);
+	}
 
 	@Override
 	public List<TipoObra> getTipoObras() {

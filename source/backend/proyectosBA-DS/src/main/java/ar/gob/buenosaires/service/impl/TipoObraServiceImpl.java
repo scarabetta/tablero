@@ -43,6 +43,15 @@ public class TipoObraServiceImpl implements TipoObraService{
 	}
 
 	@Override
+	public TipoObra getTipoObraPorSubtipoObra(Long id) throws ESBException, JMSException {
+		TipoObraReqMsg reqMsg = new TipoObraReqMsg();
+		reqMsg.setSubtipoObraId(id);
+
+		List<TipoObra> obras = getTipoObraFromReqMsg(reqMsg);
+		return getFirstTipoObraFromTheList(obras);
+	}
+	
+	@Override
 	public TipoObra createTipoObra(TipoObra tipoObra, String mailDelUsuarioDelToken) throws ESBException, JMSException {
 		TipoObraReqMsg reqMsg = new TipoObraReqMsg();
 		reqMsg.setTipoObra(tipoObra);

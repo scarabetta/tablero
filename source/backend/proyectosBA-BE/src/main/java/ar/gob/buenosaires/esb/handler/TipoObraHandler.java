@@ -62,6 +62,8 @@ private final static Logger LOGGER = LoggerFactory.getLogger(TipoObraHandler.cla
 
 		if (request.getId() != null) {
 			obras.add(service.getTipoObraPorId(request.getId()));
+		} else if (request.getSubtipoObraId() != null) {
+			obras.add(service.getTipoObraPorSubtipoObra(request.getSubtipoObraId()));
 		} else {
 			obras = service.getTipoObras();
 		}

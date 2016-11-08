@@ -50,7 +50,7 @@ public class IndicadorEstrategico implements Serializable {
 	@JsonBackReference
 	private ObjetivoJurisdiccional objetivoJurisdiccional;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idproyecto") }, 
 		inverseJoinColumns = { @JoinColumn(name = "idindicadorestrategico") })
 	@XmlElement(name = "proyectos")

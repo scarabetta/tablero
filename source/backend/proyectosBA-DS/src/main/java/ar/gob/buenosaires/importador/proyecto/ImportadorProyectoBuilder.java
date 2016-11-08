@@ -33,6 +33,8 @@ import ar.gob.buenosaires.service.ProyectoService;
  */
 public class ImportadorProyectoBuilder {
 
+	private static final String DIRECCION = "Direccion";
+
 	private Jurisdiccion jurisdiccion;
 
 	private Proyecto proyectoTransient;
@@ -154,7 +156,11 @@ public class ImportadorProyectoBuilder {
 	}
 
 	public ImportadorProyectoBuilder cargarProyectoDireccion(String direccion) {
-		proyectoTransient.setDireccion(direccion);
+		if(validarTipoUbicacionDireccion()){
+			proyectoTransient.setDireccion(direccion);
+		} else {
+			proyectoTransient.setDireccion("");
+		}
 		return this;
 	}
 
@@ -362,7 +368,10 @@ public class ImportadorProyectoBuilder {
 		proyecto.setCambioLegislativo(proyectoTransient.getCambioLegislativo());
 		proyecto.setCodigo(proyectoTransient.getCodigo());
 		proyecto.setDescripcion(proyectoTransient.getDescripcion());
-		proyecto.setDireccion(proyectoTransient.getDireccion());
+		if(validarTipoUbicacionDireccion()){
+			proyecto.setDireccion(proyectoTransient.getDireccion());
+		}
+		proyecto.setTipoUbicacionGeografica(proyectoTransient.getTipoUbicacionGeografica());
 		proyecto.setEstado(proyectoTransient.getEstado());
 		proyecto.setFechaInicio(proyectoTransient.getFechaInicio());
 		proyecto.setFechaFin(proyectoTransient.getFechaFin());
@@ -374,9 +383,13 @@ public class ImportadorProyectoBuilder {
 		proyecto.setPoblacionesMeta(proyectoTransient.getPoblacionesMeta());
 		proyecto.setPrioridadJurisdiccional(proyectoTransient.getPrioridadJurisdiccional());
 		proyecto.setTipoProyecto(proyectoTransient.getTipoProyecto());
-		proyecto.setTipoUbicacionGeografica(proyectoTransient.getTipoUbicacionGeografica());
 		proyecto.setUnidadMeta(proyectoTransient.getUnidadMeta());
 
+	}
+
+	private boolean validarTipoUbicacionDireccion() {
+		return org.apache.commons.lang3.StringUtils.isNotBlank(proyectoTransient.getTipoUbicacionGeografica()) 
+				&& DIRECCION.equalsIgnoreCase(org.apache.commons.lang3.StringUtils.stripAccents(proyectoTransient.getTipoUbicacionGeografica()));
 	}
 
 	private String getProximoCodigoObjJurisdiccional() {

@@ -548,6 +548,9 @@ public class ReporteProyectosView implements Serializable {
 	}
 
 	public Double getPresupuestoAprobado() {
+		if(presupuestoAprobado == null){
+			presupuestoAprobado = new Double(0);
+		}
 		return presupuestoAprobado;
 	}
 

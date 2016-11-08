@@ -17,4 +17,6 @@ public interface TipoObraService {
 
 	List<TipoObra> getTipoObras();
 
+	TipoObra getTipoObraPorSubtipoObra(Long subtipoObraId);
+
 }

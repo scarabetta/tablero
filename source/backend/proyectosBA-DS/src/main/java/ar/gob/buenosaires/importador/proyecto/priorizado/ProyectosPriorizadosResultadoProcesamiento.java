@@ -50,6 +50,9 @@ public class ProyectosPriorizadosResultadoProcesamiento extends ResultadoProcesa
 	}
 
 	public Double getImporteAprobado() {
+		if(importeAprobado == null){
+			importeAprobado = new Double(0);
+		}
 		return importeAprobado;
 	}
 

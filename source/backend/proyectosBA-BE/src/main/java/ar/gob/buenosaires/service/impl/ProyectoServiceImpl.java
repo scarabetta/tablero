@@ -31,6 +31,8 @@ import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
 import ar.gob.buenosaires.geocoder.service.GeoCoderService;
 import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepository;
+import ar.gob.buenosaires.service.HitoProyectoService;
+import ar.gob.buenosaires.service.ObraService;
 import ar.gob.buenosaires.service.ProyectoService;
 
 @Service
@@ -53,10 +55,16 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 
 	@Autowired
 	private GeoCoderService geoCoderService;
-	
+
 	@Autowired
 	private SubtipoObraRepository subtipoObraRepository;
 
+	@Autowired
+	private ObraService obraService;
+	
+	@Autowired
+	private HitoProyectoService hitoProyectoService;
+	
 	@Override
 	public List<Proyecto> getProyectos() {
 		return getProyectoDAO().findAll();
@@ -88,6 +96,7 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 			proyecto.setEstado(proyecto.getEstadoActualizado());
 			proyecto.setOtrasEtiquetas(
 					otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
+			normalizarDireccionesDeObras(proyecto);
 			return getProyectoDAO().save(proyecto);
 		} else {
 			throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(),
@@ -99,32 +108,42 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	public Proyecto updateProyecto(final Proyecto proyecto, Usuario usuario) throws ESBException {
 		final ObjetivoOperativo op = repositorioObjetivoOperativo.getObjetivoOperativoJpaDao()
 				.findOne(proyecto.getIdObjetivoOperativo2());
-
 		if (op != null) {
 			proyecto.setObjetivoOperativo(op);
 			guardarCoordenadas(proyecto);
 			actualizarEstado(proyecto, usuario);
 			validarPresupuestoAprobado(proyecto);
 			guardarSubtipoObra(proyecto);
-			proyecto.setOtrasEtiquetas(otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
+			proyecto.setOtrasEtiquetas(
+					otrasEtiquetasRepository.getOtrasEtiquetasJpaDao().save(proyecto.getOtrasEtiquetas()));
 			validarPrioridadDeJefatura(proyecto);
+
+			normalizarDireccionesDeObras(proyecto);
+			
 			return getProyectoDAO().save(proyecto);
 		}
-		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(), "El objetivo operativo con id: "
-				+ proyecto.getIdObjetivoOperativo2() + " no existe");
+		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(),
+				"El objetivo operativo con id: " + proyecto.getIdObjetivoOperativo2() + " no existe");
 	}
-	
+
+	private void normalizarDireccionesDeObras(final Proyecto proyecto) {
+		for (Obra obra : proyecto.getObras()) {
+			obraService.updateObra(obra);
+		}
+	}
+
 	// TODO mover esto a SubtipoObraServiceImpl
 	private void guardarSubtipoObra(Proyecto proyecto) throws ESBException {
-		if(!proyecto.getObras().isEmpty()){
+		if (!proyecto.getObras().isEmpty()) {
 			for (Obra obra : proyecto.getObras()) {
-				if(obra.getIdSubtipoObraAux() != null){
-					SubtipoObra subtipo = subtipoObraRepository.getSubtipoObraJpaDao().findOne(obra.getIdSubtipoObraAux());
-					if(subtipo != null){
+				if (obra.getIdSubtipoObraAux() != null) {
+					SubtipoObra subtipo = subtipoObraRepository.getSubtipoObraJpaDao()
+							.findOne(obra.getIdSubtipoObraAux());
+					if (subtipo != null) {
 						obra.setSubtipoObra(subtipo);
 					} else {
-						throw new ESBException("333", "El subtipo obra con id: "
-								+ obra.getIdSubtipoObraAux() + " no existe");
+						throw new ESBException("333",
+								"El subtipo obra con id: " + obra.getIdSubtipoObraAux() + " no existe");
 					}
 				}
 			}

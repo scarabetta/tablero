@@ -19,5 +19,7 @@ public interface TipoObraService {
 
 	void deleteTipoObra(String id, String mailDelUsuarioDelToken) throws ESBException, JMSException;
 
+	TipoObra getTipoObraPorSubtipoObra(Long id) throws ESBException, JMSException;
+
 
 }

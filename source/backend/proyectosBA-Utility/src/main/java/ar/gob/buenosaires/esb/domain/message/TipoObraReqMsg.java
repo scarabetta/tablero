@@ -9,7 +9,7 @@ import ar.gob.buenosaires.domain.TipoObra;
 import ar.gob.buenosaires.esb.domain.EsbBaseMsg;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "id", "tipoObra" })
+@XmlType(propOrder = { "id", "subtipoObraId", "tipoObra" })
 @XmlRootElement(name = "TipoObraReqMsg")
 public class TipoObraReqMsg extends EsbBaseMsg {
 	
@@ -17,6 +17,7 @@ public class TipoObraReqMsg extends EsbBaseMsg {
             "TipoObraReqMsg";
     
     private Long id;
+    private Long subtipoObraId;
     private TipoObra tipoObra;
 
 	@Override
@@ -39,4 +40,13 @@ public class TipoObraReqMsg extends EsbBaseMsg {
 	public void setTipoObra(TipoObra tipoObra) {
 		this.tipoObra = tipoObra;
 	}
+
+	public Long getSubtipoObraId() {
+		return subtipoObraId;
+	}
+
+	public void setSubtipoObraId(Long subtipoObraId) {
+		this.subtipoObraId = subtipoObraId;
+	}
 }
+

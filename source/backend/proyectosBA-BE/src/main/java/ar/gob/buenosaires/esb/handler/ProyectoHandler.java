@@ -1,7 +1,9 @@
 package ar.gob.buenosaires.esb.handler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,8 +14,11 @@ import org.springframework.core.env.Environment;
 
 import ar.gob.buenosaires.domain.AccionesProyecto;
 import ar.gob.buenosaires.domain.EstadoProyecto;
+import ar.gob.buenosaires.domain.HitoObra;
+import ar.gob.buenosaires.domain.HitoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Obra;
+import ar.gob.buenosaires.domain.PresupuestoPorMes;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.TipoUbicacion;
 import ar.gob.buenosaires.domain.Usuario;
@@ -28,6 +33,14 @@ import ar.gob.buenosaires.service.UsuarioService;
 
 public class ProyectoHandler extends AbstractBaseEventHandler {
 
+	private static final String FORMATO_FECHA = "dd-MM-yyyy";
+
+	private static final String OBRA_ESTADO_NO_INICIADO = "No iniciado";
+
+	private static final String OBRA_ESTADO_INCOMPLETO = "Incompleto";
+
+	private static final String OBRA_ESTADO_COMPLETO = "Completo";
+
 	private final static Logger LOGGER = LoggerFactory.getLogger(ProyectoHandler.class);
 
 	@Autowired
@@ -38,6 +51,8 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	@Autowired
 	private Environment env;
+	
+	private SimpleDateFormat formateoFecha;
 
 	@Override
 	protected void process(ESBEvent event) throws ESBException {
@@ -58,7 +73,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR)) {
 			presentarProyecto(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_PRESENTAR_DETALLE)) {
-			updateDetalleProyecto(event, request);
+			presentarDetalleProyecto(event, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_RETRIEVE_ACTIONS)) {
 			retrieveActions(event, response, request);
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_UPDATE)) {
@@ -86,12 +101,22 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		logResponseMessage(event, ProyectoService.class);
 	}
 
-	private void updateDetalleProyecto(ESBEvent event, final ProyectoReqMsg request) throws ESBException {
+	private void presentarDetalleProyecto(ESBEvent event, final ProyectoReqMsg request) throws ESBException {
 		Proyecto proyecto = request.getProyecto();
 		validarEstadoObra(proyecto);
-		proyecto.setEstado(proyecto.validarEtapaDetalle());
+		validarEtapaDetalle(proyecto);
+		inicializarObras(proyecto);
+		proyecto.setEstado(EstadoProyecto.D_PRESENTADO.getName());
 		service.updateProyecto(proyecto, request.getUsuario());
-	}	
+	}
+
+	private void inicializarObras(Proyecto proyecto) {
+		for (Obra obra : proyecto.getObras()) {
+			if(obra.getEstado().equalsIgnoreCase(OBRA_ESTADO_COMPLETO)){
+				obra.setEstado(OBRA_ESTADO_NO_INICIADO);
+			}
+		}
+	}
 
 	private void getResumenProyectosPriorizacion(ESBEvent event, ProyectoRespMsg response, ProyectoReqMsg request) {
 		List<Proyecto> proyectos = service.buscarResumenProyectosPriorizacion();
@@ -264,45 +289,77 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		List<Proyecto> proyectos = new ArrayList<>();
 		Usuario usuario = usuarioService.getUsuarioPorEmail(request.getEmailUsuario());
 		request.setUsuario(usuario);
+		if(!usuario.tienePerfilSecretaria()) {
+			validarBorradorDetalle(request);
+		}
 		cambiarEstadoSiCorresponde(request);
-		validarEstadoObra(request.getProyecto());
+
+		noGuardarProyectoConDetallePresentado(request.getProyecto());
+
 		proyectos.add(service.updateProyecto(request.getProyecto(), request.getUsuario()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}
 
+	private void noGuardarProyectoConDetallePresentado(Proyecto proyecto) throws ESBException {
+		List<String> estadosEtapaDetalle = Arrays.asList(EstadoProyecto.D_PRESENTADO.getName(),
+				EstadoProyecto.D_RECHAZADO.getName(), EstadoProyecto.APROBADO.getName(), EstadoProyecto.D_MODIFICABLE.getName());
+		if(estadosEtapaDetalle.contains(proyecto.getEstado())){
+			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(),
+					"El proyecto ya se encuentra con su Detalle presentado, esta acción no esta permitida");
+		}
+	}
+
+	private void validarBorradorDetalle(ProyectoReqMsg request) {
+		Proyecto proyecto; 
+		
+		if(request.getProyecto() != null){
+			proyecto = request.getProyecto();
+			if(esEtapaDetalle(proyecto)){
+				validarEstadoObra(request.getProyecto());
+				try {
+					validarEtapaDetalle(proyecto);
+					proyecto.setEstado(EstadoProyecto.D_COMPLETO.getName());
+				} catch (ESBException e) {
+					proyecto.setEstado(EstadoProyecto.D_INCOMPLETO.getName());
+				}
+			}
+		}
+	}
+
 	private void validarEstadoObra(Proyecto proyecto) {
 		for (Obra obra : proyecto.getObras()) {
-			if(StringUtils.isNotBlank(proyecto.getPrioridadJefatura())){
+			if (StringUtils.isNotBlank(proyecto.getPrioridadJefatura())) {
 				obra.setPrioridadJefatura(proyecto.getPrioridadJefatura());
 			}
 			
-			if(StringUtils.isBlank(obra.getNombre())
-					|| StringUtils.isBlank(obra.getDescripcion())
-					|| obra.getIdSubtipoObraAux() == null
-					|| obra.getPresupuestoTotal() == null
-					|| obra.getHitos().isEmpty()
-					|| validarUbicacion(obra)){
-				obra.setEstado("incompleto");
-			} else {
-				obra.setEstado("Completo");
+			try {
+				validarHitosDeObra(obra);
+				if (StringUtils.isBlank(obra.getNombre()) || StringUtils.isBlank(obra.getDescripcion())
+						|| obra.getIdSubtipoObraAux() == null || obra.getPresupuestoTotal() == null
+						|| validarUbicacion(obra)) {
+					obra.setEstado(OBRA_ESTADO_INCOMPLETO);
+				} else {
+					obra.setEstado(OBRA_ESTADO_COMPLETO);
+				}
+			} catch (ESBException e) {
+				obra.setEstado(OBRA_ESTADO_INCOMPLETO);
 			}
 		}
 	}
 
 	private boolean validarUbicacion(Obra obra) {
-		if(StringUtils.isNotBlank(obra.getTipoUbicacion())){
+		if (StringUtils.isNotBlank(obra.getTipoUbicacion())) {
 			String tipo = obra.getTipoUbicacion();
-			if(tipo.equalsIgnoreCase(TipoUbicacion.DIRECCION.getName())
-					&& StringUtils.isNotBlank(obra.getDireccion())){
+			if (tipo.equalsIgnoreCase(TipoUbicacion.DIRECCION.getName())
+					&& StringUtils.isNotBlank(obra.getDireccion())) {
 				return false;
-			} else if(tipo.equalsIgnoreCase(TipoUbicacion.TRAMO.getName())
+			} else if (tipo.equalsIgnoreCase(TipoUbicacion.TRAMO.getName())
 					&& StringUtils.isNotBlank(obra.getDireccionDesde())
-					&& StringUtils.isNotBlank(obra.getDireccionDesde())){
+					&& StringUtils.isNotBlank(obra.getDireccionDesde())) {
 				return false;
-			} else if(tipo.equalsIgnoreCase(TipoUbicacion.OTRO.getName())
-					&& StringUtils.isNotBlank(obra.getDetalleUbicacion())
-					&& obra.getComuna() != null){
+			} else if (tipo.equalsIgnoreCase(TipoUbicacion.OTRO.getName())
+					&& StringUtils.isNotBlank(obra.getDetalleUbicacion()) && obra.getComuna() != null) {
 				return false;
 			}
 		}
@@ -506,6 +563,179 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		} else {
 			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
 		}
+	}
+	
+	public void validarEtapaDetalle(Proyecto proyecto) throws ESBException {
+		validarHitoDelProyecto(proyecto);
+		validarPresupuestoAprobado(proyecto);
+		validaHitosDeObras(proyecto);
+		validarHitoUObras(proyecto);
+		validarPrespuestoObras(proyecto);
+		validaTodasLasObrasCompletas(proyecto);
+	}
+
+	//VAL 9
+	private void validaTodasLasObrasCompletas(Proyecto proyecto) throws ESBException {
+		for (Obra obra : proyecto.getObras()) {
+			if(obra.getEstado() == null
+					|| (obra.getEstado() != null && obra.getEstado().equalsIgnoreCase(OBRA_ESTADO_INCOMPLETO))){
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_9.getCodigo(), "El proyecto no debe tener obras incompletas o sin estado.");
+			}
+		}
+	}
+
+	//VAL 2
+	private void validaHitosDeObras(Proyecto proyecto) throws ESBException {
+		for (Obra obra : proyecto.getObras()) {
+			validarHitosDeObra(obra);
+		}
+	}
+
+	private void validarHitosDeObra(Obra obra) throws ESBException {
+		List<String> nombres = new ArrayList<String>();
+		for (HitoObra hito : obra.getHitos()) {
+			hito.setEstado(OBRA_ESTADO_INCOMPLETO);
+			
+			//VAL 1
+			if(StringUtils.isNotBlank(hito.getNombre())
+					&& hito.getFechaInicio() != null
+					&& hito.getFechaFin() != null){
+				
+				if(nombres.contains(hito)){
+					throw new ESBException(CodigoError.PROYECTO_VALIDACION_2.getCodigo(), "Hay Hitos repetidos con el nombre: " + hito.getNombre());
+				}
+				nombres.add(hito.getNombre());
+				
+				// VAL 3
+				validarFechaEntre(hito.getFechaInicio(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin());
+				validarFechaEntre(hito.getFechaFin(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin());
+				
+				//VAL 4
+				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
+				
+				hito.setEstado(OBRA_ESTADO_COMPLETO);
+			} else {
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+			}
+		}
+	}
+	
+	private void validarFechaEntre(Date fecha, Date fechaInicio, Date fechaFin) throws ESBException{
+		if(fecha.compareTo(fechaInicio) < 0
+				|| fecha.compareTo(fechaFin) > 0){
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_3.getCodigo(), "Las fechas del hito son inconsistentes con las del proyecto (" + formatearFecha(fechaInicio) +" – " + formatearFecha(fechaFin) + ")");
+		}
+	}
+
+	// VAL 10
+	private void validarPrespuestoObras(Proyecto proyecto) throws ESBException {
+		Double total = Double.valueOf(0);
+		for (Obra obra : proyecto.getObras()) {
+			if(obra.getPresupuestoTotal() != null){
+				total += obra.getPresupuestoTotal();
+			}
+		}
+		if(Double.compare(proyecto.getTotalPresupuestoAprobado(), total) < 0){
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_10.getCodigo(), "La suma de presupuesto de obras es de " + total.toString() + 
+					". No puede ser mayor al presupuesto aprobado del proyecto (" + proyecto.getTotalPresupuestoAprobado().toString() + ")");
+		}
+	}
+
+	//VAL 8
+	private void validarHitoUObras(Proyecto proyecto) throws ESBException {
+		if(proyecto.getHitos().isEmpty()
+				&& proyecto.getObras().isEmpty()){
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_8.getCodigo(), "El proyecto debe tener hitos u obras.");
+		}
+	}
+
+	private void validarPresupuestoAprobado(Proyecto proyecto) throws ESBException {
+		if(proyecto.getTotalPresupuestoAprobado() != null
+				&&	(proyecto.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoXMes(proyecto)) != 0
+				|| proyecto.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoPPI(proyecto)) != 0)){
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_10.getCodigo(), "Los totales deben ser iguales al presupuesto aprobado total: " + proyecto.getTotalPresupuestoAprobado());
+		}
+	}
+
+	private Double calcularTotalPrespuestoPPI(Proyecto proyecto) {
+		Double total = Double.valueOf(0);
+		
+		if(proyecto.getPresupuestoPPIMantenimiento() != null){
+			total += proyecto.getPresupuestoPPIMantenimiento();
+		}
+		if(proyecto.getPresupuestoPPIObra() != null){
+			total += proyecto.getPresupuestoPPIObra();
+		}
+		if(proyecto.getPresupuestoACUMAR() != null){
+			total += proyecto.getPresupuestoACUMAR();
+		}
+		if(proyecto.getPresupuestoGastosCorrientes() != null){
+			total += proyecto.getPresupuestoGastosCorrientes();
+		}
+		
+		return total;
+	}
+
+	private Double calcularTotalPrespuestoXMes(Proyecto proyecto) {
+		Double total = Double.valueOf(0);
+		
+		for (PresupuestoPorMes ppm : proyecto.getPresupuestosPorMes()) {
+			if(ppm.getPresupuesto() != null){
+				total = Double.sum(total, ppm.getPresupuesto());
+			}
+		}
+		return total;
+	}
+
+	private void validarHitoDelProyecto(Proyecto proyecto) throws ESBException {
+		List<String> nombres = new ArrayList<String>();
+		for (HitoProyecto hito : proyecto.getHitos()) {
+			hito.setEstado(OBRA_ESTADO_INCOMPLETO);
+			//VAL 1
+			if(StringUtils.isNotBlank(hito.getNombre())
+					&& hito.getFechaInicio() != null
+					&& hito.getFechaFin() != null){
+				// VAL 2
+				if(nombres.contains(hito.getNombre())){
+					throw new ESBException(CodigoError.PROYECTO_VALIDACION_2.getCodigo(), "Hay Hitos repetidos con el nombre: " + hito.getNombre());
+				}
+				nombres.add(hito.getNombre());
+				
+				// VAL 3
+				validarFechaEntre(hito.getFechaInicio(), proyecto.getFechaInicio(), proyecto.getFechaFin());
+				validarFechaEntre(hito.getFechaFin(), proyecto.getFechaInicio(), proyecto.getFechaFin());
+				
+				//VAL 4
+				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
+			
+				hito.setEstado(OBRA_ESTADO_COMPLETO);
+			} else {
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+			}
+		}
+	}
+	
+	private void validarFechaInicioContraFin(Date inicio, Date fin) throws ESBException{
+		if(inicio.compareTo(fin) > 0){
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_3.getCodigo(), "Las fechas del hito son inconsistentes entre si (" + formatearFecha(inicio) +" – " + formatearFecha(fin) + ")");
+		}
+	}
+
+	private String formatearFecha(Date fecha) {
+		return getFormateoFecha().format(fecha);
+	}
+
+	private SimpleDateFormat getFormateoFecha() {
+		if(formateoFecha == null){
+			formateoFecha = new SimpleDateFormat(FORMATO_FECHA);
+		}
+		return formateoFecha;
+	}
+
+	private boolean esEtapaDetalle(Proyecto proyecto) {
+		List<String> estadosEtapaDetalle = Arrays.asList(EstadoProyecto.PREAPROBADO.getName(),
+				EstadoProyecto.D_COMPLETO.getName(), EstadoProyecto.D_INCOMPLETO.getName());
+		return estadosEtapaDetalle.contains(proyecto.getEstado());
 	}
 
 	private void addProyectosToResponse(ESBEvent event, final ProyectoRespMsg response, List<Proyecto> proyectos) {

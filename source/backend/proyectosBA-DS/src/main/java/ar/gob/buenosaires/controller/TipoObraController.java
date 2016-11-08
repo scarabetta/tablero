@@ -39,6 +39,11 @@ public class TipoObraController {
 	public @ResponseBody TipoObra getTipoObraPorId(@PathVariable Long id) throws ESBException, JMSException {
 		return this.service.getTipoObraPorId(id);
 	}
+	
+	@RequestMapping(path = "/subtipo/{id}", method = RequestMethod.GET)
+	public @ResponseBody TipoObra getTipoObraPorSubtipoObra(@PathVariable Long id) throws ESBException, JMSException {
+		return this.service.getTipoObraPorSubtipoObra(id);
+	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public TipoObra createTipoObra(@RequestBody TipoObra tipoObra, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)

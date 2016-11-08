@@ -1,0 +1,4 @@
+INSERT INTO area (idJurisdiccion,  nombre) VALUES ((SELECT J.idJurisdiccion FROM jurisdiccion J WHERE J.codigo = 'MCGC') , 'Proyectos Especiales');
+INSERT INTO area (idJurisdiccion,  nombre) VALUES ((SELECT J.idJurisdiccion FROM jurisdiccion J WHERE J.codigo = 'MCGC') , 'Polo Bandoneón');
+INSERT INTO area (idJurisdiccion,  nombre) VALUES ((SELECT J.idJurisdiccion FROM jurisdiccion J WHERE J.codigo = 'MCGC') , 'Unidad de Ministro');
+INSERT INTO area (idJurisdiccion,  nombre) VALUES ((SELECT J.idJurisdiccion FROM jurisdiccion J WHERE J.codigo = 'SGYRI') , 'Unidad de Coordinación del Plan Estratégico');

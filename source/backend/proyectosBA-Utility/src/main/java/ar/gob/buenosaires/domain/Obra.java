@@ -2,6 +2,7 @@ package ar.gob.buenosaires.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,18 +32,21 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "obra")
 @Audited
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = { "idObra", "proyecto", "estado", "nombre", "descripcion", "subtipoObra", "idSubtipoObraAux", "referenteEjecucion", "presupuestoTotal", 
-		"tipoUbicacion", "direccion", "direccionDesde", "direccionHasta", "detalleUbicacion", "usigSeccion", "usigManzana", "usigParcela", 
-		"usigBarrio", "usigUtiu", "usigDistritoEscolar", "usigAreaHospitalaria", "usigComisaria", "usigTransporteCercano", "usigCPU", 
-		"comuna", "prioridadJefatura", "informacionRelevamiento", "publicableTableroCiudadano", "direccionUnidad", "expedientes", 
-		"presupuestosPorAnio", "archivosAdjuntos", "hitos"})
+@XmlType(propOrder = { "idObra", "proyecto", "estado", "nombre", "descripcion", "subtipoObra", "idSubtipoObraAux",
+		"referenteEjecucion", "presupuestoTotal", "tipoUbicacion", "direccion", "direccionDesde", "direccionHasta",
+		"detalleUbicacion", "usigSeccion", "usigManzana", "usigParcela", "usigBarrio", "usigUtiu",
+		"usigDistritoEscolar", "usigAreaHospitalaria", "usigComisaria", "usigTransporteCercano", "usigCPU", "comuna",
+		"prioridadJefatura", "informacionRelevamiento", "publicableTableroCiudadano", "direccionUnidad", "expedientes",
+		"presupuestosPorAnio", "archivosAdjuntos", "hitos", "usigRegionSanitaria", "usigCodigoPostal",
+		"usigCodigoPostalArgentino", "usigLatitud", "usigLongitud", "fechaInicio", "fechaFin" })
+
 @XmlRootElement(name = "Obra")
 public class Obra implements Serializable {
 
 	private static final long serialVersionUID = 806503159227686034L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idobra", nullable = false)
 	private Long idObra;
 
@@ -51,21 +55,21 @@ public class Obra implements Serializable {
 	@JsonBackReference(value = "proy-obra")
 	@XmlElement(name = "proyecto")
 	private Proyecto proyecto;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idsubtipoobra")
 	@JsonBackReference(value = "subipo-obra")
 	@XmlElement(name = "subtipoObra")
 	private SubtipoObra subtipoObra;
-	
+
 	@Column(name = "idsubtipoobraaux")
 	private Long idSubtipoObraAux;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "obra", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "expedientes")
 	@JsonManagedReference
 	private List<Expediente> expedientes = new ArrayList<Expediente>();
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "obra", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "presupuestosPorAnio")
 	@JsonManagedReference
@@ -75,88 +79,109 @@ public class Obra implements Serializable {
 	@XmlElement(name = "archivosAdjuntos")
 	@JsonManagedReference
 	private List<ArchivoAdjuntoObra> archivosAdjuntos = new ArrayList<ArchivoAdjuntoObra>();
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "obra", fetch = FetchType.LAZY, orphanRemoval = true)
 	@XmlElement(name = "hitos")
 	@JsonManagedReference
 	private List<HitoObra> hitos = new ArrayList<HitoObra>();
-	
+
 	@Column(name = "estado", nullable = false)
 	private String estado;
-	
+
 	@Column(name = "nombre", nullable = false)
 	private String nombre;
-	
+
 	@Column(name = "descripcion")
 	private String descripcion;
-	
+
 	@Column(name = "referenteejecucion")
 	private String referenteEjecucion;
-	
+
 	@Column(name = "presupuestototal")
 	private Double presupuestoTotal;
-	
+
 	@Column(name = "tipoubicacion", nullable = true)
 	private String tipoUbicacion;
-	
+
 	@Column(name = "direccion", nullable = true)
 	private String direccion;
-	
+
 	@Column(name = "direcciondesde", nullable = true)
 	private String direccionDesde;
-	
+
 	@Column(name = "direccionhasta", nullable = true)
 	private String direccionHasta;
-	
+
 	@Column(name = "detalleubicacion", nullable = true)
 	private String detalleUbicacion;
-	
+
 	@Column(name = "usig_seccion", nullable = true)
 	private String usigSeccion;
-	
+
 	@Column(name = "usig_manzana", nullable = true)
 	private String usigManzana;
-	
+
 	@Column(name = "usig_parcela", nullable = true)
 	private String usigParcela;
-	
+
 	@Column(name = "usig_barrio", nullable = true)
 	private String usigBarrio;
-	
+
 	@Column(name = "usig_utiu", nullable = true)
 	private String usigUtiu;
-	
+
 	@Column(name = "usig_distritoescolar", nullable = true)
 	private String usigDistritoEscolar;
-	
+
 	@Column(name = "usig_areahospitalaria", nullable = true)
 	private String usigAreaHospitalaria;
-	
+
 	@Column(name = "usig_comisaria", nullable = true)
 	private String usigComisaria;
-	
+
 	@Column(name = "usig_transportecercano", nullable = true)
 	private String usigTransporteCercano;
-	
+
 	@Column(name = "usig_cpu", nullable = true)
 	private String usigCPU;
-	
+
 	@OneToOne
 	@JoinColumn(name = "idcomuna", nullable = true)
 	@XmlElement(name = "comuna")
 	private Comuna comuna;
-	
+
 	@Column(name = "prioridadjefatura", nullable = true)
 	private String prioridadJefatura;
-	
+
 	@Column(name = "informacionrelevamiento", nullable = true)
 	private String informacionRelevamiento;
-	
+
 	@Column(name = "publicabletablerociudadano", nullable = true)
 	private Boolean publicableTableroCiudadano;
-	
+
 	@Column(name = "direccionunidad", nullable = true)
 	private String direccionUnidad;
+
+	@Column(name = "usig_regionsanitaria")
+	private String usigRegionSanitaria;
+
+	@Column(name = "usig_codigopostal")
+	private String usigCodigoPostal;
+
+	@Column(name = "usig_codigopostalargentino")
+	private String usigCodigoPostalArgentino;
+
+	@Column(name = "usig_latitud")
+	private String usigLatitud;
+
+	@Column(name = "usig_longitud")
+	private String usigLongitud;
+	
+	@Column(name = "fechainicio")
+	private Date fechaInicio;
+
+	@Column(name = "fechafin")
+	private Date fechaFin;
 
 	public Long getIdObra() {
 		return idObra;
@@ -247,6 +272,9 @@ public class Obra implements Serializable {
 	}
 
 	public Double getPresupuestoTotal() {
+		if(presupuestoTotal == null){
+			presupuestoTotal = new Double(0);
+		}
 		return presupuestoTotal;
 	}
 
@@ -421,4 +449,62 @@ public class Obra implements Serializable {
 	public void setIdSubtipoObraAux(Long idSubtipoObraAux) {
 		this.idSubtipoObraAux = idSubtipoObraAux;
 	}
+
+	public String getUsigRegionSanitaria() {
+		return usigRegionSanitaria;
+	}
+
+	public void setUsigRegionSanitaria(String usigRegionSanitaria) {
+		this.usigRegionSanitaria = usigRegionSanitaria;
+	}
+
+	public String getUsigCodigoPostal() {
+		return usigCodigoPostal;
+	}
+
+	public void setUsigCodigoPostal(String usigCodigoPostal) {
+		this.usigCodigoPostal = usigCodigoPostal;
+	}
+
+	public String getUsigCodigoPostalArgentino() {
+		return usigCodigoPostalArgentino;
+	}
+
+	public void setUsigCodigoPostalArgentino(String usigCodigoPostalArgentino) {
+		this.usigCodigoPostalArgentino = usigCodigoPostalArgentino;
+	}
+
+	public String getUsigLatitud() {
+		return usigLatitud;
+	}
+
+	public void setUsigLatitud(String usigLatitud) {
+		this.usigLatitud = usigLatitud;
+	}
+
+	public String getUsigLongitud() {
+		return usigLongitud;
+	}
+
+	public void setUsigLongitud(String usigLongitud) {
+		this.usigLongitud = usigLongitud;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	
+	
 }

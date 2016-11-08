@@ -103,7 +103,8 @@ public class ResultadoProcesamiento {
 
 		buidProyectoDTOFromProyecto(proyectoImportadoDTO, unProyecto.getIdProyecto(), unProyecto.getNombre(),
 				unProyecto.getEstado(), unProyecto.getFechaInicio(), unProyecto.getFechaFin());
-		proyectoImportadoDTO.setImporteAprobado(unProyecto.getTotalPresupuestoAprobado());
+		proyectoImportadoDTO.setImporteAprobado(unProyecto.getTotalPresupuestoAprobado() != null
+				? unProyecto.getTotalPresupuestoAprobado() : new Double(0));
 		getProyectoProcesados().add(proyectoImportadoDTO);
 
 	}

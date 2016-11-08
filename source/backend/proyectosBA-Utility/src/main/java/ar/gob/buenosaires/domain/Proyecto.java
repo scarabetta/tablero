@@ -45,7 +45,7 @@ import ar.gob.buenosaires.esb.exception.ESBException;
 		"fechaInicio", "fechaFin", "prioridadJurisdiccional", "estado", "ejesDeGobierno", "poblacionesMeta", "comunas",
 		"codigo", "idJurisdiccion2", "idObjetivoJurisdiccional2", "idObjetivoOperativo2", "organismosCorresponsables",
 		"presupuestosPorAnio", "coordenadaX", "coordenadaY", "archivos", "verificado", "temasTransversales",
-		"compromisosPublicos", "otrasEtiquetas", "totalPresupuestoAprobado", "prioridadJefatura", "indicadoresEstrategico",
+		"compromisosPublicos", "otrasEtiquetas", "totalPresupuestoAprobado", "prioridadJefatura", "indicadoresEstrategicos",
 		"presupuestoGastosCorrientes", "presupuestoPPIObra", "presupuestoPPIMantenimiento", "presupuestoACUMAR", "presupuestosPorMes",
 		"hitos", "obras"})
 
@@ -223,11 +223,11 @@ public class Proyecto implements Serializable {
 	@XmlElement(name = "otrasEtiquetas")
 	private List<OtraEtiqueta> otrasEtiquetas;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idproyecto") }, 
 		inverseJoinColumns = { @JoinColumn(name = "idindicadorestrategico") })
-	@XmlElement(name = "indicadorEstrategico")
-	private List<IndicadorEstrategico> indicadoresEstrategico;
+	@XmlElement(name = "indicadoresEstrategicos")
+	private List<IndicadorEstrategico> indicadoresEstrategicos;
 
 	public Long getIdProyecto() {
 		return idProyecto;
@@ -525,158 +525,6 @@ public class Proyecto implements Serializable {
 		}
 	}
 
-	@JsonIgnore
-	public String validarEtapaDetalle() throws ESBException {
-		validarHitoDelProyecto();
-		validarPresupuestoAprobado();
-		validaHitosDeObras();
-		validarHitoUObras();
-		validarPrespuestoObras();
-		validaTodasLasObrasCompletas();
-		return EstadoProyecto.D_COMPLETO.getName();
-	}
-
-	//VAL 9
-	private void validaTodasLasObrasCompletas() throws ESBException {
-		for (Obra obra : this.getObras()) {
-			if(obra.getEstado() == null
-					|| (obra.getEstado() != null && obra.getEstado().equalsIgnoreCase("incompleto"))){
-				throw new ESBException("333", "El proyecto no debe tener obras incompletas o sin estado.");
-			}
-		}
-	}
-
-	//VAL 2
-	private void validaHitosDeObras() throws ESBException {
-		List<String> nombres = new ArrayList<String>();
-		for (Obra obra : this.getObras()) {
-			for (HitoObra hito : obra.getHitos()) {
-				//VAL 1
-				if(StringUtils.isNotBlank(hito.getNombre())
-						&& hito.getFechaInicio() != null
-						&& hito.getFechaFin() != null){
-					
-					if(nombres.contains(hito)){
-						throw new ESBException("333", "Hay Hitos repetidos con el nombre: " + hito.getNombre());
-					}
-					nombres.add(hito.getNombre());
-					
-					// VAL 3
-					validarFechaEntre(hito.getFechaInicio(), this.getFechaInicio(), this.getFechaFin());
-					validarFechaEntre(hito.getFechaFin(), this.getFechaInicio(), this.getFechaFin());
-					
-					//VAL 4
-					validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
-				} else {
-					throw new ESBException("333", "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
-				}
-			}
-		}
-	}
-	
-	private void validarFechaEntre(Date fecha, Date fechaInicio, Date fechaFin) throws ESBException{
-		if(fecha.compareTo(fechaInicio) < 0
-				|| fecha.compareTo(fechaFin) > 0){
-			throw new ESBException("333", "Las fechas del hito son inconsistentes con las del proyecto (" + this.getFechaInicio() +" – " + this.getFechaFin() + ")");
-		}
-	}
-
-	// VAL 10
-	private void validarPrespuestoObras() throws ESBException {
-		Double total = Double.valueOf(0);
-		for (Obra obra : this.getObras()) {
-			if(obra.getPresupuestoTotal() != null){
-				total += obra.getPresupuestoTotal();
-			}
-		}
-		if(Double.compare(this.getTotalPresupuestoAprobado(), total) < 0){
-			throw new ESBException("333", "La suma de presupuesto de obras es de " + total.toString() + 
-					". No puede ser mayor al presupuesto aprobado del proyecto (" + this.getTotalPresupuestoAprobado().toString() + ")");
-		}
-	}
-
-	//VAL 8
-	private void validarHitoUObras() throws ESBException {
-		if(this.getHitos().isEmpty()
-				&& this.getObras().isEmpty()){
-			throw new ESBException("333", "El proyecto debe tener hitos u obras.");
-		}
-	}
-
-	private void validarPresupuestoAprobado() throws ESBException {
-		if(this.getTotalPresupuestoAprobado() != null
-				&&	(this.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoXMes()) != 0
-				|| this.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoPPI()) != 0)){
-			throw new ESBException("333", "Los totales deben ser iguales.");
-		}
-	}
-
-	private Double calcularTotalPrespuestoPPI() {
-		Double total = Double.valueOf(0);
-		
-		if(this.getPresupuestoPPIMantenimiento() != null){
-			total += this.getPresupuestoPPIMantenimiento();
-		}
-		if(this.getPresupuestoPPIObra() != null){
-			total += this.getPresupuestoPPIObra();
-		}
-		if(this.getPresupuestoACUMAR() != null){
-			total += this.getPresupuestoACUMAR();
-		}
-		if(this.getPresupuestoGastosCorrientes() != null){
-			total += this.getPresupuestoGastosCorrientes();
-		}
-		
-		return total;
-	}
-
-	private Double calcularTotalPrespuestoXMes() {
-		Double total = Double.valueOf(0);
-		
-		for (PresupuestoPorMes ppm : this.getPresupuestosPorMes()) {
-			if(ppm.getPresupuesto() != null){
-				total = Double.sum(total, ppm.getPresupuesto());
-			}
-		}
-		return total;
-	}
-
-	private void validarHitoDelProyecto() throws ESBException {
-		List<String> nombres = new ArrayList<String>();
-		for (HitoProyecto hito : getHitos()) {
-			//VAL 1
-			if(StringUtils.isNotBlank(hito.getNombre())
-					&& hito.getFechaInicio() != null
-					&& hito.getFechaFin() != null){
-				// VAL 2
-				if(nombres.contains(hito.getNombre())){
-					throw new ESBException("333", "Hay Hitos repetidos con el nombre: " + hito.getNombre());
-				}
-				nombres.add(hito.getNombre());
-				
-				// VAL 3
-				validarFechaEntre(hito.getFechaInicio(), this.getFechaInicio(), this.getFechaFin());
-				validarFechaEntre(hito.getFechaFin(), this.getFechaInicio(), this.getFechaFin());
-				
-				//VAL 4
-				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
-				
-			} else {
-				throw new ESBException("333", "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
-			}
-		}
-	}
-	
-	private void validarFechaInicioContraFin(Date inicio, Date fin) throws ESBException{
-		if(inicio.compareTo(fin) > 0){
-			throw new ESBException("333", "Las fechas del hito son inconsistentes entre si (" + inicio +" – " + fin + ")");
-		}
-	}
-
-	private boolean esEtapaDetalle() {
-		return StringUtils.equals(this.getEstado(), EstadoProyecto.PREAPROBADO.getName());
-	}
-
 	private boolean necesitaCalcularEstado() {
 		// Solo debemos calcular el estado si esta incompleto, completo o vacio
 		List<String> estadosParaCalcular = Arrays.asList(EstadoProyecto.INCOMPLETO.getName(),
@@ -753,6 +601,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public Double getTotalPresupuestoAprobado() {
+		if(totalPresupuestoAprobado == null){
+			totalPresupuestoAprobado = new Double(0);
+		}
 		return totalPresupuestoAprobado;
 	}
 
@@ -761,6 +612,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public Double getPresupuestoGastosCorrientes() {
+		if(presupuestoGastosCorrientes == null){
+			presupuestoGastosCorrientes = new Double(0);
+		}
 		return presupuestoGastosCorrientes;
 	}
 
@@ -769,6 +623,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public Double getPresupuestoPPIObra() {
+		if(presupuestoPPIObra == null){
+			presupuestoPPIObra = new Double(0);
+		}
 		return presupuestoPPIObra;
 	}
 
@@ -777,6 +634,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public Double getPresupuestoPPIMantenimiento() {
+		if(presupuestoPPIMantenimiento == null){
+			presupuestoPPIMantenimiento = new Double(0);
+		}
 		return presupuestoPPIMantenimiento;
 	}
 
@@ -785,6 +645,9 @@ public class Proyecto implements Serializable {
 	}
 
 	public Double getPresupuestoACUMAR() {
+		if(presupuestoACUMAR == null){
+			presupuestoACUMAR = new Double(0);
+		}
 		return presupuestoACUMAR;
 	}
 
@@ -840,19 +703,19 @@ public class Proyecto implements Serializable {
 		}
 	}
 
-	public List<IndicadorEstrategico> getIndicadoresEstrategico() {
-		if(indicadoresEstrategico == null){
-			indicadoresEstrategico = new ArrayList<IndicadorEstrategico>();
+	public List<IndicadorEstrategico> getIndicadoresEstrategicos() {
+		if(indicadoresEstrategicos == null){
+			indicadoresEstrategicos = new ArrayList<IndicadorEstrategico>();
 		}
-		return indicadoresEstrategico;
+		return indicadoresEstrategicos;
 	}
 
-	public void setIndicadoresEstrategico(List<IndicadorEstrategico> indicadoresEstrategico) {
-		if(this.indicadoresEstrategico == null){
-			this.indicadoresEstrategico = indicadoresEstrategico;
-		} else if(indicadoresEstrategico != null){
-			this.indicadoresEstrategico.clear();
-			this.indicadoresEstrategico.addAll(indicadoresEstrategico);
+	public void setIndicadoresEstrategicos(List<IndicadorEstrategico> indicadoresEstrategicos) {
+		if(this.indicadoresEstrategicos == null){
+			this.indicadoresEstrategicos = indicadoresEstrategicos;
+		} else if(indicadoresEstrategicos != null){
+			this.indicadoresEstrategicos.clear();
+			this.indicadoresEstrategicos.addAll(indicadoresEstrategicos);
 		}
 	}
 }

@@ -74,6 +74,9 @@ public class PresupuestoPorAnioObra implements Serializable {
 	}
 
 	public Double getPresupuesto() {
+		if(presupuesto == null){
+			presupuesto = new Double(0);
+		}
 		return presupuesto;
 	}
 

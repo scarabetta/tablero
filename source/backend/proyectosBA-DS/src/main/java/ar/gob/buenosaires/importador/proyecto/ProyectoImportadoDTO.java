@@ -92,6 +92,9 @@ public class ProyectoImportadoDTO {
 	}
 
 	public Double getImporteAprobado() {
+		if(importeAprobado == null){
+			importeAprobado = new Double(0);
+		}
 		return importeAprobado;
 	}
 

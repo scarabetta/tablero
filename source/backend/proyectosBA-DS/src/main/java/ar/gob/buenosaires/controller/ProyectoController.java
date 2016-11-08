@@ -3,12 +3,14 @@ package ar.gob.buenosaires.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 
 import javax.jms.JMSException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -31,6 +33,7 @@ import com.nimbusds.jose.JOSEException;
 import ar.gob.buenosaires.domain.ArchivoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.security.jwt.exception.SignatureVerificationException;
 import ar.gob.buenosaires.service.ProyectoService;
@@ -50,8 +53,16 @@ public class ProyectoController {
 
 	@RequestMapping(path = "/bajar_archivo/{id}/{idJurisdiccion}/{nombreArchivo:.+}", method = RequestMethod.GET)
 	public @ResponseBody void bajarArchivoDeProyecto(@PathVariable final String id,
-			@PathVariable final String idJurisdiccion, @PathVariable final String nombreArchivo,
-			final HttpServletResponse response) {
+			@PathVariable final String idJurisdiccion, @PathVariable String nombreArchivo,
+			final HttpServletResponse response, final HttpServletRequest request) throws ESBException {
+		
+		try {
+			nombreArchivo = DSUtils.obtenerNombreRequest(request);
+		} catch (UnsupportedEncodingException e1) {
+			getLogger().info("No se pudo leer el nombre del archivo adjunto");
+			throw new ESBException(CodigoError.ERROR_PARSEO.getCodigo(), "No se pudo leer el nombre del archivo adjunto");
+		}
+		
 		final String path = PATHARCHIVOS.replace("idJurisdiccion", idJurisdiccion).replace("idProyecto", id);
 
 		FileInputStream fis;
@@ -64,7 +75,8 @@ public class ProyectoController {
 			response.flushBuffer();
 			fis.close();
 		} catch (final IOException e) {
-			e.printStackTrace();
+			getLogger().info("No existe el archivo adjunto: " + nombreArchivo);
+			throw new ESBException(CodigoError.ERROR_LECTURA_ARCHIVO_ADJUNTO.getCodigo(), "No existe el archivo adjunto: " + nombreArchivo);
 		}
 
 	}		
