@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idIndicadorEstrategico", "objetivoJurisdiccional", "proyectos", "metas", "nombre", "descripcion", "semaforizaciones",
-		"metodoCalculo", "tipoIndicador", "sentido", "frecuencia", "formatoNumero", "unidadDeMedida", "estado", "medicionesHistoricas" })
+		"metodoCalculo", "tipoIndicador", "sentido", "frecuencia", "formatoNumero", "unidadDeMedida", "estado", "medicionesHistoricas", "pesoRelativo" })
 
 @XmlRootElement(name = "IndicadorEstrategico")
 public class IndicadorEstrategico implements Serializable {
@@ -71,13 +71,13 @@ public class IndicadorEstrategico implements Serializable {
 	@JsonManagedReference
     private List<Semaforizacion> semaforizaciones = new ArrayList<Semaforizacion>();
 		
-	@Column(name = "indicador")
+	@Column(name = "indicador", nullable = false)
 	private String nombre;
 
 	@Column(name = "descripcion")
 	private String descripcion;
 	
-	@Column(name = "metodocalculo")
+	@Column(name = "metodocalculo", nullable = false)
 	private String metodoCalculo;
 	
 	@Column(name = "tipoindicador")
@@ -97,6 +97,9 @@ public class IndicadorEstrategico implements Serializable {
 	
 	@Column(name = "estado", nullable = false)
 	private String estado;
+	
+	@Column(name = "pesorelativo")
+	private Integer pesoRelativo;
 
 	public Long getIdIndicadorEstrategico() {
 		return idIndicadorEstrategico;
@@ -244,5 +247,13 @@ public class IndicadorEstrategico implements Serializable {
 
 	public void setProyectos(List<Proyecto> proyectos) {
 		this.proyectos = proyectos;
+	}
+	
+	public Integer getPesoRelativo() {
+		return pesoRelativo;
+	}
+
+	public void setPesoRelativo(Integer pesoRelativo) {
+		this.pesoRelativo = pesoRelativo;
 	}
 }

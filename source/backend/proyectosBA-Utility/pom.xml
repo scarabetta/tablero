@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<artifactId>proyectosBA-Utility</artifactId>
-	<version>3.0.0-RELEASE</version>
+	<version>3.1.0-RELEASE</version>
     <packaging>jar</packaging>
 	<name>Proyectos BA - Utility</name>
 	
 	<parent>
 		<groupId>ar.gob.buenosaires.backend</groupId>
 		<artifactId>proyectosBA</artifactId>
-		<version>3.0.0-RELEASE</version>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>

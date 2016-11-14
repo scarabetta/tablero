@@ -294,19 +294,22 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		}
 		cambiarEstadoSiCorresponde(request);
 
-		noGuardarProyectoConDetallePresentado(request.getProyecto());
+		validarGuardarProyectoConDetallePresentado(request.getProyecto());
 
 		proyectos.add(service.updateProyecto(request.getProyecto(), request.getUsuario()));
 
 		addProyectosToResponse(event, response, proyectos);
 	}
 
-	private void noGuardarProyectoConDetallePresentado(Proyecto proyecto) throws ESBException {
+	private void validarGuardarProyectoConDetallePresentado(Proyecto proyecto) throws ESBException {
 		List<String> estadosEtapaDetalle = Arrays.asList(EstadoProyecto.D_PRESENTADO.getName(),
 				EstadoProyecto.D_RECHAZADO.getName(), EstadoProyecto.APROBADO.getName(), EstadoProyecto.D_MODIFICABLE.getName());
 		if(estadosEtapaDetalle.contains(proyecto.getEstado())){
-			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(),
-					"El proyecto ya se encuentra con su Detalle presentado, esta acción no esta permitida");
+			validarEtapaDetalle(proyecto);
+			if(proyecto.getEstadoActualizado().equalsIgnoreCase(EstadoProyecto.COMPLETO.getName())) {
+				throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(),
+						"El proyecto tiene información incial incompleta.");
+			}
 		}
 	}
 
@@ -650,10 +653,19 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	}
 
 	private void validarPresupuestoAprobado(Proyecto proyecto) throws ESBException {
-		if(proyecto.getTotalPresupuestoAprobado() != null
-				&&	(proyecto.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoXMes(proyecto)) != 0
-				|| proyecto.getTotalPresupuestoAprobado().compareTo(calcularTotalPrespuestoPPI(proyecto)) != 0)){
-			throw new ESBException(CodigoError.PROYECTO_VALIDACION_10.getCodigo(), "Los totales deben ser iguales al presupuesto aprobado total: " + proyecto.getTotalPresupuestoAprobado());
+		Double prespuestoXMes = calcularTotalPrespuestoXMes(proyecto);
+		Double prespuestoPPI = calcularTotalPrespuestoPPI(proyecto);
+		if(proyecto.getTipoProyecto().equalsIgnoreCase("Migrado")){
+			if(prespuestoPPI.compareTo(prespuestoXMes) != 0){
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_10.getCodigo(), "Los totales por tipo de gasto deben ser iguales a la suma de la curva de inversión: $" + prespuestoXMes);
+			} 
+		} else {
+			Double totalPresupuestoAprobado = proyecto.getTotalPresupuestoAprobado();
+			if(totalPresupuestoAprobado != null
+					&&	(totalPresupuestoAprobado.compareTo(prespuestoXMes) != 0
+					|| totalPresupuestoAprobado.compareTo(prespuestoPPI) != 0)){
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_10.getCodigo(), "Los totales deben ser iguales al presupuesto aprobado total: $" + totalPresupuestoAprobado);
+			}
 		}
 	}
 

@@ -49,6 +49,8 @@ import ar.gob.buenosaires.util.DSUtils;
 @RequestMapping("/api/importar")
 public class ImportarProyectoController {
 
+	private static final String ERROR_EXTENSION_ARCHIVO = "El archivo seleccionado no posee la extensión correcta '.xlsx' o '.xls'";
+
 	private final static Logger LOGGER = LoggerFactory.getLogger(ImportarProyectoController.class);
 
 	@Autowired
@@ -65,7 +67,7 @@ public class ImportarProyectoController {
 			@PathVariable final int idJurisdiccion) throws IOException {
 		ResultadoProcesamiento resultadoPreview = null;
 
-		if (!validarExtensionArchivoExcel(archivoAImportar)) {
+		if (validarExtensionArchivoExcel(archivoAImportar)) {
 			ByteArrayInputStream bis = null;
 			XSSFWorkbook workbook = null;
 			try {
@@ -92,7 +94,8 @@ public class ImportarProyectoController {
 			}
 		} else {
 			resultadoPreview = new ResultadoProcesamiento();
-			resultadoPreview.setErrorGenerico("El archivo seleccionado es inválido");
+			resultadoPreview.setErrorGenerico(ERROR_EXTENSION_ARCHIVO);
+			resultadoPreview.setNombreArchivoError(archivoAImportar.getOriginalFilename());
 		}
 		return resultadoPreview;
 
@@ -162,7 +165,7 @@ public class ImportarProyectoController {
 					throws IOException, ParseException, JOSEException, SignatureVerificationException {
 		ProyectosPriorizadosResultadoProcesamiento resultadoPreview = null;
 
-		if (!validarExtensionArchivoExcel(archivoAImportar)) {
+		if (validarExtensionArchivoExcel(archivoAImportar)) {
 
 			ByteArrayInputStream bis = new ByteArrayInputStream(archivoAImportar.getBytes());
 			XSSFWorkbook workbook = new XSSFWorkbook(bis);
@@ -173,7 +176,8 @@ public class ImportarProyectoController {
 			workbook.close();
 		} else {
 			resultadoPreview = new ProyectosPriorizadosResultadoProcesamiento();
-			resultadoPreview.setErrorGenerico("El archivo seleccionado es inválido");
+			resultadoPreview.setErrorGenerico(ERROR_EXTENSION_ARCHIVO);
+			resultadoPreview.setNombreArchivoError(archivoAImportar.getOriginalFilename());
 		}
 
 		return resultadoPreview;
@@ -237,7 +241,8 @@ public class ImportarProyectoController {
 	}
 
 	private boolean validarExtensionArchivoExcel(final MultipartFile archivoAImportar) {
-		int splitedFileNameLength = archivoAImportar.getName().split("\\.").length - 1;
-		return "xlsx".equalsIgnoreCase(archivoAImportar.getName().split("\\.")[splitedFileNameLength]);
+		String[] splitFileName = archivoAImportar.getOriginalFilename().split("\\.");
+		int splitedFileNameLength = splitFileName.length - 1;
+		return "xlsx".equalsIgnoreCase(splitFileName[splitedFileNameLength]) || "xls".equalsIgnoreCase(splitFileName[splitedFileNameLength]);
 	}
 }
