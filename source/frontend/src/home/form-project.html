@@ -436,8 +436,8 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
             </div>
 
             <div class="dropdown content-actionForm contentButtonRight">
-              <button type="button" ng-click="formCtrl.saveDataDetailPresent()" class="btn btn-success btn-lg fullButtonRight">{{formCtrl.savePresentTxt}}</button>
-              <button type="button" ng-click="formCtrl.saveDataDetailDraft()" form="principalForm" class="btn btn-default fullButtonRight" ng-if = "formCtrl.currentProject.estado === 'D. Completo' || formCtrl.currentProject.estado === 'D. Incompleto' || formCtrl.currentProject.estado === 'Pre Aprobado'" id="draftButton fullButtonRight">Guardar Borrador</button>
+              <button type="button" ng-click="formCtrl.saveDataDetail()" class="btn btn-success btn-lg fullButtonRight">{{formCtrl.savePresentTxt}}</button>
+              <button type="submit" form="DetailForm" class="btn btn-default fullButtonRight" ng-if = "formCtrl.currentProject.estado === 'D. Completo' || formCtrl.currentProject.estado === 'D. Incompleto' || formCtrl.currentProject.estado === 'Pre Aprobado'" id="draftButton fullButtonRight">Guardar Borrador</button>
               <button type="button" class="btn btn-default fullButtonRight"  data-toggle="modal" data-target="#cancelAlertDetail">Cancelar cambios</button>
             </div>
 
@@ -445,26 +445,26 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
 
 
     <div class="col-md-9 col-sm-12 col-xs-12">
-        <form role="form" id="principalForm" ng-submit="formCtrl.saveProject()" class="contentDetailProject">
+        <form role="form" id="DetailForm" ng-submit="formCtrl.saveDataDetailDraft()" class="contentDetailProject">
                 <div class="col-md-12 agrupador">
                     <div class="ic-title ic-caminoCritico"></div>&nbsp;Camino crítico: Hitos y Obras
                     <div class="row">
                     <div class="col-md-12">
                         <div class="table-responsive gridContent">
-                          <table class="table tableContentForm" ng-if="(formCtrl.currentProject.hitos && formCtrl.currentProject.hitos.length > 0) || (formCtrl.currentProject.obras && formCtrl.currentProject.obras.length > 0)" ng-init="formCtrl.initializePickers()">
+                          <table class="table tableContentForm tableHitos" ng-if="(formCtrl.currentProject.hitos && formCtrl.currentProject.hitos.length > 0) || (formCtrl.currentProject.obras && formCtrl.currentProject.obras.length > 0)" ng-init="formCtrl.initializePickers()">
                             <thead>
                               <tr>
                                 <th>Hito</th>
                                 <th>Inicio</th>
                                 <th>Fin</th>
                                 <!-- <th>Estado</th> -->
-                                <th></th>
+                                <th class="columnAction"></th>
                               </tr>
                             </thead>
                             <tbody ng-repeat="hito in formCtrl.currentProject.hitos track by $index">
                               <tr>
                                 <td ng-init="hitoindex = $index">
-                                  <input type="text" class="form-control" id="name" maxlength="512" required="" ng-model="hito.nombre">
+                                  <input type="text" class="form-control" id="name" maxlength="512" ng-model="hito.nombre" required>
                                 </td>
                                 <td>
                                   <div class="input-group">
@@ -499,7 +499,10 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                               </tr>
                               <tr ng-repeat="hijo in hito.hitosHijos track by $index" class="hito-{{hitoindex}}">
-                                <td><input type="text" class="form-control" style="width: 90% !important; float: right;" id="name" maxlength="512" required="" ng-model="hijo.nombre"></td>
+                                <td>
+                                  <input type="text" class="form-control inputSubHito" id="name" maxlength="512" required="" ng-model="hijo.nombre" required>
+                                  <div class="itemObj icSubHito"></div>
+                                </td>
                                 <td>
                                   <div class="input-group">
                                     <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersHijosInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hijo.fechaInicio" required/>
@@ -565,6 +568,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                               <tr ng-repeat="hito in obra.hitos track by $index" class="collapse in obra-{{obraindex}}">
                                 <td>
                                   <div class="obraHitoTitle">
+                                    <div class="itemObj"></div>
                                     {{hito.nombre}}
                                   </div>
                                 </td>
@@ -605,7 +609,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                     <p class="reference">Si seleccionás en Excel varias celdas que estén una debajo de la otra, las copias y pegás sobre cualquier de los siguientes casilleros, se distribuirán a partir  de ese casillero hacia abajo. </p>
                     <div class="row">
 
-                    <div class="typeTableContainer col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="typeTableContainer col-lg-5 col-md-12 col-sm-12 col-xs-12 form-group">
                     <label for="direccion">TIPO DE GASTO (TOTAL DEL PROYECTO)</label>
                       <div class="titleTable"></div>
                       <hot-table col-headers="true" row-headers="true" datarows="formCtrl.type" hot-id="type">
@@ -623,7 +627,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                       </hot-table> -->
                     </div>
 
-                    <div class="typeTableContainer col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="typeTableContainer col-lg-5 col-md-12 col-sm-12 col-xs-12 form-group gridResponsive">
                     <label for="direccion">CURVA DE INVERSIÓN</label>
                       <div class="titleTable"></div>
                       <hot-table col-headers="true" row-headers="true" datarows="formCtrl.curve" column-summary="formCtrl.columnSummary" hot-id="curve">
@@ -631,13 +635,16 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                         <hot-column width="100" type="'numeric'" format="'$ 0,0.00'"></hot-column>
                       </hot-table>
                     </div>
-
+                      <div class="typeTableContainer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p class="reference">*<b>PPI</b> - Plan Plurianual de Inversión.</p>
+                        <p class="reference">*El presupuesto es en Pesos.</p>
+                      </div>
                     </div>
                 </div>
             <br>
-            <button type="button" ng-click="formCtrl.saveDataDetailPresent()" class="btn btn-success btn-lg">{{formCtrl.savePresentTxt}}</button>
-            <button type="button" ng-click="formCtrl.saveDataDetailDraft()" ng-if = "formCtrl.currentProject.estado === 'D. Completo' || formCtrl.currentProject.estado === 'D. Incompleto' || formCtrl.currentProject.estado === 'Pre Aprobado'" class="btn btn-default" id="draftButton">Guardar Borrador</button>
-            <button  type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlertDetail">Cancelar cambios</button>
+            <button type="button" ng-click="formCtrl.saveDataDetail()" class="btn btn-success btn-lg">{{formCtrl.savePresentTxt}}</button>
+            <button type="submit" ng-if="formCtrl.currentProject.estado === 'D. Completo' || formCtrl.currentProject.estado === 'D. Incompleto' || formCtrl.currentProject.estado === 'Pre Aprobado'" class="btn btn-default" id="draftButton">Guardar Borrador</button>
+            <button type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlertDetail">Cancelar cambios</button>
         </form>
 
         <alertmodal modal-id="cancelAlertDetail" modal-title="Aviso" modal-body="Se van a perder los datos ingresados. ¿Desea Continuar?" on-accept="formCtrl.cancel()"></alertmodal>

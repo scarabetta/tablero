@@ -29,8 +29,8 @@ module Login {
                 this.localStorageService.set(this.tokenKey, res.token);
                 this.services.getUserByToken().then((data) => {
                   this.localStorageService.set(this.currentUserKey, data);
+                  this.$state.go('home.tree');
                 });
-                this.$state.go('home.tree');
               } else {
                 var notificationData = {
                   "type" : "danger",

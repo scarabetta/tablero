@@ -196,20 +196,39 @@ module Home {
         }
 
         addStrategicObjective(idJurisdiccion) {
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
+          this.removerForms(['viewproject']);
+          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
+              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
+              !angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile(" <formstrategicobjective idjurisdiccion='" + idJurisdiccion + "'></formstrategicobjective> ");
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById('add-strategic-objetive');
             angular.element(containerDiv).append(referralDiv);
+            this.goToElement('formstrategicobjective');
+          } else {
+            var notificationData = {
+              "type" : "warning",
+              "icon" : "exclamation-sign",
+              "title" : "Alerta",
+              "text" : "No es posible agregar un objetivo mientras haya otra modificación o alta en curso.",
+              "action": "gotoestrategico",
+              "valueAction" : true,
+              "textlink": "Ir al formulario"
+            };
+            this.addNotification(notificationData);
           }
         }
 
         editStrategicObjective(idStrategicObjective) {
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length) {
+          this.removerForms(['viewproject']);
+          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
+              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
+              !angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile( " <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> " );
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById("es-" + idStrategicObjective);
             angular.element(containerDiv).append(referralDiv);
+            this.goToElement('formstrategicobjective');
           } else {
             var notificationData = {
               "type" : "warning",
@@ -226,12 +245,15 @@ module Home {
 
         addOperativeObjective(idObjetivoEstrategico, elem) {
           (<any>$("#grupo-level-" + elem)).collapse('show');
-
-          if (!angular.element(document.getElementsByTagName('formoperativeobjective')).length) {
+          this.removerForms(['viewproject']);
+          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
+              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
+              !angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile(" <formoperativeobjective idobjetivoestrategico='" + idObjetivoEstrategico + "'></formoperativeobjective> ");
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById('add-operative-objetive-' + idObjetivoEstrategico);
             angular.element(containerDiv).append(referralDiv);
+            this.goToElement('formoperativeobjective');
           } else {
             var notificationData = {
               "type" : "warning",
@@ -247,11 +269,15 @@ module Home {
         }
 
         editOperativeObjective(idOperativeObjective) {
-          if (!angular.element(document.getElementsByTagName('formoperativeobjective')).length) {
+          this.removerForms(['viewproject']);
+          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
+              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
+              !angular.element(document.getElementsByTagName('formproject')).length) {
             var referralDivFactory = this.$compile( " <formoperativeobjective idoperativeobjective='" + idOperativeObjective + "'></formoperativeobjective> " );
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById("op-" + idOperativeObjective);
             angular.element(containerDiv).append(referralDiv);
+            this.goToElement('formoperativeobjective');
           } else {
             var notificationData = {
               "type" : "warning",
@@ -267,22 +293,22 @@ module Home {
         }
 
         viewProject(proyecto) {
-          if (angular.element(document.getElementsByTagName('viewproject')).length) {
-              var projectTag = document.getElementsByTagName('viewproject');
-              angular.element(projectTag).remove();
-          }
+          this.removerForms(['formproject', 'formlabels']);
           var referralDivFactory = this.$compile( " <viewproject idproject='" + proyecto.idProyecto + "'></viewproject> " );
           var referralDiv = referralDivFactory(this.$scope);
           var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
           angular.element(containerDiv).append(referralDiv);
+          this.goToElement('viewproject');
         }
 
         editProject(proyecto) {
           if (!angular.element(document.getElementsByTagName('formproject')).length) {
+            this.removerForms(['viewproject', 'formlabels']);
             var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "' estadoproject='" + proyecto.estado + "'></formproject> " );
             var referralDiv = referralDivFactory(this.$scope);
             var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
             angular.element(containerDiv).append(referralDiv);
+            this.goToElement('formproject');
           } else {
             var notificationData = {
               "type" : "warning",
@@ -303,6 +329,7 @@ module Home {
               var referralDiv = referralDivFactory(this.$scope);
               var containerDiv = document.getElementById("op-" + idObjetivo);
               angular.element(containerDiv).append(referralDiv);
+              this.goToElement('formproject');
           } else {
             var notificationData = {
               "type" : "warning",
@@ -315,6 +342,26 @@ module Home {
             };
             this.addNotification(notificationData);
           }
+        }
+
+        labels(idProyecto) {
+            this.removerForms(['viewproject', 'formproject']);
+            if (!angular.element(document.getElementsByTagName('formlabels')).length) {
+              var referralDivFactory = this.$compile(" <formlabels idproyecto='" + idProyecto + "'></formlabels> ");
+              var referralDiv = referralDivFactory(this.$scope);
+              var containerDiv = document.getElementById("proyecto-" + idProyecto);
+              angular.element(containerDiv).append(referralDiv);
+              this.goToElement('formlabels');
+            }
+        }
+
+        removerForms(forms) {
+          forms.forEach((element) => {
+            if (angular.element(document.getElementsByTagName(element)).length) {
+                var form = document.getElementsByTagName(element);
+                angular.element(form).remove();
+            }
+          });
         }
 
         collapseAll() {
@@ -335,18 +382,6 @@ module Home {
                   }
               });
           });
-        }
-
-        labels(idProyecto) {
-            if (!angular.element(document.getElementsByTagName('formlabels')).length) {
-              var referralDivFactory = this.$compile(" <formlabels idproyecto='" + idProyecto + "'></formlabels> ");
-              var referralDiv = referralDivFactory(this.$scope);
-              var containerDiv = document.getElementById("proyecto-" + idProyecto);
-              angular.element(containerDiv).append(referralDiv);
-              setTimeout(() => {
-                this.goToLabels();
-              }, 0);
-            }
         }
 
         addNotification(data) {
@@ -453,6 +488,13 @@ module Home {
             (<any>$('html,body')).animate({
               scrollTop: 0},
             500);
+        }
+
+        goToElement(element) {
+          var form = document.getElementsByTagName(element);
+          (<any>$('html,body')).animate({
+            scrollTop: $(form).offset().top - 80},
+          'slow');
         }
 
         presentAllProjects() {

@@ -7,6 +7,7 @@ import {formStrategicObjectiveComponent} from "./form.strategic.objective.compon
 import {formLabelsComponent} from "./form.labels.component";
 import {moveProjectComponent} from "./form-project/move.project.component.ts";
 import {obraProjectComponent} from "./form-project/obra.project.component.ts";
+import {indicadorProjectComponent} from "./form-indicador/indicador.project.component.ts";
 import {viewProjectComponent} from "./view-project/view.project.component.ts";
 import {GeneralServices} from "../services/services.ts";
 import {Search} from "../services/search.ts";
@@ -27,6 +28,7 @@ module Home {
         .component('formlabels', formLabelsComponent)
         .component('moveproject', moveProjectComponent)
         .component('obraproject', obraProjectComponent)
+        .component('indicadorproject', indicadorProjectComponent)
         .component('viewproject', viewProjectComponent)
         .directive('alertmodal', alertModalDirective)
         .directive('sidemenu', sideMenuDirective)

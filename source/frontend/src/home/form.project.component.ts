@@ -1,16 +1,16 @@
 /**
  * Created by enocmontiel on 7/19/16.
  */
-import {GeneralServices} from "../services/services.ts";
+import {GeneralServices} from "../services/services";
 import {Proyecto} from "../models/jurisdiccion";
-import {PoblacionMeta} from "../models/jurisdiccion.ts";
-import {EjeDeGobierno} from "../models/jurisdiccion.ts";
-import {Comuna} from "../models/jurisdiccion.ts";
-import {Presupuesto} from "../models/jurisdiccion.ts";
-import {Jurisdiccion} from "../models/jurisdiccion.ts";
-import {Usuario} from "../models/jurisdiccion.ts";
-import {HitoProyecto} from "../models/jurisdiccion.ts";
-import {Obra} from "../models/jurisdiccion.ts";
+import {PoblacionMeta} from "../models/jurisdiccion";
+import {EjeDeGobierno} from "../models/jurisdiccion";
+import {Comuna} from "../models/jurisdiccion";
+import {Presupuesto} from "../models/jurisdiccion";
+import {Jurisdiccion} from "../models/jurisdiccion";
+import {Usuario} from "../models/jurisdiccion";
+import {HitoProyecto} from "../models/jurisdiccion";
+import {Obra} from "../models/jurisdiccion";
 const template = require('./form-project.html');
 
 module Home {
@@ -184,9 +184,9 @@ module Home {
               this.colHeaders = true;
               this.type = [
                     ['Gasto corriente', this.currentProject.presupuestoGastosCorrientes ? this.currentProject.presupuestoGastosCorrientes : '0'],
-                    ['Plan plurianual de Inversión Obra', this.currentProject.presupuestoPPIObra ? this.currentProject.presupuestoPPIObra : '0'],
-                    ['Plan plurianual de Inversión Mantenimiento', this.currentProject.presupuestoPPIMantenimiento ? this.currentProject.presupuestoPPIMantenimiento : '0'],
-                    ['Plan plurianual de Inversión ACUMAR', this.currentProject.presupuestoACUMAR ? this.currentProject.presupuestoACUMAR : '0']
+                    ['PPI Obra', this.currentProject.presupuestoPPIObra ? this.currentProject.presupuestoPPIObra : '0'],
+                    ['PPI Mantenimiento', this.currentProject.presupuestoPPIMantenimiento ? this.currentProject.presupuestoPPIMantenimiento : '0'],
+                    ['PPI ACUMAR', this.currentProject.presupuestoACUMAR ? this.currentProject.presupuestoACUMAR : '0']
                     // ['SUBTOTAL TIPO DE GASTO', '0']
                   ];
               if (data.presupuestosPorMes.length > 0) {
@@ -216,9 +216,9 @@ module Home {
             this.title = 'Nuevo Proyecto';
             this.type = [
                   ['Gasto corriente', '0'],
-                  ['Plan plurianual de Inversión Obra', '0'],
-                  ['Plan plurianual de Inversión Mantenimiento', '0'],
-                  ['Plan plurianual de Inversión ACUMAR', '0']
+                  ['PPI Obra', '0'],
+                  ['PPI Mantenimiento', '0'],
+                  ['PPI ACUMAR', '0']
                 ];
             this.initValidators();
               services.comunas().then((data) => {
@@ -308,41 +308,25 @@ module Home {
         return cell;
       }
 
+      saveDataDetail() {
+        if (this.changingStateFlag && this.actionMove !== 'Presentar') {
+          this.saveDataDetailChangeState();
+        } else {
+          this.saveDataDetailPresent();
+        }
+      }
+
+      saveDataDetailChangeState() {
+        this.buildDetail();
+        this.services.changeState(this.actionMove, this.currentProject).then((data) => {
+          if (!data.codigoError) {
+            this.$state.reload();
+          }
+         });
+      }
+
       saveDataDetailPresent() {
-        var listBudget = [];
-        var scope = this;
-        var curveInstance = this.hotRegisterer.getInstance("curve");
-        var dataCurve = curveInstance.getData();
-
-        var typeInstance = this.hotRegisterer.getInstance("type");
-        var dataType = typeInstance.getData();
-
-        dataCurve.forEach(function(entry) {
-          var budget = {
-            "idProyectoAux": scope.idproject,
-            "anio": entry[0].split(/(\s+)/)[2],
-            "mes": scope.monthNames.indexOf(entry[0].split(/(\s+)/)[0]),
-            "presupuesto": entry[1]
-          };
-          listBudget.push(budget);
-        });
-
-        dataType.forEach(function(entry) {
-          if (entry[0] === "Gasto corriente") {
-            scope.currentProject.presupuestoGastosCorrientes = entry[1];
-          }
-          if (entry[0] === "Plan plurianual de Inversión Obra") {
-            scope.currentProject.presupuestoPPIObra = entry[1];
-          }
-          if (entry[0] === "Plan plurianual de Inversión Mantenimiento") {
-            scope.currentProject.presupuestoPPIMantenimiento = entry[1];
-          }
-          if (entry[0] === "Plan plurianual de Inversión ACUMAR") {
-            scope.currentProject.presupuestoACUMAR = entry[1];
-          }
-        });
-
-        this.currentProject.presupuestosPorMes = listBudget;
+        this.buildDetail();
         this.services.presentProjectDetail(this.currentProject).then((data) => {
           if (!data.codigoError) {
             this.$state.reload();
@@ -350,7 +334,17 @@ module Home {
          });
       }
 
+
       saveDataDetailDraft() {
+        this.buildDetail();
+        this.services.updateProject(this.currentProject).then((data) => {
+          if (!data.codigoError) {
+            this.$state.reload();
+          }
+         });
+      }
+
+      buildDetail() {
         var listBudget = [];
         var scope = this;
         var curveInstance = this.hotRegisterer.getInstance("curve");
@@ -373,23 +367,18 @@ module Home {
           if (entry[0] === "Gasto corriente") {
             scope.currentProject.presupuestoGastosCorrientes = entry[1];
           }
-          if (entry[0] === "Plan plurianual de Inversión Obra") {
+          if (entry[0] === "PPI Obra") {
             scope.currentProject.presupuestoPPIObra = entry[1];
           }
-          if (entry[0] === "Plan plurianual de Inversión Mantenimiento") {
+          if (entry[0] === "PPI Mantenimiento") {
             scope.currentProject.presupuestoPPIMantenimiento = entry[1];
           }
-          if (entry[0] === "Plan plurianual de Inversión ACUMAR") {
+          if (entry[0] === "PPI ACUMAR") {
             scope.currentProject.presupuestoACUMAR = entry[1];
           }
         });
 
         this.currentProject.presupuestosPorMes = listBudget;
-        this.services.updateProject(this.currentProject).then((data) => {
-          if (!data.codigoError) {
-            this.$state.reload();
-          }
-         });
       }
 
       deleteFileFromCurrent(file) {

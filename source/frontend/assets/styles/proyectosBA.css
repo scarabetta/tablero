@@ -1025,8 +1025,9 @@ input[type=file] {
     background: #d04848;
 }
 .obj-estrategico .glyphicon-remove {
-    top: -2px;
+    top: -3px;
     position: relative;
+    margin: 0 2px;
 }
 .attach span {
     cursor: pointer;
@@ -1268,6 +1269,15 @@ tags-input .tags {
 }
 .ic-title.ic-fechas {
     background-image: url(../ic-fechas.png);
+}
+.ic-title.ic-meta {
+    background-image: url(../ic-meta.png);
+}
+.ic-title.ic-fuente {
+    background-image: url(../ic-fuente.png);
+}
+.ic-title.ic-relacionar {
+    background-image: url(../ic-relacionar.png);
 }
 #buttonFile .icNew, .addBtn .icNew, #buttonObra .icNew, .addBtn .icNew, #buttonHito .icNew, .addBtn .icNew {
     float: left;
@@ -1691,7 +1701,7 @@ input.cmn-toggle-round:checked+label:after {
 #moverModal li a {
     font-size: 13px;
 }
-#moverModal .itemObj {
+#moverModal .itemObj, .contentDetailProject .itemObj{
     background: #000;
     width: 6px;
     height: 6px;
@@ -2393,6 +2403,52 @@ div.jqi .jqititle {
 .actionHito{
     cursor: pointer;
 }
+.columnAction {
+   width: 74px;
+}
+.inputSubHito{
+    width: 90% !important;
+    float: right;
+}
+.icSubHito{
+    float: right!important;
+    margin-top: 14px!important;
+}
+.tableHitos td{
+    vertical-align: middle!important;
+}
+.tableHitos .thirdLabel .icEdit {
+    display: inline-block;
+    top: inherit;
+    position: absolute;
+    float: right;
+}
+.tableHitos li a {
+    cursor: pointer;
+}
+.icEdit.editIndicadores{
+    top: 5px;
+}
+.icPesoRelativo{
+    float: left;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    margin-top: 3px;
+    margin-left: 5px;
+}
+.inputPesoRelativo{
+    width: 80px!important;
+    float: left;
+}
+.estadoIndicadores{
+    /*padding: 0 15px;*/
+    float: left;
+}
+.columIndicadores{
+    float: left;
+    width: 125px;
+}
 
 /*Modal detalle obra*/
 
@@ -2462,6 +2518,15 @@ div.jqi .jqititle {
 }
 .refItem .ic-title.ic-modal-expediente {
     background-image: url(../ic-modal-expediente.png);
+}
+.refItem .ic-title.ic-modal-fuente {
+    background-image: url(../ic-modal-fuente.png);
+}
+.refItem .ic-title.ic-modal-relacionar {
+    background-image: url(../ic-modal-relacionar.png);
+}
+.refItem .ic-title.ic-modal-meta {
+    background-image: url(../ic-modal-meta.png);
 }
 .refItem li {
     margin: 15px 0;
@@ -2540,6 +2605,50 @@ div.jqi .jqititle {
     width: 100%!important;
 }
 
+/*Indicadores*/
+.totalGridIndicadores{
+    background: #cccccc;
+    color: #000;
+    font-size: 14px;
+    text-align: right;
+    padding: 15px;
+    max-width: 1262px;
+}
+.totalGridIndicadores span{
+    font-weight: bold;
+}
+.ic-ascendente {
+    background-image: url(../ic-ascendente.png);
+    width: 32px;
+    height: 20px;
+    float: right;
+}
+.ic-descendente {
+    background-image: url(../ic-descendente.png);
+    width: 32px;
+    height: 20px;
+    float: right;
+}
+.totalMeta{
+    text-align: right;
+}
+.ic-btn{
+    background-image: url(../ic-varita.png);
+    width: 28px;
+    height: 28px;
+    float: left;
+}
+.btn-link.btn-meta{
+    color:#52bbff;
+    text-align: left;
+    padding: 0;
+}
+.btn-link.btn-meta:hover{
+    color:#52bbff;
+}
+.item-meta label{
+    margin-bottom: 10px!important;
+}
 
 /*MEDIA QUERY*/
 
@@ -2552,6 +2661,12 @@ div.jqi .jqititle {
 @media (min-width: 1680px) {
     .columnRight {
         max-width: 75%;
+    }
+}
+
+@media (max-width: 1700px) {
+    .gridResponsive {
+        clear: left;
     }
 }
 @media (max-width: 1024px) {

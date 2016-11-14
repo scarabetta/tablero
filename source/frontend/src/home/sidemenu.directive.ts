@@ -66,6 +66,7 @@ module Home {
     };
     private jurisdiccion:Jurisdiccion;
     private idjurisdiccionKey = 'idJurisdiccionStorage';
+    private showSidemenu = false;
 
     constructor(private $scope: ng.IScope, private services:GeneralServices, private localStorageService:angular.local.storage.ILocalStorageService) {
       var scope = this;
@@ -80,6 +81,7 @@ module Home {
 
       var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
       if (idJurisdiccionStorage) {
+        this.showSidemenu = true;
         services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
           scope.jurisdiccion = data;
           data.objetivosJurisdiccionales.forEach((oj) => {

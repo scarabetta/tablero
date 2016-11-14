@@ -12,7 +12,6 @@ module Home {
             // console.log("selected option string", selectedOption.toString());
 
     }
-
     /*@ngInject*/
     export function usigAutocompleteDirective() {
         return {

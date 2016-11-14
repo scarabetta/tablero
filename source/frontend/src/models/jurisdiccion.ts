@@ -85,6 +85,7 @@ export interface IndicadorEstrategico {
   proyectos: Proyecto[];
   nombre: string;
   descripcion: string;
+  pesoRelativo: number;
   metodoCalculo: string;
   tipoIndicador: string;
   sentido: string;

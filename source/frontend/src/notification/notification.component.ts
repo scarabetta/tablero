@@ -14,7 +14,7 @@ module Notification {
         (<any>$(document.getElementsByTagName('notification'))).hide();
           var form = document.getElementsByTagName('formproject');
           (<any>$('html,body')).animate({
-            scrollTop: $(form).offset().top},
+            scrollTop: $(form).offset().top - 80},
           'slow');
       }
 
@@ -22,7 +22,7 @@ module Notification {
         (<any>$(document.getElementsByTagName('notification'))).hide();
         var form = document.getElementsByTagName('formstrategicobjective');
         (<any>$('html,body')).animate({
-          scrollTop: $(form).offset().top},
+          scrollTop: $(form).offset().top - 80},
         'slow');
       }
 
@@ -30,7 +30,7 @@ module Notification {
         (<any>$(document.getElementsByTagName('notification'))).hide();
         var form = document.getElementsByTagName('formoperativeobjective');
         (<any>$('html,body')).animate({
-          scrollTop: $(form).offset().top},
+          scrollTop: $(form).offset().top - 80},
         'slow');
       }
 

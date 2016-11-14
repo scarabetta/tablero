@@ -23,6 +23,7 @@
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="info">
                     <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial de la Obra
+                    </a>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="nombre">Nombre</label>
@@ -60,12 +61,13 @@
                             <input type="text" class="form-control" id="name" maxlength="512" ng-model="obraCtrl.currentobra.referenteEjecucion" value="{{obraCtrl.currentobra.referenteEjecucion}}" placeholder="Ingresar nombre del referente" >
                         </div>
                     </div>
-                    </a>
+                    
                 </div>
                 <br>
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="fechas">
                     <div class="ic-title ic-fechas"></div>&nbsp;Fechas/Hitos
+                     </a>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="table-responsive">
@@ -117,12 +119,13 @@
                             </button>
                         </div>
                     </div>
-                    </a>
+                   
                 </div>
                 <br>
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="presupuesto">
                     <div class="ic-title ic-presupuesto"></div>&nbsp;Presupuesto
+                    </a>
                     <div class="row">
                         <div class="col-md-2 col-sm-2 col-xs-4 add-line">
                           <label for="año">Año</label>
@@ -151,12 +154,13 @@
                           <input type="number" class="form-control" id="meta" disabled="disabled" ng-model="obraCtrl.totalBudget">
                         </div>
                       </div>
-                      </a>
+                      
                 </div>
                 <br>
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="ubicacion">
                   <div class="ic-title ic-ubicacion"></div>&nbsp;Ubicación
+                  </a>
                     <div class="row">
 
                       <div class="col-md-12 col-sm-12">
@@ -211,12 +215,12 @@
                         <div class="col-md-12" id="mapa"></div>
                       </div>
                     </div>
-                    </a>
                   </div>
                 <br>
                 <div class="col-md-12 agrupador">
                 <a class="nameLinkModal" name="expediente">
                     <div class="ic-title ic-expediente"></div>&nbsp;Expedientes <span class="opcional">(Opcional)</span>
+                    </a>
                       <div class="row" ng-if="obraCtrl.currentobra.expedientes.length > 0">
                       <div class="form-group col-md-5 col-sm-12 col-xs-12">
                         <label for="referentes">Descripción</label>
@@ -254,7 +258,6 @@
                             </button>
                         </div>
                     </div>
-                    </a>
                 </div>
                 <br>
             <button type="submit" class="btn btn-success btn-lg" ng-disabled="obraCtrl.validHitoNombre !=='' || obraCtrl.validHitoFechaProyecto !=='' || obraCtrl.validHitoFecha !=='' || obraCtrl.validObraNombre !=='' || obraCtrl.validDireccionNormalizada !=='' || obraCtrl.validDireccionDesdeNormalizada !=='' || obraCtrl.validDireccionHastaNormalizada !=='' ">Guardar obra</button>

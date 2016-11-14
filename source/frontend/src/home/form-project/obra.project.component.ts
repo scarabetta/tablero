@@ -59,7 +59,7 @@ module Home {
         this.createNewObra();
       } else {
         this.isNewObra = false;
-        this.currentobra = JSON.parse(JSON.stringify(this.currentobra));
+        this.currentobra = angular.copy(this.currentobra);
         this.currentObraNombre = this.currentobra.nombre;
         this.initializeTipoObra();
         if (this.currentobra.comuna) {

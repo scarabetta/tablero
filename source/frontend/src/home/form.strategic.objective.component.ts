@@ -12,20 +12,31 @@ module Home {
     private idjurisdiccion: number;
     private idobjetivoestrategico: number;
     private currentStrategicObjective: ObjetivoJurisdiccional;
+    private currentTotalPesoRelativo: number;
+    private currentIndicador: IndicadorEstrategico;
+    private validPesoRelativo: string;
 
     /*@ngInject*/
     constructor(private services:GeneralServices, private $http: ng.IHttpService,
       private $state:ng.ui.IStateService, private $compile: ng.ICompileService, private $scope:ng.IScope) {
-
+      this.validPesoRelativo = "";
       if (this.idobjetivoestrategico) {
         this.title = "Modificar objetivo estratégico";
         services.getStrategicObjective(this.idobjetivoestrategico).then((data) => {
           this.currentStrategicObjective = data;
+          this.currentStrategicObjective.indicadoresEstrategicos.forEach((i) => {
+            if (i.estado === "Cancelado") {
+              i.pesoRelativo = 0;
+            }
+          });
+          this.getCurrentTotalPesoRelativo();
         });
       } else {
         this.title = "Nuevo objetivo estratégico";
         this.currentStrategicObjective = <ObjetivoJurisdiccional>{};
+        this.currentTotalPesoRelativo = 0;
       }
+
     }
 
     saveStrategicObjective() {
@@ -77,6 +88,23 @@ module Home {
       this.goToTop();
     }
 
+    getCurrentTotalPesoRelativo() {
+      this.validPesoRelativo = "";
+      this.currentTotalPesoRelativo = 0;
+      this.currentStrategicObjective.indicadoresEstrategicos.forEach((i) => {
+        if (i.estado === "Presentado") {
+          this.currentTotalPesoRelativo += Number(i.pesoRelativo);
+        }
+        });
+      this.validateTotalPeso();
+    }
+
+    validateTotalPeso() {
+      if (this.currentTotalPesoRelativo > 100) {
+        this.validPesoRelativo = "La suma del peso relativo de los indicadores no debe ser mayor a 100%";
+      }
+    }
+
     goToTop() {
       (<any>$('html,body')).animate({
       scrollTop: 0},
@@ -87,11 +115,24 @@ module Home {
       if (!this.currentStrategicObjective.indicadoresEstrategicos) {
         this.currentStrategicObjective.indicadoresEstrategicos = new Array<IndicadorEstrategico>();
       }
-      this.currentStrategicObjective.indicadoresEstrategicos.push(<IndicadorEstrategico>{});
+      this.currentStrategicObjective.indicadoresEstrategicos.push(<IndicadorEstrategico>{estado: "Incompleto", pesoRelativo: 0});
     }
 
     removeIndicador(index) {
       this.currentStrategicObjective.indicadoresEstrategicos.splice(index, 1);
+      this.getCurrentTotalPesoRelativo();
+    }
+
+    editIndicador(indicador) {
+      this.currentIndicador = indicador;
+      if (angular.element(document.getElementsByTagName('indicadorproject')).length) {
+        var indicadorTag = document.getElementsByTagName('indicadorproject');
+        angular.element(indicadorTag).remove();
+      }
+      var referralDivFactory = this.$compile(" <indicadorproject currentindicador='formCtrl.currentIndicador'></indicadorproject> ");
+      var referralDiv = referralDivFactory(this.$scope);
+      var containerDiv = document.getElementById('indicadorprojectid');
+      angular.element(containerDiv).append(referralDiv);
     }
 
   }

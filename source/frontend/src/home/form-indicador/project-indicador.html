@@ -1,0 +1,323 @@
+<div class="modal fade" id="indicadorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modalDetalleInfo" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Información detallada del indicador</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-3 col-sm-12 col-xs-12 refItem">
+            <p>Datos por ingresar</p>
+            <ul>
+
+              <li><a class="linkModal" href="#info"><div class="ic-title ic-modal-info"></div> Información inicial </a></li>
+              <li><a class="linkModal" href="#meta"><div class="ic-title ic-modal-meta"></div> Metas </a></li>
+              <li><a class="linkModal" href="#fuente"><div class="ic-title ic-modal-fuente"></div> Fuente </a></li>
+              <li><a class="linkModal" href="#relacion"><div class="ic-title ic-modal-relacionar"></div> Relacionar proyectos </a></li>
+            </ul>
+          </div>
+          <div class="col-md-9 col-sm-12 col-xs-12">
+               <form role="form" ng-submit="obraCtrl.saveObra()">
+                <div class="col-md-12 col-sm-12 agrupador">
+                <a class="nameLinkModal" name="info">
+                    <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial del Indicador
+                  </a>
+                    <div class="row">
+                        <div class="form-group col-md-5">
+                            <label for="Nombre del Indicador">Nombre del Indicador <popover data-placement="bottom" data-content="Debe relacionarse con el objetivo estratégico y debe contener en su formulación la unidad de análisis, forma de medición y alcance. Ej. Porcentaje de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis. " title="Nombre del Indicador"></popover></label>
+                           <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="metodo">Método de cálculo <popover data-placement="bottom" data-content="Debe detallar cómo está calculado el indicador. Debe ser una expresión matemática definida de manera adecuada y de fácil comprensión, donde queden claras las variables utilizadas. Ej. (Sumatoria de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis/ Sumatoria del total de Hogares dentro del Barrio 31 y 31bis) *100" title="Método de cálculo"></popover></label>
+                           <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6">
+                            <label for="Peso relativo">Peso relativo <popover data-placement="bottom" data-content="Importancia relativa de cada indicador respecto al objetivo correspondiente." title="Peso relativo"></popover></label>
+                          <input type="number" class="form-control" maxlength="512" placeholder="Ej:20%" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-9">
+                            <label for="unidad de medida">Unidad de medida</label>
+                             <input type="text" class="form-control" maxlength="512" placeholder="Ej: Porcentaje de Escuelas primarias" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 col-sm-12">
+                        <label for="Tipo de indicador">Tipo de indicador</label>
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="producto" class="option">
+                                <input type="radio" name="optionsIndicador" id="producto" value="Producto" checked="">
+                                Producto
+                            </label>
+                            <label for="resultado" class="option">
+                                <input type="radio" name="optionsIndicador" id="resultado" value="Resultado">
+                                Resultado
+                            </label>
+                        </div>
+                        </div>
+                      </div>
+
+                    <div class="row">
+                      <div class="form-group col-md-4 col-sm-6">
+                        <label for="Estado">Estado</label>
+                        <select class="form-control">
+                        </select>
+                      </div>
+                    </div>
+                    </div>
+
+                <br>
+                <div class="col-md-12 col-sm-12 agrupador">
+                <a class="nameLinkModal" name="meta">
+                    <div class="ic-title ic-meta"></div>&nbsp;Meta
+                    </a>
+                    <div class="row">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <label for="Sentido">Sentido</label>
+                        <p class="reference">Ascendente: se busca que el indicador aumente. Ej: aumentar la cantidad de alumnos en las escuelas de nivel medio.
+Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de desempleados.</p>
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="ascendente" class="option">
+                                <input type="radio" name="optionsIndicador" id="ascendente" value="Producto" checked="">
+                                Ascendente <div class="ic-ascendente"></div>
+                            </label>
+                            <label for="descendente" class="option">
+                                <input type="radio" name="optionsIndicador" id="descendente" value="Resultado">
+                                Descendente <div class="ic-ascendente"></div>
+                            </label>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <label for="Formato númerico de la meta">Formato númerico de la meta</label>
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="porcentaje" class="option">
+                                <input type="radio" name="optionsIndicador" id="porcentaje" value="Porcentaje" checked="">
+                                Porcentaje
+                            </label>
+                            <label for="cantidad" class="option">
+                                <input type="radio" name="optionsIndicador" id="cantidad" value="cantidad">
+                                Cantidad
+                            </label>
+                            <label for="promedio" class="option">
+                                <input type="radio" name="optionsIndicador" id="promedio" value="promedio">
+                                Promedio
+                            </label>
+                            <label for="fraccion" class="option">
+                                <input type="radio" name="optionsIndicador" id="fraccion" value="fraccion">
+                                Fracción
+                            </label>
+                            <label for="indice" class="option">
+                                <input type="radio" name="optionsIndicador" id="indice" value="indice">
+                                Índice
+                            </label>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4 col-sm-6 form-group">
+                          <label for="meta">Meta</label>
+                             <input type="number" class="form-control" maxlength="512" placeholder="Ej:20%" required>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 form-group">
+                          <label for="Justificación de la Meta">Justificación de la Meta</label>
+                          <p class="reference">Indique en base a qué información parámetro se calculó la meta</p>
+                             <div class="checkbox item-meta">
+                            <label class="option col-md-12 col-sm-12" for="internacional">
+                              <input type="checkbox" id="internacional" name="En base a parámetro internacional">En base a parámetro internacional
+                            </label>
+                            <label class="option col-md-12 col-sm-12" for="nacional">
+                              <input type="checkbox" id="nacional" name="En base a parámetro nacional">En base a parámetro nacional
+                            </label>
+                            <label class="option col-md-12 col-sm-12" for="historicos">
+                              <input type="checkbox" id="historicos" name="En base a resultados históricos">En base a resultados históricos
+                            </label>
+                            <label class="option col-md-12 col-sm-12" for="presupuesto">
+                              <input type="checkbox" id="presupuesto" name="En base al presupuesto">En base al presupuesto
+                            </label>
+                            <label class="option col-md-12 col-sm-12" for="instituciones">
+                              <input type="checkbox" id="instituciones" name="En base otras instituciones similares o comparables">En base otras instituciones similares o comparables
+                            </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label for="Mediciones históricas">Mediciones históricas <span class="opcional">(Opcional)</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                         <div class="form-group col-md-2 col-sm-4">
+                             <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
+                        </div>
+                        <div class="form-group col-md-6 col-sm-8">
+                             <input type="text" class="form-control" maxlength="512" placeholder="" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12">
+                        <label for="Frecuencia de carga de datos para el 2017">Frecuencia de carga de datos para el 2017</label>
+                        </div>
+                        <div class="form-group col-md-4 col-sm-12">
+                        <select class="form-control">
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12">
+                        <label for="Avance de meta">Avance de meta</label>
+                        <p class="reference">Cómo se espera cumplir la meta según la frecuencia de carga de datos</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form-group col-md-6 col-sm-12">
+                      <div class="row">
+                          <div class="col-md-4 col-sm-4">
+                            <label for="año">Año</label>
+                          </div>
+                          <div class="col-md-8 col-sm-8">
+                            <label for="meta">Meta</label>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-4 col-sm-4">
+                            <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
+                          </div>
+                          <div class="form-group col-md-8 col-sm-8">
+                            <input type="text" class="form-control" maxlength="512" placeholder="" required>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-md-4 col-sm-4 totalMeta">
+                            <label for="subtotal">TOTAL</label>
+                          </div>
+                          <div class="form-group col-md-8 col-sm-8">
+                            <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
+                          </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-4 col-sm-4"></div>
+                      <div class="col-md-8 col-sm-8">
+                            <button type="button" class="btn btn-link btn-meta">
+                              <div class="ic-btn" title="Repartir"></div>
+                              <span>Repartir meta en forma equitativa para el avance</span>
+                            </button>
+                        </div>
+                    </div>
+                      </div>
+                      <div class="form-group col-md-6 col-sm-12">
+                       
+                      </div>
+                    </div>
+                </div>
+                <br>
+                <div class="col-md-12 col-sm-12 agrupador">
+                <a class="nameLinkModal" name="fuente">
+                    <div class="ic-title ic-fuente"></div>&nbsp;Fuente del Indicador
+                    </a>
+                    <div class="row">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <label for="tipo de obra">Origen</label>  
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="interno" class="option">
+                                <input type="radio" name="optionsIndicador" id="interno" value="interno" checked="">
+                                Interno (jurisdicción)
+                            </label>
+                            <label for="externo" class="option">
+                                <input type="radio" name="optionsIndicador" id="externo" value="externo">
+                                Externo (otro)
+                            </label>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <label for="unidad de medida">Referente (ente o área que genera el dato)</label>
+                          </div>
+                           <div class="col-md-4 form-group">
+                             <input type="text" class="form-control" maxlength="512" placeholder="Unidad Auditoría Interna" required>
+                      </div>
+                    </div>
+                      <div class="row">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <label for="tipo de obra">Método de recolección de datos</label>  
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="encuesta" class="option">
+                                <input type="radio" name="optionsIndicador" id="encuesta" value="encuesta" checked="">
+                                Encuesta
+                            </label>
+                            <label for="registro" class="option">
+                                <input type="radio" name="optionsIndicador" id="registro" value="registro">
+                                Registro administrativo
+                            </label>
+                            <label for="entrevista" class="option">
+                                <input type="radio" name="optionsIndicador" id="entrevista" value="entrevista">
+                                Entrevista
+                            </label>
+                            <label for="censo" class="option">
+                                <input type="radio" name="optionsIndicador" id="censo" value="censo">
+                                Censo
+                            </label>
+                            <label for="otro" class="option">
+                                <input type="radio" name="optionsIndicador" id="otro" value="otro">
+                                Otro
+                            </label>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4 form-group">
+                          <label for="unidad de medida">Otro</label>
+                             <input type="text" class="form-control" maxlength="512" placeholder="" required>
+                      </div>
+                    </div> 
+                    <div class="row">
+                      <div class="form-group col-md-12 col-sm-12">
+                        <label for="tipo de obra">Sistema de recolección de datos</label>  
+                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                            <label for="informatizado" class="option">
+                                <input type="radio" name="optionsIndicador" id="informatizado" value="informatizado">
+                                Informatizado (con sistema)
+                            </label>
+                            <label for="informatizadoManual" class="option">
+                                <input type="radio" name="optionsIndicador" id="informatizadoManual" value="Informatizado con fuentes manuales">
+                                Informatizado con fuentes manuales (recolectado manual y cargado digital)
+                            </label>
+                            <label for="manual" class="option">
+                                <input type="radio" name="optionsIndicador" id="manual" value="manual">
+                                Manual (sólo manual)
+                            </label>
+                        </div>
+                        </div>
+                      </div> 
+                </div>
+                <br>
+                <div class="col-md-12 col-sm-12 agrupador">
+                <a class="nameLinkModal" name="relacion">
+                  <div class="ic-title ic-relacionar"></div>&nbsp;Relacionar proyectos con el Indicador
+                  </a>
+                  </div>
+                <br>
+            <button type="submit" class="btn btn-success btn-lg">Guardar</button>
+            <button type="button" class="btn btn-default right btnRemove">Eliminar</button>
+            <button type="button" class="btn btn-default right">Cancelar cambios</button>
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
