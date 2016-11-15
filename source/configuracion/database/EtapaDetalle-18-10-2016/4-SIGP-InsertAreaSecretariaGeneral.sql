@@ -1,1 +1,0 @@
-INSERT INTO area (idJurisdiccion,  nombre) VALUES ((SELECT J.idJurisdiccion FROM jurisdiccion J WHERE J.codigo = 'SGYRI') , 'Unidad de Coordinación del Plan Estratégico');
