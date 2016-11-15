@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>ar.gob.buenosaires.backend</groupId>
 		<artifactId>proyectosBA</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>3.1.0-RELEASE</version>
 	</parent>
 
 	<properties>

@@ -19,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<tomcat.version>7.0.54</tomcat.version>
-		<utility.version>0.0.1-SNAPSHOT</utility.version>
+		<utility.version>3.1.0-RELEASE</utility.version>
 		<jaxrs.version>2.6.3</jaxrs.version>
 		<nimbusjwt.version>4.16.2</nimbusjwt.version>
 		<!-- Test -->

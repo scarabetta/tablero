@@ -18,7 +18,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<utility.version>0.0.1-SNAPSHOT</utility.version>
+		<utility.version>3.1.0-RELEASE</utility.version>
 		<mariadb.version>1.4.4</mariadb.version>
 		<spring-boot-starter.version>1.3.3.RELEASE</spring-boot-starter.version>
 		<!-- Test -->
