@@ -28,10 +28,10 @@ import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Rol;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
-import ar.gob.buenosaires.geocoder.adapter.impl.GeoCoderAdapterImpl;
 import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
-import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
+import ar.gob.buenosaires.geocoder.service.GeoCoderService;
+import ar.gob.buenosaires.geocoder.service.mock.GeoCoderserviceMock;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasJpaDao;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepositoryImpl;
 
@@ -71,12 +71,12 @@ public class ProyectoServiceImplTest {
 	@InjectMocks
 	ProyectoServiceImpl service;
 
-	@InjectMocks
-	GeoCoderServiceImpl geoCoderService;
+//	@InjectMocks
+	GeoCoderService geoCoderService;
 	
-	@InjectMocks
-	@Spy
-	GeoCoderAdapterImpl geoCoderAdapter;
+//	@InjectMocks
+//	@Spy
+//	GeoCoderAdapterImpl geoCoderAdapter;
 
 	@BeforeMethod
 	public void beforeMethod() {
@@ -84,8 +84,8 @@ public class ProyectoServiceImplTest {
 		repositorio.setProyectoJpaDao(jpaDao);
 		service = new ProyectoServiceImpl();
 		service.setProyectoRepository(repositorio);
-		geoCoderService = new GeoCoderServiceImpl();
-		geoCoderService.setGeoCoderAdapter(new GeoCoderAdapterImpl());
+		geoCoderService = new GeoCoderserviceMock();
+//		geoCoderService.setGeoCoderAdapter(new GeoCoderAdapterImpl());
 
 		repositorioObjetivoOperativo.setObjetivoOperativoJpaDao(jpaDaoObjetivoOperativo);
 		repositorioPresupuestoPorAnio.setPresupuestoPorAnioJpaDao(presupuestoPorAnioJpaDao);
@@ -140,7 +140,7 @@ public class ProyectoServiceImplTest {
 		when(repositorioObjetivoOperativo.getObjetivoOperativoJpaDao().findOne(anyLong())).thenReturn(
 				createFakeObjetivoOperativo());
 		
-		when(geoCoderAdapter.normalizarYGeoCodificar(anyString())).thenReturn(createFakeGeoCoderResponse());
+//		when(geoCoderAdapter.normalizarYGeoCodificar(anyString())).thenReturn(createFakeGeoCoderResponse());
 
 		Proyecto response = service.createProyecto(fakeProyecto);
 		assertThat(response).isNotNull();

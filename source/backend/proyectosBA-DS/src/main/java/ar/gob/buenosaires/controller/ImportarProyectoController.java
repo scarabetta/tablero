@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.nimbusds.jose.JOSEException;
 
+import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.importador.ResultadoProcesamiento;
 import ar.gob.buenosaires.importador.proyecto.priorizado.ProyectosPriorizadosResultadoProcesamiento;
@@ -64,38 +65,33 @@ public class ImportarProyectoController {
 
 	@RequestMapping(path = "/preview/{idJurisdiccion}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResultadoProcesamiento previewImportarProyecto(final MultipartFile archivoAImportar,
-			@PathVariable final int idJurisdiccion) throws IOException {
+			@PathVariable final int idJurisdiccion) throws IOException, ESBException {
 		ResultadoProcesamiento resultadoPreview = null;
 
-		if (validarExtensionArchivoExcel(archivoAImportar)) {
-			ByteArrayInputStream bis = null;
-			XSSFWorkbook workbook = null;
-			try {
-				bis = new ByteArrayInputStream(archivoAImportar.getBytes());
-				workbook = new XSSFWorkbook(bis);
-				resultadoPreview = service.previewProyectos(workbook);
+		validarExtensionArchivoExcel(archivoAImportar);
+		ByteArrayInputStream bis = null;
+		XSSFWorkbook workbook = null;
+		try {
+			bis = new ByteArrayInputStream(archivoAImportar.getBytes());
+			workbook = new XSSFWorkbook(bis);
+			resultadoPreview = service.previewProyectos(workbook);
 
-				saveFile(archivoAImportar, idJurisdiccion, resultadoPreview);
+			saveFile(archivoAImportar, idJurisdiccion, resultadoPreview);
 
+			bis.close();
+			workbook.close();
+		} catch (IOException e) {
+			if (bis != null) {
 				bis.close();
-				workbook.close();
-			} catch (IOException e) {
-				if (bis != null) {
-					bis.close();
-				}
-				if (workbook != null) {
-					workbook.close();
-				}
-				e.printStackTrace();
-				LOGGER.debug(e.getMessage());
-				resultadoPreview = new ResultadoProcesamiento();
-				resultadoPreview.getErroresDeSolapa().add("Hubo un problema general en la lectura del Excel.");
-
 			}
-		} else {
+			if (workbook != null) {
+				workbook.close();
+			}
+			e.printStackTrace();
+			LOGGER.debug(e.getMessage());
 			resultadoPreview = new ResultadoProcesamiento();
-			resultadoPreview.setErrorGenerico(ERROR_EXTENSION_ARCHIVO);
-			resultadoPreview.setNombreArchivoError(archivoAImportar.getOriginalFilename());
+			resultadoPreview.getErroresDeSolapa().add("Hubo un problema general en la lectura del Excel.");
+
 		}
 		return resultadoPreview;
 
@@ -162,23 +158,18 @@ public class ImportarProyectoController {
 	@RequestMapping(path = "/proyecto/priorizado/preview/{idJurisdiccion}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProyectosPriorizadosResultadoProcesamiento previewProyectoPriorizado(final MultipartFile archivoAImportar,
 			@PathVariable final int idJurisdiccion, @RequestHeader(value = HttpHeaders.AUTHORIZATION) String token)
-					throws IOException, ParseException, JOSEException, SignatureVerificationException {
+					throws IOException, ParseException, JOSEException, SignatureVerificationException, ESBException {
 		ProyectosPriorizadosResultadoProcesamiento resultadoPreview = null;
 
-		if (validarExtensionArchivoExcel(archivoAImportar)) {
+		validarExtensionArchivoExcel(archivoAImportar);
 
-			ByteArrayInputStream bis = new ByteArrayInputStream(archivoAImportar.getBytes());
-			XSSFWorkbook workbook = new XSSFWorkbook(bis);
-			resultadoPreview = service.validarSolapaProyectosPriorizados(workbook, DSUtils.getMailDelUsuarioDelToken(token));
-			saveFile(archivoAImportar, idJurisdiccion, resultadoPreview);
+		ByteArrayInputStream bis = new ByteArrayInputStream(archivoAImportar.getBytes());
+		XSSFWorkbook workbook = new XSSFWorkbook(bis);
+		resultadoPreview = service.validarSolapaProyectosPriorizados(workbook, DSUtils.getMailDelUsuarioDelToken(token));
+		saveFile(archivoAImportar, idJurisdiccion, resultadoPreview);
 
-			bis.close();
-			workbook.close();
-		} else {
-			resultadoPreview = new ProyectosPriorizadosResultadoProcesamiento();
-			resultadoPreview.setErrorGenerico(ERROR_EXTENSION_ARCHIVO);
-			resultadoPreview.setNombreArchivoError(archivoAImportar.getOriginalFilename());
-		}
+		bis.close();
+		workbook.close();
 
 		return resultadoPreview;
 
@@ -240,9 +231,11 @@ public class ImportarProyectoController {
 		return resultadoProcesamiento;
 	}
 
-	private boolean validarExtensionArchivoExcel(final MultipartFile archivoAImportar) {
+	private void validarExtensionArchivoExcel(final MultipartFile archivoAImportar) throws ESBException {
 		String[] splitFileName = archivoAImportar.getOriginalFilename().split("\\.");
 		int splitedFileNameLength = splitFileName.length - 1;
-		return "xlsx".equalsIgnoreCase(splitFileName[splitedFileNameLength]) || "xls".equalsIgnoreCase(splitFileName[splitedFileNameLength]);
+		if(!("xlsx".equalsIgnoreCase(splitFileName[splitedFileNameLength]) || "xls".equalsIgnoreCase(splitFileName[splitedFileNameLength]))) {
+			throw new ESBException(CodigoError.ERROR_LECTURA_ARCHIVO_ADJUNTO.getCodigo(), ERROR_EXTENSION_ARCHIVO);
+		}
 	}
 }

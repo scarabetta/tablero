@@ -3,18 +3,18 @@ package ar.gob.buenosaires.esb.consumer;
 import javax.annotation.PostConstruct;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.Queue;
-import javax.jms.Session;
 
+import org.apache.activemq.command.ActiveMQQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXParseException;
 
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.esb.listener.factory.MessageListenerFactory;
 
 public class EsbServer extends AbstractConsumer implements EsbConsumer{
 	
@@ -27,20 +27,23 @@ public class EsbServer extends AbstractConsumer implements EsbConsumer{
 		
 		//create connection
 		Connection connection = ((ConnectionFactory)getPooledConnectionFactory()).createConnection();
-		connection.start();
-		
-		//create session
-		Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-		
+
 		//create queue
-		Queue sessionQueue = session.createQueue(getJmsDestination());
+		ActiveMQQueue queue = new ActiveMQQueue(getJmsDestination());
 		
-		//create message consumer
-		MessageConsumer msgConsumer = session.createConsumer(sessionQueue);
-		
-		//create Jms Server
-		msgConsumer.setMessageListener(this);
-		
+		//creamos el Factory que va a ayudarnos a crear los listeners.
+		this.setMessageListenerFactory(new MessageListenerFactory());
+
+		crearMultiplesListener(connection, queue);
+
+		//arrancamos la conexion
+		connection.start();
+	}
+
+	private void crearMultiplesListener(Connection connection, Destination queue) throws JMSException {
+		for (int i = 0; i < getCantidadDeListeners(); i++) {
+			getMessageListeners().add(getMessageListenerFactory().newInstance(this, connection, queue));
+		}
 	}
 
 	@Override

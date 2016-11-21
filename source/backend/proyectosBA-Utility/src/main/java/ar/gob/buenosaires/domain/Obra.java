@@ -208,35 +208,67 @@ public class Obra implements Serializable {
 	}
 
 	public List<Expediente> getExpedientes() {
+		if(expedientes == null){
+			expedientes = new ArrayList<Expediente>();
+		}
 		return expedientes;
 	}
 
 	public void setExpedientes(List<Expediente> expedientes) {
-		this.expedientes = expedientes;
+		if(this.expedientes == null){
+			this.expedientes = expedientes;
+		} else if(expedientes != null){
+			this.expedientes.clear();
+			this.expedientes.addAll(expedientes);
+		}
 	}
 
 	public List<PresupuestoPorAnioObra> getPresupuestosPorAnio() {
+		if(presupuestosPorAnio == null) {
+			presupuestosPorAnio = new ArrayList<PresupuestoPorAnioObra>();
+		}
 		return presupuestosPorAnio;
 	}
 
 	public void setPresupuestosPorAnio(List<PresupuestoPorAnioObra> presupuestosPorAnio) {
-		this.presupuestosPorAnio = presupuestosPorAnio;
+		if(this.presupuestosPorAnio == null){
+			this.presupuestosPorAnio = presupuestosPorAnio;
+		} else if(presupuestosPorAnio != null){
+			this.presupuestosPorAnio.clear();
+			this.presupuestosPorAnio.addAll(presupuestosPorAnio);
+		}
 	}
 
 	public List<ArchivoAdjuntoObra> getArchivosAdjuntos() {
+		if(archivosAdjuntos == null) {
+			archivosAdjuntos = new ArrayList<ArchivoAdjuntoObra>();
+		}
 		return archivosAdjuntos;
 	}
 
 	public void setArchivosAdjuntos(List<ArchivoAdjuntoObra> archivosAdjuntos) {
-		this.archivosAdjuntos = archivosAdjuntos;
+		if(this.archivosAdjuntos == null){
+			this.archivosAdjuntos = archivosAdjuntos;
+		} else if(archivosAdjuntos != null){
+			this.archivosAdjuntos.clear();
+			this.archivosAdjuntos.addAll(archivosAdjuntos);
+		}
 	}
 
 	public List<HitoObra> getHitos() {
+		if(hitos == null) {
+			hitos = new ArrayList<HitoObra>();
+		}
 		return hitos;
 	}
 
 	public void setHitos(List<HitoObra> hitos) {
-		this.hitos = hitos;
+		if(this.hitos == null){
+			this.hitos = hitos;
+		} else if(hitos != null){
+			this.hitos.clear();
+			this.hitos.addAll(hitos);
+		}
 	}
 
 	public String getEstado() {

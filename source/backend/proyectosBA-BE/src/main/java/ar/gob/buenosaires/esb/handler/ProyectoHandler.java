@@ -28,6 +28,7 @@ import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.util.JMSUtil;
+import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
 import ar.gob.buenosaires.service.ProyectoService;
 import ar.gob.buenosaires.service.UsuarioService;
 
@@ -35,11 +36,11 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 
 	private static final String FORMATO_FECHA = "dd-MM-yyyy";
 
-	private static final String OBRA_ESTADO_NO_INICIADO = "No iniciado";
+	private static final String ESTADO_NO_INICIADO = "No iniciado";
 
-	private static final String OBRA_ESTADO_INCOMPLETO = "Incompleto";
+	private static final String ESTADO_INCOMPLETO = "Incompleto";
 
-	private static final String OBRA_ESTADO_COMPLETO = "Completo";
+	private static final String ESTADO_COMPLETO = "Completo";
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(ProyectoHandler.class);
 
@@ -105,15 +106,26 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		Proyecto proyecto = request.getProyecto();
 		validarEstadoObra(proyecto);
 		validarEtapaDetalle(proyecto);
+		validarDireccionNormalizada(request);
+		validarDatosCompletos(proyecto);
 		inicializarObras(proyecto);
-		proyecto.setEstado(EstadoProyecto.D_PRESENTADO.getName());
+		if(sePuedePresentar(proyecto)) {
+			proyecto.setEstado(EstadoProyecto.D_PRESENTADO.getName());
+		}
 		service.updateProyecto(proyecto, request.getUsuario());
+	}
+
+	private boolean sePuedePresentar(Proyecto proyecto) {
+		List<String> estadosQuePuedenPresentar = Arrays.asList(EstadoProyecto.PREAPROBADO.getName(),
+			EstadoProyecto.D_COMPLETO.getName(), EstadoProyecto.D_INCOMPLETO.getName(),
+			EstadoProyecto.D_MODIFICABLE.getName(), EstadoProyecto.D_RECHAZADO.getName());
+		return estadosQuePuedenPresentar.contains(proyecto.getEstado());
 	}
 
 	private void inicializarObras(Proyecto proyecto) {
 		for (Obra obra : proyecto.getObras()) {
-			if(obra.getEstado().equalsIgnoreCase(OBRA_ESTADO_COMPLETO)){
-				obra.setEstado(OBRA_ESTADO_NO_INICIADO);
+			if(obra.getEstado().equalsIgnoreCase(ESTADO_COMPLETO)){
+				obra.setEstado(ESTADO_NO_INICIADO);
 			}
 		}
 	}
@@ -149,19 +161,18 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		Proyecto proyecto = request.getProyecto();
 		proyecto.setObjetivoOperativo(new ObjetivoOperativo());
 
-		if (EstadoProyecto.COMPLETO.getName().equals(proyecto.getEstadoActualizado())) {
-			proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
-			proyecto.setVerificado(false);
-			if (proyecto.getIdProyecto() == null) {
-				List<Proyecto> proyectos = new ArrayList<Proyecto>();
-				proyectos.add(service.createProyecto(proyecto));
-				addProyectosToResponse(event, response, proyectos);
-			} else {
-				updateProyecto(event, response, request);
-			}
+		validarDireccionNormalizada(request);
+		
+		validarDatosCompletos(proyecto);
+		
+		proyecto.setEstado(EstadoProyecto.PRESENTADO.getName());
+		proyecto.setVerificado(false);
+		if (proyecto.getIdProyecto() == null) {
+			List<Proyecto> proyectos = new ArrayList<Proyecto>();
+			proyectos.add(service.createProyecto(proyecto));
+			addProyectosToResponse(event, response, proyectos);
 		} else {
-			throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(),
-					"El proyecto debe estar completo para poder ser presentado");
+			updateProyecto(event, response, request);
 		}
 	}
 
@@ -292,13 +303,38 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 		if(!usuario.tienePerfilSecretaria()) {
 			validarBorradorDetalle(request);
 		}
+		validarDireccionNormalizada(request);
 		cambiarEstadoSiCorresponde(request);
 
 		validarGuardarProyectoConDetallePresentado(request.getProyecto());
+		validarDireccionNormalizada(request);
 
 		proyectos.add(service.updateProyecto(request.getProyecto(), request.getUsuario()));
 
 		addProyectosToResponse(event, response, proyectos);
+	}
+
+	private void validarDatosCompletos(Proyecto proyecto) throws ESBException {
+		if(!proyecto.isDatosCompletos()){
+			throw new ESBException(CodigoError.DATOS_INCOMPLETOS.getCodigo(), "Hay campos obligatorios sin completar en la información inicial del proyecto.");
+		}
+	}
+	
+	private void validarDireccionNormalizada(ProyectoReqMsg request) throws ESBException {
+		Proyecto proyecto = request.getProyecto();
+		if(proyecto.isDatosCompletos()){
+			DireccionNormalizada direccionNormalizada = service.getDireccionNormalizada(proyecto.getDireccion());
+			if(direccionNormalizada != null 
+					&& !direccionNormalizada.getDireccion().isEmpty() 
+					&& direccionNormalizada.getCoordenadas() != null) {
+				proyecto.setDireccion(direccionNormalizada.getDireccion().replaceAll(", CABA", ""));
+				proyecto.setCoordenadaX(direccionNormalizada.getCoordenadas().getX());
+				proyecto.setCoordenadaY(direccionNormalizada.getCoordenadas().getY());
+			} /*else {
+				// TODO Por el momento que la direccion no este normalizada no es bloqueante. 
+				//throw new ESBException(CodigoError.PROYECTO_NO_COMPLETO.getCodigo(), "Para guardar el proyecto es necesario ingresar una dirección valida");
+			}*/
+		}
 	}
 
 	private void validarGuardarProyectoConDetallePresentado(Proyecto proyecto) throws ESBException {
@@ -341,12 +377,12 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				if (StringUtils.isBlank(obra.getNombre()) || StringUtils.isBlank(obra.getDescripcion())
 						|| obra.getIdSubtipoObraAux() == null || obra.getPresupuestoTotal() == null
 						|| validarUbicacion(obra)) {
-					obra.setEstado(OBRA_ESTADO_INCOMPLETO);
+					obra.setEstado(ESTADO_INCOMPLETO);
 				} else {
-					obra.setEstado(OBRA_ESTADO_COMPLETO);
+					obra.setEstado(ESTADO_COMPLETO);
 				}
 			} catch (ESBException e) {
-				obra.setEstado(OBRA_ESTADO_INCOMPLETO);
+				obra.setEstado(ESTADO_INCOMPLETO);
 			}
 		}
 	}
@@ -581,8 +617,8 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	private void validaTodasLasObrasCompletas(Proyecto proyecto) throws ESBException {
 		for (Obra obra : proyecto.getObras()) {
 			if(obra.getEstado() == null
-					|| (obra.getEstado() != null && obra.getEstado().equalsIgnoreCase(OBRA_ESTADO_INCOMPLETO))){
-				throw new ESBException(CodigoError.PROYECTO_VALIDACION_9.getCodigo(), "El proyecto no debe tener obras incompletas o sin estado.");
+					|| (obra.getEstado() != null && obra.getEstado().equalsIgnoreCase(ESTADO_INCOMPLETO))){
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_9.getCodigo(), "El proyecto no debe tener obras incompletas.");
 			}
 		}
 	}
@@ -597,7 +633,7 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	private void validarHitosDeObra(Obra obra) throws ESBException {
 		List<String> nombres = new ArrayList<String>();
 		for (HitoObra hito : obra.getHitos()) {
-			hito.setEstado(OBRA_ESTADO_INCOMPLETO);
+			hito.setEstado(ESTADO_INCOMPLETO);
 			
 			//VAL 1
 			if(StringUtils.isNotBlank(hito.getNombre())
@@ -610,23 +646,23 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 				nombres.add(hito.getNombre());
 				
 				// VAL 3
-				validarFechaEntre(hito.getFechaInicio(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin());
-				validarFechaEntre(hito.getFechaFin(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin());
+				validarFechaEntre(hito.getFechaInicio(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin(), "obra", "hito");
+				validarFechaEntre(hito.getFechaFin(), obra.getProyecto().getFechaInicio(), obra.getProyecto().getFechaFin(), "obra", "hito");
 				
 				//VAL 4
-				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
+				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin(), "hito");
 				
-				hito.setEstado(OBRA_ESTADO_COMPLETO);
+				hito.setEstado(ESTADO_COMPLETO);
 			} else {
-				throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "El proyecto tiene hitos de obra sin nombre, fecha de inicio o fecha de fin");
 			}
 		}
 	}
 	
-	private void validarFechaEntre(Date fecha, Date fechaInicio, Date fechaFin) throws ESBException{
+	private void validarFechaEntre(Date fecha, Date fechaInicio, Date fechaFin, String textoPadre, String textoHijo) throws ESBException{
 		if(fecha.compareTo(fechaInicio) < 0
 				|| fecha.compareTo(fechaFin) > 0){
-			throw new ESBException(CodigoError.PROYECTO_VALIDACION_3.getCodigo(), "Las fechas del hito son inconsistentes con las del proyecto (" + formatearFecha(fechaInicio) +" – " + formatearFecha(fechaFin) + ")");
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_3.getCodigo(), "Las fechas del " + textoHijo + " son inconsistentes con las del " + textoPadre + " (" + formatearFecha(fechaInicio) +" – " + formatearFecha(fechaFin) + ")");
 		}
 	}
 
@@ -700,36 +736,43 @@ public class ProyectoHandler extends AbstractBaseEventHandler {
 	}
 
 	private void validarHitoDelProyecto(Proyecto proyecto) throws ESBException {
-		List<String> nombres = new ArrayList<String>();
 		for (HitoProyecto hito : proyecto.getHitos()) {
-			hito.setEstado(OBRA_ESTADO_INCOMPLETO);
-			//VAL 1
-			if(StringUtils.isNotBlank(hito.getNombre())
-					&& hito.getFechaInicio() != null
-					&& hito.getFechaFin() != null){
-				// VAL 2
-				if(nombres.contains(hito.getNombre())){
-					throw new ESBException(CodigoError.PROYECTO_VALIDACION_2.getCodigo(), "Hay Hitos repetidos con el nombre: " + hito.getNombre());
-				}
-				nombres.add(hito.getNombre());
-				
-				// VAL 3
-				validarFechaEntre(hito.getFechaInicio(), proyecto.getFechaInicio(), proyecto.getFechaFin());
-				validarFechaEntre(hito.getFechaFin(), proyecto.getFechaInicio(), proyecto.getFechaFin());
-				
-				//VAL 4
-				validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin());
-			
-				hito.setEstado(OBRA_ESTADO_COMPLETO);
-			} else {
-				throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "Alguno de estos 3 campos se encuentra vacio: nombre, fecha inicio o fecha fin");
+			hito.setEstado(ESTADO_INCOMPLETO);
+			validarHitoProyecto(hito, proyecto.getFechaInicio(), proyecto.getFechaFin(), "proyecto", "hito");
+			for (HitoProyecto subHito : hito.getHitosHijos()) {
+				validarHitoProyecto(subHito, hito.getFechaInicio(), hito.getFechaFin(), "hito", "subhito");
 			}
+			hito.setEstado(ESTADO_COMPLETO);
+		}
+	}
+
+	private void validarHitoProyecto(HitoProyecto hito, Date fechaInicioPadre, Date fechaFinPadre, String textoPadre, String textoHijo) throws ESBException {
+		List<String> nombres = new ArrayList<String>();
+		//VAL 1
+		if(StringUtils.isNotBlank(hito.getNombre())
+				&& hito.getFechaInicio() != null
+				&& hito.getFechaFin() != null){
+			// VAL 2
+			if(nombres.contains(hito.getNombre())){
+				throw new ESBException(CodigoError.PROYECTO_VALIDACION_2.getCodigo(), "Hay " + textoHijo + "s repetidos con el nombre: " + hito.getNombre());
+			}
+			nombres.add(hito.getNombre());
+			
+			// VAL 3
+			validarFechaEntre(hito.getFechaInicio(), fechaInicioPadre, fechaFinPadre, textoPadre, textoHijo);
+			validarFechaEntre(hito.getFechaFin(), fechaInicioPadre, fechaFinPadre, textoPadre, textoHijo);
+			
+			//VAL 4
+			validarFechaInicioContraFin(hito.getFechaInicio(), hito.getFechaFin(), textoHijo);
+		
+		} else {
+			throw new ESBException(CodigoError.PROYECTO_VALIDACION_1.getCodigo(), "El " + textoPadre + " tiene " + textoHijo + "s sin nombre, fecha de inicio o fecha de fin");
 		}
 	}
 	
-	private void validarFechaInicioContraFin(Date inicio, Date fin) throws ESBException{
+	private void validarFechaInicioContraFin(Date inicio, Date fin, String textoHijo) throws ESBException{
 		if(inicio.compareTo(fin) > 0){
-			throw new ESBException(CodigoError.PROYECTO_VALIDACION_3.getCodigo(), "Las fechas del hito son inconsistentes entre si (" + formatearFecha(inicio) +" – " + formatearFecha(fin) + ")");
+			throw new ESBException(CodigoError.FECHAS_INVALIDAS.getCodigo(), "Las fechas del " + textoHijo + " son inconsistentes entre si (" + formatearFecha(inicio) +" – " + formatearFecha(fin) + ")");
 		}
 	}
 

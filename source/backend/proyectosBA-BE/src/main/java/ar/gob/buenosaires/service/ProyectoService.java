@@ -6,6 +6,7 @@ import ar.gob.buenosaires.domain.EtiquetasMsg;
 import ar.gob.buenosaires.domain.Proyecto;
 import ar.gob.buenosaires.domain.Usuario;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
 
 public interface ProyectoService extends IGenericService{
 
@@ -38,4 +39,6 @@ public interface ProyectoService extends IGenericService{
 	Proyecto etiquetarProyecto(Long id, EtiquetasMsg etiquetas) throws ESBException;
 
 	List<Proyecto> buscarResumenProyectosPriorizacion();
+	
+	DireccionNormalizada getDireccionNormalizada(String direccion);
 }

@@ -1,5 +1,6 @@
 package ar.gob.buenosaires.geocoder.adapter.response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -7,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GeoCoderResponse {
 
-	List<DireccionNormalizada> direccionesNormalizadas;
+	List<DireccionNormalizada> direccionesNormalizadas = new ArrayList<DireccionNormalizada>();
 
 	public GeoCoderResponse() {
 	}

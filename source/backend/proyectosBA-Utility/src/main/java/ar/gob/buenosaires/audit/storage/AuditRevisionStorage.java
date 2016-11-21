@@ -1,14 +1,17 @@
 package ar.gob.buenosaires.audit.storage;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AuditRevisionStorage {
 	
-	private String UserEmail;
+	private Map<String, String> usersEmail;
 
-	public String getUserEmail() {
-		return UserEmail;
+	public Map<String, String> getUsersEmail() {
+		if(usersEmail == null){
+			usersEmail = new HashMap<String, String>();
+		}
+		return usersEmail;
 	}
 
-	public void setUserEmail(String userEmail) {
-		UserEmail = userEmail;
-	}
 }

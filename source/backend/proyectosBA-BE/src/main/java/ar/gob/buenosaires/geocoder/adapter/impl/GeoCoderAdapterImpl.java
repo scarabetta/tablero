@@ -33,9 +33,12 @@ public class GeoCoderAdapterImpl implements GeoCoderAdapter {
 
 	public GeoCoderResponse normalizarYGeoCodificar(String direccion) {
 		RestTemplate restTemplate = new RestTemplate();
-		GeoCoderResponse response = null;
+		GeoCoderResponse response = new GeoCoderResponse();
 		try {
-			response = restTemplate.getForObject(URL_USIG + direccion + AREA_CABA + CODIFICAR, GeoCoderResponse.class);
+			GeoCoderResponse responseServ = restTemplate.getForObject(URL_USIG + direccion + AREA_CABA + CODIFICAR, GeoCoderResponse.class);
+			if(responseServ != null){
+				response = responseServ;
+			}
 		} catch (Exception e) {
 			LOGGER.error("Se produjo un error al obtener las coordenadas para la direccion");
 			e.printStackTrace();

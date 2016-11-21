@@ -32,6 +32,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.exception.ESBException;
 import ar.gob.buenosaires.esb.handler.ESBProcess;
+import ar.gob.buenosaires.esb.listener.IMessageListener;
+import ar.gob.buenosaires.esb.listener.factory.MessageListenerFactory;
 import ar.gob.buenosaires.esb.util.JMSUtil;
 
 public abstract class AbstractConsumer implements MessageListener {
@@ -51,8 +53,15 @@ public abstract class AbstractConsumer implements MessageListener {
 
 	@Value("${esb.producer.destination}")
 	private String JmsDestination;
+	
+	@Value("${esb.consumer.listeners.cantidad}")
+	private int cantidadDeListeners;
 
 	private List<ESBProcess> handlersChain;
+	
+	private List<IMessageListener> messageListeners;
+	
+	private MessageListenerFactory messageListenerFactory;
 
 	/**
 	 * Procesa el mensaje por todos los handlers.
@@ -171,6 +180,37 @@ public abstract class AbstractConsumer implements MessageListener {
 	 */
 	public String getJmsDestination() {
 		return JmsDestination;
+	}
+	
+	/**
+	 * Cantidad de listeners activo escuchando de la cola.
+	 * @return
+	 */
+	public int getCantidadDeListeners() {
+		return cantidadDeListeners;
+	}
+
+	/**
+	 * Listado de todos los listener.
+	 * @return
+	 */
+	public List<IMessageListener> getMessageListeners() {
+		if(messageListeners == null){
+			messageListeners = new ArrayList<IMessageListener>();
+		}
+		return messageListeners;
+	}
+
+	/**
+	 * Factory para crear las instancias de los listeners.
+	 * @return
+	 */
+	public MessageListenerFactory getMessageListenerFactory() {
+		return messageListenerFactory;
+	}
+
+	public void setMessageListenerFactory(MessageListenerFactory messageListenerFactory) {
+		this.messageListenerFactory = messageListenerFactory;
 	}
 
 	private class EsbMessageCreator implements MessageCreator {

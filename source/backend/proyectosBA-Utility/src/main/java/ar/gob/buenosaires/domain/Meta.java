@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Audited
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = { "idMeta", "indicadorEstrategico", "anio", "meta", "origen", "referente", "metodoRecoleccion",
-		"sistemaRecoleccion", "pesoRelativo", "justificacionParametorIntern", "justificacionParametroNac", "justificacionResultadoHistorico",
+		"sistemaRecoleccion", "pesoRelativo", "justificacionParametroInternacional", "justificacionParametroNac", "justificacionResultadoHistorico",
 		"justificacionPresupuesto", "justificacionInstituciones"})
 @XmlRootElement(name = "Meta")
 public class Meta implements Serializable {
@@ -66,19 +66,19 @@ public class Meta implements Serializable {
 	private Integer pesoRelativo;
 	
 	@Column(name = "justificacionparametrointernacional")
-	private Integer justificacionParametorIntern;
+	private Boolean justificacionParametroInternacional;
 	
 	@Column(name = "justificacionparametronacional")
-	private Integer justificacionParametroNac;
+	private Boolean justificacionParametroNac;
 	
 	@Column(name = "justificacionresultadoshistoricos")
-	private Integer justificacionResultadoHistorico;
+	private Boolean justificacionResultadoHistorico;
 	
 	@Column(name = "justificacionpresupuesto")
-	private Integer justificacionPresupuesto;
+	private Boolean justificacionPresupuesto;
 	
 	@Column(name = "justificacioninstituciones")
-	private Integer justificacionInstituciones;
+	private Boolean justificacionInstituciones;
 
 	public Long getIdMeta() {
 		return idMeta;
@@ -152,43 +152,43 @@ public class Meta implements Serializable {
 		this.pesoRelativo = pesoRelativo;
 	}
 
-	public Integer getJustificacionParametorIntern() {
-		return justificacionParametorIntern;
+	public Boolean getJustificacionParametroInternacional() {
+		return justificacionParametroInternacional;
 	}
 
-	public void setJustificacionParametorIntern(Integer justificacionParametorIntern) {
-		this.justificacionParametorIntern = justificacionParametorIntern;
+	public void setJustificacionParametroInternacional(Boolean justificacionParametorIntern) {
+		this.justificacionParametroInternacional = justificacionParametorIntern;
 	}
 
-	public Integer getJustificacionParametroNac() {
+	public Boolean getJustificacionParametroNac() {
 		return justificacionParametroNac;
 	}
 
-	public void setJustificacionParametroNac(Integer justificacionParametroNac) {
+	public void setJustificacionParametroNac(Boolean justificacionParametroNac) {
 		this.justificacionParametroNac = justificacionParametroNac;
 	}
 
-	public Integer getJustificacionResultadoHistorico() {
+	public Boolean getJustificacionResultadoHistorico() {
 		return justificacionResultadoHistorico;
 	}
 
-	public void setJustificacionResultadoHistorico(Integer justificacionResultadoHistorico) {
+	public void setJustificacionResultadoHistorico(Boolean justificacionResultadoHistorico) {
 		this.justificacionResultadoHistorico = justificacionResultadoHistorico;
 	}
 
-	public Integer getJustificacionPresupuesto() {
+	public Boolean getJustificacionPresupuesto() {
 		return justificacionPresupuesto;
 	}
 
-	public void setJustificacionPresupuesto(Integer justificacionPresupuesto) {
+	public void setJustificacionPresupuesto(Boolean justificacionPresupuesto) {
 		this.justificacionPresupuesto = justificacionPresupuesto;
 	}
 
-	public Integer getJustificacionInstituciones() {
+	public Boolean getJustificacionInstituciones() {
 		return justificacionInstituciones;
 	}
 
-	public void setJustificacionInstituciones(Integer justificacionInstituciones) {
+	public void setJustificacionInstituciones(Boolean justificacionInstituciones) {
 		this.justificacionInstituciones = justificacionInstituciones;
 	}
 }

@@ -224,8 +224,8 @@ public class Proyecto implements Serializable {
 	private List<OtraEtiqueta> otrasEtiquetas;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idproyecto") }, 
-		inverseJoinColumns = { @JoinColumn(name = "idindicadorestrategico") })
+	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idindicadorestrategico") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idproyecto") })
 	@XmlElement(name = "indicadoresEstrategicos")
 	private List<IndicadorEstrategico> indicadoresEstrategicos;
 
@@ -516,15 +516,18 @@ public class Proyecto implements Serializable {
 
 	@JsonIgnore
 	public String getEstadoActualizado() throws ESBException {
-		final Object[] propiedades = getPropiedadesAValidar();
-
 		if (necesitaCalcularEstado()) {
-			return obtenerEstado(propiedades);
+			return obtenerEstado();
 		} else {
 			return estado;
 		}
 	}
 
+	@JsonIgnore
+	public boolean isDatosCompletos() {
+		return obtenerEstado().equalsIgnoreCase(EstadoProyecto.COMPLETO.getName());
+	}
+	
 	private boolean necesitaCalcularEstado() {
 		// Solo debemos calcular el estado si esta incompleto, completo o vacio
 		List<String> estadosParaCalcular = Arrays.asList(EstadoProyecto.INCOMPLETO.getName(),
@@ -533,8 +536,8 @@ public class Proyecto implements Serializable {
 
 	}
 
-	private String obtenerEstado(final Object[] propiedades) {
-		for (final Object obj : propiedades) {
+	private String obtenerEstado() {
+		for (final Object obj : getPropiedadesAValidar()) {
 			if (obj == null) {
 				return EstadoProyecto.INCOMPLETO.getName();
 			} else if (String.valueOf(obj).isEmpty() || String.valueOf(obj).equals(DOUBLE_VACIO)) {
@@ -561,7 +564,7 @@ public class Proyecto implements Serializable {
 	}
 
 	private Object[] getPropiedadesAValidar() {
-		return new Object[] { getNombre(), getDescripcion(), getObjetivoOperativo(), getTipoProyecto(), getMeta(),
+		return new Object[] { getNombre(), getDescripcion(), getTipoProyecto(), getMeta(),
 				getUnidadMeta(), getPoblacionAfectada(), getLiderProyecto(), getArea(), getCambioLegislativo(),
 				getFechaInicio(), getFechaFin(), getTipoUbicacionGeografica(), getPrioridadJurisdiccional(),
 				getEstado(), getPoblacionesMeta(), getIdObjetivoOperativo2(), getPresupuestosPorAnio() };

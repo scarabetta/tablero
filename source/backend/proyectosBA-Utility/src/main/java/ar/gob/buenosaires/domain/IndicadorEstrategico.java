@@ -51,8 +51,8 @@ public class IndicadorEstrategico implements Serializable {
 	private ObjetivoJurisdiccional objetivoJurisdiccional;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idproyecto") }, 
-		inverseJoinColumns = { @JoinColumn(name = "idindicadorestrategico") })
+	@JoinTable(name = "proyecto_por_indicador_estrategico", joinColumns = { @JoinColumn(name = "idindicadorestrategico") }, 
+		inverseJoinColumns = { @JoinColumn(name = "idproyecto") })
 	@XmlElement(name = "proyectos")
 	private List<Proyecto> proyectos;
 	

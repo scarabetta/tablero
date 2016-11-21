@@ -141,7 +141,7 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
 				throw new ESBException(CodigoError.FALTA_USUARIO.getCodigo(), "Falta el usuario que esta realizando la accion en el mensaje enviado.");
 			}
 			
-			revisionStorage.setUserEmail(email);
+			revisionStorage.getUsersEmail().put(Thread.currentThread().getName(), email);
     	}
     }
     
@@ -150,6 +150,9 @@ public abstract class AbstractBaseEventHandler implements ESBProcess {
      * Se limpia el usuario.
      */
     private void removeAuditUser() {
-    	revisionStorage.setUserEmail("");
+    	String thread = Thread.currentThread().getName();
+    	if(revisionStorage.getUsersEmail().containsKey(thread)){
+    		revisionStorage.getUsersEmail().remove(thread);
+    	}
 	}
 }

@@ -18,6 +18,7 @@ import ar.gob.buenosaires.dao.jpa.proyecto.ProyectoRepositoryImpl;
 import ar.gob.buenosaires.dao.jpa.subtipoObra.SubtipoObraRepository;
 import ar.gob.buenosaires.domain.EstadoProyecto;
 import ar.gob.buenosaires.domain.EtiquetasMsg;
+import ar.gob.buenosaires.domain.HitoProyecto;
 import ar.gob.buenosaires.domain.ObjetivoOperativo;
 import ar.gob.buenosaires.domain.Obra;
 import ar.gob.buenosaires.domain.Proyecto;
@@ -27,9 +28,9 @@ import ar.gob.buenosaires.esb.domain.ESBEvent;
 import ar.gob.buenosaires.esb.domain.message.ProyectoRespMsg;
 import ar.gob.buenosaires.esb.exception.CodigoError;
 import ar.gob.buenosaires.esb.exception.ESBException;
+import ar.gob.buenosaires.geocoder.adapter.response.DireccionNormalizada;
 import ar.gob.buenosaires.geocoder.adapter.response.GeoCoderResponse;
 import ar.gob.buenosaires.geocoder.service.GeoCoderService;
-import ar.gob.buenosaires.geocoder.service.impl.GeoCoderServiceImpl;
 import ar.gob.buenosaires.otrasEtiquetas.OtrasEtiquetasRepository;
 import ar.gob.buenosaires.service.HitoProyectoService;
 import ar.gob.buenosaires.service.ObraService;
@@ -84,7 +85,7 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	public Proyecto getProyectoPorCodigo(final String codigo) {
 		return getProyectoDAO().findByCodigo(codigo);
 	}
-
+	
 	@Override
 	public Proyecto createProyecto(final Proyecto proyecto) throws ESBException {
 		final ObjetivoOperativo op = repositorioObjetivoOperativo.getObjetivoOperativoJpaDao()
@@ -120,10 +121,32 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 
 			normalizarDireccionesDeObras(proyecto);
 			
+			for (HitoProyecto hito : proyecto.getHitos()) {
+				if(hito.getIdHito() != null) {
+					HitoProyecto hitoGuardado = hitoProyectoService.getHitoProyectoPorId(hito.getIdHito());
+					borrarSubHitosSiCorresponde(hito, hitoGuardado);
+				}
+			}
+			
 			return getProyectoDAO().save(proyecto);
 		}
 		throw new ESBException(CodigoError.OBJETIVO_OPERATIVO_INEXISTENTE.getCodigo(),
 				"El objetivo operativo con id: " + proyecto.getIdObjetivoOperativo2() + " no existe");
+	}
+
+	private void borrarSubHitosSiCorresponde(HitoProyecto hito, HitoProyecto hitoGuardado) throws ESBException{
+		for (HitoProyecto subHitoGuardado : hitoGuardado.getHitosHijos()) {
+			boolean borrarlo = true;
+			for (HitoProyecto subHitoHijo : hito.getHitosHijos()) {
+				if(subHitoHijo.getIdHito().equals(subHitoGuardado.getIdHito())) {
+					borrarlo = false;
+					break;
+				}
+			}
+			if(borrarlo){
+				hitoProyectoService.deleteHitoDeProyecto(subHitoGuardado.getIdHito());
+			}
+		}
 	}
 
 	private void normalizarDireccionesDeObras(final Proyecto proyecto) {
@@ -238,6 +261,21 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 		}
 	}
 
+	@Override
+	public DireccionNormalizada getDireccionNormalizada(String direccion) {
+		GeoCoderResponse response = geoCoderService.getGeoCoding(direccion);
+		List<DireccionNormalizada> direccionesNormalizadas = response.getDireccionesNormalizadas();
+		for (DireccionNormalizada direccionNormalizada : direccionesNormalizadas) {
+			if(direccionNormalizada.getDireccion().equalsIgnoreCase(direccion + ", CABA")){
+				return direccionNormalizada;
+			}
+		}
+		if(direccionesNormalizadas.size() == 1) {
+			return direccionesNormalizadas.get(0);
+		}
+		return null;
+	}
+	
 	@VisibleForTesting
 	public void setProyectoRepository(final ProyectoRepositoryImpl repo) {
 		repositorio = repo;
@@ -258,8 +296,8 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	}
 
 	@VisibleForTesting
-	public void setGeoCoderService(final GeoCoderServiceImpl geoCoderServiceImpl) {
-		geoCoderService = geoCoderServiceImpl;
+	public void setGeoCoderService(final GeoCoderService geoCoderService) {
+		this.geoCoderService = geoCoderService;
 	}
 
 	@Override
@@ -306,4 +344,5 @@ public class ProyectoServiceImpl extends AbstractSeriviceImpl implements Proyect
 	public List<Proyecto> buscarResumenProyectosPriorizacion() {
 		return getProyectoDAO().findResumenProyectosPriorizacion();
 	}
+
 }

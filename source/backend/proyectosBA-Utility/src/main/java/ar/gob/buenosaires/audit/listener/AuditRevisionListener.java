@@ -14,8 +14,10 @@ public class AuditRevisionListener implements RevisionListener {
 		
 		AuditRevisionStorage revisionStorage = ApplicationContextProvider.getApplicationContext().getBean(AuditRevisionStorage.class);
 		
-		if(revisionStorage != null && revisionStorage.getUserEmail() != null){
-			entity.setUsuario(revisionStorage.getUserEmail());
+		String thread = Thread.currentThread().getName();
+		
+		if(revisionStorage != null && revisionStorage.getUsersEmail().containsKey(thread)){
+			entity.setUsuario(revisionStorage.getUsersEmail().get(thread));
 		}
 	}
 }
