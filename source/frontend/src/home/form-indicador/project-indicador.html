@@ -1,4 +1,4 @@
-<div class="modal fade" id="indicadorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="indicadorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modalDetalleInfo" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -18,7 +18,7 @@
             </ul>
           </div>
           <div class="col-md-9 col-sm-12 col-xs-12">
-               <form role="form" ng-submit="obraCtrl.saveObra()">
+               <form role="form" ng-submit="indicadorCtrl.save()">
                 <div class="col-md-12 col-sm-12 agrupador">
                 <a class="nameLinkModal" name="info">
                     <div class="ic-title ic-infoInicial"></div>&nbsp;Información inicial del Indicador
@@ -26,39 +26,39 @@
                     <div class="row">
                         <div class="form-group col-md-5">
                             <label for="Nombre del Indicador">Nombre del Indicador <popover data-placement="bottom" data-content="Debe relacionarse con el objetivo estratégico y debe contener en su formulación la unidad de análisis, forma de medición y alcance. Ej. Porcentaje de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis. " title="Nombre del Indicador"></popover></label>
-                           <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
+                           <input type="text" class="form-control" ng-model="indicadorCtrl.currentindicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="metodo">Método de cálculo <popover data-placement="bottom" data-content="Debe detallar cómo está calculado el indicador. Debe ser una expresión matemática definida de manera adecuada y de fácil comprensión, donde queden claras las variables utilizadas. Ej. (Sumatoria de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis/ Sumatoria del total de Hogares dentro del Barrio 31 y 31bis) *100" title="Método de cálculo"></popover></label>
-                           <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
+                           <input type="text" class="form-control" ng-model="indicadorCtrl.currentindicador.metodoCalculo" maxlength="512" placeholder="Ingresar metodo de cálculo" required>
                         </div>
-                        <div class="form-group col-md-3 col-sm-6">
+                        <div class="form-group col-md-3 col-sm-6 col-xs-6">
                             <label for="Peso relativo">Peso relativo <popover data-placement="bottom" data-content="Importancia relativa de cada indicador respecto al objetivo correspondiente." title="Peso relativo"></popover></label>
-                          <input type="number" class="form-control" maxlength="512" placeholder="Ej:20%" required>
+                          <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 0' ng-model="indicadorCtrl.currentindicador.pesoRelativo" maxlength="3" ng-keyup="indicadorCtrl.pesoRelativoChanged()" min="0" max="100" placeholder="Ej:20%" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-9">
                             <label for="unidad de medida">Unidad de medida</label>
-                             <input type="text" class="form-control" maxlength="512" placeholder="Ej: Porcentaje de Escuelas primarias" required>
+                             <input type="text" class="form-control" ng-model="indicadorCtrl.currentindicador.unidadDeMedida" maxlength="512" placeholder="Ej: Porcentaje de Escuelas primarias" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-md-12">
                             <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" rows="3" ng-model="indicadorCtrl.currentindicador.descripcion" required></textarea>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" ng-if="indicadorCtrl.currentindicador.estado !== 'Incompleto'">
                       <div class="form-group col-md-6 col-sm-12">
                         <label for="Tipo de indicador">Tipo de indicador</label>
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                        <div class="radio" ng-init="indicadorCtrl.currentindicador.tipoIndicador">
                             <label for="producto" class="option">
-                                <input type="radio" name="optionsIndicador" id="producto" value="Producto" checked="">
+                                <input type="radio" name="optionsIndicador" id="producto" value="Producto" ng-model="indicadorCtrl.currentindicador.tipoIndicador" ng-required="!indicadorCtrl.currentindicador.tipoIndicador">
                                 Producto
                             </label>
                             <label for="resultado" class="option">
-                                <input type="radio" name="optionsIndicador" id="resultado" value="Resultado">
+                                <input type="radio" name="optionsIndicador" id="resultado" value="Resultado" ng-model="indicadorCtrl.currentindicador.tipoIndicador" ng-required="!indicadorCtrl.currentindicador.tipoIndicador">
                                 Resultado
                             </label>
                         </div>
@@ -66,9 +66,10 @@
                       </div>
 
                     <div class="row">
-                      <div class="form-group col-md-4 col-sm-6">
+                      <div class="form-group col-md-4 col-sm-6 col-xs-6">
                         <label for="Estado">Estado</label>
-                        <select class="form-control">
+                        <select class="form-control" ng-model="indicadorCtrl.currentindicador.estado"
+                          ng-options="item as item.nombre for item in obraCtrl.selectedTipo.subtiposObra">
                         </select>
                       </div>
                     </div>
@@ -84,13 +85,13 @@
                         <label for="Sentido">Sentido</label>
                         <p class="reference">Ascendente: se busca que el indicador aumente. Ej: aumentar la cantidad de alumnos en las escuelas de nivel medio.
 Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de desempleados.</p>
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                        <div class="radio" ng-init="indicadorCtrl.currentindicador.sentido">
                             <label for="ascendente" class="option">
-                                <input type="radio" name="optionsIndicador" id="ascendente" value="Producto" checked="">
+                                <input type="radio" name="optionsSentido" id="ascendente" value="Ascendente" ng-model="indicadorCtrl.currentindicador.sentido" ng-required="!indicadorCtrl.currentindicador.sentido">
                                 Ascendente <div class="ic-ascendente"></div>
                             </label>
                             <label for="descendente" class="option">
-                                <input type="radio" name="optionsIndicador" id="descendente" value="Resultado">
+                                <input type="radio" name="optionsSentido" id="descendente" value="Descendente" ng-model="indicadorCtrl.currentindicador.sentido" ng-required="!indicadorCtrl.currentindicador.sentido">
                                 Descendente <div class="ic-ascendente"></div>
                             </label>
                         </div>
@@ -99,55 +100,59 @@ Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de d
                       <div class="row">
                       <div class="form-group col-md-12 col-sm-12">
                         <label for="Formato númerico de la meta">Formato númerico de la meta</label>
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
+                        <div class="radio" ng-init="indicadorCtrl.currentindicador.formatoNumero">
                             <label for="porcentaje" class="option">
-                                <input type="radio" name="optionsIndicador" id="porcentaje" value="Porcentaje" checked="">
+                                <input type="radio" name="optionsFormatoNumero" id="porcentaje" value="Porcentaje" ng-model="indicadorCtrl.currentindicador.formatoNumero" ng-required="!indicadorCtrl.currentindicador.formatoNumero">
                                 Porcentaje
                             </label>
                             <label for="cantidad" class="option">
-                                <input type="radio" name="optionsIndicador" id="cantidad" value="cantidad">
+                                <input type="radio" name="optionsFormatoNumero" id="cantidad" value="Cantidad" ng-model="indicadorCtrl.currentindicador.formatoNumero" ng-required="!indicadorCtrl.currentindicador.formatoNumero">
                                 Cantidad
                             </label>
                             <label for="promedio" class="option">
-                                <input type="radio" name="optionsIndicador" id="promedio" value="promedio">
+                                <input type="radio" name="optionsFormatoNumero" id="promedio" value="Promedio" ng-model="indicadorCtrl.currentindicador.formatoNumero" ng-required="!indicadorCtrl.currentindicador.formatoNumero">
                                 Promedio
                             </label>
                             <label for="fraccion" class="option">
-                                <input type="radio" name="optionsIndicador" id="fraccion" value="fraccion">
+                                <input type="radio" name="optionsFormatoNumero" id="fraccion" value="Fraccion" ng-model="indicadorCtrl.currentindicador.formatoNumero" ng-required="!indicadorCtrl.currentindicador.formatoNumero">
                                 Fracción
                             </label>
                             <label for="indice" class="option">
-                                <input type="radio" name="optionsIndicador" id="indice" value="indice">
+                                <input type="radio" name="optionsFormatoNumero" id="indice" value="Indice" ng-model="indicadorCtrl.currentindicador.formatoNumero" ng-required="!indicadorCtrl.currentindicador.formatoNumero">
                                 Índice
                             </label>
                         </div>
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-4 col-sm-6 form-group">
+                        <div class="col-md-12 col-sm-12">
                           <label for="meta">Meta</label>
-                             <input type="number" class="form-control" maxlength="512" placeholder="Ej:20%" required>
+                        </div>
+                        <div class="col-md-4 col-sm-6 form-group">
+                             <!-- <input type="number" class="form-control" maxlength="512" placeholder="Ej:20%" required> -->
+                             <input type="text" class="form-control inputPesoRelativo" maxlength="512" onkeypress='return event.charCode >= 47 && event.charCode <= 57 || event.charCode === 0' ng-model="indicadorCtrl.currentMeta.meta" ng-blur="indicadorCtrl.currentMetaChange()" required>
+                             <span class="icPesoRelativo" ng-if="indicadorCtrl.currentindicador.formatoNumero === 'Porcentaje'">%</span>
                       </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 form-group">
-                          <label for="Justificación de la Meta">Justificación de la Meta</label>
+                          <label for="Justificación de la Meta"Justificación de la Meta</label>
                           <p class="reference">Indique en base a qué información parámetro se calculó la meta</p>
                              <div class="checkbox item-meta">
-                            <label class="option col-md-12 col-sm-12" for="internacional">
-                              <input type="checkbox" id="internacional" name="En base a parámetro internacional">En base a parámetro internacional
+                            <label class="option col-md-12 col-sm-12" for="internacional" >
+                              <input type="checkbox" id="internacional" name="En base a parámetro internacional" ng-init="indicadorCtrl.currentMeta.justificacionparametrointernacional" ng-model="indicadorCtrl.currentMeta.justificacionParametroInternacional" ng-click="indicadorCtrl.changedJustificacion(indicadorCtrl.currentMeta.justificacionParametroInternacional)" ng-required="indicadorCtrl.cantJustificaciones === 0">En base a parámetro internacional
                             </label>
-                            <label class="option col-md-12 col-sm-12" for="nacional">
-                              <input type="checkbox" id="nacional" name="En base a parámetro nacional">En base a parámetro nacional
+                            <label class="option col-md-12 col-sm-12" for="nacional" >
+                              <input type="checkbox" id="nacional" name="En base a parámetro nacional" ng-init="indicadorCtrl.currentMeta.justificacionParametroNac" ng-model="indicadorCtrl.currentMeta.justificacionParametroNac" ng-click="indicadorCtrl.changedJustificacion(indicadorCtrl.currentMeta.justificacionParametroNac)" ng-required="indicadorCtrl.cantJustificaciones === 0">En base a parámetro nacional
                             </label>
-                            <label class="option col-md-12 col-sm-12" for="historicos">
-                              <input type="checkbox" id="historicos" name="En base a resultados históricos">En base a resultados históricos
+                            <label class="option col-md-12 col-sm-12" for="historicos" >
+                              <input type="checkbox" id="historicos" name="En base a resultados históricos" ng-init="indicadorCtrl.currentMeta.justificacionResultadoHistorico" ng-model="indicadorCtrl.currentMeta.justificacionResultadoHistorico" ng-click="indicadorCtrl.changedJustificacion(indicadorCtrl.currentMeta.justificacionResultadoHistorico)" ng-required="indicadorCtrl.cantJustificaciones === 0">En base a resultados históricos
                             </label>
-                            <label class="option col-md-12 col-sm-12" for="presupuesto">
-                              <input type="checkbox" id="presupuesto" name="En base al presupuesto">En base al presupuesto
+                            <label class="option col-md-12 col-sm-12" for="presupuesto" >
+                              <input type="checkbox" id="presupuesto" name="En base al presupuesto" ng-init="indicadorCtrl.currentMeta.justificacionPresupuesto" ng-model="indicadorCtrl.currentMeta.justificacionPresupuesto" ng-click="indicadorCtrl.changedJustificacion(indicadorCtrl.currentMeta.justificacionPresupuesto)" ng-required="indicadorCtrl.cantJustificaciones === 0">En base al presupuesto
                             </label>
-                            <label class="option col-md-12 col-sm-12" for="instituciones">
-                              <input type="checkbox" id="instituciones" name="En base otras instituciones similares o comparables">En base otras instituciones similares o comparables
+                            <label class="option col-md-12 col-sm-12" for="instituciones" >
+                              <input type="checkbox" id="instituciones" name="En base otras instituciones similares o comparables" ng-init="indicadorCtrl.currentMeta.justificacionInstituciones" ng-model="indicadorCtrl.currentMeta.justificacionInstituciones" ng-click="indicadorCtrl.changedJustificacion(indicadorCtrl.currentMeta.justificacionInstituciones)" ng-required="indicadorCtrl.cantJustificaciones === 0">En base otras instituciones similares o comparables
                             </label>
                         </div>
                       </div>
@@ -157,67 +162,74 @@ Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de d
                             <label for="Mediciones históricas">Mediciones históricas <span class="opcional">(Opcional)</span></label>
                         </div>
                     </div>
-                    <div class="row">
-                         <div class="form-group col-md-2 col-sm-4">
-                             <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
+                    <div class="row" ng-repeat="medicion in indicadorCtrl.medicionesHistoricas track by $index">
+                         <div class="form-group col-md-2 col-sm-4  col-xs-3">
+                             <input type="text" class="form-control" ng-value="medicion.anio" maxlength="512" placeholder="" disabled>
                         </div>
-                        <div class="form-group col-md-6 col-sm-8">
-                             <input type="text" class="form-control" maxlength="512" placeholder="" required>
+                        <div class="form-group col-md-6 col-sm-8 col-xs-9">
+                             <input type="text" class="form-control" maxlength="512" ng-model="medicion.medicion" placeholder="">
                         </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12 col-sm-12">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <label for="Frecuencia de carga de datos para el 2017">Frecuencia de carga de datos para el 2017</label>
                         </div>
-                        <div class="form-group col-md-4 col-sm-12">
-                        <select class="form-control">
-                        </select>
+                        <div class="form-group col-md-4 col-sm-12 col-xs-6">
+                        <select class="form-control" ng-model="indicadorCtrl.currentindicador.frecuencia"  ng-change="indicadorCtrl.frecuenciaChange()" ng-options="item.key as item.key for item in indicadorCtrl.frecuencias" required></select>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12 col-sm-12">
+                      <div class="col-md-12 col-sm-12 col-xs-12">
                         <label for="Avance de meta">Avance de meta</label>
                         <p class="reference">Cómo se espera cumplir la meta según la frecuencia de carga de datos</p>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="form-group col-md-6 col-sm-12">
+                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
                       <div class="row">
-                          <div class="col-md-4 col-sm-4">
-                            <label for="año">Año</label>
+                          <div class="col-md-4 col-sm-4 col-xs-3">
+                            <label for="año">Mes</label>
                           </div>
-                          <div class="col-md-8 col-sm-8">
+                          <div class="col-md-8 col-sm-8 col-xs-9">
                             <label for="meta">Meta</label>
                           </div>
                         </div>
-                        <div class="row">
-                          <div class="form-group col-md-4 col-sm-4">
-                            <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
+                        <div class="row" ng-repeat="semaforizacion in indicadorCtrl.currentSemaforizaciones track by $index">
+                          <div class="form-group col-md-4 col-sm-4 col-xs-3">
+                            <input type="text" ng-model="semaforizacion.mes" class="form-control" maxlength="512" placeholder="" disabled>
                           </div>
-                          <div class="form-group col-md-8 col-sm-8">
-                            <input type="text" class="form-control" maxlength="512" placeholder="" required>
+                          <div class="form-group col-md-8 col-sm-8 col-xs-9">
+                            <input type="text" class="form-control inputPesoRelativo" ng-disabled="semaforizacion.mes === 12" onkeypress='return event.charCode >= 47 && event.charCode <= 57 || event.charCode === 0' ng-model="semaforizacion.valor" ng-blur="indicadorCtrl.changeValorSemaforizacion(semaforizacion.valor, semaforizacion.mes)" maxlength="512" placeholder="" required>
+                            <span class="icPesoRelativo" ng-if="indicadorCtrl.currentindicador.formatoNumero === 'Porcentaje'">%</span>
                           </div>
                         </div>
                         <div class="row">
-                          <div class="form-group col-md-4 col-sm-4 totalMeta">
+                          <div class="form-group col-md-4 col-sm-4 col-xs-3 totalMeta">
                             <label for="subtotal">TOTAL</label>
                           </div>
-                          <div class="form-group col-md-8 col-sm-8">
+                          <div class="form-group col-md-8 col-sm-8 col-xs-9">
                             <input type="text" class="form-control" maxlength="512" placeholder="" disabled>
                           </div>
                         </div>
                         <div class="row">
-                        <div class="col-md-4 col-sm-4"></div>
-                      <div class="col-md-8 col-sm-8">
-                            <button type="button" class="btn btn-link btn-meta">
+                        <div class="col-md-4 col-sm-4 col-xs-3"></div>
+                      <div class="col-md-8 col-sm-8 col-xs-9">
+                            <button type="button" class="btn btn-link btn-meta" ng-click="indicadorCtrl.calcularAvance()">
                               <div class="ic-btn" title="Repartir"></div>
                               <span>Repartir meta en forma equitativa para el avance</span>
                             </button>
+                            <p class="errorForm modal-obra">{{indicadorCtrl.errorCalculoAutomatico}}</p>
                         </div>
                     </div>
                       </div>
-                      <div class="form-group col-md-6 col-sm-12">
-                       
+                      <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                        <canvas id="line"
+	                         class="chart chart-line"
+                           chart-data="indicadorCtrl.data"
+                           chart-labels="indicadorCtrl.labelsMonth"
+                           chart-options="indicadorCtrl.options"
+                           chart-dataset-override="indicadorCtrl.datasetOverride">
+                        </canvas>
                       </div>
                     </div>
                 </div>
@@ -228,14 +240,14 @@ Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de d
                     </a>
                     <div class="row">
                       <div class="form-group col-md-12 col-sm-12">
-                        <label for="tipo de obra">Origen</label>  
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
-                            <label for="interno" class="option">
-                                <input type="radio" name="optionsIndicador" id="interno" value="interno" checked="">
+                        <label for="tipo de obra">Origen</label>
+                        <div class="radio" ng-init="formCtrl.currentMeta.origen">
+                            <label class="option">
+                                <input type="radio" name="optionsOrigen" id="interno" value="Interno" ng-model="indicadorCtrl.currentMeta.origen" ng-required="!indicadorCtrl.currentmeta.origen">
                                 Interno (jurisdicción)
                             </label>
-                            <label for="externo" class="option">
-                                <input type="radio" name="optionsIndicador" id="externo" value="externo">
+                            <label class="option">
+                                <input type="radio" name="optionsOrigen" id="externo" value="Externo" ng-model="indicadorCtrl.currentMeta.origen" ng-required="!indicadorCtrl.currentmeta.origen">
                                 Externo (otro)
                             </label>
                         </div>
@@ -246,72 +258,130 @@ Descendente: se busca que el indicador disminuya. Ej: disminuir la cantidad de d
                           <label for="unidad de medida">Referente (ente o área que genera el dato)</label>
                           </div>
                            <div class="col-md-4 form-group">
-                             <input type="text" class="form-control" maxlength="512" placeholder="Unidad Auditoría Interna" required>
+                             <input type="text" class="form-control" maxlength="512" placeholder="Unidad Auditoría Interna" ng-model="indicadorCtrl.currentMeta.referente" required>
                       </div>
                     </div>
                       <div class="row">
                       <div class="form-group col-md-12 col-sm-12">
-                        <label for="tipo de obra">Método de recolección de datos</label>  
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
-                            <label for="encuesta" class="option">
-                                <input type="radio" name="optionsIndicador" id="encuesta" value="encuesta" checked="">
+                        <label>Método de recolección de datos</label>
+                        <div class="radio" ng-init="indicadorCtrl.currentMeta.metodoRecoleccion">
+                            <label class="option">
+                                <input type="radio" name="optionsRecoleccion" id="encuesta" value="Encuesta" ng-model="indicadorCtrl.currentMeta.metodoRecoleccion" ng-required="!indicadorCtrl.currentMeta.metodoRecoleccion">
                                 Encuesta
                             </label>
-                            <label for="registro" class="option">
-                                <input type="radio" name="optionsIndicador" id="registro" value="registro">
+                            <label class="option">
+                                <input type="radio" name="optionsRecoleccion" id="registro" value="Registro" ng-model="indicadorCtrl.currentMeta.metodoRecoleccion" ng-required="!indicadorCtrl.currentMeta.metodoRecoleccion">
                                 Registro administrativo
                             </label>
-                            <label for="entrevista" class="option">
-                                <input type="radio" name="optionsIndicador" id="entrevista" value="entrevista">
+                            <label class="option">
+                                <input type="radio" name="optionsRecoleccion" id="entrevista" value="Entrevista" ng-model="indicadorCtrl.currentMeta.metodoRecoleccion" ng-required="!indicadorCtrl.currentMeta.metodoRecoleccion">
                                 Entrevista
                             </label>
-                            <label for="censo" class="option">
-                                <input type="radio" name="optionsIndicador" id="censo" value="censo">
+                            <label class="option">
+                                <input type="radio" name="optionsRecoleccion" id="censo" value="Censo" ng-model="indicadorCtrl.currentMeta.metodoRecoleccion" ng-required="!indicadorCtrl.currentMeta.metodoRecoleccion">
                                 Censo
                             </label>
-                            <label for="otro" class="option">
-                                <input type="radio" name="optionsIndicador" id="otro" value="otro">
+                            <label class="option">
+                                <input type="radio" name="optionsRecoleccion" id="otro" value="Otro" ng-model="indicadorCtrl.currentMeta.metodoRecoleccion" ng-required="!indicadorCtrl.currentMeta.metodoRecoleccion">
                                 Otro
                             </label>
                         </div>
                         </div>
                       </div>
-                      <div class="row">
+                      <div class="row" ng-if="indicadorCtrl.currentMeta.metodoRecoleccion === 'Otro'">
                         <div class="col-md-4 form-group">
                           <label for="unidad de medida">Otro</label>
                              <input type="text" class="form-control" maxlength="512" placeholder="" required>
                       </div>
-                    </div> 
+                    </div>
                     <div class="row">
                       <div class="form-group col-md-12 col-sm-12">
-                        <label for="tipo de obra">Sistema de recolección de datos</label>  
-                        <div class="radio" ng-init="formCtrl.currentProject.tipoProyecto">
-                            <label for="informatizado" class="option">
-                                <input type="radio" name="optionsIndicador" id="informatizado" value="informatizado">
+                        <label for="tipo de obra">Sistema de recolección de datos</label>
+                        <div class="radio" ng-init="indicadorCtrl.currentMeta.sistemaRecoleccion">
+                            <label class="option">
+                                <input type="radio" name="optionsSistema" id="informatizado" value="Informatizado" ng-model="indicadorCtrl.currentMeta.sistemaRecoleccion" ng-required="!indicadorCtrl.currentMeta.sistemaRecoleccion" >
                                 Informatizado (con sistema)
                             </label>
                             <label for="informatizadoManual" class="option">
-                                <input type="radio" name="optionsIndicador" id="informatizadoManual" value="Informatizado con fuentes manuales">
+                                <input type="radio" name="optionsSistema" id="informatizadoManual" value="Informatizado con fuentes manuales" ng-model="indicadorCtrl.currentMeta.sistemaRecoleccion" ng-required="!indicadorCtrl.currentMeta.sistemaRecoleccion" >
                                 Informatizado con fuentes manuales (recolectado manual y cargado digital)
                             </label>
-                            <label for="manual" class="option">
-                                <input type="radio" name="optionsIndicador" id="manual" value="manual">
+                            <label class="option">
+                                <input type="radio" name="optionsSistema" id="manual" value="Manual" ng-model="indicadorCtrl.currentMeta.sistemaRecoleccion" ng-required="!indicadorCtrl.currentMeta.sistemaRecoleccion" >
                                 Manual (sólo manual)
                             </label>
                         </div>
                         </div>
-                      </div> 
+                      </div>
                 </div>
                 <br>
                 <div class="col-md-12 col-sm-12 agrupador">
-                <a class="nameLinkModal" name="relacion">
-                  <div class="ic-title ic-relacionar"></div>&nbsp;Relacionar proyectos con el Indicador
+                <div class="col-md-12 form-group notPadding">
+                  <a class="nameLinkModal" name="relacion">
+                    <div class="ic-title ic-relacionar"></div>&nbsp;Relacionar proyectos con el Indicador
                   </a>
+                </div>
+                  <div class="row">
+                      <div class="form-group col-md-7">
+                           <input type="text" ng-model="filterprojects" class="form-control" placeholder="Buscar proyectos...">
+                      </div>
+                  </div>
+                  <div>
+                    <ul id="projectListIndicador">
+                        <li class="listProject relationGrid" ng-repeat="proyecto in indicadorCtrl.objectiveprojects | filter:filterprojects">
+                            <span class="thirdLabel columnRight">
+                                <input type="checkbox" value="{{proyecto.idProyecto}}" ng-click="indicadorCtrl.moveToSelectedList(proyecto, $event, $index)">
+                                <span class="nameObj" ng-click="homeCtrl.viewProject(proyecto)">{{proyecto.nombre}}  </span>
+                                <span class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-if="homeCtrl.canEdit(proyecto)" ng-click="homeCtrl.editProject(proyecto)" data-placement="top" title="" data-original-title="Editar"></span>
+                                <i ng-if="homeCtrl.rolUser === 'Secretaría'" class="glyphicon glyphicon-tag" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
+                            </span>
+
+                            <div class="box-date relativeContent">
+                                <span class="titleMobile">Inicio: </span>
+                                <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
+                                <span class="titleMobile">Fin: </span>
+                                <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
+                                <span class="titleMobile estado">Estado: </span>
+                                <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo' || proyecto.estado === 'D. Modificable' || proyecto.estado === 'D. Completo' , 'incompletoClass' : proyecto.estado === 'Incompleto' || proyecto.estado === 'D. Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado' || proyecto.estado === 'D. Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre Aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Demorado', 'rechazadoClass' : proyecto.estado === 'Rechazado' || proyecto.estado === 'D. Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
+                                <!-- <i class="img-chevron-down collapsed verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i> -->
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 notPadding" id="proyecto-{{proyecto.idProyecto}}">
+                                <hr class="line-inner-proyect">
+                                <div ng-if="$last && objO.proyectos.length > 0"><br></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <br>
+                    <label for="selectedProjects">Proyectos Seleccionados</label>
+                    <ul id="projectListIndicador">
+                        <li class="listProject relationGrid" ng-repeat="proyecto in indicadorCtrl.selectedProjects">
+                            <span class="thirdLabel columnRight">
+                              <input type="checkbox" value="{{proyecto.idProyecto}}" ng-click="indicadorCtrl.removeToSelectedList(proyecto, $event, $index)" ng-checked="true">
+                                <span class="nameObj" ng-click="homeCtrl.viewProject(proyecto)">{{proyecto.nombre}}  </span>
+                                <span class="icEdit" aria-hidden="true" title="Editar" data-toggle="tooltip" ng-if="homeCtrl.canEdit(proyecto)" ng-click="homeCtrl.editProject(proyecto)" data-placement="top" title="" data-original-title="Editar"></span>
+                                <i ng-if="homeCtrl.rolUser === 'Secretaría'" class="glyphicon glyphicon-tag" aria-hidden="true" title="Etiquetas" data-toggle="tooltip" ng-click="homeCtrl.labels(proyecto.idProyecto)" data-placement="top" title="Etiquetas" data-original-title="Etiquetas"></i>
+                            </span>
+
+                            <div class="box-date relativeContent">
+                                <span class="titleMobile">Inicio: </span>
+                                <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
+                                <span class="titleMobile">Fin: </span>
+                                <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
+                                <span class="titleMobile estado">Estado: </span>
+                                <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo' || proyecto.estado === 'D. Modificable' || proyecto.estado === 'D. Completo' , 'incompletoClass' : proyecto.estado === 'Incompleto' || proyecto.estado === 'D. Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado' || proyecto.estado === 'D. Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre Aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Demorado', 'rechazadoClass' : proyecto.estado === 'Rechazado' || proyecto.estado === 'D. Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
+                                <!-- <i class="img-chevron-down collapsed verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i> -->
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 notPadding" id="proyecto-{{proyecto.idProyecto}}">
+                                <hr class="line-inner-proyect">
+                                <div ng-if="$last && objO.proyectos.length > 0"><br></div>
+                            </div>
+                        </li>
+                    </ul>
+                  </div>
                   </div>
                 <br>
             <button type="submit" class="btn btn-success btn-lg">Guardar</button>
-            <button type="button" class="btn btn-default right btnRemove">Eliminar</button>
-            <button type="button" class="btn btn-default right">Cancelar cambios</button>
+            <button type="button" class="btn btn-default right" ng-click="indicadorCtrl.cancel()">Cancelar cambios</button>
 
             </form>
 

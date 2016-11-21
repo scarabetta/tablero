@@ -113,7 +113,7 @@
                             <label for="fecha de inicio">Fecha de inicio</label>
                             <!-- <input type="date" class="form-control" id="responsable" placeholder="" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required> -->
                             <p class="input-group">
-                              <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
+                              <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickerInicio.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaInicio" ng-change="formCtrl.loadYears()" required/>
                               <span class="input-group-btn">
                                   <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerInicio()"><i class="glyphicon glyphicon-calendar"></i></button>
                               </span>
@@ -123,7 +123,7 @@
                             <label for="fecha de fin">Fecha de fin</label>
                             <!-- <input type="date" class="form-control" id="responsable" placeholder="" min="formCtrl.currentProject.fechaInicio" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required> -->
                             <p class="input-group">
-                              <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickerFin.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required />
+                              <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickerFin.status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="formCtrl.currentProject.fechaFin" ng-change="formCtrl.loadYears()" required />
                               <span class="input-group-btn">
                                   <button type="button" class="btn btn-default" ng-click="formCtrl.openPickerFin()"><i class="glyphicon glyphicon-calendar"></i></button>
                               </span>
@@ -389,7 +389,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                 Para guardar y presentar tenes que completar todos los campos que no son opcionales.
             </div>
             <button ng-show="formCtrl.currentProject.estado != 'Incompleto' && formCtrl.currentProject.estado != 'Completo' && formCtrl.currentProject.estado != 'En Priorizacion' && formCtrl.currentProject.estado != null" type="submit" ng-disabled="!formCtrl.allInputs" class="btn btn-success">Guardar</button>
-            <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success btn-lg">Guardar y Presentar</button>
+            <button ng-show="formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo' || formCtrl.currentProject.estado === null" ng-disabled="!formCtrl.allInputs" type="button" ng-click="formCtrl.presentProject()" class="btn btn-success">Guardar y Presentar</button>
             <button ng-if="formCtrl.flagForSaveDraft" ng-show="formCtrl.currentProject.estado === null || formCtrl.currentProject.estado === 'Incompleto' || formCtrl.currentProject.estado === 'Completo'" type="submit" class="btn btn-default" id="draftButton">Guardar Borrador</button>
             <button ng-show="formCtrl.showDeleteButton()" type="button" class="btn btn-default right btnRemove" data-toggle="modal" data-target="#projectAlert">Eliminar</button>
             <button type="button" class="btn btn-default right" data-toggle="modal" data-target="#cancelAlert">Cancelar cambios</button>
@@ -468,7 +468,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickersInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaInicio" required/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerInicio($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -476,7 +476,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickersFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hito.fechaFin" required/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerFin($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -505,7 +505,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersHijosInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hijo.fechaInicio" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickersHijosInicio[$index].status" close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hijo.fechaInicio" required/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerHijoInicio($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -513,7 +513,7 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    <input type="text" class="form-control" uib-datepicker-popup="dd/MM/yyyy" is-open="formCtrl.datePickersHijosFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hijo.fechaFin" required/>
+                                    <input type="text" class="form-control" uib-datepicker-popup="d!/M!/yyyy" is-open="formCtrl.datePickersHijosFin[$index].status"  close-text="Cerrar" current-text="Fecha Actual" clear-text="Limpiar" ng-model="hijo.fechaFin" required/>
                                     <span class="input-group-btn">
                                         <button type="button" class="btn btn-default" ng-click="formCtrl.handlePickerHijoFin($index)"><i class="glyphicon glyphicon-calendar"></i></button>
                                     </span>
@@ -543,12 +543,12 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    {{obra.fechaInicio | date:'MM/dd/yyyy'}}
+                                    {{obra.fechaInicio | date:'dd/MM/yyyy'}}
                                   </div>
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    {{obra.fechaFin | date:'MM/dd/yyyy'}}
+                                    {{obra.fechaFin | date:'dd/MM/yyyy'}}
                                   </div>
                                 </td>
                                 <td>
@@ -574,12 +574,12 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    {{hito.fechaInicio | date:'MM/dd/yyyy'}}
+                                    {{hito.fechaInicio | date:'dd/MM/yyyy'}}
                                   </div>
                                 </td>
                                 <td>
                                   <div class="input-group">
-                                    {{hito.fechaFin | date:'MM/dd/yyyy'}}
+                                    {{hito.fechaFin | date:'dd/MM/yyyy'}}
                                   </div>
                                 </td>
                                 <td>
@@ -608,7 +608,10 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                     <p class="reference">Podés copiar y pegar muchos desde Excel en un solo paso. </p>
                     <p class="reference">Si seleccionás en Excel varias celdas que estén una debajo de la otra, las copias y pegás sobre cualquier de los siguientes casilleros, se distribuirán a partir  de ese casillero hacia abajo. </p>
                     <div class="row">
-
+                      <div class="typeTableContainer col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p class="reference">*<b>PPI</b> - Plan Plurianual de Inversión.</p>
+                        <p class="reference">*El presupuesto es en Pesos.</p>
+                      </div>
                     <div class="typeTableContainer col-lg-5 col-md-12 col-sm-12 col-xs-12 form-group">
                     <label for="direccion">TIPO DE GASTO (TOTAL DEL PROYECTO)</label>
                       <div class="titleTable"></div>
@@ -635,10 +638,6 @@ Si el proyecto no tiene una ubicación definida aún o no impacta en ningún lug
                         <hot-column width="100" type="'numeric'" format="'$ 0,0.00'"></hot-column>
                       </hot-table>
                     </div>
-                      <div class="typeTableContainer col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <p class="reference">*<b>PPI</b> - Plan Plurianual de Inversión.</p>
-                        <p class="reference">*El presupuesto es en Pesos.</p>
-                      </div>
                     </div>
                 </div>
             <br>

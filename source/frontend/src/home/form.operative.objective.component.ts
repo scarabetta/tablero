@@ -12,7 +12,8 @@ module Home {
 
     /*@ngInject*/
     constructor(private services:GeneralServices, private $http: ng.IHttpService, private $state:ng.ui.IStateService,
-      private $compile: ng.ICompileService, private $scope:ng.IScope) {
+      private $compile: ng.ICompileService, private $scope:ng.IScope,
+      private localStorageService: angular.local.storage.ILocalStorageService) {
       if (this.idoperativeobjective) {
         this.title = "Modificar objetivo operativo";
         services.getOperativeObjective(this.idoperativeobjective).then((data) => {
@@ -33,10 +34,12 @@ module Home {
         }
         if (this.currentOperativeObjective.idObjetivoOperativo) {
           this.services.updateOperativeObjective(this.currentOperativeObjective).then((data) => {
+            this.services.deferNotification('El objetivo operativo se modificó con éxito.');
             this.$state.reload();
           });
         } else {
           this.services.saveOperativeObjective(this.currentOperativeObjective).then((data) => {
+            this.services.deferNotification('El objetivo operativo se creó con éxito.');
             this.$state.reload();
           });
         }
@@ -50,7 +53,7 @@ module Home {
 
     deleteOperativeObjectiveByID(id) {
         if (this.currentOperativeObjective.proyectos.length > 0) {
-          var notificationData = {
+          this.addNotification({
             "type" : "warning",
             "icon" : "exclamation-sign",
             "title" : "Alerta",
@@ -58,10 +61,10 @@ module Home {
             "action": "gotooperativo",
             "valueAction" : true,
             "textlink": "Ir al formulario"
-          };
-          this.addNotification(notificationData);
+          });
         } else {
             this.services.deleteOperativeObjective(id).then((data) => {
+                this.services.deferNotification('El objetivo operativo se eliminó con éxito.');
                 this.$state.reload();
             });
         }

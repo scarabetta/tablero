@@ -141,9 +141,9 @@
 
                                                           <div class="box-date relativeContent">
                                                               <span class="titleMobile">Inicio: </span>
-                                                              <span class="date left">{{proyecto.fechaInicio | date:'MM/dd/yyyy'}}</span>
+                                                              <span class="date left">{{proyecto.fechaInicio | date:'dd/MM/yyyy'}}</span>
                                                               <span class="titleMobile">Fin: </span>
-                                                              <span class="date left">{{proyecto.fechaFin| date:'MM/dd/yyyy'}}</span>
+                                                              <span class="date left">{{proyecto.fechaFin| date:'dd/MM/yyyy'}}</span>
                                                               <span class="titleMobile estado">Estado: </span>
                                                               <span class="estateClass" ng-class="{'completoClass' : proyecto.estado === 'Completo' || proyecto.estado === 'D. Modificable' || proyecto.estado === 'D. Completo' , 'incompletoClass' : proyecto.estado === 'Incompleto' || proyecto.estado === 'D. Incompleto', 'presentadoClass' : proyecto.estado === 'Presentado' || proyecto.estado === 'D. Presentado', 'verificadoClass' : proyecto.estado === 'Verificado', 'canceladoClass' : proyecto.estado === 'Cancelado', 'preAprobadoClass' : proyecto.estado === 'Pre Aprobado', 'aprobadoClass' : proyecto.estado === 'Aprobado', 'aplazadoClass' : proyecto.estado === 'Demorado', 'rechazadoClass' : proyecto.estado === 'Rechazado' || proyecto.estado === 'D. Rechazado', 'enPriorizacionClass' : proyecto.estado === 'En Priorización'}">{{proyecto.estado}}</span>
                                                               <!-- <i class="img-chevron-down collapsed verticalCenter" aria-hidden="true" data-toggle="collapse" href="#grupo-level-{{objO.idObjetivoOperativo}}-{{$index}}"></i> -->

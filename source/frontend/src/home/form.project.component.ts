@@ -118,7 +118,7 @@ module Home {
           services.ejesDeGobierno().then((data) => this.ejesDeGobierno = data);
           var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
           if (idJurisdiccionStorage) {
-            services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
+            this.$scope.$on('jurisdiccion:updated', function(event, data) {
               this.jurisdiccion = data;
             });
           }
@@ -201,6 +201,21 @@ module Home {
               if (data.area) {
                 this.areaNombre = data.area.nombre;
               }
+
+              for (let o = 0; o < this.currentProject.obras.length; o++) {
+                this.currentProject.obras[o].fechaInicio = new Date(data.obras[o].fechaInicio);
+                this.currentProject.obras[o].fechaFin = new Date(data.obras[o].fechaFin);
+                for (let h = 0; h < this.currentProject.obras[o].hitos.length; h++) {
+                  this.currentProject.obras[o].hitos[h].fechaInicio = new Date(data.obras[o].hitos[h].fechaInicio);
+                  this.currentProject.obras[o].hitos[h].fechaFin = new Date(data.obras[o].hitos[h].fechaFin);
+                }
+              }
+
+              for (let h = 0; h < this.currentProject.hitos.length; h++) {
+                this.currentProject.hitos[h].fechaInicio = new Date(data.hitos[h].fechaInicio);
+                this.currentProject.hitos[h].fechaFin = new Date(data.hitos[h].fechaFin);
+              }
+
               services.comunas().then((data) => {
                 this.comunas = data;
                 this.getTotalBudget();
@@ -270,20 +285,15 @@ module Home {
       }
 
       uploadFile() {
-        var scope = this;
-        <any>($("#inputFile")).click();
-
-        <any>($("#inputFile")).change(function() {
-          var i = 0,
-              files = this.files,
-              len = files.length;
-
-          for (; i < len; i++) {
-              scope.fileArray.push(files[i]);
-              scope.$scope.$apply();
-          }
-
+        let context = this;
+        let inputFile = $('#inputFile');
+        inputFile.change(function () {
+            for (let i = 0; i < this.files.length; i++) {
+              context.fileArray.push(this.files[i]);
+            }
+            context.$scope.$apply();
         });
+        inputFile.click();
       }
 
       initializePickers() {
@@ -320,6 +330,7 @@ module Home {
         this.buildDetail();
         this.services.changeState(this.actionMove, this.currentProject).then((data) => {
           if (!data.codigoError) {
+            this.services.deferNotification('El proyecto se guardó con éxito.');
             this.$state.reload();
           }
          });
@@ -329,6 +340,7 @@ module Home {
         this.buildDetail();
         this.services.presentProjectDetail(this.currentProject).then((data) => {
           if (!data.codigoError) {
+            this.services.deferNotification('El proyecto se guardó con éxito.');
             this.$state.reload();
           }
          });
@@ -339,6 +351,7 @@ module Home {
         this.buildDetail();
         this.services.updateProject(this.currentProject).then((data) => {
           if (!data.codigoError) {
+            this.services.deferNotification('El proyecto se presentó con éxito.');
             this.$state.reload();
           }
          });
@@ -434,6 +447,7 @@ module Home {
 
       showPrioridadJefaturaBox() {
         return (this.actionMove === 'Demorar' || this.actionMove === 'Pre-aprobar' || this.actionMove === 'Rechazar'
+                || this.actionMove === 'Aprobar' || this.actionMove === 'Aprobado'
                 || this.currentProject.estado === 'Pre Aprobado' || this.currentProject.estado === 'Demorado' || this.currentProject.estado === 'Rechazado'
                 || this.actionMove === 'D. Completo' || this.actionMove === 'D. Incompleto' || this.actionMove === 'D. Presentado' || this.actionMove === 'D. Rechazado'
                 || this.actionMove === 'D. Modificable' || this.actionMove === 'Presentar' || this.actionMove === 'Habilitar');
@@ -497,30 +511,16 @@ module Home {
           this.services.changeState(this.actionMove, this.currentProject).then((data) => {
             if (data.idProyecto) {
               this.uploadFiles(data.idProyecto);
-              scope.$state.reload().then(function() {
-                  var notificationData = {
-                    "type" : "success",
-                    "icon" : "ok-sign",
-                    "title" : "Ok",
-                    "text" : "El proyecto se guardó con éxito." // tslint:disable-line
-                  };
-                  scope.addNotification(notificationData);
-              });
+              this.services.deferNotification('El proyecto se guardó con éxito.');
+              scope.$state.reload();
           }
           });
         } else {
           this.services.presentProject(this.currentProject).then((data) => {
             if (data.idProyecto) {
               this.uploadFiles(data.idProyecto);
-              scope.$state.reload().then(function() {
-                  var notificationData = {
-                    "type" : "success",
-                    "icon" : "ok-sign",
-                    "title" : "Ok",
-                    "text" : "El proyecto se presento con éxito." // tslint:disable-line
-                  };
-                  scope.addNotification(notificationData);
-              });
+              this.services.deferNotification('El proyecto se presentó con éxito.');
+              scope.$state.reload();
             }
           });
         }
@@ -552,35 +552,28 @@ module Home {
 
         if (this.changingStateFlag && this.idproject) {
           this.services.changeState(this.actionMove, this.currentProject).then((data) => {
-            this.uploadFiles(this.idproject);
-            scope.$state.reload().then(function() {
-                var notificationData = {
-                  "type" : "success",
-                  "icon" : "ok-sign",
-                  "title" : "Ok",
-                  "text" : "El proyecto se guardó con éxito." // tslint:disable-line
-                };
-                scope.addNotification(notificationData);
-            });
+            if (data) {
+              this.uploadFiles(this.idproject);
+              this.services.deferNotification('El proyecto se guardó con éxito.');
+              scope.$state.reload();
+            }
           });
         } else if (this.idproject) {
             this.services.updateProject(this.currentProject).then((data) => {
-                this.uploadFiles(this.idproject);
-                this.$state.reload();
+                if (data) {
+                  this.uploadFiles(this.idproject);
+                  this.services.deferNotification('El proyecto se guardó con éxito.');
+                  scope.$state.reload();
+                }
              });
         } else {
             this.services.saveProject(this.currentProject).then((data) => {
-              if (data.idProyecto) {
-                this.uploadFiles(data.idProyecto);
-                scope.$state.reload().then(function() {
-                    var notificationData = {
-                      "type" : "success",
-                      "icon" : "ok-sign",
-                      "title" : "Ok",
-                      "text" : "El proyecto se creó con éxito como borrador." // tslint:disable-line
-                    };
-                    scope.addNotification(notificationData);
-                });
+              if (data) {
+                if (data.idProyecto) {
+                  this.uploadFiles(data.idProyecto);
+                }
+                this.services.deferNotification('El proyecto se creó con éxito.');
+                scope.$state.reload();
               }
             });
         }
@@ -588,7 +581,10 @@ module Home {
 
       deleteProjectById(id) {
         this.services.deleteProject(id).then((data) => {
-            this.$state.reload();
+            if (data) {
+              this.services.deferNotification('El proyecto se borró con éxito.');
+              this.$state.reload();
+            }
         });
       }
 

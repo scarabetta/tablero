@@ -10,12 +10,12 @@
                     <div class="col-lg-4 col-md-3 col-sm-3 col-xs-11">
                         <label for="responsable">Nombre del Indicador <popover data-placement="top" data-content="Debe relacionarse con el objetivo estratégico y debe contener en su formulación la unidad de análisis, forma de medición y alcance. Ej. Porcentaje de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis. " title="Nombre del Indicador"></popover></label>
                     </div>
-                    <div class="col-lg-4 col-md-3 col-sm-3 col-xs-11">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-11">
                         <label for="metodo">Método de cálculo <popover data-placement="top" data-content="Debe detallar cómo está calculado el indicador. Debe ser una expresión matemática definida de manera adecuada y de fácil comprensión, donde queden claras las variables utilizadas. Ej. (Sumatoria de Hogares en situación de hacinamiento dentro del Barrio 31 y 31bis/ Sumatoria del total de Hogares dentro del Barrio 31 y 31bis) *100" title="Método de cálculo"></popover></label>
                     </div>
-                    <!-- <div class="columIndicadores">
+                    <div class="columIndicadores">
                         <label for="peso">Peso relativo <popover data-placement="top" data-content="Importancia relativa de cada indicador respecto al objetivo correspondiente."></popover></label>
-                    </div> -->
+                    </div>
                     <div class="estadoIndicadores">
                         <label for="estado">Estado</label>
                     </div>
@@ -24,28 +24,28 @@
                     <div class="form-group col-lg-4 col-md-3 col-sm-3 col-xs-11 add-line">
                         <input type="text" class="form-control" ng-model="indicador.nombre" maxlength="512" placeholder="Ingresar nombre del indicador" required>
                     </div>
-                    <div class="form-group col-lg-4 col-md-3 col-sm-3 col-xs-11 add-line">
-                        <input type="text" class="form-control" ng-model="indicador.metodoCalculo" maxlength="512" placeholder="Ingresar metodo de calculo" required>
+                    <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-11 add-line">
+                        <input type="text" class="form-control" ng-model="indicador.metodoCalculo" maxlength="512" placeholder="Ingresar metodo de calculo" >
                     </div>
-                    <!-- <div class="form-group add-line columIndicadores">
+                    <div class="form-group add-line columIndicadores">
                         <input type="number" class="form-control inputPesoRelativo" maxlength="512" placeholder="0" ng-model="indicador.pesoRelativo" ng-change="formCtrl.getCurrentTotalPesoRelativo()">
                         <span class="icPesoRelativo">%</span>
-                    </div> -->
+                    </div>
                     <div class="form-group left add-line" style="margin-right: 15px;">
                         <span class="estateClass ng-binding" ng-class="{'completoClass' : indicador.estado === 'Completo' || indicador.estado === 'D. Modificable', 'incompletoClass' : indicador.estado === 'Incompleto' || indicador.estado === 'D. Incompleto', 'presentadoClass' : indicador.estado === 'Presentado' || indicador.estado === 'D. Presentado', 'verificadoClass' : indicador.estado === 'Verificado', 'canceladoClass' : indicador.estado === 'Cancelado', 'preAprobadoClass' : indicador.estado === 'Pre Aprobado', 'aprobadoClass' : indicador.estado === 'Aprobado', 'aplazadoClass' : indicador.estado === 'Demorado', 'rechazadoClass' : indicador.estado === 'Rechazado' || indicador.estado === 'D. Rechazado', 'enPriorizacionClass' : indicador.estado === 'En Priorización'}">{{indicador.estado}}</span>
                     </div>
                     <div class="left">
-                          <!-- <i class="glyphicon icEdit editIndicadores" aria-hidden="true" title="Editar" data-toggle="modal" data-target="#indicadorModal" ng-click="formCtrl.editIndicador(indicador)" ng-if="indicador.idIndicadorEstrategico" ></i> -->
+                          <i class="glyphicon icEdit editIndicadores" aria-hidden="true" title="Editar" data-toggle="modal" data-target="#indicadorModal" ng-click="formCtrl.editIndicador(indicador)" ng-if="indicador.idIndicadorEstrategico" ></i>
                           <i class="glyphicon glyphicon-remove" aria-hidden="true" title="Eliminar" ng-click="formCtrl.removeIndicador($index)" ng-if="indicador.estado ==='Incompleto'"></i>
                         </div>
                     <!-- <div class="form-group col-md-1 col-sm-1">
                       <button type="button" class="btn btn-default btn-presupuesto" ng-click="formCtrl.removeIndicador($index)"><i class="glyphicon glyphicon-minus" aria-hidden="true"></i></button>
                     </div> -->
                 </div>
-                <!-- <p class="errorForm modal-obra">{{formCtrl.validPesoRelativo}}</p>
+                <p class="errorForm modal-obra">{{formCtrl.validPesoRelativo}}</p>
                   <div class="col-md-11 totalGridIndicadores">
                     Total de Peso Relativo: <span>{{formCtrl.currentTotalPesoRelativo}}%</span>
-                  </div> -->
+                  </div>
 
                 <div class="row">
                   <div class="col-md-12 form-group addBtn">

@@ -54,7 +54,6 @@ module Home {
         'value' : 'comunas'
       }
     ];
-    private allProjects = new Array<any>();
     private filterData: {
       estado: any[];
       area: any[];
@@ -68,7 +67,7 @@ module Home {
     private idjurisdiccionKey = 'idJurisdiccionStorage';
     private showSidemenu = false;
 
-    constructor(private $scope: ng.IScope, private services:GeneralServices, private localStorageService:angular.local.storage.ILocalStorageService) {
+    constructor(private $scope: ng.IScope, private services:GeneralServices, private localStorageService:angular.local.storage.ILocalStorageService, $rootScope: ng.IRootScopeService) {
       var scope = this;
 
       var allStates  = new Array<any>();
@@ -78,56 +77,57 @@ module Home {
       var allPoblaciones  = new Array<any>();
       var allPrioridad  = new Array<any>();
       var allComunas  = new Array<any>();
+      var projects = new Array<any>();
 
       var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
       if (idJurisdiccionStorage) {
         this.showSidemenu = true;
-        services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
+        this.$scope.$on('jurisdiccion:updated', function(event, data) {
           scope.jurisdiccion = data;
-          data.objetivosJurisdiccionales.forEach((oj) => {
+          scope.jurisdiccion.objetivosJurisdiccionales.forEach((oj) => {
             oj.objetivosOperativos.forEach((oo) => {
               oo.proyectos.forEach((project) => {
-                this.allProjects.push(project);
+                projects.push(project);
               });
             });
           });
 
-          scope.allProjects.forEach((project) => {
-            if (this.isNotOnArray(project.estado, allStates)) {
+          projects.forEach((project) => {
+            if (scope.isNotOnArray(project.estado, allStates)) {
               allStates.push(project.estado);
             }
-            if (project.area && this.isNotOnArray(project.area.nombre, allAreas)) {
+            if (project.area && scope.isNotOnArray(project.area.nombre, allAreas)) {
               allAreas.push(project.area.nombre);
             }
             if (project.ejesDeGobierno ) {
               project.ejesDeGobierno.forEach((eje) => {
-                if (this.isNotOnArray(eje.nombre, allEjes)) {
+                if (scope.isNotOnArray(eje.nombre, allEjes)) {
                   allEjes.push(eje.nombre);
                 }
               });
             }
             if (project.temasTransversales) {
               project.temasTransversales.forEach((tema) => {
-                if (this.isNotOnArray(tema.temaTransversal, allTemas)) {
+                if (scope.isNotOnArray(tema.temaTransversal, allTemas)) {
                   allTemas.push(tema.temaTransversal);
                 }
               });
             }
             if (project.poblacionesMeta) {
               project.poblacionesMeta.forEach((poblacion) => {
-                if (this.isNotOnArray(poblacion.nombre, allPoblaciones)) {
+                if (scope.isNotOnArray(poblacion.nombre, allPoblaciones)) {
                   allPoblaciones.push(poblacion.nombre);
                 }
               });
             }
             if (project.prioridadJurisdiccional) {
-              if (this.isNotOnArray(project.prioridadJurisdiccional, allPrioridad)) {
+              if (scope.isNotOnArray(project.prioridadJurisdiccional, allPrioridad)) {
                 allPrioridad.push(project.prioridadJurisdiccional);
               }
             }
             if (project.comunas) {
               project.comunas.forEach((comuna) => {
-                if (this.isNotOnArray(comuna.nombre, allComunas)) {
+                if (scope.isNotOnArray(comuna.nombre, allComunas)) {
                   allComunas.push(comuna.nombre);
                 }
               });
@@ -140,6 +140,7 @@ module Home {
           scope.filterObject[4].options = allPoblaciones;
           scope.filterObject[5].options = allPrioridad;
           scope.filterObject[6].options = allComunas;
+
         });
       };
     }

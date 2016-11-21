@@ -1,7 +1,7 @@
-import {GeneralServices} from "../services/services.ts";
-import {Search} from "../services/search.ts";
-import {Jurisdiccion} from "../models/jurisdiccion.ts";
-import {Usuario} from "../models/jurisdiccion.ts";
+import {GeneralServices} from "../services/services";
+import {Search} from "../services/search";
+import {Jurisdiccion} from "../models/jurisdiccion";
+import {Usuario} from "../models/jurisdiccion";
 
 module Home {
 
@@ -18,7 +18,7 @@ module Home {
         /*@ngInject*/
         constructor(private services:GeneralServices, private $scope:ng.IScope, private $compile: ng.ICompileService, private localStorageService:angular.local.storage.ILocalStorageService,
           $sce: ng.ISCEService, private Upload: angular.angularFileUpload.IUploadService, // tslint:disable-line variable-name
-          private search:Search, private $state: ng.ui.IStateService) {
+          private search:Search, private $state: ng.ui.IStateService, $rootScope: ng.IRootScopeService) {
 
             search.setText("");
             var userData = this.localStorageService.get(this.currentUserKey);
@@ -59,6 +59,7 @@ module Home {
             if (idJurisdiccionStorage) {
               services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
                 this.jurisdiccion = data;
+                $rootScope.$broadcast('jurisdiccion:updated', data);
                 this.objetivosJurisdiccionales = data.objetivosJurisdiccionales;
                 setTimeout(() => {
                   this.showAll();
@@ -175,14 +176,14 @@ module Home {
                 //   this.localStorageService.set('flagOnboarding', true);
                 // }
 
-                //Note: this code should be moved on controller's refactoring phase
-                var completeness = this.getJurisdiccionCompleteness(this.objetivosJurisdiccionales);
-                if (completeness.complete) {
+                let projectStatus = this.inspectProjectStatus(this.objetivosJurisdiccionales);
+                if (projectStatus.completed > 0) {
                   this.showCompleteStatus();
                 }
-                if (completeness.incomplete) {
+                if (projectStatus.incompleted > 0) {
                   this.showIncompleteStatus();
                 }
+
               });
             } else {
                 this.services.jurisdicciones().then((data) => {
@@ -193,103 +194,101 @@ module Home {
                 });
             }
 
+            // Si hay notificationes por mostrar, las mostramos
+            let notifications = this.services.loadDeferredNotifications();
+            notifications.forEach(n => this.appendNotification(n));
         }
 
         addStrategicObjective(idJurisdiccion) {
-          this.removerForms(['viewproject']);
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
-              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
-              !angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile(" <formstrategicobjective idjurisdiccion='" + idJurisdiccion + "'></formstrategicobjective> ");
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById('add-strategic-objetive');
-            angular.element(containerDiv).append(referralDiv);
-            this.goToElement('formstrategicobjective');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible agregar un objetivo mientras haya otra modificación o alta en curso.",
-              "action": "gotoestrategico",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible agregar un objetivo mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject']);
+          let referralDivFactory = this.$compile(" <formstrategicobjective idjurisdiccion='" + idJurisdiccion + "'></formstrategicobjective> ");
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $('#add-strategic-objetive');
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formstrategicobjective');
         }
 
         editStrategicObjective(idStrategicObjective) {
-          this.removerForms(['viewproject']);
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
-              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
-              !angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile( " <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> " );
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById("es-" + idStrategicObjective);
-            angular.element(containerDiv).append(referralDiv);
-            this.goToElement('formstrategicobjective');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible modificar un objetivo mientras haya otra modificación o alta en curso.",
-              "action": "gotoestrategico",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible modificar un objetivo mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject']);
+          let referralDivFactory = this.$compile( " <formstrategicobjective idobjetivoestrategico='" + idStrategicObjective + "'></formstrategicobjective> " );
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $("#es-" + idStrategicObjective);
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formstrategicobjective');
         }
 
         addOperativeObjective(idObjetivoEstrategico, elem) {
-          (<any>$("#grupo-level-" + elem)).collapse('show');
-          this.removerForms(['viewproject']);
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
-              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
-              !angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile(" <formoperativeobjective idobjetivoestrategico='" + idObjetivoEstrategico + "'></formoperativeobjective> ");
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById('add-operative-objetive-' + idObjetivoEstrategico);
-            angular.element(containerDiv).append(referralDiv);
-            this.goToElement('formoperativeobjective');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible agregar un objetivo mientras haya otra modificación o alta en curso.",
-              "action": "gotooperativo",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible agregar un objetivo mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject']);
+          let referralDivFactory = this.$compile(" <formoperativeobjective idobjetivoestrategico='" + idObjetivoEstrategico + "'></formoperativeobjective> ");
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $('#add-operative-objetive-' + idObjetivoEstrategico);
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formoperativeobjective');
         }
 
         editOperativeObjective(idOperativeObjective) {
-          this.removerForms(['viewproject']);
-          if (!angular.element(document.getElementsByTagName('formstrategicobjective')).length &&
-              !angular.element(document.getElementsByTagName('formoperativeobjective')).length &&
-              !angular.element(document.getElementsByTagName('formproject')).length) {
-            var referralDivFactory = this.$compile( " <formoperativeobjective idoperativeobjective='" + idOperativeObjective + "'></formoperativeobjective> " );
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById("op-" + idOperativeObjective);
-            angular.element(containerDiv).append(referralDiv);
-            this.goToElement('formoperativeobjective');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible modificar un objetivo mientras haya otra modificación o alta en curso.",
-              "action": "gotooperativo",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible modificar un objetivo mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject']);
+          let referralDivFactory = this.$compile( " <formoperativeobjective idoperativeobjective='" + idOperativeObjective + "'></formoperativeobjective> " );
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $("#op-" + idOperativeObjective);
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formoperativeobjective');
         }
 
         viewProject(proyecto) {
@@ -302,46 +301,49 @@ module Home {
         }
 
         editProject(proyecto) {
-          if (!angular.element(document.getElementsByTagName('formproject')).length) {
-            this.removerForms(['viewproject', 'formlabels']);
-            var referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "' estadoproject='" + proyecto.estado + "'></formproject> " );
-            var referralDiv = referralDivFactory(this.$scope);
-            var containerDiv = document.getElementById("proyecto-" + proyecto.idProyecto);
-            angular.element(containerDiv).append(referralDiv);
-            this.goToElement('formproject');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible modificar un proyecto mientras haya otra modificación o alta en curso.",
-              "action": "gotoform",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible modificar un proyecto mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject', 'formlabels']);
+          let referralDivFactory = this.$compile( " <formproject idproject='" + proyecto.idProyecto + "' estadoproject='" + proyecto.estado + "'></formproject> " );
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $("#proyecto-" + proyecto.idProyecto);
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formproject');
         }
 
         addProject(idObjetivo) {
-          if (!angular.element(document.getElementsByTagName('formproject')).length) {
-              var referralDivFactory = this.$compile(" <formproject idobjetivo='" + idObjetivo + "'></formproject> ");
-              var referralDiv = referralDivFactory(this.$scope);
-              var containerDiv = document.getElementById("op-" + idObjetivo);
-              angular.element(containerDiv).append(referralDiv);
-              this.goToElement('formproject');
-          } else {
-            var notificationData = {
-              "type" : "warning",
-              "icon" : "exclamation-sign",
-              "title" : "Alerta",
-              "text" : "No es posible agregar un proyecto mientras haya otra modificación o alta en curso.",
-              "action": "gotoform",
-              "valueAction" : true,
-              "textlink": "Ir al formulario"
-            };
-            this.addNotification(notificationData);
+          let strategic = $('formstrategicobjective').length > 0;
+          let operative = $('formoperativeobjective').length > 0;
+          let project = $('formproject').length > 0;
+          if (strategic || operative || project) {
+            return this.addNotification({
+              type: 'warning',
+              icon: 'exclamation-sign',
+              title: 'Alerta',
+              text: 'No es posible agregar un proyecto mientras haya otra modificación o alta en curso.',
+              action: strategic ? 'gotoestrategico' : (operative ? 'gotooperativo' : 'gotoform'),
+              valueAction: true,
+              textlink: 'Ir al formulario'
+            });
           }
+          this.removerForms(['viewproject', 'formlabels']);
+          let referralDivFactory = this.$compile(" <formproject idobjetivo='" + idObjetivo + "'></formproject> ");
+          let referralDiv = referralDivFactory(this.$scope);
+          let containerDiv = $("#op-" + idObjetivo);
+          angular.element(containerDiv).append(referralDiv);
+          this.goToElement('formproject');
         }
 
         labels(idProyecto) {
@@ -384,18 +386,24 @@ module Home {
           });
         }
 
+        // Muestra una alerta / notificación. Reemplaza la actual.
         addNotification(data) {
           var formDiv = document.getElementsByTagName('notification');
           angular.element(formDiv).remove();
-          var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="'  + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
-          var referralDiv = referralDivFactory(this.$scope);
-          var containerDiv = document.getElementById('notifications');
-          angular.element(containerDiv).append(referralDiv);
-          this.goToTop();
+          this.appendNotification(data);
+        }
+
+        // Agrega una alerta / notificacion al contenedor de notificaciones
+        private appendNotification(data): void {
+            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '" ' + data.action + '="'  + data.valueAction + '" textlink="' + data.textlink + '" callback="' + 'homeCtrl.' + data.callback + '"></notification> '); // tslint:disable-line max-line-length
+            var referralDiv = referralDivFactory(this.$scope);
+            var containerDiv = document.getElementById('notifications');
+            angular.element(containerDiv).append(referralDiv);
+            this.goToTop();
         }
 
         showCompleteStatus() {
-          var notificationDataCompleto = {
+          this.appendNotification({
             "type" : "success",
             "icon" : "ok-sign",
             "title" : "Completo",
@@ -404,68 +412,33 @@ module Home {
             "valueAction" : true,
             "textlink": "Presentar todos los proyectos completos",
             "callback": 'presentAllProjects()'
-          };
-
-          this.addNotification(notificationDataCompleto);
+          });
         }
 
         showIncompleteStatus() {
-          var notificationDataIncompleto = {
+          this.appendNotification({
             "type" : "warning",
             "icon" : "exclamation-sign",
             "title" : "Incompleto",
             "text" : "Los proyectos señalados en rojo tienen datos incompletos." // tslint:disable-line
-          };
-
-          this.addNotification(notificationDataIncompleto);
+          });
         }
 
-        getJurisdiccionCompleteness(objetivosJurisdiccionales) {
-          var objJurisdiccionales = objetivosJurisdiccionales;
-          var objOperativos;
-          var proyectos;
-          var jurisI = 0;
-          var operI = 0;
-          var proyI = 0;
-          var completeness = {
-            complete: false,
-            incomplete: false
-          };
-          var completeStatesSet = function(completeness){
-            return completeness.complete && completeness.incomplete;
-          };
-
-          while ( (jurisI < objJurisdiccionales.length) &&
-                  (!completeStatesSet(completeness)) ) {
-            objOperativos = objJurisdiccionales[jurisI].objetivosOperativos;
-
-            operI = 0;
-            while ( (operI < objOperativos.length) &&
-                  (!completeStatesSet(completeness)) ) {
-              proyectos = objOperativos[operI].proyectos;
-
-              proyI = 0;
-              while ( (proyI < proyectos.length) &&
-                (!completeStatesSet(completeness)) ) {
-
-                if (proyectos[proyI].estado === 'Completo') {
-                  completeness.complete = true;
-                }
-                if (proyectos[proyI].estado === 'Incompleto') {
-                  completeness.incomplete = true;
-                }
-
-                proyI++;
-              }
-
-              operI++;
-            }
-
-            jurisI++;
-          }
-
-          return completeness;
-        };
+        private inspectProjectStatus(objetivosJurisdiccionales: Array<any>): any {
+            let status = { completed: 0, incompleted: 0 };
+            objetivosJurisdiccionales.forEach(j => {
+              j.objetivosOperativos.forEach(o => {
+                o.proyectos.forEach(p => {
+                  if (p.estado === 'Completo') {
+                    status.completed++;
+                  } else if (p.estado === 'Incompleto') {
+                    status.incompleted++;
+                  }
+                });
+              });
+            });
+            return status;
+        }
 
         verifyProjects() {
           var projects = 0;
@@ -499,6 +472,7 @@ module Home {
 
         presentAllProjects() {
           this.services.presentAllProject(this.localStorageService.get(this.idjurisdiccionKey)).then((data) => {
+            this.services.deferNotification('Los proyectos fueron presentados correctamente');
             this.$state.reload();
           });
         }

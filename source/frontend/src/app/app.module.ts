@@ -12,6 +12,8 @@ import 'angular-carousel';
 import 'angular-touch';
 import 'angular-animate.js';
 import 'angular-validator.min.js';
+import 'chart.js';
+import 'angular-chart';
 import routes from './app.routes.ts';
 import routesInterceptor from './app.routes.interceptor.ts';
 import httpInterceptor from './app.http.interceptor.ts';
@@ -39,7 +41,7 @@ $http.get(config.authBaseUrl + 'config/properties').then(
     function (response) {
         let configModule = angular.module('config', []).constant('urlsConfig', response.data);
         angular.module('app', ['ui.router', 'ui.bootstrap', 'ngAnimate', 'vcRecaptcha', 'ngFileUpload', 'angularValidator', 'ngHandsontable',
-        'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', home, login, users,
+        'isteven-multi-select', 'LocalStorageModule', 'angular-carousel', 'checklist-model', 'ngTagsInput', 'ngTouch', 'chart.js', home, login, users,
         priorization, crossTopics, upload, preview, results, configModule.name])
             .config(routes)
             .config((tagsInputConfigProvider) => {

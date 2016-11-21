@@ -22,6 +22,7 @@ module Services {
 
         private tokenKey = 'token';
         private idjurisdiccionKey = 'idJurisdiccionStorage';
+        private notificationsKey = 'pending-notifications';
         private apiBaseUrl = config.authBaseUrl + 'api/';
 
         /*@ngInject*/
@@ -370,6 +371,7 @@ module Services {
         logout() {
           this.localStorageService.remove(this.tokenKey);
           this.localStorageService.remove(this.idjurisdiccionKey);
+          this.localStorageService.remove(this.notificationsKey);
           this.$state.go('login');
         }
 
@@ -389,6 +391,30 @@ module Services {
             return this.$http.get<TipoObra>(this.apiBaseUrl + "tipoObra/subtipo/" + idSubtipoObra)
                 .then((response) => response.data)
                 .catch((response) => console.log(response.data));
+        }
+
+        public deferNotification(
+            text: string,
+            title: string = 'Ok',
+            type: string = 'success',
+            icon: string = 'ok-sign'
+        ) : void {
+            let notifications = this.loadDeferredNotifications(false);
+            notifications.push({
+                'text': text,
+                'title': title,
+                'type': type,
+                'icon': icon
+            });
+            this.localStorageService.set(this.notificationsKey, notifications);
+        }
+
+        public loadDeferredNotifications(clean: boolean = true) : Array<{}> {
+            let notifications = this.localStorageService.get<Array<{}>>(this.notificationsKey) || new Array<{}>();
+            if (clean) {
+                this.localStorageService.remove(this.notificationsKey);
+            }
+            return notifications;
         }
     }
 

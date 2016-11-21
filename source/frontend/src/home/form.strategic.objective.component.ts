@@ -1,4 +1,4 @@
-import {GeneralServices} from "../services/services.ts";
+import {GeneralServices} from "../services/services";
 import {ObjetivoJurisdiccional} from "../models/jurisdiccion";
 import {IndicadorEstrategico} from "../models/jurisdiccion";
 
@@ -15,6 +15,7 @@ module Home {
     private currentTotalPesoRelativo: number;
     private currentIndicador: IndicadorEstrategico;
     private validPesoRelativo: string;
+    private allProjects = new Array<any>();
 
     /*@ngInject*/
     constructor(private services:GeneralServices, private $http: ng.IHttpService,
@@ -24,6 +25,11 @@ module Home {
         this.title = "Modificar objetivo estratégico";
         services.getStrategicObjective(this.idobjetivoestrategico).then((data) => {
           this.currentStrategicObjective = data;
+          this.currentStrategicObjective.objetivosOperativos.forEach((oo) => {
+            oo.proyectos.forEach((project) => {
+              this.allProjects.push(project);
+            });
+          });
           this.currentStrategicObjective.indicadoresEstrategicos.forEach((i) => {
             if (i.estado === "Cancelado") {
               i.pesoRelativo = 0;
@@ -36,6 +42,12 @@ module Home {
         this.currentStrategicObjective = <ObjetivoJurisdiccional>{};
         this.currentTotalPesoRelativo = 0;
       }
+
+      $scope.$watch('formCtrl.currentStrategicObjective.indicadoresEstrategicos', (newVal, oldVal) => {
+        if (this.currentStrategicObjective) {
+          this.getCurrentTotalPesoRelativo();
+        }
+      }, true);
 
     }
 
@@ -129,7 +141,8 @@ module Home {
         var indicadorTag = document.getElementsByTagName('indicadorproject');
         angular.element(indicadorTag).remove();
       }
-      var referralDivFactory = this.$compile(" <indicadorproject currentindicador='formCtrl.currentIndicador'></indicadorproject> ");
+      var referralDivFactory = this.
+      $compile(" <indicadorproject currentindicador='formCtrl.currentIndicador' strategicobjetive='formCtrl.currentStrategicObjective' objectiveprojects='formCtrl.allProjects'></indicadorproject> ");
       var referralDiv = referralDivFactory(this.$scope);
       var containerDiv = document.getElementById('indicadorprojectid');
       angular.element(containerDiv).append(referralDiv);

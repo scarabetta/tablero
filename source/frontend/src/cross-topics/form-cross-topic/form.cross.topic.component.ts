@@ -26,7 +26,10 @@ module Home {
     submit() {
       (this.currentCrossTopic.idTemaTransversal ? this.services.updateTemaTransversal(this.currentCrossTopic) : this.services.saveTemaTransversal(this.currentCrossTopic))
       .then((data) => {
-        this.$state.reload();
+        if (data) {
+          this.services.deferNotification('El Tema Transversal se agregó con éxito.');
+          this.$state.reload();
+        }
       });
     }
 

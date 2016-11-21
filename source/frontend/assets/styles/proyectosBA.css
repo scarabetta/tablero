@@ -42,7 +42,7 @@
          url('fonts/montserrat-extrabold-webfont.svg#montserratextra_bold') format('svg');
     font-weight: normal;
     font-style: normal;
- 
+
 }
 
 
@@ -2361,6 +2361,15 @@ div.jqi .jqititle {
     top: 8px !important;
 }
 
+/* indicadores */
+
+#projectListIndicador {
+  height:200px;
+}
+#projectListIndicador {
+  overflow:hidden;
+  overflow-y:scroll;
+}
 
 /*tabs*/
 
@@ -2460,6 +2469,9 @@ div.jqi .jqititle {
     background: #fff;
     border: 1px solid #ccc;
 }
+ .tableContentForm.tableHitos{
+    margin-top: 15px;
+}
 .modal-dialog.modalDetalleInfo .table-responsive {
     min-height: .01%;
     overflow-x: inherit;
@@ -2549,6 +2561,9 @@ div.jqi .jqititle {
     color: #52bbff;
     text-decoration: none;
 }
+.tableModalObras{
+    margin-top: 15px;
+}
 
 /*Tablas excel*/
 
@@ -2612,7 +2627,7 @@ div.jqi .jqititle {
     font-size: 14px;
     text-align: right;
     padding: 15px;
-    max-width: 1262px;
+    max-width: 1130px;
 }
 .totalGridIndicadores span{
     font-weight: bold;
@@ -2648,6 +2663,22 @@ div.jqi .jqititle {
 }
 .item-meta label{
     margin-bottom: 10px!important;
+}
+.relationGrid .columnRight {
+    max-width: 50%;
+}
+.relationGrid .estateClass {
+    margin-top: 0;
+}
+.relationGrid .nameObj {
+    text-decoration: none;
+    cursor: default;
+    color: #6c6c6c;
+}
+#projectListIndicador{
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #e2e2e2;
 }
 
 /*MEDIA QUERY*/

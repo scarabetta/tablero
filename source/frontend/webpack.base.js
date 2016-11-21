@@ -46,7 +46,9 @@ module.exports = {
             "jquery.sidr.min.js" : __dirname + "/node_modules/sidr/dist/jquery.sidr.min.js",
             "handsontable.full.css" : __dirname + "/node_modules/handsontable/dist/handsontable.full.css",
             "handsontable.full.js" : __dirname + "/node_modules/handsontable/dist/handsontable.full.js",
-            "ngHandsontable.js" : __dirname + "/node_modules/ng-handsontable/dist/ngHandsontable.min.js"
+            "ngHandsontable.js" : __dirname + "/node_modules/ng-handsontable/dist/ngHandsontable.min.js",
+            "chart.js" : __dirname + "/node_modules/chart.js/dist/Chart.min.js",
+            "angular-chart" : __dirname + "/node_modules/angular-chart.js/dist/angular-chart.min.js"
         }
     },
 

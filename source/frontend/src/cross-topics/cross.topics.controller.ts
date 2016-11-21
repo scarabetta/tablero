@@ -13,6 +13,15 @@ module CrossTopics {
         services.getTemasTransversales().then((data) => {
           this.crossTopics = data;
         });
+        let notifications = this.services.loadDeferredNotifications();
+        notifications.forEach(n => this.appendNotification(n));
+      }
+
+      private appendNotification(data): void {
+            var referralDivFactory = this.$compile(' <notification type="' + data.type + '" icon="' + data.icon + '" title="' + data.title + '" text="' + data.text + '"></notification> '); // tslint:disable-line max-line-length
+            var referralDiv = referralDivFactory(this.$scope);
+            var containerDiv = document.getElementById('notifications');
+            angular.element(containerDiv).append(referralDiv);
       }
 
       addCrossTopic() {
@@ -43,6 +52,7 @@ module CrossTopics {
 
       deleteCrossTopicById() {
         this.services.deleteTemaTransversal(this.idForDelete).then((data) => {
+            this.services.deferNotification('El Tema Transversal se eliminó con éxito.');
             this.$state.reload();
         });
       }

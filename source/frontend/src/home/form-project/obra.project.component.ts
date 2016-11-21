@@ -1,6 +1,6 @@
 import {Proyecto} from "../../models/jurisdiccion";
-import {GeneralServices} from "../../services/services.ts";
-import {Comuna} from "../../models/jurisdiccion.ts";
+import {GeneralServices} from "../../services/services";
+import {Comuna} from "../../models/jurisdiccion";
 import {SubtipoObra} from "../../models/jurisdiccion";
 import {TipoObra} from "../../models/jurisdiccion";
 import {HitoObra} from "../../models/jurisdiccion";
@@ -323,7 +323,7 @@ module Home {
       if (this.selectedSubTipo) {
         this.currentobra.idSubtipoObraAux = this.selectedSubTipo.idSubtipoObra;
       }
-      this.guardarFechaIniYFin();
+      this.identificarFechas();
 
       if (!this.isNewObra) {
         for (var y = 0; y < this.currentproject.obras.length; y++) {
@@ -337,44 +337,23 @@ module Home {
       (<any>$('#obraModal')).modal('hide');
     }
 
-    guardarFechaIniYFin() {
-      var fechaIni = this.obtenerMenorInicio();
-      var fechaFin = this.obtenerMayorFin();
-      if (!fechaFin) {
-        fechaFin = fechaIni;
-      }
-      if (!fechaIni) {
-        fechaIni = fechaFin;
-      }
-      this.currentobra.fechaInicio = fechaIni;
-      this.currentobra.fechaFin = fechaFin;
-    }
-
-    obtenerMenorInicio() {
-      var arrayFechasIni = new Array();
-      this.currentobra.hitos.forEach((h) => {
+    private identificarFechas() : void {
+      let fechasInicio = new Array<Date>();
+      let fechasFin = new Array<Date>();
+      this.currentobra.hitos.forEach(h => {
         if (h.fechaInicio) {
-          arrayFechasIni.push(h.fechaInicio);
+          fechasInicio.push(h.fechaInicio);
         }
-      });
-      var fechas = this.sortDates(arrayFechasIni);
-      return fechas[0];
-    }
-
-    obtenerMayorFin() {
-      var arrayFechasFin = new Array();
-      this.currentobra.hitos.forEach((h) => {
         if (h.fechaFin) {
-          arrayFechasFin.push(h.fechaFin);
+          fechasFin.push(h.fechaFin);
         }
       });
-      var fechas = this.sortDates(arrayFechasFin);
-      return fechas[fechas.length - 1];
-    }
-
-    sortDates(datesArray) {
-      datesArray.sort();
-      return datesArray;
+      this.currentobra.fechaInicio = fechasInicio.length > 0 ? fechasInicio.sort(
+        (a, b) => a.getTime() - b.getTime()
+      )[0] : null;
+      this.currentobra.fechaFin = fechasFin.length > 0 ? fechasFin.sort(
+        (a, b) => b.getTime() - a.getTime()
+      )[0] : null;
     }
 
     validateHitoNames() {
@@ -490,8 +469,8 @@ module Home {
       this.validHitoFechaProyecto = "";
       this.validHitoFecha = "";
       this.currentobra.hitos.forEach((p) => {
-        var fechaIni = p.fechaInicio;
-        var fechaFin = p.fechaFin;
+        let fechaIni = p.fechaInicio;
+        let fechaFin = p.fechaFin;
         if (fechaIni && fechaFin) {
           if (fechaIni > fechaFin) {
             this.validHitoFecha = "La fecha de fin debe ser posterior a la fecha de inicio";

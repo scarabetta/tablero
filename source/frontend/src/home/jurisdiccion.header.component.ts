@@ -14,12 +14,13 @@ module Home {
     private modelJurisdiccion: any;
 
     constructor(private services:GeneralServices, private $state: ng.ui.IStateService, private $scope:ng.IScope,
-      private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService) {
+      private localStorageService:angular.local.storage.ILocalStorageService, private $compile: ng.ICompileService, $rootScope: ng.IRootScopeService) {
       var idJurisdiccionStorage = this.localStorageService.get(this.idjurisdiccionKey);
+      var scope = this;
       if (idJurisdiccionStorage) {
-        services.getJurisdiccion(idJurisdiccionStorage).then((data) => {
-          this.jurisdiccion = data;
-          this.modelJurisdiccion = {
+        this.$scope.$on('jurisdiccion:updated', function(event, data) {
+          scope.jurisdiccion = data;
+          scope.modelJurisdiccion = {
             idJurisdiccion : data.idJurisdiccion,
             nombre : data.nombre,
             abreviatura : data.abreviatura,
@@ -64,6 +65,3 @@ module Home {
 }
 
 export = Home;
-
-
-

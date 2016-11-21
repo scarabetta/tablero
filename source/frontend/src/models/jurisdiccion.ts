@@ -240,11 +240,11 @@ export interface Meta {
   metodoRecoleccion: string;
   sistemaRecoleccion: string;
   pesoRelativo: number;
-  justificacionparametrointernacional: number;
-  justificacionParametroNac: number;
-  justificacionResultadoHistorico: number;
-  justificacionPresupuesto: number;
-  justificacionInstituciones: number;
+  justificacionParametroInternacional: boolean;
+  justificacionParametroNac: boolean;
+  justificacionResultadoHistorico: boolean;
+  justificacionPresupuesto: boolean;
+  justificacionInstituciones: boolean;
 }
 
 export interface Obra {
