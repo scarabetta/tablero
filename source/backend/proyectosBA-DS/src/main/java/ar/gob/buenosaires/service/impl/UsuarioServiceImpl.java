@@ -110,6 +110,26 @@ public class UsuarioServiceImpl implements UsuarioService {
 		final List<Usuario> usuarios = getUsuarioFromReqMsg(reqMsg);
 		return getFirstUsuarioFromTheList(usuarios);
 	}
+	
+	@Override
+	public void inhabilitarUsuario(Long id, String email) throws ESBException, JMSException {
+		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+		reqMsg.setId(id);
+		reqMsg.setEmailUsuario(email);
+
+		getLogger().info("Mensaje creado para inhablitar un Usuario : {}", reqMsg.toString());
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_INHABILITAR_USUARIO, UsuarioRespMsg.class);
+	}
+
+	@Override
+	public void habilitarUsuario(Long id, String email) throws ESBException, JMSException {
+		final UsuarioReqMsg reqMsg = new UsuarioReqMsg();
+		reqMsg.setId(id);
+		reqMsg.setEmailUsuario(email);
+
+		getLogger().info("Mensaje creado para habilitar un Usuario : {}", reqMsg.toString());
+		esbService.sendToBus(reqMsg, "ProyectosDA-DS", ESBEvent.ACTION_HABILITAR_USUARIO, UsuarioRespMsg.class);
+	}
 
 	private List<Usuario> getUsuarioFromReqMsg(final UsuarioReqMsg reqMsg) throws ESBException, JMSException {
 		getLogger().info("Mensaje creado para obtener un Usuario : {}", reqMsg.toString());
@@ -198,4 +218,5 @@ public class UsuarioServiceImpl implements UsuarioService {
 			return null;
 		}
 	}
+
 }

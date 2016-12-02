@@ -37,6 +37,8 @@ public interface ESBEvent {
     public static final String ACTION_CANCELAR_PRIORIZACION = "CANCELAR_PRIORIZACION";
     public static final String ACTION_INICIAR_PRIORIZACION = "INICIAR_PRIORIZACION";
     public static final String ACTION_CUSTOM_STATEMENT = "CUSTOM_STATEMENT";
+    public static final String ACTION_INHABILITAR_USUARIO = "ACTION_INHABILITAR_USUARIO";
+    public static final String ACTION_HABILITAR_USUARIO = "ACTION_HABILITAR_USUARIO";
     public static final String ORIGIN_TAG = "Origin";
     public static final String DEFAULT_ORIGIN = "UNKNOWN";
     public static final String COMPANYCODE_TAG = "CompanyCode";

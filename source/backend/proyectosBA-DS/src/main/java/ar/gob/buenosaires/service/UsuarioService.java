@@ -26,6 +26,10 @@ public interface UsuarioService {
 
 	Usuario getUsuarioPorId(Long id) throws ESBException, JMSException;
 	
+	void inhabilitarUsuario(Long id, String email) throws ESBException, JMSException;
+	
+	void habilitarUsuario(Long id, String email) throws ESBException, JMSException;
+	
 	Usuario getUsuarioPorToken(String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException;
 
 	Usuario validarUsuario(String email);

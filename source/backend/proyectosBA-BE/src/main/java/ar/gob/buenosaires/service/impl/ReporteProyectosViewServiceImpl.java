@@ -25,10 +25,10 @@ public class ReporteProyectosViewServiceImpl implements ReporteProyectosViewServ
 			if (user.getJurisdicciones().isEmpty()) {
 				reporte = getReporteProyectosViewJpaDao().findAllParaSecretariaSinJurisdiccion();
 			} else {
-				reporte = getReporteProyectosViewJpaDao().findAllParaSecretaria();
+				reporte = getReporteProyectosViewJpaDao().findAllParaSecretaria(user.getEmail());
 			}
 		} else {
-			reporte = getReporteProyectosViewJpaDao().findAllParaJurisdicion();
+			reporte = getReporteProyectosViewJpaDao().findAllParaJurisdicion(user.getEmail());
 		}
 		return reporte;
 	}

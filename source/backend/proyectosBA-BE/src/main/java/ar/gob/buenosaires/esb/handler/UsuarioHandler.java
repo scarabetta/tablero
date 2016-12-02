@@ -44,10 +44,21 @@ public class UsuarioHandler extends AbstractBaseEventHandler {
 			usuarios.add(service.updateUsuario(request.getUsuario()));
 		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_DELETE)) {
 			service.deleteUsuario(request.getId());
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_INHABILITAR_USUARIO)) {
+			cambiarEstadoUsuario(request.getId(), Boolean.FALSE);
+		} else if (event.getAction().equalsIgnoreCase(ESBEvent.ACTION_HABILITAR_USUARIO)) {
+			cambiarEstadoUsuario(request.getId(), Boolean.TRUE);
 		} else {
 			throw new ESBException(CodigoError.ACCION_INEXISTENTE.getCodigo(), "La accion: " + event.getAction() + ", no existe para el servicio de Usuario");
 		}
 		logResponseMessage(event, UsuarioService.class);
+	}
+
+
+	private void cambiarEstadoUsuario(Long id, Boolean nuevoEstado) {
+		Usuario usuario = service.getUsuarioPorId(id);
+		usuario.setActivo(nuevoEstado);
+		service.updateUsuario(usuario);
 	}
 
 	private void retrieveUsuarios(final UsuarioRespMsg response, final UsuarioReqMsg request) {

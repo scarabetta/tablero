@@ -58,7 +58,7 @@ public class ReporteProyectosViewHandler extends AbstractBaseEventHandler {
 	}
 
 	private Usuario obtenerUsuarioDelRequest(final ReporteProyectosViewReqMsg request) {
-		return usuarioService.getUsuarioPorEmail(request.getMailUsuario());
+		return usuarioService.getUsuarioPorEmail(request.getEmailUsuario());
 	}
 
 	@Override

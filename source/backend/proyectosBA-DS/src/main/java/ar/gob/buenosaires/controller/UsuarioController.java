@@ -2,6 +2,7 @@ package ar.gob.buenosaires.controller;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 import javax.jms.JMSException;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,18 @@ public class UsuarioController {
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public @ResponseBody Usuario getUsuarioPorId(@PathVariable final Long id) throws ESBException, JMSException {
 		return service.getUsuarioPorId(id);
+	}
+	
+	@RequestMapping(path = "/inhabilitar", method = RequestMethod.PUT)
+	public @ResponseBody void inhabilitarUsuario(@RequestBody Map<String, String> mapParams,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		service.inhabilitarUsuario(Long.parseLong(mapParams.get("idUsuario")), DSUtils.getMailDelUsuarioDelToken(token));
+	}
+	
+	@RequestMapping(path = "/habilitar", method = RequestMethod.PUT)
+	public @ResponseBody void habilitarUsuario(@RequestBody Map<String, String> mapParams,
+			@RequestHeader(value = HttpHeaders.AUTHORIZATION) String token) throws ESBException, JMSException, ParseException, JOSEException, SignatureVerificationException {
+		service.habilitarUsuario(Long.parseLong(mapParams.get("idUsuario")), DSUtils.getMailDelUsuarioDelToken(token));
 	}
 
 	@RequestMapping(path = "/email/{email}", method = RequestMethod.GET)
